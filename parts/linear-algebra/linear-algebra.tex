@@ -1,0 +1,448 @@
+\part{Linear Algebra}
+\chapter{Analytic Geometry}
+\section{Arithmetic in $n$ dimensions}
+We now focus our attention on $n$-dimensional euclidean space, which is modelled by the cartesian product $\bR^n$:
+\begin{align*}
+	\bR^n = 
+	\lr{
+	\vx 
+	=
+	\begin{pmatrix}
+		x_1\\
+		\vdots\\
+		x_n
+	\end{pmatrix}
+	~
+	\mid
+	~
+	x_1, \hdots, x_n \in \bR}
+	=
+	\lr{\vx : \lr{1, \hdots, n} \to \bR}
+\end{align*}
+Elements of $\bR^n$ are known as \tib{vectors}\sidenote{We will see in the next chapter that $\bR^n$ is an example of a \tib{vector space}, including the case $n = 1$ (and $n = 0$, if you want to get a bit pathological). Therefore, formally speaking and only in certain contexts, regular old real numbers can be vectors too. However, when encountering the term "vector" in the wild, it is generally implied that $n \geq 2$.}.
+In the context of linear algebra, they are usually written vertically, as \tib{column vectors}.
+\newpar
+Vectors simultaneously represent both \tib{positions} and \tib{directions} in space - in the same way that the number $5$ is both the point that lies $5$ units away from $0$ on the real number line \tit{and} the distance between the numbers $3$ and $8$ on that same number line, the vector $\binom{1}{2}$ represents both
+\begin{itemize}
+	\item The point on the cartesian plane that can be reached by going one unit in the direction of one coordinate axis and then two units in the direction of the other axis, \tit{and}
+	\item the distance between two points with coordinates $\binom{2}{3}$ and $\binom{3}{5}$, or any other pair of points that are one unit apart in one coordinate direction and two in the other.
+\end{itemize}
+As is expected for algebraic structures defined on cartesian products, addition is defined \tbf{componentwise}:
+\begin{align*}
+	\begin{pmatrix}
+		x_1\\
+		\vdots\\
+		x_n
+	\end{pmatrix}
+	+
+	\begin{pmatrix}
+		y_1\\
+		\vdots\\
+		y_n
+	\end{pmatrix}
+	=
+	\begin{pmatrix}
+		x_1 + y_1\\
+		\vdots\\
+		x_n + y_n
+	\end{pmatrix}
+\end{align*}
+\newpar
+Given a real number $c$, we can scale elements of $\bR^n$ by that number:
+\begin{align*}
+	c \cdot \vx
+	=
+	c \cdot 
+	\begin{pmatrix}
+		x_1\\
+		\vdots\\
+		x_n
+	\end{pmatrix}
+	=
+	\begin{pmatrix}
+		c \cdot x_1\\
+		\vdots\\
+		c \cdot x_n
+	\end{pmatrix}
+\end{align*}
+The factor $c$ is known as a \tib{scalar}, and the operator $\cdot : \bR \times \bR^n \to \bR^n$ as \tib{scalar multiplication}.
+For the sake of readability, we differentiate scalars from vectors by writing a little arrow on top of a vector.
+\newpar 
+Arguably, it is these two operations - vector addition and scalar multiplication - that define linear algebra - next chapter, we will abstractly define \tib{vector spaces} to be those structures where addition and scalar multiplication are well-behaved and the scalars come from a field, and \tib{modules} to be their cousins whose scalars come from a ring.
+\newpar
+In general, there is no well-behaved\sidenote{In this case, our criterion for multiplication being well-behaved is that multiplicative inverses should exist, i.e. that division should be possible.} vector multiplication that works for any $n$. Later on, we will prove this observation in the form of \tib{Frobenius' Theorem}, which roughly states:
+\begin{importanttheorem}{Frobenius' Theorem}{}
+	The only dimensions in which an associative multiplication exists on $\bR^n$ are $\bR^1$, i.e. $\bR$ itself, $\bR^2$, where multiplication is given by treating two-dimensional vectors as complex numbers, and $\bR^4$, where multiplication is given treating four-dimensional vectors as \tib{quaternions}.
+\end{importanttheorem} 
+We will take a closer look at the complex numbers $\bC \cong \bR^2$ and the quaternions $\bH \cong \bR^4$ in the following sections. In particular, we will see that quaternion multiplication isn't commutative, so if we require multiplication to be commutative, our options shrink even further, leaving just $\bR$ and $\bC \cong \bR^2$.
+
+\clearpage
+
+\section{The Inner Product: Angles and Lengths in $\bR^n$}
+Another operation that is of central importance to euclidean geometry is the \tib{inner product}, also known as the \tib{dot product} or \tib{scalar product}.
+\begin{importantdefinition}{Euclidean Inner Product}{}
+	Given two vectors $\vx, \vy \in \bR^n$, their \tib{Euclidean inner product}, written $\scalar{\vx}{\vy}$ or simply $\vx \cdot \vy$, is the sum of the products of the components of $\vx$ with the components of $\vy$:
+	\begin{align*}
+		\scalar{\vx}{\vy} = \sum_{i = 1}^n x_i \cdot y_i
+	\end{align*}
+\end{importantdefinition}
+\begin{importanttheorem}{Properties of Inner Products}{}
+	The Euclidean inner product has the following properties:
+	\begin{enumerate}
+		\item \tib{(Positive definiteness):} For every $\vx \in \bR^n$, we have $\scalar{\vx}{\vx} = 0$ if and only if $\vx = \vzero$.
+		\item \tib{(Linearity in the first argument):} For every $\vx, \vy, \vz \in \bR^n$ and $a,b \in \bR$, we have:
+		\begin{align*}
+			\scalar{ax + by}{z} = a \scalar{x}{z} + b \scalar{y}{z}
+		\end{align*}
+		\item \tib{(Symmetry):} For every $\vx, \vy \in \bR^n$, we have:
+		\begin{align*}
+			\scalar{x}{y} = \scalar{y}{x}
+		\end{align*}
+	\end{enumerate}
+\end{importanttheorem}
+\begin{exercise}
+	Show that the Euclidean inner product fulfills the following version of the binomial formula:
+	\begin{align*}
+		\scalar{\vx + \vy}{\vx + \vy} = \scalar{\vx}{\vx} + 2 \scalar{\vx}{\vy} + \scalar{\vy}{\vy}\\
+		\scalar{\vx - \vy}{\vx - \vy} = \scalar{\vx}{\vx} - 2 \scalar{\vx}{\vy} + \scalar{\vy}{\vy}
+	\end{align*}
+\end{exercise}
+The importance of inner products comes from the fact they let us define \tib{lengths} and \tib{angles}.
+\begin{importantdefinition}{Euclidean Norm}{}
+	The length of a vector $\vx \in \bR^n$, also known as its \tib{Euclidean norm}, written as $\norm{\vx}_2$, $\norm{\vx}$, or just $\abs{x}$, is given by:
+	\begin{align*}
+		\norm{\vx}_2 = \sqrt{\scalar{\vx}{\vx}} = \sqrt{x_1^2 + \hdots + x_n^2}
+	\end{align*}
+\end{importantdefinition}
+Note that for $n = 1$, we simply get $\norm{x}_2 = \sqrt{x^2} = \abs{x}$, so any result concerning the Euclidean norm on $\bR^n$ also holds for the absolute value function.
+\begin{importanttheorem}{Some properties of Norms}{}
+	The Euclidean norm has the following properties:
+	\begin{enumerate}
+		\item \tib{(Non-negativity):} For every $\vx \in \bR^n$, $\norm{\vx}_2 \geq 0$.
+		\item \tib{(Positive definiteness):} For every $\vx \in \bR^n$, $\norm{\vx}_2 = 0$ if and only if $\vx = \vzero$.
+		\item \tib{(Absolute homogeneity):} For every $c \in \bR$ and $\vx \in \bR^n$, we have
+		\begin{align*}
+			\norm{c \cdot \vx}_2 = \abs{c} \cdot \norm{\vx}_2
+		\end{align*}
+	\end{enumerate}
+\end{importanttheorem}
+The little subscript $2$ in $\norm{\vx}_2$ differentiates the Euclidean norm from the many other norms we will meet over time - in general, for any $p \in \bN_1$, $\norm{\vx}_p$ denotes the function
+\begin{align*}
+	\norm{\vx}_p = \sqrt[p]{\abs{x_1}^p + \hdots + \abs{x_n}^p} \qquad\lr(= \sqrt[p]{\sum_{i = 1}^n \abs{x_i}^p}),
+\end{align*}
+known as the \tib{$p$-norm}. For now, we only really care about the Euclidean norm, but other values of $p$ will start coming in handy once we start applying tools from analysis to vector spaces. The limiting case $p \to \infty$ is particularly useful: We will find that $$\norm{\vx}_\infty = \max \abs{x_i}.$$
+\begin{importanttheorem}{Cauchy-Schwartz Inequality}{}
+	Let $\vx, \vy \in \bR^n$. Then we have
+	\begin{align*}
+		\abs{\scalar{\vx}{\vy}} \leq \norm{\vx}_2 \cdot \norm{\vy}_2
+	\end{align*}
+\end{importanttheorem}
+\begin{proof}
+	\begin{enumerate}
+		\item Assume $\norm{\vx}_2 = 0$. Then we immediately get 
+		\begin{align*}
+			\scalar{\vx}{\vy} = 0 = \norm{\vx}_2 \cdot \norm{\vy}_2.
+		\end{align*}
+		\item Assume $\norm{\vx}_2 = \norm{\vy}_2 = 1$. Then we have $\norm{\vx}_2^2 + \norm{\vy}_2^2 = 2$, and thus:
+		\begin{align*}
+			1 + \scalar{\vx}{\vy}
+			&= \frac{1}{2} (\norm{\vx}_2^2 + \norm{\vy}_2^2) + \scalar{\vx}{\vy}\\
+			&= \frac{1}{2} (\norm{\vx}_2^2 + 2\scalar{\vx}{\vy} + \norm{\vy}_2^2)\\
+			&= \frac{1}{2} \norm{\vx + \vy}_2^2\\
+			&\geq 0
+		\end{align*}
+		Thus we get $\scalar{\vx}{\vy} \geq -1$. Applying the same reasoning to $1 - \scalar{\vx}{\vy}$, we get 
+		\begin{align*}
+			1 - \scalar{\vx}{\vy} = \frac{1}{2} \norm{\vx - \vy}_2^2 \geq 0,
+		\end{align*}
+		i.e. $\scalar{\vx}{\vy} \leq 1$. We thus have 
+		\begin{align*}
+			\abs{\scalar{\vx}{\vy}} \leq 1 = \norm{\vx}_2 \cdot \norm{\vy}_2,
+ 		\end{align*}
+	 	as desired.
+	 	\item Now, let $\vx, \vy \in \bR^n \setminus \lr{\vzero}$ be arbitrary. Then $\frac{\vx}{\norm{\vx}_2}$ and $\frac{\vy}{\norm{\vy}_2}$ both have norm $1$, letting us simply use our previous result:
+	 	\begin{align*}
+	 		\abs{\scalar{\vx}{\vy}}
+	 		&= \abs{\norm{\vx} \cdot \norm{\vy} \cdot \scalar{\frac{\vx}{\norm{\vx}}}{\frac{\vy}{\norm{\vy}}}}\\
+	 		&\leq \abs{\norm{\vx} \cdot \norm{\vy} \cdot \norm{\frac{\vx}{\norm{\vx}}} \cdot \norm{\frac{\vy}{\norm{\vy}}}}\\
+	 		&= \norm{\vx} \cdot \norm{\vy}
+	 	\end{align*}
+	\end{enumerate}
+\end{proof}
+\begin{importantcorollary}{Triangle Inequality}{}
+	For every $\vx, \vy \in \bR^n$, we have
+	\begin{align*}
+		\norm{\vx + \vy}_2 \leq \norm{\vx}_2 + \norm{\vy}_2
+	\end{align*}
+\end{importantcorollary}
+We had previously formalized the concept of an 'angle between two lines' via the complex exponential function, and then defined the trigonometric functions $\sin x$ and $\cos x$ as the complex and real parts of $e^{ix}$, respectively. If we take the cosine function as a given, then scalar products provide a convenient alternate way of defining angles, which works in any dimension:
+\begin{importantdefinition}{Angle between two vectors}{}
+	Given two vectors $\vx,\vy \in \bR^n \setminus \lr{\vzero}$, we define the \tib{angle} between them to be:
+	\begin{align*}
+		\angle{\vx}{\vy} = \arccos \lr( \frac{\scalar{\vx}{\vy}}{\norm{\vx}_2 \cdot \norm{\vy}_2})
+	\end{align*}
+\end{importantdefinition}
+Note that Cauchy-Schwartz gives us $\frac{\scalar{\vx}{\vy}}{\norm{\vx}_2 \cdot \norm{\vy}_2} \in [-1,1]$, showing that this expression actually is well-defined.
+\begin{exercise}
+	Verify that we have:
+	\begin{enumerate}
+		\item $\angle{\vx}{\vy} = 0$ if and only if there exists $c \in \bR_{> 0}$ such that $\vx = c \vy$.
+		\item $\angle{\vx}{\vy} = \frac{\pi}{2}$ if and only if $\scalar{x}{y} = 0$.
+		\item $\angle{\vx}{\vy} = \pi$ if and only if there exists $c \in \bR_{> 0}$ such that $\vx = -c \vy$.
+	\end{enumerate}
+\end{exercise}
+Notably, this suggests that our definition is sensible even in the case $n = 1$, since any pair of non-zero vectors fulfills either condition 1 or 2, implying that the angle between two vectors on the real number line is either $0$ or $\pi$.
+\newpar
+\begin{exercise}
+	Earlier in this book, we defined angles in terms of complex numbers. Given a complex number $y = r e^{i \phi}$ we saw that the corresponding real vector is given by $\vy = \binom{r \cos \phi}{r \sin \phi}$. 
+	\newpar
+	Show that our two definitions match as long as $\phi \in [0, \pi]$, i.e. that given a vector $\vx = \binom{x}{0}$ lying on the $x$-axis, we have
+	\begin{align*}
+		\angle{\vx}{\vy} = \phi
+	\end{align*}
+	(Hint: Remember $\cos^2 \phi + \sin^2 \phi = 1$)
+\end{exercise}
+\begin{exercise}
+	Prove the following theorems of classical Euclidean geometry:
+	\begin{enumerate}
+		\item The \tib{Law of Cosines}:
+		\begin{align*}
+			\norm{\vx-\vy}_2^2 = \norm{\vx}_2^2 + \norm{\vy}^2 - 2 \norm{\vx}_2 \norm{\vy}_2 \cdot \cos(\angle{\vx}{\vy})
+		\end{align*}
+		\item The \tib{Pythagorean Theorem}:
+		\begin{align*}
+			\angle{\vx}{\vy} = \frac{\pi}{2} \implies \norm{\vx-\vy}_2^2 = \norm{\vx}_2^2 + \norm{\vy}^2
+		\end{align*}
+	\end{enumerate}
+\end{exercise}
+\iffalse
+In the-dimensional case $x \in \bR$, $y = r \cdot e^{\phi i} \in \bC$, corresponding to the real vectors $\vx = \binom{x}{0}$, $\vy = \binom{r \cos \phi}{r \sin \phi}$, this definition matches our previous complex definition as long as we restrict $\phi$ to the interval $[0,\pi]$. In this case, we have:
+\begin{align*}
+	\angle (\vx, \vy) 
+	&= \arccos \lr(\frac{\scalar{\vx}{\vy}}{\norm{\vx}_2 \cdot \norm{\vy}_2})\\
+	&= \arccos \lr(\frac{(x \cdot r \cos \phi) + (0 \cdot r \sin \phi)}{\sqrt{x^2 + 0^2} \cdot \sqrt{(r \cos(\phi))^2 + (r\sin(\phi))^2}})\\
+	&= \arccos \lr(\frac{xr\cos \phi}{xr})\\
+	&= \arccos(\cos \phi)\\
+	&= \phi
+\end{align*}
+Where the third step made use of the trigonometric Pythagorean theorem $\cos(\phi)^2 + \sin(\phi)^2 = 1$. 
+\fi
+\newpar
+We have to be content with this restricted interval $[0,\pi]$, since $\cos$ isn't injective on larger intervals, and thus $\arccos$ wouldn't be well-defined on the full interval $(-\pi,\pi]$.
+\newpar 
+This means that these inner product-based angles always measure the smaller of the two angles between the vectors, disallowing negative angles and angles larger than $\pi$.
+\newpar
+More generally, any definition of an 'angle between two arbitrary vectors' will suffer from this - if we only specify two vectors, it's left ambiguous which side we should measure the angle on.
+\newpar 
+This problem can be solved by finding a way to take a tuple $(\vx_1, \hdots, \vx_n)$ of vectors and recognize whether it is 'positively ordered' or 'negatively ordered' - in $\bR^2$, this would be asking whether the second vector lies 'clockwise' or 'counterclockwise' from the first, while in $\bR^3$ the question is whether the vectors are 'left-handed' or 'right-handed'. A map that gives us this information is known as an \tib{orientation}. We will formalize this idea later, when we have introduced the necessary tools, those being vector spaces, their \tib{bases}, and \tib{determinant functions}.
+\newpar
+In the complex case, we could dodge this issue because one of our vectors, call it $\vx$, was always part of the $x$-axis, and thus we could obtain a canonical orientation by declaring that the angle between $\vx$ and $\vy$ was positive if $y_2 > 0$ and negative if $y_2 < 0$.
+
+\clearpage
+
+\section{The Cross Product}
+
+\clearpage
+
+\section{The Quaternions $\bH$}
+\begin{importantdefinition}{Quaternions}{}
+	The Quaternions $\bH$ consist of the set $\bR^4$, with the following special notation:
+	\begin{align*}
+		\vec 1 &:= (1,0,0,0)\\
+		i &:= (0,1,0,0)\\
+		j &:= (0,0,1,0)\\
+		k &:= (0,0,0,1)
+	\end{align*}
+	Such that in addition to scalar multiplication and vector addition, which work as usual, we have an additional vector multiplication operation $\cdot : \bR^4 \times \bR^4 \to \bR^4$ that behaves as follows:
+	\begin{enumerate}
+		\item $\vec 1$ is a neutral element of vector multiplication: 
+		\begin{align*}
+			\forall x &\in \bH:\\ 
+			\vec 1 \cdot x &= x \cdot \vec 1 = x
+		\end{align*}
+		\item Vector multiplication is associative:
+		\begin{align*}
+			\vx(\vy\vz) = (\vx\vy)\vz
+		\end{align*}
+		\item Multiplicative inverses exist:
+		\begin{align*}
+			\forall \vx &\in \bH_{\neq 0}:\\
+			\exists \vx^{-1} &\in \bH:\\
+			\vx \cdot \vx^{-1} &= \vx^{-1} \cdot \vx = \vec 1
+		\end{align*}
+		\item Vector multiplication distributes over vector addition, from both sides:
+		\begin{align*}
+			\forall \vx, \vy, \vz &\in \bH:\\ 
+			\vx \cdot (\vy + \vz) &= \vx  \vy + \vx \vz\\
+			(\vx + \vy) \cdot \vz &= \vx \vz + \vy \vz´
+		\end{align*}
+		\item Vector multiplication is compatible with scalar multiplication:
+		\begin{align*}
+			\forall a,b &\in \bR,
+					\vx,\vy \in \bH:\\
+			a\vx \cdot b\vy &= (ab)(\vx\vy)
+		\end{align*}
+		\item The unit vectors fulfill the \tib{Quaternion multiplication formula}:
+		\begin{align*}
+			i^2 = j^2 = k^2 = ijk = -\vec 1
+		\end{align*}
+	\end{enumerate}
+\end{importantdefinition}
+Apart from the Quaternion multiplication formula, which is the defining feature of the Quaternions, all of our other demands together state that $\bH$ should be an \tib{associative real division algebra over $\bR^4$}.
+\newpar
+One very important consequence of this definition is that vectors of the form $\vec a := (a,0,0,0)$ behave exactly like real numbers - let $\vec x \in \bH$, then we have:
+\begin{align*}
+	\vec a \vec x = (a \cdot \vec1) \cdot \vx = a \cdot (\vec 1 \cdot \vx) = a \vx
+\end{align*}
+For this reason, it is common to write $\vec 1$ simply as $1$, and to then proceed as we did for the complex numbers and write:
+\begin{align*}
+	(a,b,c,d) = a + bi + cj + dk
+\end{align*}
+We can now already get most of the way to deriving multiplication formula for quaternions, by simply applying distributivity:
+\begin{align*}
+	(v_1 + v_2i + v_3j + v_4k) &\cdot (u_1 + u_2i + u_3j + u_4k)\\
+	&= v_1u_1 + (v_1u_2)i + (v_1u_3)j + (v_1u_4)k\\
+	&+ (v_2u_1)i + (v_2u_2)i^2 + (v_2u_3)ij + (v_2u_4)ik\\
+	&+ (v_3u_1)j + (v_3u_2)ji + (v_3u_3)j^2 + (v_3u_4)jk\\
+	&+ (v_4u_1)k + (v_4u_2)ki + (v_4u_3)kj + (v_4u_4)k^2\\
+\end{align*}
+Now, using $i^2 + j^2 + k^2 = ijk = -1$, we can simplify slightly:
+\begin{align*}
+	(v_1 + v_2i + v_3j + v_4k) &\cdot (u_1 + u_2i + u_3j + u_4k)\\
+	&= 
+		v_1u_1 + (v_1u_2)i + (v_1u_3)j + (v_1u_4)k\\
+	&+ (v_2u_1)i + (v_2u_2)i^2 + (v_2u_3)ij + (v_2u_4)ik\\
+	&+ (v_3u_1)j + (v_3u_2)ji + (v_3u_3)j^2 + (v_3u_4)jk\\
+	&+ (v_4u_1)k + (v_4u_2)ki + (v_4u_3)kj + (v_4u_4)k^2\\
+	&= 
+		v_1u_1 + (v_1u_2)i + (v_1u_3)j + (v_1u_4)k\\
+	&+ (v_2u_1)i - (v_2u_2) + (v_2u_3)ij + (v_2u_4)ik\\
+	&+ (v_3u_1)j + (v_3u_2)ji - (v_3u_3) + (v_3u_4)jk\\
+	&+ (v_4u_1)k + (v_4u_2)ki + (v_4u_3)kj - (v_4u_4)\\
+\end{align*}
+\newpar
+All that's left is to figure out what the products of $i,j$ and $k$ should be.
+\newpar
+We can derive $ij$ and $ji$ as follows:
+\begin{enumerate}
+	\item Start with $ijk = -1$.
+	\item Multiply $k$ from the right to get $ijk^2 = -k$, i.e. $-ij = -k$, i.e. $ij = k$.
+	\item Multiply $ij$ from the left to get $ijij = ijk = -1$.
+	\item Multiply $i$ from the left and $j$ from the right to get $i(ijij)j = -ij$.
+	\item Simplify the left side to get $i(ijij)j = (ii)(ji)(jj) = ji$, i.e:
+	\begin{align*}
+		ij = -ji = k
+	\end{align*}
+\end{enumerate}
+\begin{exercise}
+	Show that we also have $jk = -kj = i$ and $ki = -ik = j$.
+\end{exercise}
+This means that Quaternion multiplication isn't commutative!
+\newpar
+Our final multiplication table for $1,i,j$ and $k$ is thus:
+\begin{align*}
+	\begin{array}{c|cccc}
+		\cdot & 1 & i & j & k\\\hline
+		1 & 1 & i & j & k\\
+		i & i &-1 & k &-j\\
+		j & j &-k &-1 & i\\
+		k & k & j &-i &-1\\
+	\end{array}
+\end{align*}
+\begin{exercise}
+	Verify that this multiplication table doesn't violate associativity.
+\end{exercise}
+Entering these new results into our partial multiplication formula, we get:
+\begin{align*}
+	(v_1 + v_2i + v_3j + v_4k) &\cdot (u_1 + u_2i + u_3j + u_4k)\\
+	&= 
+	v_1u_1 + (v_1u_2)i + (v_1u_3)j + (v_1u_4)k\\
+	&+ (v_2u_1)i - (v_2u_2) + (v_2u_3)ij + (v_2u_4)ik\\
+	&+ (v_3u_1)j + (v_3u_2)ji - (v_3u_3) + (v_3u_4)jk\\
+	&+ (v_4u_1)k + (v_4u_2)ki + (v_4u_3)kj - (v_4u_4)\\
+	&=
+	v_1u_1 + (v_1u_2)i + (v_1u_3)j + (v_1u_4)k\\
+	&+ (v_2u_1)i - (v_2u_2) + (v_2u_3)k - (v_2u_4)j\\
+	&+ (v_3u_1)j - (v_3u_2)k - (v_3u_3) + (v_3u_4)i\\
+	&+ (v_4u_1)k + (v_4u_2)j - (v_4u_3)i - (v_4u_4)\\
+\end{align*}
+which we can finally simplify to get:
+\begin{align*}
+	(v_1 + v_2i + v_3j + v_4k) \cdot (u_1 + u_2i + u_3j + u_4k)\\
+	=~ (v_1u_1 - v_2u_2 - v_3u_3 - v_4u_4)\\
+	+~ (v_1u_2 + v_2u_1 + v_3u_4 - v_4u_3)i\\
+	+~ (v_1u_3 - v_2u_4 + v_3u_1 + v_4u_2)j\\
+	+~ (v_1u_4 + v_2u_3 - v_3u_2 + v_4u_1)k
+\end{align*}
+Now, this is obviously a long and unreasonably complicated formula - is there any way to think of it differently? The complex numbers had a very nice and intuitive geometric definition, maybe the quaternions do too?
+\newpar
+Well, the key trick here is to split the underlying set $\bR^4$ into $\bR \times \bR^3$, thinking of each Quaternion as consisting of a \tib{real part} $a \in \bR$ and an \tib{imaginary part} $\vv \in \bR^3$. Our multiplication formula now reads:
+\begin{align*}
+	(a, \vv) \cdot (b, \vu)\\
+	=~ (ab - v_1u_1 - v_2u_2 - v_3u_3)\\
+	+~ (au_1 + bv_1 + v_2u_3 - v_3u_2)i\\
+	+~ (au_2 - v_1u_3 + bv_2 + v_3u_1)j\\
+	+~ (au_3 + v_1u_2 - v_2u_1 + bv_3)k
+\end{align*}
+which you might notice consists exclusively of familiar vector operations:
+\begin{enumerate}
+	\item $ab - v_1u_1 - v_2u_2 - v_3u_3 = ab - \scalar{\vv}{\vu}$
+	\item $\trinom{au_1}{au_2}{au_3} = a\vu$, $\trinom{bv_1}{bv_2}{bv_3} = b\vv$
+	\item $\trinom{v_2u_3-v_3u_2}{v_1u_3-v_3u_1}{v_1u_2-v_2u_1} = \vv \times \vu$
+\end{enumerate}
+Putting everything together, we can now write out our multiplication formula in a much nicer form:
+\begin{align*}
+	(a, \vv) \cdot (b, \vu) =
+	(ab - \scalar{\vv}{\vu}, a\vu + b\vv + \vv \times \vu),
+\end{align*} 
+\begin{exercise}
+	Verify that quaternion multiplication is associative and distributes over vector addition.
+\end{exercise}
+\begin{exercise}
+	Let $p = (a,\vv) \in \bH$. Then $pq = qp$ holds for all $q \in \bH$ if and only if $\vv \neq 0$.
+\end{exercise}
+Similar to complex numbers, we can define \tib{quaternion conjugation}:
+\begin{importantdefinition}{Quaternion Conjugation}{}
+	Just like for $\bC$, we define the \tib{conjugate} of a quaternion $(a, \vv)$ to be the quaternion
+	\begin{align*}
+		\ol{(a, \vv)} = (a, -\vv)
+	\end{align*}
+\end{importantdefinition}
+An immediate application of quaternion conjugation is finding a formula for the inverse of a quaternion, which ones again ends up working out very similarly to the complex case -
+We have
+\begin{align*}
+	\ol{(a, \vv)} \cdot (a, \vv) 
+	&= (a, -\vv) \cdot (a, \vv)\\
+	&= (a^2 - \scalar{-\vv}{\vv}, a\vv - a\vv + (-\vv \times \vv))\\
+	&= \lr(a^2 + \norm{\vv}^2, \vzero) \in \bR
+\end{align*}
+And thus we can simply divide by this value to get our inverse formula:
+\begin{importantcorollary}{Inverse Quaternion}{}
+	Let $(a, \vv) \in \bH_{\neq 0}$. Then $(a, \vv)$ has a multiplicative inverse, which is given by:
+	\begin{align*}
+		(a, \vv)^{-1} = \frac{(a,-\vv)}{a^2 + \norm{v}^2}.
+	\end{align*}
+\end{importantcorollary}
+\begin{definition}
+	Let $q = (a, \vv) \in \bH$. Then
+	\begin{align*}
+		\abs{q} := \sqrt{\ol q \cdot q} = a^2 + v_1^2 + v_2^2 + v_3^2 = \norm{q}_2
+	\end{align*}
+\end{definition}
+Note how much this once again resembles both the real case $\abs{x} = \sqrt{x^2} = \norm{x}_2$ and the complex case $\abs{z} = \sqrt{\ol z z} = \norm{z}_2$.
+\section{How Quaternions represent the Geometry of $\bR^3$}
+\chapter{Modules and Vector Spaces}
+\section{Linear Maps}
+\section{Modules and Vector Spaces}
+\section{Subspaces and Quotient Spaces}
+\section{Matrices}
+\section{Dimension}
+\section{Systems of Linear Equations}
+\section{The Method of Least Squares}
+\chapter{Determinants}
+\section{Defining Volume}
+\section{Determinants of Endomorphisms}
+\section{Orientation}
+\chapter{Eigenvectors and Eigenvalues}
+\chapter{The Jordan Normal Form}
+\chapter{Inner Product Spaces}

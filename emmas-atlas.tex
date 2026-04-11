@@ -5,6 +5,7 @@
 \usepackage[a4paper,margin=1in,rmargin=2.5in,marginparsep=16pt, marginparwidth=1.5in]{geometry}
 \renewcommand{\baselinestretch}{1.2}
 
+\usepackage[open=true]{bookmark}
 \usepackage{chngcntr}
 \counterwithin*{chapter}{part}
 
@@ -119,51 +120,8 @@
 \begin{document}
 	\include{title}
 	\tableofcontents
-	\part{Sets}
-	\chapter{Naive Set Theory}
-		\section{Sets}
-		\section{Relations}
-		\section{Functions}
-	\chapter{Numbers}
-		\section{The Natural Numbers $\bN$ and the Principle of Induction}
-		\section{The Integers $\bZ$}
-		\section{The Rational Numbers $\bQ$}
-	\part{Linear Algebra}
-	\chapter{Basic Algebraic Structures}
-		\section{Groups}
-		\section{Rings}
-		\section{Fields}
-	\chapter{Constructing the Real Numbers $\bR$}
-		\section{Ordered Fields}
-		\section{Completeness}
-		\section{Dedekind Cuts}
-		\section{Uniqueness of $\bR$}
-	\chapter{Euclidean Geometry}
-		\section{Euclidean Space $\bR^n$}
-		\section{The Complex Numbers $\bC$}
-		\section{The Quaternions $\bH$}
-	\chapter{Modules and Vector Spaces}
-		\section{Linear Maps}
-		\section{Subspaces and Quotient Spaces}
-		\section{Matrices}
-		\section{Dimension}
-		\section{Systems of Linear Equations}
-	\chapter{Determinants}
-		\section{Defining Volume}
-		\section{Determinants of Endomorphisms}
-		\section{Orientation}
-	\chapter{Eigenvectors and Eigenvalues}
-	\chapter{The Jordan Normal Form}
-	\chapter{Inner Product Spaces}
-	\part{Topology of Metric Spaces}
-	\part{Topology of $\bR$}
-	\part{Differential Calculus in One Variable}
-	\part{The Riemann-Stieltjes Integral}
-	\part{Complex Analysis}
-	\part{Vector Calculus}
-	\part{Group Theory}
-	\part{Ring and Field Theory}
-	\part{Point-Set Topology}
-	\part{Algebraic Topology}
-	\part{Measure Theory and Lebesque Integration}
+	\include{./parts/sets/sets.tex}
+	\include{./parts/metric-spaces/metric-spaces.tex}
+	\include{./parts/linear-algebra/linear-algebra.tex}
+	\include{./parts/point-set-topology/point-set-topology.tex}
 \end{document}

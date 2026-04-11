@@ -2,6 +2,7 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsthm}
+\usepackage{epigraph}
 \usepackage{physics}
 
 % Nicer Headers and Footers
@@ -73,6 +74,9 @@
 % Variant Greek Letters
 \renewcommand\epsilon{\varepsilon}
 \renewcommand\phi{\varphi}
+
+% Angle Symbol
+\renewcommand{\angle}[2]{\measuredangle(#1,#2)}
 
 \DeclareMathAlphabet{\mathbbold}{U}{bbold}{m}{n}
 \newcommand*{\boldone}{\mathbbold{1}}
@@ -267,6 +271,7 @@
 \newtheorem{theorem}[lemma]{Theorem}
 \newtheorem{proposition}[lemma]{Proposition}
 \newtheorem{corollary}[lemma]{Corollary}
+\newtheorem{exercise}[lemma]{Exercise}
 
 \theoremstyle{definition}
 \newtheorem{definition}[lemma]{Definition}
