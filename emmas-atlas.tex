@@ -25,8 +25,6 @@
 	enhanced,
 }
 
-% Turn definitions into boxes to prevent page breaks
-% Mostly commented out again because the effect on compile time is pretty dire ^^
 \tcolorboxenvironment{definition}{
 	colback=white,
 	size=tight,
@@ -52,6 +50,25 @@
 	fonttitle=\bfseries,
 	boxrule=1.5pt
 }{th}
+
+\newtcbtheorem[use counter = lemma, number within = 
+section]{axiom}{Axiom}{colback=white,
+	colframe=black,
+	sharp corners,
+	enhanced,
+	attach boxed title to top left ={
+		xshift = 8pt, 
+		yshift = -\tcboxedtitleheight/2,
+		yshifttext=-\tcboxedtitleheight/2
+	},
+	%minipage boxed title*=-3cm,
+	boxed title style={
+		colframe = white
+	},
+	colbacktitle=white,
+	coltitle=black,
+	fonttitle=\bfseries,
+	boxrule=1.5pt}{th}
 
 \newtcbtheorem[use counter = lemma, number within = section]{importantdefinition}{Definition}{colback=white,
 	colframe=black,

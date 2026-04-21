@@ -2,12 +2,50 @@
 
 \chapter{An Introduction to Mathematical Reasoning}
 \chapter{Sets}
-\section{The Axiom of Extension}
+Almost all of modern mathematics can be put in the context of the study of \tib{sets} and their \tib{elements}. Generally, given a collection of objects $a,b,c,d,\hdots$, they can be taken together as a set, generally written in curly brackets and represented by a capital letter:
+\begin{align*}
+	M := \lr{a,b,c,d,e,\hdots}
+\end{align*}
+However, an approach where any collection of mathematical objects forms a set quickly runs into trouble - famously, \tib{Russel's paradox} asks:
+\begin{quote}
+	\tit{"Let $R$ be the set of all sets that don't contain themselves. Does $R$ contain itself?"}
+\end{quote}
+If $R$ doesn't contain itself, then by definition it must contain itself, but if it contains itself, then it cannot contain itself! If $R \in R$ is true, then it must be false! We arrive at a classic paradox. The conclusion, then, is that the set of all sets that don't contain themselves cannot exist - we cannot define sets to be any collection of things defined by any property, and must instead establish ground rules about which sets exist and exactly how we can use sets we already know to construct new ones.
+\newpar
+These ground rules are given in the form of \tib{axioms}, which are statements that mathematicians take for granted, which can then be used as a starting point to then derive "the rest of mathematics" from. The following chapters contain a brief and hopefully easily understandable introduction to the ZFC axiom system, which was developed in the early 20th century by Ernst Zermelo and Abraham Fraenkel and is now the most widely accepted axiomatization of mathematics.
+\section{The Axiom of Extensionality}
+To say "$b$ is an element of $M$", or equivalently "$b$ contains $M$", we simply write:
+\begin{align*}
+	b \in M
+\end{align*}
+One of the most basic axioms of set theory is the \tib{Axiom of Extensionality}, which states:
+\begin{axiom}{Axiom of Extensionality}{}
+	Two sets $A$ and $B$ are equal if and only if they contain the same elements.
+\end{axiom}
+The Axiom of Extensionality establishes that sets are uniquely defined by the objects they contain and have no additional structure. In particular:
+\begin{enumerate}
+	\item The order of elements in a set doesn't matter. $\lr{1,2}$ and $\lr{2,1}$ are the same set.
+	\item The number of times an element appears within the same set doesn't matter. $\lr{1}, \lr{1,1}$, and $\lr{1,1,1}$ are the same set.
+\end{enumerate}
+\begin{importantdefinition}{Subsets}{}
+	We call a set $A$ a \tib{subset} of a set $B$ if and only if every element of $A$ is contained in $B$. We write "$A$ is a subset of $B$" as $A \subseteq B$.
+\end{importantdefinition}
+The demand that "every element of $A$ is contained in $B$" can be stated more formally as "$x \in A$ implies $x \in B$". Importantly, this means that every set is a subset of itself - we always have $A \subseteq A$.
+
+\newpar
+This definition gives us another way of phrasing the Axiom of Extensionality - two sets are equal if and only if each is a subset of the other:
+\begin{align*}
+	A = B \Leftrightarrow A \subset B \tn{ and } B \subset A
+\end{align*}
+This idea is incredibly important for writing out proofs in practice - if a problem asks you to establish that two sets $A$ and $B$ are the same, then the easiest approach is almost always to show that any element of $A$ must be contained in $B$, and to then show that any arbitrary element of $B$ must be contained in $A$.
+\newpar
+The subset relation is frequently written as $A \subset B$. However, other authors reserve $A \subset B$ to mean "$A$ is a subset of $B$ that isn't equal to $B$" - we call such a set a \tib{proper subset of $B$}. I will therefore attempt to only use the symbols $\subseteq$ and $\subsetneq$, which clear up this ambiguity.
+\newpar
+\section{The Axiom Schema of Specification}
+\section{Empty Set, Empty Truths}
 \section{The Axiom of Pairing}
 \section{The Axiom of Union}
 \section{The Axiom of Power Sets}
-\section{The Axiom Schema of Specification}
-\section{Empty Set, Empty Truths}
 \section{The Axiom of Infinity}
 \section{The Principle of Induction}
 \section{Relations}

@@ -176,8 +176,8 @@ known as the \tib{$p$-norm}. For now, we only really care about the Euclidean no
 	\end{align*}
 \end{importantcorollary}
 We had previously formalized the concept of an 'angle between two lines' via the complex exponential function, and then defined the trigonometric functions $\sin x$ and $\cos x$ as the complex and real parts of $e^{ix}$, respectively. If we take the cosine function as a given, then scalar products provide a convenient alternate way of defining angles, which works in any dimension:
-\begin{importantdefinition}{Angle between two vectors}{}
-	Given two vectors $\vx,\vy \in \bR^n \setminus \lr{\vzero}$, we define the \tib{angle} between them to be:
+\begin{importantdefinition}{Inner angle between two vectors}{}
+	Given two vectors $\vx,\vy \in \bR^n \setminus \lr{\vzero}$, we define the \tib{inner angle} between them to be:
 	\begin{align*}
 		\angle{\vx}{\vy} = \arccos \lr( \frac{\scalar{\vx}{\vy}}{\norm{\vx}_2 \cdot \norm{\vy}_2})
 	\end{align*}
@@ -193,6 +193,7 @@ Note that Cauchy-Schwartz gives us $\frac{\scalar{\vx}{\vy}}{\norm{\vx}_2 \cdot 
 \end{exercise}
 Notably, this suggests that our definition is sensible even in the case $n = 1$, since any pair of non-zero vectors fulfills either condition 1 or 2, implying that the angle between two vectors on the real number line is either $0$ or $\pi$.
 \newpar
+These inner angles match our earlier definition of angles in terms of complex numbers, as long as we are content with not being able to meaningfully talk about negative angles or angles greater than $\pi$ anymore:
 \begin{exercise}
 	Earlier in this book, we defined angles in terms of complex numbers. Given a complex number $y = r e^{i \phi}$ we saw that the corresponding real vector is given by $\vy = \binom{r \cos \phi}{r \sin \phi}$. 
 	\newpar
@@ -202,6 +203,13 @@ Notably, this suggests that our definition is sensible even in the case $n = 1$,
 	\end{align*}
 	(Hint: Remember $\cos^2 \phi + \sin^2 \phi = 1$)
 \end{exercise}
+We have to be content with this restricted interval $[0,\pi]$, since the cosine function isn't injective on larger intervals, meaning the arccosine would no longer be well-defined.
+\newpar
+More generally, any definition of an 'angle between two arbitrary vectors' will suffer from this - if we only specify two vectors, it's left ambiguous which side we should measure the angle on.
+\newpar 
+This problem can be solved by finding a way to take a tuple $(\vx_1, \hdots, \vx_n)$ of vectors and recognize whether it is 'positively ordered' or 'negatively ordered' - in $\bR^2$, this would be asking whether the second vector lies 'clockwise' or 'counterclockwise' from the first, while in $\bR^3$ the question is whether the vectors are 'left-handed' or 'right-handed'. A map that gives us this information is known as an \tib{orientation}. We will formalize this idea later, when we have introduced the necessary tools, those being vector spaces, their \tib{bases}, and \tib{determinant functions}.
+\newpar
+In the complex case, we could dodge this issue because one of our vectors, call it $\vx$, was always part of the $x$-axis, and thus we could obtain a canonical orientation by declaring that the angle between $\vx$ and $\vy$ was positive if $y_2 > 0$ and negative if $y_2 < 0$.
 \begin{exercise}
 	Prove the following theorems of classical Euclidean geometry:
 	\begin{enumerate}
@@ -227,21 +235,127 @@ In the-dimensional case $x \in \bR$, $y = r \cdot e^{\phi i} \in \bC$, correspon
 \end{align*}
 Where the third step made use of the trigonometric Pythagorean theorem $\cos(\phi)^2 + \sin(\phi)^2 = 1$. 
 \fi
-\newpar
-We have to be content with this restricted interval $[0,\pi]$, since $\cos$ isn't injective on larger intervals, and thus $\arccos$ wouldn't be well-defined on the full interval $(-\pi,\pi]$.
-\newpar 
-This means that these inner product-based angles always measure the smaller of the two angles between the vectors, disallowing negative angles and angles larger than $\pi$.
-\newpar
-More generally, any definition of an 'angle between two arbitrary vectors' will suffer from this - if we only specify two vectors, it's left ambiguous which side we should measure the angle on.
-\newpar 
-This problem can be solved by finding a way to take a tuple $(\vx_1, \hdots, \vx_n)$ of vectors and recognize whether it is 'positively ordered' or 'negatively ordered' - in $\bR^2$, this would be asking whether the second vector lies 'clockwise' or 'counterclockwise' from the first, while in $\bR^3$ the question is whether the vectors are 'left-handed' or 'right-handed'. A map that gives us this information is known as an \tib{orientation}. We will formalize this idea later, when we have introduced the necessary tools, those being vector spaces, their \tib{bases}, and \tib{determinant functions}.
-\newpar
-In the complex case, we could dodge this issue because one of our vectors, call it $\vx$, was always part of the $x$-axis, and thus we could obtain a canonical orientation by declaring that the angle between $\vx$ and $\vy$ was positive if $y_2 > 0$ and negative if $y_2 < 0$.
 
 \clearpage
 
 \section{The Cross Product}
+The \tib{cross product} is an operation $\times : \bR^3 \times \bR^3 \to \bR^3$, such that:
+\begin{enumerate}
+	\item $\vu \times \vv$ is orthogonal to both $\vu$ and $\vv$,
+	\item the length of $\vu \times \vv$ is the area of the parallelogram spanned by $\vu$ and $\vv$:
+	\begin{align*}
+		\norm{\vu \times \vv}_2 = \norm{\vu}_2 \norm{\vv}_2 \sin(\angle{\vu}{\vv})
+	\end{align*}
+\end{enumerate}
 
+\newpar
+We also declare that our cross product should be \tib{anticommutative:} given two vectors, we want to be able to change the sign of the cross product by switching the order in which we multiply:
+\begin{align*}
+	\vv \times \vw := -\vw \times \vv
+\end{align*}
+Notice how this immediately implies
+\begin{align*}
+	\vv \times \vv &= - (\vv \times \vv)\\
+	\implies \vv \times \vv &= 0
+\end{align*}
+Finally, notice that our geometric intuition immediately tells us that our product should be \tib{linear} and \tib{distributive over vector addition}. 
+\newpar
+We can now derive an explicit formula for this operation on our own. 
+First, note that the standard basis
+\begin{align*}
+	\ve_1 = \trinom{1}{0}{0}, \ve_2 = \trinom{0}{1}{0}, \ve_3 = \trinom{0}{0}{1},
+\end{align*}
+consists of orthogonal vectors of length one, so we can start by declaring
+\begin{align*}
+	\ve_1 \times \ve_2 &:= \ve_3\\
+	\ve_2 \times \ve_3 &:= \ve_1\\
+	\ve_3 \times \ve_1 &:= \ve_2
+\end{align*}
+Note that once again, the direction in which these vectors point depends on a somewhat arbitrary choice of orientation - we could invert all of the directions and still end up with a valid definition.
+\newpar
+These observations are already enough to calculate the cross product of two arbitrary vectors: Using distributivity, we get:
+\begin{align*}
+	\trinom{v_1}{v_2}{v_3} \times \trinom{w_1}{w_2}{w_3}
+	&=
+	(v_1 \ve_1 + v_2\ve_2 + v_3\ve_3) \times (w_1 \ve_1 + w_2\ve_2 + w_3\ve_3)\\
+	&=
+	v_1w_1 (\ve_1 \times \ve_1)\\
+	&+
+	v_1w_2 (\ve_1 \times \ve_2)\\
+	&+
+	v_1w_3 (\ve_1 \times \ve_3)\\\\
+	&+
+	v_2w_1 (\ve_2 \times \ve_1)\\
+	&+
+	v_2w_2 (\ve_2 \times \ve_2)\\
+	&+
+	v_2w_3 (\ve_2 \times \ve_3)\\\\
+	&+
+	v_3w_1 (\ve_3 \times \ve_1)\\
+	&+
+	v_3w_2 (\ve_3 \times \ve_2)\\
+	&+
+	v_3w_3 (\ve_3 \times \ve_3)
+\end{align*}
+To which we can apply anticommutativity and our formulas for multiplying the basis vectors to get:
+\begin{align*}
+	&\trinom{v_1}{v_2}{v_3} \times \trinom{w_1}{w_2}{w_3}\\\\
+	&=
+	v_1w_1 \cdot \vzero\\
+	&+
+	v_1w_2 \cdot \ve_3\\
+	&+
+	v_1w_3 \cdot (- \ve_2)\\\\
+	&+
+	v_2w_1 \cdot (- \ve_3)\\
+	&+
+	v_2w_2 \cdot \vzero\\
+	&+
+	v_2w_3 \cdot \ve_1\\\\
+	&+
+	v_3w_1 \cdot \ve_2\\
+	&+
+	v_3w_2 \cdot (-\ve_1)\\
+	&+
+	v_3w_3 \cdot \vzero\\\\
+	&= \trinom{v_2w_3 - v_3w_2}{v_3w_1 - w_1v_3}{v_1w_2 - v_2w_1}
+\end{align*}
+\begin{importantcorollary}{Cross Product}{}
+	The cross product $\vv \times \vw$ of two vectors $\vv, \vw \in \bR^3$ returns a vector whose direction is orthogonal to both $\vv$ and $\vw$ and whose length equals the area of the parallelogral spanned between them. Given coordinate representations of $\vv$ and $\vw$, the cross product can be calculated via the following formula:
+	\begin{align*}
+		\trinom{v_1}{v_2}{v_3} \times \trinom{w_1}{w_2}{w_3}
+		=
+		\trinom{v_2w_3 - v_3w_2}{v_3w_1 - w_1v_3}{v_1w_2 - v_2w_1}
+	\end{align*}
+\end{importantcorollary}
+\newpar
+\begin{proposition}
+	We have
+	\begin{align*}
+		\scalar{\vu \times \vv}{\vw \times \vt} = \scalar{\vu}{\vw}\scalar{\vv}{\vt} - \scalar{\vu}{\vt}\scalar{\vv}{\vw}.
+	\end{align*}
+\end{proposition}
+\begin{proposition}
+	We have
+	\begin{align*}
+		\scalar{\vu \times \vv}{\vw} = \scalar{\vv \times \vw}{\vu} = \scalar{\vw \times \vu}{\vv}
+	\end{align*}
+	This expression is known as the \tib{box product} of $\vu, \vv, \vw$. Its absolute value corresponds to the volume of the parallelepiped spanned by the three vectors.
+\end{proposition}
+\begin{proposition}
+	We have 
+	\begin{align*}
+		(\vu \times \vv) \times \vw = \scalar{u}{w} \cdot v - \scalar{v}{w} \cdot u = w \times (v \times u).
+	\end{align*}
+	This result is known as \tib{Grassmann's Identity}.
+\end{proposition}
+\begin{proposition}
+	We have
+	\begin{align*}
+		(\vu \times \vv) \times \vw + (\vv \times \vw) \times \vu + (\vw \times \vu) \times \vv = 0
+	\end{align*}
+	This result is known as \tib{Jacobi's Identity.}
+\end{proposition}
 \clearpage
 
 \section{The Quaternions $\bH$}
@@ -430,7 +544,28 @@ And thus we can simply divide by this value to get our inverse formula:
 	\end{align*}
 \end{definition}
 Note how much this once again resembles both the real case $\abs{x} = \sqrt{x^2} = \norm{x}_2$ and the complex case $\abs{z} = \sqrt{\ol z z} = \norm{z}_2$.
-\section{How Quaternions represent the Geometry of $\bR^3$}
+\clearpage
+\section{Quaternions and $\bR^3$}
+\begin{importanttheorem}{Quaternions encode rotations}{}
+	Let $\norm{\vv} = 1$ and
+	\begin{align*}
+		q = (\cos \phi, \vv \sin \phi) \in \bH
+	\end{align*} 
+	Then $q w \ol q \in \bR^3$ is the vector obtained by rotating $w$ around the axis $\lr{\lambda\vv : \lambda \in \bR}$ by the angle $2\phi$.
+\end{importanttheorem}
+Since $2\pi$ corresponds to a full rotation, $\phi$ and $\phi + \pi$ describe the same rotation. Therefore, there are two different quaternions $q$ and $-q$ associated with each rotation - in topological terms, we say that the quaternions form a \tib{double cover} of the space of all rotations. 
+\newpar
+This phenomenon is actually closely related to the theory of \tib{spin} in quantum physics. All known quantum particles that constitute ordinary matter, including protons, neutrons, electrons, neutrinos, and quarks, are \tib{spin-$\frac{1}{2}$}, meaning that they exhibit a curious behavior where a rotation of $360$° leaves them in a different state than they were before, from which they return to their original state only after being rotated by another $360$° around the same axis. This lets us mathematically model particles as quaternions, such that a $360$° rotation transforms a particle from a state $q \in \bH$ to the "rotationally equivalent" state $-q \in \bH$.
+\begin{corollary}
+	For every isometry $F : \bR^3 \to \bR^3$, there exist $u \in \bR^3$ and $q \in \bH$ such that we have either
+	\begin{enumerate}
+		\item $F(w) = u + q w \ol q$, if $F$ preserves orientation, or
+		\item $F(w) = u + q \ol w \ol q$, if $F$ doesn't preserve orientation.
+	\end{enumerate}
+\end{corollary}
+This representation turns out to be a lot more computationally efficient than other representations of the same rotation. Other, more intuitively "trivial" representations of rotation also run into issues such as \tib{gimbal lock}, where they may get "stuck" in certain orientations.
+\newpar
+This makes quaternions surprisingly practical in many applied contexts, including game development and animation\footnote{For an introduction to quaternions in game development, I highly recommend \href{https://www.youtube.com/watch?v=PMvIWws8WEo}{this excellent talk by Freya Holmer.}}, robotics, and three-dimensional image processing.
 \chapter{Modules and Vector Spaces}
 \section{Linear Maps}
 \section{Modules and Vector Spaces}
