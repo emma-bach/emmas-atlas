@@ -579,5 +579,62 @@ This makes quaternions surprisingly practical in many applied contexts, includin
 \section{Determinants of Endomorphisms}
 \section{Orientation}
 \chapter{Eigenvectors and Eigenvalues}
+\begin{importantdefinition}{Eigenvalues and Eigenvectors}{}
+	Let $k$ be a field, $F : V \to V$ an Endomorphism, and $\lambda \in k$. Then the \tib{$\lambda$-eigenspace} of $F$ is the set
+	\begin{align*}
+		\Eig(F, \lambda) := \lr{\vv \in V : F(\vv) = \lambda \vv} =
+		\lr{\vv \in V : (F - \lambda \id_V)(\vv) = 0} = \ker(F - \lambda \id_V)
+	\end{align*}
+	If $F(\vv) = \lambda \vv$, with $\vv \neq \vzero$, we say that $\vv$ is an \tib{eigenvector} of $F$ with \tib{eigenvalue} $\lambda$.
+\end{importantdefinition}
+Note that we exclude $\vzero$ from being an eigenvector, since $F(\vzero) = \lambda \vzero$ trivially holds for every endomorphism. Thus every $\lambda$ would be an eigenvalue, which would make the definition pointless. We do, however, allow $0$ as an eigenvalue - the $0$-eigenspace of $F$ is simply its kernel. Sometimes it ends up being useful to rephrase our definition of eigenspaces in terms of kernels:
+\begin{align*}
+	\Eig(F, \lambda) 
+	&:= \lr{\vv \in V : F(\vv)
+	= \lambda \vv}\\
+	&= \lr{\vv \in V : (F - \lambda \id_V)(\vv) = 0}\\
+	&= \ker(F - \lambda \id_V)
+\end{align*}
+This shows that $\Eig(F, \lambda)$ is a subspace of $V$ - by definition, these subspaces must then be the maximal subspaces that are closed under application of $F$, i.e. $F(\Eig(F, \lambda)) = \Eig(F, \lambda)$.
+\begin{exercise}
+	In an informal, intuition-based way:
+	\begin{enumerate}
+		\item Find the real eigenvalues and eigenspaces of a reflection of $\bR^2$ along an axis $\lr{\lambda \vv : \lambda \in \bR}$
+		\item Find a rotation of $\bR^2$ that has no real eigenvalues. Find two different rotations of $\bR^2$ that do have real eigenvalues. Show that any rotation of $\bR^2$ has complex eigenvalues.
+		\item Find the eigenvectors of the derivative map $\frac{d}{dx}$
+	\end{enumerate}
+\end{exercise}
+Our characterisation $\Eig(F, \lambda) = \ker(F - \lambda \id_V)$ means that, if $F$ is finite-dimensional, we can find all eigenvectors of $F$ with a \ul{given} eigenvalue $\lambda$ by solving $(F - \lambda \id_V)\vv = 0$ as a systen of linear equations. Finding the correct eigenvalues ends up being more tricky - in the section after this one, we will work towards proving the following key result:
+\begin{proposition}
+	The eigenvalues of $F$ are given by the zeroes of the \tib{characteristic polynomial} $\chi_F(\lambda) := \det(F - \lambda \id_V)$.
+\end{proposition}
+However, before we do so, we want to familiarize ourselves with some of the more basic properties of eigenvectors and eigenvalues.
+\begin{theorem}
+	Let $V$ be a vector space over a field $k$. Let $B = (b_1, \hdots, b_n)$ be a basis of $V$, and let $F$ be an endomorphism represented in $B$ by a matrix $A$. Then:
+	\begin{enumerate}
+		\item A basis vector $b_i$ is an eigenvector of $F$ iff. the $j$-th column of $A$ has the form $\lambda e_j$.
+		\item $F$ is diagonalizable iff. there exists a basis of $V$ consisting of eigenvectors of $F$.
+	\end{enumerate}
+\end{theorem}
+\begin{theorem}
+	Let $V$ be a vector space over a field $k$. Let $F : V \to V$ be an endomorphism. Then eigenvectors of $F$ with different eigenvalues are linearly independent.
+\end{theorem}
+\begin{corollary}
+	Let $V$ be an $n$-dimensional vector space over a field $k$. Let $F : V \to V$ be an endomorphism. Then:
+	\begin{enumerate}
+		\item $F$ has no more than $n$ distinct eigenvalues,
+		\item If $(\lambda_i)_{i \in I}$ are mutually distinct eigenvalues of $F$, the sum
+		\begin{align*}
+			\sum_{i \in I} \Eig(F, \lambda_i)
+			\subseteq
+			V
+		\end{align*}
+		is direct.
+		\item $F$ is diagonalizable if and only if $V$ is a direct sum of eigenspaces of $F$.
+	\end{enumerate}
+\end{corollary}
+\section{Characteristic Polynomials}
+\section{The Cayley-Hamilton Theorem}
+\section{Minimal Polynomials}
 \chapter{The Jordan Normal Form}
 \chapter{Inner Product Spaces}
