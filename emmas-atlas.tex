@@ -7,6 +7,13 @@
 
 \usepackage[open=true]{bookmark}
 \usepackage{chngcntr}
+\usepackage{lettrine}
+\usepackage{GoudyIn}
+
+\usepackage[x11names]{xcolor} 
+\renewcommand{\LettrineFontHook}{\color{VioletRed4}\GoudyInfamily{}}
+\LettrineTextFont{\itshape}
+\setcounter{DefaultLines}{3}%
 \counterwithin*{chapter}{part}
 
 % emma's long list of custom macros and universally used packages

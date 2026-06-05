@@ -1,3 +1,5 @@
+
+
 \part{Linear Algebra}
 \chapter{Analytic Geometry}
 \section{Arithmetic in $n$ dimensions}
@@ -566,12 +568,99 @@ This phenomenon is actually closely related to the theory of \tib{spin} in quant
 This representation turns out to be a lot more computationally efficient than other representations of the same rotation. Other, more intuitively "trivial" representations of rotation also run into issues such as \tib{gimbal lock}, where they may get "stuck" in certain orientations.
 \newpar
 This makes quaternions surprisingly practical in many applied contexts, including game development and animation\footnote{For an introduction to quaternions in game development, I highly recommend \href{https://www.youtube.com/watch?v=PMvIWws8WEo}{this excellent talk by Freya Holmer.}}, robotics, and three-dimensional image processing.
-\chapter{Modules and Vector Spaces}
-\section{Linear Maps}
+\chapter{Linear Maps}
 \section{Modules and Vector Spaces}
+\begin{importantdefinition}{Modules}{}
+	Let $(R, +, \cdot)$ be a Ring. Then a (left) \tib{$R$-Module} consists of an abelian Group $(M, +)$ equipped with a \tib{scalar multiplication} $. : R \times M \to M$, i.e. scalars are elements of $R$ and "vectors" are elements of $M$, such that:
+	\begin{enumerate}
+		\item Ring multiplication associates with scalar multiplication:
+		\begin{align*}
+			(r \cdot s).m = r . (s . m)
+		\end{align*}
+		\item Scalar multiplication distributes over module addition:
+		\begin{align*}
+			r . (m + n) = r.m + r.n
+		\end{align*}
+		\item Scalar multiplication distributes over scalar addition:
+		\begin{align*}
+			(r + s).m = r.m + s.m 
+		\end{align*}
+	\end{enumerate}
+	If $R$ is unital, then we say that $M$ is unital if the identity of ring multiplication is the identity of scalar multiplication:
+		\begin{align*}
+			1.m = m
+		\end{align*}
+	
+\end{importantdefinition}
+A \tib{right $R$-module} is defined similarly, but with a scalar multiplication $. : M \times R \to M$, which is applied from the right instead of from the left. 
+\begin{exercise}
+	Show that the distinction between right $R$-modules and left $R$-modules is only relevant if $R$ is noncommutative, i.e. that any left $R$-module $M$ over a commutative ring can be turned into a right $R$-module by defining $m.r = r.m$ and vice versa.
+\end{exercise}
+To keep this text in line with familiar conventions of vector multiplication in $\bR^n$, whenever we talk about a module without explicitly specifiying whether scalar multiplication is applied from the right or from the left, it is implied that it is applied from the left.
+\pagebreak
+\begin{exercise}
+	Let $M$ be a module over $R$. Let $m \in M$ and $r \in R$. show that:
+	\begin{enumerate}
+		\item $0_R . m = 0_M$
+		\item $r . 0_M = 0_M$
+		\item $(-r).m = r.(-m) = -(r . m)$
+	\end{enumerate}
+\end{exercise}
+\begin{exercise}
+	Verify that:
+	\begin{enumerate}
+		\item Every ring $R$ forms a module over itself, where scalar multiplication is given by ring multiplication.
+		\item $\bR^n$ forms a module over $\bR$, with scalar multiplication defined the usual way. More generally, given any ring $R$, the cartesian product $R^n$ forms an $R$-module where scalar multiplication is given by ring multiplication applied componentwise.
+		\item Any abelian group $A$ can be turned into a non-unital module over any ring $R$ by equipping it with the trivial scalar multiplication
+		\begin{align*}
+			r.a = 0_A
+		\end{align*}
+	\end{enumerate}
+\end{exercise}
+\begin{importantdefinition}{Vector Spaces}{}
+	A module over a field (or skew field) $\Bbbk$ is known as a \tib{$\Bbbk$-vector space}.
+\end{importantdefinition}
+\begin{importantdefinition}{Linear Maps}{}
+	A \tib{module homomorphism} is a structure-preserving map $F : M \to N$ between two modules over the same ring $R$, i.e. given $m_1,m_2 \in M$ and $r \in R$, we have that:
+	\begin{enumerate}
+		\item $F$ is \tib{additive}, i.e. it is compatible with module addition: 
+		$$F(m_1 +_M m_2) = F(m_1) +_N F(m_2)$$
+		\item $F$ is \tib{homogenous}, i.e. it is compatible with scalar multiplication: $$F(r._M m) = r ._N F(m)$$
+	\end{enumerate}
+	Module homomorphisms are also known as \tib{linear maps}.
+\end{importantdefinition}
+As the name suggests, the main goal of linear algebra is to generalize the concept of a \tib{linear map}, and to figure out properties and applications of these maps.
+\begin{exercise}
+	Show that any linear map $F : M \to N$ fulfills
+	\begin{align*}
+		F(0_M) = 0_N
+	\end{align*}
+\end{exercise}
+\begin{exercise}
+	Show that any linear map $F : R \to R$ from a unital ring into itself can be represented as multiplication by a constant, i.e. $F(r) = a.r = a \cdot_R r$ for some $a \in R$.
+\end{exercise}
+\begin{exercise}
+	\begin{enumerate}
+		\item Show that complex conjugation is a linear map $\bC \to \bC$ if we view $\bC$ as a module over $\bR$.
+		\item Show that complex conjugation is not linear if we view $\bC$ as a module over $\bC$.
+	\end{enumerate}
+\end{exercise}
 \section{Subspaces and Quotient Spaces}
+\section{Bases and Dimension}
+\begin{importantdefinition}{Linear Combinations}{}
+	Let $M$ be an $R$-module, let $(m_i)_{i \in I} \subseteq M$ and $(r_i)_{i \in I} \subseteq R$. Then a \tib{linear combination} is a sum of the form
+	\begin{align*}
+		\sum_{i \in I} r_i.m_i
+	\end{align*}
+\end{importantdefinition}
+\begin{importantdefinition}{Vector Span}{}
+	Let $M$ be an $R$-module, let $S = (m_i)_{i \in I} \subseteq M$. Then the span of $S$ is the set $\angles{S}$ of all linear combinations over elements of $S$, i.e.
+	\begin{align*}
+		\angles{S} = \lr{\sum_{i \in J \subseteq I} r_i.m_i \mid (r_i)_{i \in I} \subseteq R, m_i \in S}
+	\end{align*}
+\end{importantdefinition}
+For example, the span of one vector $v \in \bR^3$ is the line through the origin on which $v$ lies. The span of two orthogonal vectors $v,w \in \bR^3$ is the plane through the origin on which $v$ and $w$ lie.
 \section{Matrices}
-\section{Dimension}
 \section{Systems of Linear Equations}
 \section{The Method of Least Squares}
 \chapter{Determinants}
@@ -590,8 +679,8 @@ This makes quaternions surprisingly practical in many applied contexts, includin
 Note that we exclude $\vzero$ from being an eigenvector, since $F(\vzero) = \lambda \vzero$ trivially holds for every endomorphism. Thus every $\lambda$ would be an eigenvalue, which would make the definition pointless. We do, however, allow $0$ as an eigenvalue - the $0$-eigenspace of $F$ is simply its kernel. Sometimes it ends up being useful to rephrase our definition of eigenspaces in terms of kernels:
 \begin{align*}
 	\Eig(F, \lambda) 
-	&:= \lr{\vv \in V : F(\vv)
-	= \lambda \vv}\\
+	&= \lr{\vv \in V : F(\vv) = \lambda \vv}\\
+	&= \lr{\vv \in V : F(\vv) - \lambda \vv = 0}\\
 	&= \lr{\vv \in V : (F - \lambda \id_V)(\vv) = 0}\\
 	&= \ker(F - \lambda \id_V)
 \end{align*}
@@ -604,11 +693,13 @@ This shows that $\Eig(F, \lambda)$ is a subspace of $V$ - by definition, these s
 		\item Find the eigenvectors of the derivative map $\frac{d}{dx}$
 	\end{enumerate}
 \end{exercise}
-Our characterisation $\Eig(F, \lambda) = \ker(F - \lambda \id_V)$ means that, if $F$ is finite-dimensional, we can find all eigenvectors of $F$ with a \ul{given} eigenvalue $\lambda$ by solving $(F - \lambda \id_V)\vv = 0$ as a systen of linear equations. Finding the correct eigenvalues ends up being more tricky - in the section after this one, we will work towards proving the following key result:
+Our characterisation $\Eig(F, \lambda) = \ker(F - \lambda \id_V)$ means that, if $F$ is finite-dimensional, we can find all eigenvectors of $F$ with a \ul{given} eigenvalue $\lambda$ by solving $(F - \lambda \id_V)\vv = 0$, which is simply a systen of linear equations. Finding the correct eigenvalues ends up being more tricky - in the section after this one, we will work towards proving the following key result:
 \begin{proposition}
 	The eigenvalues of $F$ are given by the zeroes of the \tib{characteristic polynomial} $\chi_F(\lambda) := \det(F - \lambda \id_V)$.
 \end{proposition}
 However, before we do so, we want to familiarize ourselves with some of the more basic properties of eigenvectors and eigenvalues.
+\newpar
+One important application is that finding eigenvectors lets us diagonalize endomorphisms, greatly easing computation afterwards:
 \begin{theorem}
 	Let $V$ be a vector space over a field $k$. Let $B = (b_1, \hdots, b_n)$ be a basis of $V$, and let $F$ be an endomorphism represented in $B$ by a matrix $A$. Then:
 	\begin{enumerate}
@@ -631,10 +722,234 @@ However, before we do so, we want to familiarize ourselves with some of the more
 		\end{align*}
 		is direct.
 		\item $F$ is diagonalizable if and only if $V$ is a direct sum of eigenspaces of $F$.
+		\item If $F$ has $n$ distinct eigenvalues, it is diagonalizable.
 	\end{enumerate}
 \end{corollary}
+\begin{corollary}
+	Let $V,W$ be $n$-dimensional vector spaces over a field $k$. Let $F: V \to V$, $G : W \to W$ be endomorphisms. Then there exists a unique endomorphism $P : V \to W$ such that $P \circ F = G \circ P$ if and only if $F$ and $G$ have the same eigenvalues.
+\end{corollary}
 \section{Characteristic Polynomials}
-\section{The Cayley-Hamilton Theorem}
+\begin{importanttheorem}{Characterstic Polynomial}{}
+	Let $V$ be a finite-dimensional vector space over a field $\Bbbk$. Let $F : V \to V$ be an endomorphism. Then $\lambda \in \Bbbk$ is an eigenvalue of $F$ if and only if
+	\begin{align*}
+		\chi_F(\lambda) = \det(\lambda \cdot \id_V - F) = 0_\Bbbk
+	\end{align*}
+	We call $\chi_F$ the \tib{characteristic polynomial of $F$}.
+\end{importanttheorem}
+\begin{proof}
+	We know that $\lambda \in \Bbbk$ is an Eigenvalue of $F$ if and only if $$\ker(F - \lambda \id_V) \neq \lr{0_V},$$ i.e. if and only if $F - \lambda \id_V$ isn't injective.
+	\newpar
+	We also know that $F - \lambda \id_V$ isn't injective if and only if it isn't surjective, i.e. if and only if it isn't invertible, i.e. if and only if $$\det(\lambda.\id_V - F) = \chi_F(\lambda) = 0_\Bbbk.$$
+\end{proof}
+\begin{exercise}
+	Show that every endomorphism $F : V \to V$ of a finite-dimensional complex vector space $V$ has at least one eigenvalue.
+\end{exercise}
+\begin{exercise}
+	Show that the constant term of a characteristic polynomial $\chi_F(\lambda)$ is given by $(-1)^n \cdot (\det F)$.
+\end{exercise}
+(...)
+\section{Algebras and the Cayley-Hamilton Theorem}
+\begin{importanttheorem}{Evaluation map}{}
+	Let $R$ be a commutative unital ring, and let $A$ be a commutative unital algebra over $R$. Then, for every $a \in A$, there exists a unique algebra homomorphism $\ev_a : R[X] \to A$ such that:
+	\begin{enumerate}
+		\item $\ev_a(r) = 1_A . r$ for all constant polynomials $r \in R[X]$,
+		\item $\ev_A(X) = X$.
+	\end{enumerate}
+	We call $\ev_a$ the \tib{evaluation map of $R[X]$ at $a$}.
+\end{importanttheorem}
+Informally, this means that we can take elements of an algebra $A$ over $R$ and plug them into polynomials that were originally only defined on $R$, and we won't run into issues. In particular, we can plug matrices into polynomials over an underlying ring! Since $\ev_a$ is unique, we will generally just write $P(a) := \ev_a(P)$ from now on.
+\begin{importanttheorem}{Cayley-Hamilton}{}
+	Let $R$ be a commutative unital ring. Let $A \in R^{n \times n}$. Then $\chi_A(A) = 0$.
+\end{importanttheorem}
 \section{Minimal Polynomials}
-\chapter{The Jordan Normal Form}
+\begin{importanttheorem}{Minimal polynomial}
+	Let $F$ be an endomorphism of a vector space $V$ over a field $\Bbbk$. Then there exists a unique polynomial $\mu_F \in \Bbbk[X]$ such that:
+	\begin{enumerate}
+		\item $\mu_F$ is either normalized or equal to $0_{\Bbbk[X]}$
+		\item $\mu_F$ is a divisor of every $P \in \Bbbk[X]$ with $P(F) = 0_{\End_{\Bbbk}(V)}$
+	\end{enumerate} 
+	We call $\mu_F$ the \tib{minimal polynomial of $F$}.
+\end{importanttheorem}
+\chapter{Normal Forms of Endomorphisms}
+\section{Decomposing Vector Spaces using Polynomials}
+\begin{exercise}
+	Let $G$ be an abelian group. Show that $G$ becomes a $\bZ$-module when equipped with the operation $n.g = \underbrace{g + \hdots + g}_{n \tn{ times}}$.
+\end{exercise}
+\begin{exercise}
+	Let $V$ be a vector space over a field $\Bbbk$. Show that $V$ becomes an $\End(V)$-Module when equipped with the operation $F.v = F(v)$.
+\end{exercise}
+\begin{theorem}
+	Any $\Bbbk[X]$-module is the same thing as a $\Bbbk$-vector space $V$ equipped with a specified endomorphism $F$, and vice versa.
+\end{theorem}
+\begin{proof}
+	\begin{enumerate}
+		\item Let $V$ be a $\Bbbk$-vector space. We know from the previous exercise that $V$ is an $\End(V)$-module. Thus, the polynomial evaluation map $\ev_F : \Bbbk[X] \to \End(V)$ turns $V$ into $\Bbbk$-module via
+		\begin{align*}
+			P.v = \ev_F(P)(v) = P(F)(v)
+		\end{align*}
+		\item Now let $M$ be a $\Bbbk[X]$-module. Then $M$ becomes a $\Bbbk$-module, i.e. a $\Bbbk$-vector space, if we restrict scalar multiplication to only accept constant polynomials. Then it can easily be seen that $G(v) = X.v$ is a linear transformation.
+	\end{enumerate}
+	\newpar
+	Now, note that if we start with a vector space $(V,F)$, then use our construction to get a module $M$, and then turn it back into a vector space, we will obtain our original $F$ again, since $$G(v) = X._Mv = X(F)(v) = F(v)$$ 
+	Conversely, if we start with a module $M$, then turn it into a vector space $(V,F)$, and then back into a module $M$, we reobtain our original scalar multiplication, since 
+	\begin{align*}
+		P._Vv = P(G)(v) = P(X._M)(v) = P._Mv
+	\end{align*}
+	Therefore, the two directions of our construction are inverse to each other, i.e. we actually have a bijection.
+\end{proof}
+Thus, given a $\Bbbk[X]$-module $M$, we can write $M = (V,F)$
+\begin{exercise}
+	Let $M = (V,F)$ and $N = (W,G)$ be $\Bbbk[X]$-Modules. Then a $\Bbbk[X]$-linear map $H : M \to N$ is $\Bbbk$-linear and additionally fulfills $H \circ F = G \circ H$, and any $\Bbbk$-linear map $H$ fulfilling these properties is $\Bbbk[X]$-linear.
+\end{exercise}
+Let $M = (V,F)$ be a $\Bbbk[X]$-Module. Then, by definition, a subspace $U \subseteq V$ is a $\Bbbk[X]$-submodule of $M$ if and only if $U$ is closed under scalar multiplication with elements of $\Bbbk[X]$.
+\begin{exercise}
+	Show that $U$ is closed under scalar multiplication with elements of $\Bbbk[X]$ if and only if $Xu \in U$, which itself holds if and only if $F(u) \in U$ holds for all $u \in U$, i.e. $U$ is \tib{$F$-invariant}.
+\end{exercise}
+\begin{exercise}
+	\begin{enumerate}
+		\item Show that the scalar multiplication map $P. = P(F)$ is linear.
+		\item Conclude that $\ker(P(F))$ and $\im(P(F))$ are submodules of $M$.
+		\item Conclude that $\ker(P(F))$ and $\im(P(F))$ are $F$-invariant. 
+	\end{enumerate}
+\end{exercise}
+\begin{importanttheorem}{Structure theorem for modules over a Euclidean ring}{}
+	Let $M$ be a module over a euclidean domain $R$. Let $a = bc \in R$ such that $b$ and $c$ share no divisors and $a.m = 0$ for all $m \in M$. Then we have:
+	\begin{enumerate}
+		\item $\ker(b.) = \im(c.)$,
+		\item $\im(b.) = \ker(c.)$,
+		\item $M = \ker(b.) \oplus \ker(c.)$.
+	\end{enumerate}
+\end{importanttheorem}
+\begin{proof}
+	\begin{enumerate}
+		\item Let $c.m \in \im(c.)$ for $m \in M$. Then we have $b.(c.m) = a.m = 0$, i.e. $\im(c.) \subseteq \ker(b.)$. Now, applying the Euclidean algorithm gives us $1 = k_1 b + k_2 c$. If we now let $m \in \ker(b.)$, we get:
+		\begin{align*}
+			m 
+			&= 1m \\
+			&= (k_1b + k_2c)m \\
+			&= k_1\underbrace{(bm)}_{= 0} + k_2(cm) \\
+			&= c(k_2m) \in \im(c.)
+		\end{align*}
+		Thus, we also have $\ker(b.) \subseteq \im(c.)$, i.e. $\ker(b.) = \im(c.)$.
+		\item $\ker(c.) = \im(b.)$ follows from the same argument by swapping the roles of $b$ and $c$.
+		\item Now, let $m \in M$. Then, applying our identity from before, we get
+		\begin{align*}
+			m &= (k_1b + k_2c)m\\
+			&= b(k_1m) + c(k_2m)\\
+			&\in \im(b.) + \im(c.)\\
+			&= \ker(b.) + \ker(c.),
+		\end{align*}
+		which gives us $M = \ker(b.) + \ker(c.)$ as desired.
+		\newpar
+		If we have $m \in \ker(b.) \cap \ker(c.)$, we get
+		\begin{align*}
+			m = k_1(b(m)) + k_2(c(m)) = 0,
+		\end{align*}
+		so $\ker(b.) \cap \ker(c.) = \lr{0}$, so our sum is direct.
+	\end{enumerate}	
+\end{proof}
+\begin{corollary}
+	Let $G$ be an abelian group. Let $n = mk \in \bZ$ such that $m$ and $k$ share no divisors and $n \cdot g = 0$ for all $g \in G$. Then we have
+	$$G = \ker(m\cdot) \oplus \ker(k\cdot).$$
+\end{corollary}
+\begin{importantcorollary}{Chinese Remainder Theorem}{}
+	
+\end{importantcorollary}
+\begin{corollary}
+	Let $V$ be a vector space over a field $\Bbbk$ and $F : V \to V$ be an Endomorphism. Let $P = QR \in \Bbbk[X]$ such that $Q$ and $R$ share no divisors and $P.v = P(F)(v) = 0$ for all $v \in V$. Then we have
+	$$V = \ker(Q(F)) \oplus \ker(R(F)).$$
+\end{corollary}
+\begin{importantcorollary}{$P$-Generalized Eigenspace Decomposition}{}
+Let $V$ be a vector space over a field $\Bbbk$ and $F : V \to V$ be an Endomorphism. Let $P \in \Bbbk[X]$ be a normed polynomial and let $P = P_1^{n_1} \cdot \hdots \cdot P_k^{n_k}$ be its prime factorization. Then we have
+\begin{align*}
+	V = \bigoplus_{i = 1}^k \ker(P_i^{n_i}(F))
+\end{align*}
+\end{importantcorollary}
+\section{The Jordan Normal Form}
+\begin{importantcorollary}{Generalized Eigenspace Decomposition}{res:geneigenspace}
+	\label{res:geneigenspace}
+	Let $V$ be a vector space over a field $\Bbbk$ and $F : V \to V$ be an Endomorphism. Assume that its minimal polynomial $\mu_F$ splits into linear factors over $\Bbbk$, i.e. $$\mu_F(x) = \prod_{i = 1}^k(x - \lambda_i)^{n_i}$$ with $\lambda_i \in \Bbbk$. Then we have
+	\begin{align*}
+		V = \bigoplus_{i = 1}^k \ker((F - \lambda_i \id_V)^{n_i})
+	\end{align*}
+	We call $\ker((F - \lambda_i \id_V)^{n_i})$ the \tib{generalized $\lambda_i$-Eigenspace of $F$} and denote it $H(F, \lambda_i)$ (from the German "Hauptraum").
+\end{importantcorollary}
+\begin{exercise}
+	Show that $H(F,\lambda_i)$ contains all eigenvectors of $F$ with eigenvalue $\lambda_i$.
+\end{exercise}
+\begin{exercise}
+	\label{res:hauptrauminvariant}
+	Show that $H(F,\lambda_i)$ is an $F$-invariant subspace of $V$, i.e. a subspace such that $F(H(F,\lambda_i)) \subseteq H(F,\lambda_i)$
+\end{exercise}
+\begin{exercise}
+	\label{res:matrixdirectsum}
+	Let $V = V_1 \oplus V_2$ be a decomposition of $V$ into $F$-invariant subspaces. Let $B_1$ be a basis of $V_1$, and let $B_2$ be a basis of $V_2$. Show that:
+	\begin{enumerate}
+		\item $B = B_1 \cup B_2$ is a basis of $V$
+		\item If the restriction $F|_{V_1}$ of $F$ to $V_1$ is represented in basis $B_1$ as a matrix $A_1$, and the restriction $F|_{V_2}$ of $F$ to $V_2$ is represented in basis $B_2$ as a matrix $A_2$, then $F$ is represented in basis $B$ as
+		\begin{align*}
+			A = 
+			\begin{pmatrix}
+				A_1 & 0\\
+				0 & A_2
+			\end{pmatrix}
+		\end{align*}
+	\end{enumerate}
+\end{exercise}
+\begin{exercise}
+	\label{res:twobases}
+	Let $F : V \to W$ be a linear map. Let $A$ be a basis of $\ker~ F$, and let $B$ be a tuple of vectors such that $F(B)$ is a basis of $\im~ F$. Then $A \cup B$ is a basis of $V$.
+\end{exercise}
+We now want to make use of this to construct a Jordan basis $B$ of a nilpotent Endomorphism $N$:
+\begin{corollary}
+	\label{res:jordanbasis}
+	Let $N : V \to V$ be a nilpotent endomorphism. Then there exists a basis $B$ of $V$ such that:
+	\begin{enumerate}
+		\item $B \cup \lr{0}$ is $F$-invariant, i.e. if $b \in B$, then we have $F(b) \in B$ or $F(b) = 0$.
+		\item For every $b \in B$, there exists at most one element $b' \in B$ with $F(b') = b$.
+	\end{enumerate}
+	We call such a basis a \tib{Jordan basis}.
+\end{corollary}
+\begin{proof}
+	We prove this theorem in three steps: We construct a basis $B$, then show it is $F$-invariant, then show that each element of $B$ has at most one preimage in $B$.
+	\begin{enumerate}
+		\item  
+		We construct our basis by induction over $n = \dim V$.
+		\newpar
+		If $n = 0$, then the empty set is a basis (since a sum over the empty set equals the additive identity, i.e. the zero vector) which (vacuously) fulfills our desired properties.
+		\newpar
+		Now, since the kernel of $N$ is non-trivial, we have $\dim \im~ N < \dim V$. Therefore, by induction, we can assume we already have a Jordan basis $A$ of $\im~ N$. We split this basis $A$ into two parts:
+		\begin{enumerate}
+			\item $A_0 := \lr{a \in A \mid N(a) = 0},$
+			\item $A_{\neq 0} := \lr{a \in A \mid N(a) \neq 0}$.
+		\end{enumerate}
+		$A_0$ is by definition a set of linearly independent vectors contained in $\ker A$. By the Steinitz exchange lemma, we can add a set $C$ of Linearly independent vectors such that $A_0 \cup C$ is a basis of $\ker A$.
+		\newpar
+		$A_\neq 0$ is the set of all $A$ such that $N(A_{\neq 0}) \subseteq A$. We add a set $D$ containing preimages of all the remaining elements of $A$, which must exist since $A \subseteq \im~ N$. By construction, we now have $F(A_{\neq 0} \cup D) = A$.
+		\newpar
+		Putting everything together, $A_0 \cup C$ is a basis of $\ker~ N$, and $F(A_{\neq 0} \cup D) = A$, which is a basis of $\im~ N$. Therefore, by exercise \ref{res:twobases}, $B = A \cup C \cup D$ is
+ 		a basis of $V$.
+ 		\item
+ 		Now, $B$ must be $F$-invariant since $A$ is $F$-invariant by definition, $C$ is contained in the kernel of $F$ and thus $F(B) = \lr{0}$, and $D$ consists of preimages of $A$, i.e. $F(D) = A \subseteq B$. 
+ 		\item
+ 		Finally, the preimages of $A$ in $B$ are contained in either $A_{\neq 0}$ or $D$, which are disjoint by construction.
+\end{enumerate}
+\end{proof}
+\begin{corollary}
+	Let $F : V \to V$ be a matrix whose characteristic polynomial has $n = \dim(V)$ roots. Then there exists a basis $B$ of $V$ such that $_BF_B$ is a block diagonal matrix consisting of Jordan blocks.
+\end{corollary}
+\begin{proof}
+	Generalized Eigenspace decomposition \ref{res:geneigenspace} shows us that $V$ is the direct sum of the generalized Eigenspaces of $F$.
+	We know by exercise \ref{res:hauptrauminvariant} that the generalized Eigenspaces of $F$ are $F$-invariant. Therefore, exercise \ref{res:matrixdirectsum} tells us that if we find a basis $B_i$ for each generalized Eigenspace $H(F, \lambda_i)$ such that $F|_{H(F, \lambda_i)}$ is represented by a matrix $J_i$ in Jordan normal form, and we combine our bases into a basis $B = \bigcup_{i = 1}^n B_i$ of $V$ as a whole, then the matrix representation of $F$ in basis $B$ will be a block diagonal matrix consisting of these $J_i$, and thus $F$ will also be in Jordan normal form.
+	\newpar
+	Now, let $F_i$ be the restriction of $(F - \lambda_i \id_V)$ to $H(F, \lambda_i)$.
+	By definition of the generalized Eigenspace, we have
+	\begin{align*}
+		H(F, \lambda_i) = \ker((F - \lambda_i \id_V)^{n_i})
+	\end{align*}
+	therefore, by construction, $F_i$ is nilpotent. Therefore, by theorem \ref{res:nilpotentjordan}, there exists a basis $B_i$ such that $_{B_i}{F_i}_{B_i}$ is in Jordan normal form, with zeroes on the diagonal. But then, since we have $$F|_{H(F, \lambda_i)} = F_i + \lambda{\id_{H(F, \lambda_i)}}$$
+	the matrix representation of $F|_{H(F, \lambda_i)}$ is also in Jordan form, since we simply have to add $\lambda$ to the diagonal of $_{B_i}{F_i}_{B_i}$.
+	\newpar
+	Therefore, the restriction to $F$ to any of its generalized Eigenspaces is in Jordan normal form in basis $B_i$. As discussed at the beginning of this proof, this means $F$ is in Jordan normal form in basis $B = \bigcup_{i = 1}^n B_i$.
+\end{proof}
 \chapter{Inner Product Spaces}
