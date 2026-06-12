@@ -21,7 +21,7 @@ We now focus our attention on $n$-dimensional euclidean space, which is modelled
 	=
 	\lr{\vx : \lr{1, \hdots, n} \to \bR}
 \end{align*}
-Elements of $\bR^n$ are known as \tib{vectors}\sidenote{We will see in the next chapter that $\bR^n$ is an example of a \tib{vector space}, including the case $n = 1$ (and $n = 0$, if you want to get a bit pathological). Therefore, formally speaking and only in certain contexts, regular old real numbers can be vectors too. However, when encountering the term "vector" in the wild, it is generally implied that $n \geq 2$.}.
+Elements of $\bR^n$ are known as \tib{vectors}\sidenote{We will see in the next chapter that $\bR^n$ is an example of a \tib{vector space}, including the case $n = 1$ (and $n = 0$, if you want to get a bit pathological). Therefore, formally speaking and only in certain contexts, regular old real (or even rational) numbers can be vectors too. However, when encountering the term "vector" in the wild, it is generally implied that $n \geq 2$.}.
 In the context of linear algebra, they are usually written vertically, as \tib{column vectors}.
 \newpar
 Vectors simultaneously represent both \tib{positions} and \tib{directions} in space - in the same way that the number $5$ is both the point that lies $5$ units away from $0$ on the real number line \tit{and} the distance between the numbers $3$ and $8$ on that same number line, the vector $\binom{1}{2}$ represents both
@@ -663,6 +663,69 @@ For example, the span of one vector $v \in \bR^3$ is the line through the origin
 \section{Matrices}
 \section{Systems of Linear Equations}
 \section{The Method of Least Squares}
+\chapter{Affine Spaces}
+\begin{importanttheorem}{Intercept Theorem}{}
+	Let $v_1, v_2 \in \bR$ be linearly independent. Let $L_1$ be a line through $v_2$ and $v_1$. Then if we have $\alpha, \beta \in \bR_{\neq 0}$, and $L_2$ is a parallel line through $\alpha v_2$ and $\beta v_1$, we must have $\alpha = \beta$.
+\end{importanttheorem}
+\begin{proof}
+	Since $L_1$ and $L_2$ are parallel, their direction vectors must point in the same direction, which means there must be a $\mu \in \bR_{\neq 0}$ such that
+	\begin{align*}
+		\mu(v_2 - v_1) &= \mu(\alpha v_2 - \beta v_1)\\
+		\implies \mu v_2 - \mu v_1 &= \alpha v_2 - \beta v_1\\
+		\implies \mu v_2 - \alpha v_2 &= \mu v_1 - \beta v_1\\
+		\implies (\mu - \alpha) v_2 &= (\mu - \beta) v_1
+	\end{align*}
+	Since $v_2$ and $v_1$ are linearly independent, this implies $\mu- \alpha = \mu - \beta = 0$, i.e. $\alpha = \beta = \mu$.
+\end{proof}
+\begin{theorem}
+	Every injective map $\Phi : \bR^2 \to \bR^2$ mapping $0$ to $0$ and affine lines to affine lines must be linear.
+\end{theorem}
+\begin{proof}
+	Since $\Phi$ is linear with $\Phi(0) = 0$, it must map lines through the origin to lines through the origin. Let
+	\begin{align*}
+		\Phi(e_1) &:= v_1\\
+		\Phi[\lambda e_1] &:= L_1 = \lr{\lambda v_1}\\
+		\Phi(e_2) &:= v_2\\
+		\Phi[\lambda e_2] &:= L_2 = \lr{\lambda v_2}
+	\end{align*}
+	Since $\Phi$ is injective, $L_1$ and $L_2$ can only intersect at $\lr{0}$, and thus $v_1$ and $v_2$ must be linearly independent.
+	\newpar
+	Now, let's take a closer look at images of individual points.
+	Since $\Phi[\lambda e_1] = \lr{\lambda v_1}$ and $\Phi[\lambda e_2] = \lr{\lambda v_2}$, we must have
+	\begin{align*}
+		\Phi[\lambda e_1] &= \phi_1(\lambda) v_1\\
+		\Phi[\lambda e_2] &= \phi_2(\lambda) v_2
+	\end{align*}
+	for some $\phi_1, \phi_2 : \bR \to \bR$.
+	\newpar
+	Now, notice that the line through $\lambda e_1$ and $\lambda e_2$ is parallel to the line through $e_1$ and $e_2$. Since $\Phi$ is injective, it must preserve parallelism, and so the line through $v_1$ and $v_2$ must be parallel to the line through $\phi_1(\lambda)v_1$ and $\phi_2(\lambda)v_2$. The intercept theorem now gives us $\phi_1(\lambda) = \phi_2(\lambda) = \mu$. We thus write $\phi(\lambda) := \phi_1(\lambda) = \phi_2(\lambda)$.
+	\newpar
+	Since $\Phi$ is injective, $\phi$ must be as well, since otherwise we would have some $v$ with $\Phi(\lambda_1 v) = \Phi(\lambda_2 v)$ despite $\lambda_1 v \neq \lambda_2 v$. We have also have $\phi(0) = 0$ and $\phi(1) = 1$, since $\Phi(0) = 0$ and $\Phi(e_1) = v_1$.
+	\newpar
+	Now, we want to show that $\Phi(v+w) = \Phi(v) + \Phi(w)$ holds for linearly independent $v,w$. Since $\Phi$ preserves parallelism, it must map parallelograms to parallelograms. Therefore, the parallogram spanned by $v$ and $w$ must be mapped to the parallogram spanned by $\Phi(v)$ and $\Phi(w)$. This means that the upper corner $v+w$ gets mapped to the upper corner $\Phi(v) + \Phi(w)$ which gives us $\Phi(v+w) = \Phi(v) + \Phi(w)$ as desired.
+	\newpar
+	Putting our insights together, we now know that
+	\begin{align*}
+		\Phi(\lambda_1 e_1 + \lambda_2 e_2)
+		&= \Phi(\lambda_1 e_1) + \Phi(\lambda_2 e_2)\\ 
+		&= \phi(\lambda_1) \Phi(e_1) + \phi(\lambda_2) \Phi(e_2)
+	\end{align*}
+	it only remains to be shown that $\phi$ is the identity. For this, consider that we have:
+	\begin{align*}
+		(\phi(a) + \phi(b))\Phi(e_1)
+		&= \phi(a) \Phi(e_1) + \phi(b) \Phi(e_1)\\
+		&= \Phi(ae_1 + be_1\\
+		&= \Phi((a+b)e_1)\\ 
+		&= \phi(a+b) \Phi(e_1),
+	\end{align*}
+	which gives us $\phi(a) + \phi(b) = \phi(a+b)$. For $a \neq 0$, the line through $e_1$ and $ae_2$ must point in the same direction as the line through $be_1$ and $bae_2$, so the line through $\Phi(e_1)$ and $\phi(a) \Phi(e_2)$ must be parallel to the line through $\phi(b)\Phi(e_1)$ and $\phi(ab)\Phi(e_2)$, from which the intercept theorem gives us
+	\begin{align*}
+		\frac{\phi(ab)}{\phi(a)} &= \phi(b)\\
+		\implies \phi(ab) &= \phi(a) \phi(b)
+	\end{align*}
+	Since we have $\phi(0) = 0$, $\phi(1) = 1$, $\phi(a + b) = \phi(a) + \phi(b)$, $\phi(ab) = \phi(a)\phi(b)$,
+	our map $\phi : \bR \to \bR$ must be a field homomorphism, of which the identity is the only one.
+\end{proof}
 \chapter{Determinants}
 \section{Defining Volume}
 \section{Determinants of Endomorphisms}
@@ -952,4 +1015,127 @@ We now want to make use of this to construct a Jordan basis $B$ of a nilpotent E
 	\newpar
 	Therefore, the restriction to $F$ to any of its generalized Eigenspaces is in Jordan normal form in basis $B_i$. As discussed at the beginning of this proof, this means $F$ is in Jordan normal form in basis $B = \bigcup_{i = 1}^n B_i$.
 \end{proof}
+\begin{exercise}
+	Let $F$ be an endomorphism, and let $J$ be its Jordan normal form. Then:
+	\begin{enumerate}
+		\item The algebraic multiplicity of each eigenvalue of $F$ corresponds to the number of times that eigenvalue appears on the diagonal of $J$.
+		\item The geometric multiplicity of any eigenvalue $\lambda$ of $F$ corresponds to the number of $\lambda$-Jordan blocks with that eigenvalue in $J$.
+		\item The exponent of $(X-\lambda)$ in the minimal polynomial of $F$ corresponds to the size the of largest $\lambda$-Jordan block in $J$.
+	\end{enumerate}
+\end{exercise}
+\section{The Weierstrass Normal Form}
 \chapter{Inner Product Spaces}
+\chapter{Tensor Products}
+\chapter{Revisiting Synthetic Geometry}
+\section{Incidence Geometries}
+\begin{importantdefinition}{Incidence Geometries}{}
+	An \tib{incidence geometry} is a set $X$ equipped with a set $G \subseteq \cP(X)$ of subsets of $X$ known as \tib{lines}, such that:
+	\begin{enumerate}
+		\item Each line contains at least two points,
+		\item For every pair of points, there exists exactly one line containing both.
+	\end{enumerate}
+\end{importantdefinition}
+Instead of "$x$ is contained in $g \in G$", we often say "$x$ lies on $g \in G$".
+\begin{exercise}
+	Let $R$ be a division ring. Then $X := R^n$ can be turned into an incidence geometry by defining lines to be all sets of the form $$g = \lr{p + \lambda v : \lambda \in R},$$ where $p,v \in R^n$.
+\end{exercise}
+Moving forward, this will be the canonical choice of incidence geometry on $R^n$.
+\begin{definition}
+	A set of points lying on the same line is called \tib{colinear}.
+\end{definition}
+\begin{definition}
+	A set of lines containing a common point is called \tib{confluent}.
+\end{definition}
+\begin{definition}
+	A set of three non-colinear points is known as a \tib{triangle}.
+\end{definition}
+\begin{importantdefinition}{Betweenness}{}
+	A \tib{betweenness relation} on an incidence geometry $(X,G)$ is a subset $Z \subseteq X^3$ such that the following properties hold:
+	\begin{enumerate}
+		\item \tib{Induced Orderings on Lines:} On every line $g \in G$, there exists an ordering $\leq$ such that $(x,y,z) \in Z$ if and only if $x \leq y \leq z$ or $x \geq y \geq z$.
+		\item \tib{Pasch's Axiom:} Let $p,q,r \in X$. Let 
+		$$[p,q] := \lr{x \in X : (p,x,q) \in Z}$$ denote the \tib{line segment between $p$ and $q$}. Then every line $g \in G$ either intersects none of the line segments $[p,q], [q,r], [r,p]$, or at least two.
+	\end{enumerate}
+	An incidence geometry equipped with a betweenness relation is known as an \tib{ordered incidence geometry}.
+\end{importantdefinition}
+\begin{exercise}
+	Let $K$ be an ordered field. Then:
+	\begin{enumerate}
+		\item The set of all tuples $(x,y,z)$, where $x,y,z \in K^n$ fulfill $y = \lambda x + \mu z$ with $\lambda, \mu \in [0,1] \subset K$ and $\lambda + \mu = 1$, gives a betweenness relation on $K^n$.
+		\item There exists an affine isomorphism $\phi : K \cong (g \in G)$ between any line in $G$ and $K$.
+		\item The ordering on $K$ can be recovered from the betweenness relation on $K^n$ by taking the unique ordering $\leq$ on $g \in G$ that fulfills $\phi(0) \leq \phi(1)$.
+	\end{enumerate}
+\end{exercise}
+Moving forward, this will be the canonical choice of betweenness relation on $K^n$.
+\begin{definition}
+	Given an ordered incidence geometry $(X,G,Z)$, a \tib{ray} in $X$ is a set $A \subseteq X$ of the form
+	\begin{align*}
+		A = \lr{x \in g \mid x \leq p},
+	\end{align*}
+	where $g \in G$ is a line and $p \in g$ is a point on that line.
+\end{definition}
+\begin{importantdefinition}{Congruence Groups}{}
+	Given an ordered incidence geometry $(X,G,Z)$, a \tib{congruence group} of $(X,G,Z)$ is a group $K$ of automorphism of $(X,G,Z)$ such that every pair of rays in $A,B \subseteq X$ has exactly two elements $h,k \in K$ such that $h(A) = k(A) = B$.
+\end{importantdefinition}
+Intuitively, one of these two elements will be a rotation and the other a rotation composed with reflection along an axis.
+\begin{exercise}
+	Let $K$ be an ordered field. Let $s $ be the standard scalar product in $K^2$. Then the set of $s$-invariant affine automorphisms of $K^2$ forms a congruence group of $K^2$.
+\end{exercise}
+Moving forward, this will be the canonical choice of congruence group on $K^2$.
+\begin{definition}
+	We say that an ordered incidence geometry has the \tib{least upper bound property} if every nonempty subset $A \subset g \in G$ that is bounded from above has a least upper bound.
+\end{definition}
+\begin{definition}
+	We call an ordered incidence geometry $(X,G,Z)$ with congruence group $K$ \tib{near-euclidean} if $(X,G,Z)$ fulfills the supremum property and $G$ is nonempty.
+\end{definition}
+\begin{definition}
+	We say that an incidence geometry $(X,G)$ fulfills the \tib{parallel postulate} iff. for every line $g \in G$ and every point $p \notin G$, there exists at most one line $h \in G$ such that $p \in h$ and $h \cap g = \emptyset$.
+\end{definition}
+\begin{exercise}
+	Let $K \subsetneq \bR$ be a proper subfield of $\bR$ containing square roots of every positive element. Then $K^2$ fulfills the parallel postulate.
+\end{exercise}
+The primary goal of this chapter will be proving the following result:
+\begin{importanttheorem}{Classification of near-euclidean geometries}{}
+	Let $(X,G,Z)$ be a near-euclidean incidence geometry. Then:
+	\begin{enumerate}
+		\item If $(X,G,Z)$ fulfills the parallel postulate, it is isomorphic to $\bR^2$.
+		\item If $(X,G,Z)$ doesn't fulfill the perallel postulate, it is isomorphic to the \tib{hyperbolic plane} $H$.
+	\end{enumerate}
+\end{importanttheorem}
+\chapter{Hyperbolic Geometry}
+\section{Circle Inversions}
+\begin{definition}
+	Let $E$ be a Euclidean plane. Then the \tib{extended Euclidean plane} is the set
+	\begin{align*}
+		\hat E = E \cup \lr{\infty},
+	\end{align*}
+	adding a "point at infinity" to $E$.
+\end{definition}
+\begin{definition}
+	We call a subset $L \subseteq \hat E$ a \tib{generalized circle} if it is either a circle in $E$ or the union of a line in $E$ with $\lr{\infty}$. We call the former \tib{real circles} and the latter \tib{extended lines}.
+\end{definition}
+\begin{definition}
+	Let $E$ be a euclidean plane. Then we assign to each generalized circle $L \subseteq \hat E$ the \tib{circle inversion map}
+	\begin{align*}
+		s_L : \hat E \to \hat E,
+	\end{align*}
+	which is given by the ordinary reflection at $L$ with the additional rule $s_L(\infty) = \infty$ if $L$ is an extended line, and by
+	\begin{align*}
+		c + \vv \mapsto
+		\begin{cases} 
+			c + \lr(\frac{r}{\norm{\vv}})^2 \vv & \vv \neq \vzero\\
+			\infty &\vv = \vzero
+		\end{cases}
+	\end{align*}
+	with $\infty \mapsto c$ if $L$ is a circle with center $c$ and radius $r$.
+\end{definition}
+\begin{exercise}
+	$s_L$ is an involution, i.e. we have $s_L^2 = \id$.
+\end{exercise}
+\begin{exercise}
+	For any two points $p,q \in \hat E$, there exists a circle inversion $s_L$ with $s_L(p) = q$ and $s_L(q) = p$
+\end{exercise}
+\begin{exercise}
+	Every circle inversion maps generalized circles to generalized circles.
+\end{exercise}
+\section{Möbius Transformations}
