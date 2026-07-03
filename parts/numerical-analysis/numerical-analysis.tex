@@ -1,0 +1,104 @@
+\part{Numerical Analyis}
+\chapter{Numerical Integration}
+\section{Extrapolation}
+A summed quadrature formula is a function $T(h) : \bR_{\geq 0} \to \bR$ which gives the integral of a function $f \in C^k([a,b])$ in the limit $h \to 0$. If the error of our quadrature formula is of order $h^\gamma$ for a $\gamma \in \bN$, we have
+\begin{align*}
+	T(h) = T(0) + \phi(h)
+\end{align*}
+with $\phi(0) = 0$ and $\abs{\phi(h)} \leq ch^\gamma$ for some $c \in \bR$. Taylor expansion of $\phi$ at $0$ gives
+\begin{align*}
+	\phi(h) = c_1h^\gamma + c_2 h^{\gamma + 1} + o(h^{\gamma + 1})
+\end{align*}
+for some $c_1, c_2 \in \bR$ and, i.e.
+\begin{align*}
+	T(h) = T(0) + c_1 h^\gamma + c_2 h^{\gamma + 1} + o(h^{\gamma + 1})
+\end{align*}
+If we evaluate at $h/2$, we get
+\begin{align*}
+	T(h/2) = T(0) + c_1 h^\gamma + c_2 h^{\gamma + 1} + o\lr(\frac{h^{\gamma + 1}}{2^{\gamma + 1}})
+\end{align*}
+This lets us eliminate the $c_1 h^\gamma$-term, which gives us
+\begin{align*}
+	T^*(h) := \frac{T(h) - 2^\gamma T(h/2)}{1 - 2^\gamma} = T(0) + c_2 \frac{1 - 2^{-1}}{1 - 2^\gamma} \cdot h^{\gamma + 1} + o(h^{\gamma + 1}),
+\end{align*}
+which is a new summed quadrature formula with an error of $h^{\gamma + 1}$, instead of $h^\gamma$, which can be a significant improvement for $\gamma \ll 1$.
+\section{Calculating Convergence Order}
+Given a non-polynomial function $f \in C^k([a,b])$ whose exact integral $I(f)$ is known, we can investigate the errors
+\begin{align*}
+	e_h = \abs{I(f) - Q^N(f)}
+\end{align*}
+for various $h > 0$. Since $e_h \approx c_1 h^\gamma$, we can evauate at two different step sizes $h, H > 0$ and get
+\begin{align*}
+	c_1 \approx \frac{e_h}{h^\gamma} \approx  \frac{e_H}{H^\gamma}
+\end{align*}
+and thus
+\begin{align*}
+	\gamma \approx \frac{\log(e_h/e_H)}{\log(h/H)} = \frac{\log(e_h) - \log e_H}{\log(h) - \log(H)}
+\end{align*}
+We can now try out various pairs $h,H$, and know that we have obtained the correct $\gamma \in h$ if these different pairs all give nearly identical answers.
+\section{Nonlinear Optimization}
+Let $U \subseteq \bR^n$. Then typical problems include:
+\begin{enumerate}
+	\item Find $x^* \in U$ such that $f(x^*) = 0$ for some $f : U \to \bR^m$.
+	\item Find $x^* \in U$ such that $\displaystyle g(x^*) = \min_{x \in U} g(x)$ for some $g : U \to \bR$.
+\end{enumerate}
+In general, neither of these problems have closed form solutions. Instead, approximate solutions are found by iterative algorithms, i.e. we find $(x_k)_{k \in \bN}$ with $x_k \to x^*$.
+\begin{definition}
+	A numerical algorithm which returns a sequence $(x_k)_{k \in \bN}$ approximating a solution $x^*$ given some initial vector $x_0 \in U$ is known as:
+	\begin{enumerate}
+		\item \tib{Globally convergent}, if $x_k \to x^*$ for all $x_0 \in U$.
+		\item \tib{Locally convergent}, if there exists some $\epsilon > 0$ such that $x_k \to x^*$ for all $x_0 \in U$ with $d(x_0, x^*) < \epsilon$.
+	\end{enumerate}
+\end{definition}
+\begin{definition}
+	If $x_k \neq x^*$ for all $k$, we can define the \tib{rate of convergence} of $x_k$ by saying that a locally convergent algorithm has \tib{convergence order $\alpha \geq 1$} if there exists a $q \in \bR$ such that the errors $\delta_k = d(x^* - x_k)$ fulfill
+	\begin{align*}
+		\limsup_{k \to \infty} \frac{\delta_{k+1}}{\delta_k^\alpha} = q.
+	\end{align*}
+	If $\alpha = 1$, we additionally demand $q \leq 1$.
+\end{definition}
+\begin{proposition}
+	If $\Phi : \bR^n \to \bR^n$ is a contraction, the basic fixed point iteration $x_{k+1} = \Phi(x_k)$ is globally linearly convergent.
+\end{proposition}
+\begin{proposition}
+	If $\Phi \in C^1(\bR, \bR)$ has a fixed point $x^*$, then the fixed point iteration $x_{k+1} = \Phi(x_k)$ is locally convergent if $\abs{\Phi'(x^*)} < 1$ and divergent if $\abs{\Phi'(x^*)} > 1$.
+\end{proposition}
+\section{Computing Roots Numerically}
+\begin{theorem}
+	\tib{Bisection Algorithm:}
+	Let $f \in C^0([a,b], \bR)$ with $f(a)f(b) \leq 0$. Set $\epsilon > 0$. Consider the following algorithm:
+	\begin{enumerate}
+		\item Set $(a_0, b_0) = (a,b)$ and $k = 0$.
+		\item Set $c_k = \frac{a_k + b_k}{2}$ and
+		\begin{align*}
+			(a_{k+1}, b_{k+1}) = \begin{cases}
+				(a_k, c_k) & \tn{if} f(a_k)f(c_k) \leq 0\\
+				(c_k, b_k) & \tn{otherwise}
+			\end{cases}
+		\end{align*}
+		\item Return $b_{k+1}$ if $d(b_{k+1}, a_{k+1}) \leq \epsilon$. Otherwise set $k \gets k+1$ and return to step 2.
+	\end{enumerate}	
+	Then iteration stops after $J \leq 1 + \log_2\lr(\frac{b-1}{\epsilon})$ steps, the interval $[a_J, b_J]$ contains a root, and if $\epsilon = 0$, then the sequence $(c_k)_{k \in \bN}$ converges to a root linearly with $q = \frac{1}{2}$. 
+\end{theorem}
+\begin{theorem}
+	\tib{Secant Method:} Let $f \in C^0([a,b] \to \bR)$. Then the following algorithm converges to a root of $f$, if one exists:
+	\begin{enumerate}
+		\item Let $\epsilon > 0$, $x_0 = a$, $x_1 = b$, and $k = 1$.
+		\item If $f(x_k) \neq f(x_{k-1})$, set
+		\begin{align*}
+			x_{k+1} = x_k - \frac{x_k - x_{k-1}}{f(x_k) - f(x_{k-1})}f(x_k)
+		\end{align*}
+		\item Return $x_{k+1}$ if $d(x_{k+1}, x_k) \leq \epsilon$. Otherwise set $k \gets k+1$ and return to step 2.
+	\end{enumerate}
+\end{theorem}
+
+If $f \in C^1(U \subseteq \bR^n, \bR^n)$, Taylor approximation gives
+\begin{align*}
+	0 = f(x^*) = f(x) + Df(x)(x^*-x) + \phi(d(x^*, x))
+	\approx f(x) + Df(x)(x^*-x),
+\end{align*}
+from which we can set $x := x_k$ to get a new iteration
+\begin{align*}
+	x_{k+1} = x_k - Df(x_k)^{-1} f(x_k) \approx x^*
+\end{align*}
+as long as $Df(x_k)$ is regular.

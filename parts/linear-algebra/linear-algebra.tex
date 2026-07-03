@@ -133,7 +133,7 @@ The little subscript $2$ in $\norm{\vx}_2$ differentiates the Euclidean norm fro
 	\norm{\vx}_p = \sqrt[p]{\abs{x_1}^p + \hdots + \abs{x_n}^p} \qquad\lr(= \sqrt[p]{\sum_{i = 1}^n \abs{x_i}^p}),
 \end{align*}
 known as the \tib{$p$-norm}. For now, we only really care about the Euclidean norm, but other values of $p$ will start coming in handy once we start applying tools from analysis to vector spaces. The limiting case $p \to \infty$ is particularly useful: We will find that $$\norm{\vx}_\infty = \max \abs{x_i}.$$
-\begin{importanttheorem}{Cauchy-Schwartz Inequality}{}
+\begin{importanttheorem}{Cauchy-Schwartz Inequality}{cauchyschwartzspecific}
 	Let $\vx, \vy \in \bR^n$. Then we have
 	\begin{align*}
 		\abs{\scalar{\vx}{\vy}} \leq \norm{\vx}_2 \cdot \norm{\vy}_2
@@ -664,8 +664,60 @@ For example, the span of one vector $v \in \bR^3$ is the line through the origin
 \section{Systems of Linear Equations}
 \section{The Method of Least Squares}
 \chapter{Affine Spaces}
+Affine spaces are structures similar to vector spaces, but where the notions of "points" and "directions" are separate.
+\begin{importantdefinition}{Affine Space}{}
+	A $\Bbbk$-\tib{affine space} is a tuple $(A, \vA)$, consisting of a set $A$ of \tib{points} and a $\Bbbk$-vector space $\vec A$ of \tib{translation vectors}, alongside a translation map $+ : A \times \vec A \to A$, such that:
+	\begin{enumerate}
+		\item Translation is associative:
+		\begin{align*}
+			\forall a \in A, \vv,\vw \in \vA:\\
+			(a + \vv) + \vw = a + (\vv + \vw)
+		\end{align*}
+		\item For any pair of points, there exists a unique vector translating one point onto the other:
+		\begin{align*}
+			\forall a,b \in P_A:\\
+			\exists! \vv \in \vA : a + \vv = b
+		\end{align*}
+	\end{enumerate}
+\end{importantdefinition}
+The dimension of an affine space is simply the dimension of its associated vector space. 
+\newpar
+Any vector space $V$ can be canonically turned into an affine space by taking $V$ as both the set of points and the set of vectors. On the flipside, we can turn any affine space $(A, \vA)$ into a vector space by restricting our attention to translations of one "base point" $b \in A$, and then identifying any point $p \in A$ with the vector $\vv \in \vA$ translating $b$ onto $p$.
+\newpar
+For most practical purposes, it is therefore sufficient to work with a vector space as your base space for whatever math you are doing, but the non-canonicity of having to choose an arbitrary base point $b \in A$ to turn an affine space into a vector space means that some people prefer affine spaces for philosophical reasons - after all, what is the "base point" of our physical universe?
+\newpar
+The distinction becomes a lot more important when considering affine subspaces, which are essentialy vector subspaces translated by arbitrary points:
+\begin{importantdefinition}{Affine subspaces}{}
+	Let $(A, \vA)$ be an affine space. Then an affine subspace of $(A, \vA)$ is a tuple $(B, \vB)$ such that:
+	\begin{enumerate}
+		\item $B \subseteq A$.
+		\item $\vB$ is a vector subspace of $\vA$.
+		\item $\vB$ is the set of translations between points in $B$, i.e. for any $b \in B$, $\vv \in \vA$, we have $b + \vv \in B$ if and only if $\vv \in \vB$.
+	\end{enumerate}
+	Thus, an affine subspace can always be written as
+	\begin{align*}
+		B = b + \vB := \lr{b + \vv \mid \vv \in \vB \subseteq \vA}
+	\end{align*}
+	for an arbitrary base point $b \in B$.
+\end{importantdefinition}
+An affine subspace of dimension $1$ is known as a \tib{line}. An affine subspace of dimension $2$ is known as a \tib{plane}. An affine subspace whose dimension is one lower than the space it resides in is known as an \tib{hyperplane}.
+\begin{definition}
+	Two affine subspaces $(A, \vA)$, $(B, \vB)$ are called \tib{parallel} if $\vA = \vB$.
+\end{definition}
+\begin{importantdefinition}{Affine Maps}{}
+	Let $A,B$ be $\Bbbk$-affine spaces. Then a map $F : A \to B$ is called \tib{affine} if there exists a linear map $\vF : \vA \to \vB$ such that
+	\begin{align*}
+		\forall a \in P_a, \vv \in \vA:
+		F(a + \vv) = F(a) + \vF(\vv)
+	\end{align*}
+\end{importantdefinition}
+As previously mentioned, if our affine space is a vector space, we can identify any point in $P_A$ with the vector translating the origin onto that point, which lets us write:
+\begin{align*}
+	F(\vv) := F(0 + \vv) = F(0) + \vF(\vv) := \vF(\vv) + \vw
+\end{align*}
+thus, an affine map between vector spaces is simply a linear map composed with a translation.
 \begin{importanttheorem}{Intercept Theorem}{}
-	Let $v_1, v_2 \in \bR$ be linearly independent. Let $L_1$ be a line through $v_2$ and $v_1$. Then if we have $\alpha, \beta \in \bR_{\neq 0}$, and $L_2$ is a parallel line through $\alpha v_2$ and $\beta v_1$, we must have $\alpha = \beta$.
+	Let $v_1, v_2 \in \bR$ be linearly independent. Let $L_1$ be an affine line through $v_2$ and $v_1$. Then if we have $\alpha, \beta \in \bR_{\neq 0}$, and $L_2$ is a parallel line through $\alpha v_2$ and $\beta v_1$, we must have $\alpha = \beta$.
 \end{importanttheorem}
 \begin{proof}
 	Since $L_1$ and $L_2$ are parallel, their direction vectors must point in the same direction, which means there must be a $\mu \in \bR_{\neq 0}$ such that
@@ -678,54 +730,68 @@ For example, the span of one vector $v \in \bR^3$ is the line through the origin
 	Since $v_2$ and $v_1$ are linearly independent, this implies $\mu- \alpha = \mu - \beta = 0$, i.e. $\alpha = \beta = \mu$.
 \end{proof}
 \begin{theorem}
-	Every injective map $\Phi : \bR^2 \to \bR^2$ mapping $0$ to $0$ and affine lines to affine lines must be linear.
+	An injective map $\Phi : \bR^2 \to \bR^2$ is linear if and only if it maps $\vzero$ to $\vzero$ and lines to lines.
 \end{theorem}
 \begin{proof}
-	Since $\Phi$ is linear with $\Phi(0) = 0$, it must map lines through the origin to lines through the origin. Let
-	\begin{align*}
-		\Phi(e_1) &:= v_1\\
-		\Phi[\lambda e_1] &:= L_1 = \lr{\lambda v_1}\\
-		\Phi(e_2) &:= v_2\\
-		\Phi[\lambda e_2] &:= L_2 = \lr{\lambda v_2}
-	\end{align*}
-	Since $\Phi$ is injective, $L_1$ and $L_2$ can only intersect at $\lr{0}$, and thus $v_1$ and $v_2$ must be linearly independent.
-	\newpar
-	Now, let's take a closer look at images of individual points.
-	Since $\Phi[\lambda e_1] = \lr{\lambda v_1}$ and $\Phi[\lambda e_2] = \lr{\lambda v_2}$, we must have
-	\begin{align*}
-		\Phi[\lambda e_1] &= \phi_1(\lambda) v_1\\
-		\Phi[\lambda e_2] &= \phi_2(\lambda) v_2
-	\end{align*}
-	for some $\phi_1, \phi_2 : \bR \to \bR$.
-	\newpar
-	Now, notice that the line through $\lambda e_1$ and $\lambda e_2$ is parallel to the line through $e_1$ and $e_2$. Since $\Phi$ is injective, it must preserve parallelism, and so the line through $v_1$ and $v_2$ must be parallel to the line through $\phi_1(\lambda)v_1$ and $\phi_2(\lambda)v_2$. The intercept theorem now gives us $\phi_1(\lambda) = \phi_2(\lambda) = \mu$. We thus write $\phi(\lambda) := \phi_1(\lambda) = \phi_2(\lambda)$.
-	\newpar
-	Since $\Phi$ is injective, $\phi$ must be as well, since otherwise we would have some $v$ with $\Phi(\lambda_1 v) = \Phi(\lambda_2 v)$ despite $\lambda_1 v \neq \lambda_2 v$. We have also have $\phi(0) = 0$ and $\phi(1) = 1$, since $\Phi(0) = 0$ and $\Phi(e_1) = v_1$.
-	\newpar
-	Now, we want to show that $\Phi(v+w) = \Phi(v) + \Phi(w)$ holds for linearly independent $v,w$. Since $\Phi$ preserves parallelism, it must map parallelograms to parallelograms. Therefore, the parallogram spanned by $v$ and $w$ must be mapped to the parallogram spanned by $\Phi(v)$ and $\Phi(w)$. This means that the upper corner $v+w$ gets mapped to the upper corner $\Phi(v) + \Phi(w)$ which gives us $\Phi(v+w) = \Phi(v) + \Phi(w)$ as desired.
-	\newpar
-	Putting our insights together, we now know that
-	\begin{align*}
-		\Phi(\lambda_1 e_1 + \lambda_2 e_2)
-		&= \Phi(\lambda_1 e_1) + \Phi(\lambda_2 e_2)\\ 
-		&= \phi(\lambda_1) \Phi(e_1) + \phi(\lambda_2) \Phi(e_2)
-	\end{align*}
-	it only remains to be shown that $\phi$ is the identity. For this, consider that we have:
-	\begin{align*}
-		(\phi(a) + \phi(b))\Phi(e_1)
-		&= \phi(a) \Phi(e_1) + \phi(b) \Phi(e_1)\\
-		&= \Phi(ae_1 + be_1\\
-		&= \Phi((a+b)e_1)\\ 
-		&= \phi(a+b) \Phi(e_1),
-	\end{align*}
-	which gives us $\phi(a) + \phi(b) = \phi(a+b)$. For $a \neq 0$, the line through $e_1$ and $ae_2$ must point in the same direction as the line through $be_1$ and $bae_2$, so the line through $\Phi(e_1)$ and $\phi(a) \Phi(e_2)$ must be parallel to the line through $\phi(b)\Phi(e_1)$ and $\phi(ab)\Phi(e_2)$, from which the intercept theorem gives us
-	\begin{align*}
-		\frac{\phi(ab)}{\phi(a)} &= \phi(b)\\
-		\implies \phi(ab) &= \phi(a) \phi(b)
-	\end{align*}
-	Since we have $\phi(0) = 0$, $\phi(1) = 1$, $\phi(a + b) = \phi(a) + \phi(b)$, $\phi(ab) = \phi(a)\phi(b)$,
-	our map $\phi : \bR \to \bR$ must be a field homomorphism, of which the identity is the only one.
+	\begin{enumerate}
+		\item[$\Rightarrow$]
+		Let $\Phi$ be linear. Let $g := \lr{\vp + \lambda \cdot \vv}$ be a line. Then we have
+		\begin{align*}
+			\Phi(g) 
+			&= \lr{\Phi(\vp + \lambda \cdot \vv)}\\
+			&= \lr{\Phi(\vp) + \lambda \cdot \Phi(\vv)},
+		\end{align*}
+		i.e. $\Phi(g)$ is also a line.
+		\item[$\Leftarrow$]
+		Since $\Phi$ maps $\vzero$ to $\vzero$ and lines to lines, it must map lines through the origin to lines through the origin. Let
+		\begin{align*}
+			\Phi(e_1) &:= v_1\\
+			\Phi[\lambda e_1] &:= L_1 = \lr{\lambda v_1}\\
+			\Phi(e_2) &:= v_2\\
+			\Phi[\lambda e_2] &:= L_2 = \lr{\lambda v_2}
+		\end{align*}
+		Since $\Phi$ is injective, $L_1$ and $L_2$ can only intersect at $\lr{0}$, and thus $v_1$ and $v_2$ must be linearly independent.
+		\newpar
+		Now, let's take a closer look at images of individual points.
+		Since $\Phi[\lambda e_1] = \lr{\lambda v_1}$ and $\Phi[\lambda e_2] = \lr{\lambda v_2}$, we must have
+		\begin{align*}
+			\Phi[\lambda e_1] &= \phi_1(\lambda) v_1\\
+			\Phi[\lambda e_2] &= \phi_2(\lambda) v_2
+		\end{align*}
+		for some $\phi_1, \phi_2 : \bR \to \bR$.
+		\newpar
+		Now, notice that the line through $\lambda e_1$ and $\lambda e_2$ is parallel to the line through $e_1$ and $e_2$. Since $\Phi$ is injective, it must preserve parallelism, and so the line through $v_1$ and $v_2$ must be parallel to the line through $\phi_1(\lambda)v_1$ and $\phi_2(\lambda)v_2$. The intercept theorem now gives us $\phi_1(\lambda) = \phi_2(\lambda) = \mu$. We thus write $\phi(\lambda) := \phi_1(\lambda) = \phi_2(\lambda)$.
+		\newpar
+		Since $\Phi$ is injective, $\phi$ must be as well, since otherwise we would have some $v$ with $\Phi(\lambda_1 v) = \Phi(\lambda_2 v)$ despite $\lambda_1 v \neq \lambda_2 v$. We have also have $\phi(0) = 0$ and $\phi(1) = 1$, since $\Phi(0) = 0$ and $\Phi(e_1) = v_1$.
+		\newpar
+		Now, we want to show that $\Phi(v+w) = \Phi(v) + \Phi(w)$ holds for linearly independent $v,w$. Since $\Phi$ preserves parallelism, it must map parallelograms to parallelograms. Therefore, the parallogram spanned by $v$ and $w$ must be mapped to the parallogram spanned by $\Phi(v)$ and $\Phi(w)$. This means that the upper corner $v+w$ gets mapped to the upper corner $\Phi(v) + \Phi(w)$ which gives us $\Phi(v+w) = \Phi(v) + \Phi(w)$ as desired.
+		\newpar
+		Putting our insights together, we now know that
+		\begin{align*}
+			\Phi(\lambda_1 e_1 + \lambda_2 e_2)
+			&= \Phi(\lambda_1 e_1) + \Phi(\lambda_2 e_2)\\ 
+			&= \phi(\lambda_1) \Phi(e_1) + \phi(\lambda_2) \Phi(e_2)
+		\end{align*}
+		it only remains to be shown that $\phi$ is the identity. For this, consider that we have:
+		\begin{align*}
+			(\phi(a) + \phi(b))\Phi(e_1)
+			&= \phi(a) \Phi(e_1) + \phi(b) \Phi(e_1)\\
+			&= \Phi(ae_1 + be_1\\
+			&= \Phi((a+b)e_1)\\ 
+			&= \phi(a+b) \Phi(e_1),
+		\end{align*}
+		which gives us $\phi(a) + \phi(b) = \phi(a+b)$. For $a \neq 0$, the line through $e_1$ and $ae_2$ must point in the same direction as the line through $be_1$ and $bae_2$, so the line through $\Phi(e_1)$ and $\phi(a) \Phi(e_2)$ must be parallel to the line through $\phi(b)\Phi(e_1)$ and $\phi(ab)\Phi(e_2)$, from which the intercept theorem gives us
+		\begin{align*}
+			\frac{\phi(ab)}{\phi(a)} &= \phi(b)\\
+			\implies \phi(ab) &= \phi(a) \phi(b)
+		\end{align*}
+		Since we have $\phi(0) = 0$, $\phi(1) = 1$, $\phi(a + b) = \phi(a) + \phi(b)$, $\phi(ab) = \phi(a)\phi(b)$,
+		our map $\phi : \bR \to \bR$ must be a field homomorphism, of which the identity is the only one. Thus, $\Phi$ is linear.
+	\end{enumerate}
 \end{proof}
+\begin{exercise}
+	An injective map between real affine spaces of dimension $\geq 2$ is affine if and only if it maps lines to lines.
+\end{exercise}
 \chapter{Determinants}
 \section{Defining Volume}
 \section{Determinants of Endomorphisms}
@@ -734,8 +800,10 @@ For example, the span of one vector $v \in \bR^3$ is the line through the origin
 \begin{importantdefinition}{Eigenvalues and Eigenvectors}{}
 	Let $k$ be a field, $F : V \to V$ an Endomorphism, and $\lambda \in k$. Then the \tib{$\lambda$-eigenspace} of $F$ is the set
 	\begin{align*}
-		\Eig(F, \lambda) := \lr{\vv \in V : F(\vv) = \lambda \vv} =
-		\lr{\vv \in V : (F - \lambda \id_V)(\vv) = 0} = \ker(F - \lambda \id_V)
+		\Eig(F, \lambda) 
+		&:= \lr{\vv \in V : F(\vv) = \lambda \vv}\\ 
+		&= \lr{\vv \in V : (F - \lambda \id_V)(\vv) = 0}\\
+		&= \ker(F - \lambda \id_V)
 	\end{align*}
 	If $F(\vv) = \lambda \vv$, with $\vv \neq \vzero$, we say that $\vv$ is an \tib{eigenvector} of $F$ with \tib{eigenvalue} $\lambda$.
 \end{importantdefinition}
@@ -1025,7 +1093,405 @@ We now want to make use of this to construct a Jordan basis $B$ of a nilpotent E
 \end{exercise}
 \section{The Weierstrass Normal Form}
 \chapter{Inner Product Spaces}
-\chapter{Tensor Products}
+\section{Inner Products}
+\begin{definition}
+	Let $\Bbbk = \bR$ or $\bC$. Let $V$ and $W$ be vector spaces over $\Bbbk$. Then a map $\phi : V \to W$ is called ($\Bbbk$-) \tib{semilinear} or \tib{antilinear}, if we have
+	\begin{enumerate}
+		\item \tib{Addivity:} $\forall u,v \in V : \phi(u+v = \phi(u) + \phi(v)$
+		\item \tib{Antihomogeneity:} $\forall v \in V, \lambda \in \Bbbk : \phi(\lambda.v) = \ol \lambda . \phi(v)$.
+	\end{enumerate}
+\end{definition}
+Notice that for $\Bbbk = \bR$, there is no difference between linearity and antilinearity, since complex conjugation leaves real numbers unchanged.
+\begin{definition}
+	Let $\Bbbk = \bR$ or $\bC$. Let $V$ be a $\Bbbk$-vector space. Then a map $s : V \times V \to \Bbbk$ is called a \tib{sesquilinear form} if it is antilinear in the first component and linear in the second component,i.e. the map $s_w : v \to s(v,w)$ is antilinear and the map $s_v : w \to s(v,w)$ is linear.
+\end{definition}
+\begin{exercise}
+	Let $A$ be a matrix with entries in $\Bbbk = \bR$ or $\bC$. Show that the map
+	\begin{align*}
+		s_A(v,w) := v^*Aw
+	\end{align*}
+	is sesquilinear. (Recall that $v^*$ stands for the conjugated transpose of $v$.)	
+\end{exercise}
+The latin prefix "sesqui-" means "one and a half" - a sesquilinear is a map that is linear in one component, and "sort of linear", i.e. "one-half-linear" in the other. Some sources require that a sesquilinear form is linear in the first component and antilinear in the second.
+\begin{definition}
+	A sesquilinear form $s : V \times V \to \Bbbk$ is called a \tib{Hermitian form} if it is \tib{conjugate symmetric}, i.e.
+	$s(v,w) = \ol{s(w,v)}$.
+\end{definition}
+Once again, notice that for $\Bbbk = \bR$, this just means $s(v,w) = s(w,v)$.
+\begin{exercise}
+	Show that a matrix is Hermitian (i.e. fulfills $A = A^*$) if and only if its associated sesquilinear form $s_A(v,w) = v^*Aw$ is Hermitian.
+\end{exercise}
+\begin{definition}
+	A sesquilinear form $s : V \times V \to \Bbbk$ is called \tib{positive semidefinite} if $s(v,v) \geq 0$ for all $v \in V$. It is called \tib{positive definite} if it additionally fulfills $s(v,v) = 0$ if and only if $v = \vzero$.
+\end{definition}
+Positive definiteness is the primary reason we are working with sesquilinear forms instead of bilinear forms - we need to be able to compare $s(v,v)$ to $0$, and there is no way to order all of $\bC$ that is compatible with its field structure. However, if we have a sesquilinear Hermitian map, we get $s(v,v) = \ol{s(v,v)}$, i.e. $s(v,v) \in \bR$, which means we can start comparing things again.
+\begin{definition}
+	A \tib{scalar product} or \tib{inner product} on a vector space $V$ over $\bR$ or $\bC$ is a positive definite Hermitian form. We call a real vector space equipped with a scalar product \tib{Euclidean}, and a complex vector space equipped with a scalar product \tib{unitary}.
+\end{definition}
+\begin{definition}
+	The standard scalar product on $\bC^n$ is given by
+	\begin{align*}
+		\scalar{v}{w}_\bC = v^* w
+	\end{align*}
+\end{definition}
+\begin{exercise}
+	Show that $\scalar{v}{w}_\bC$ is actually a scalar product.
+\end{exercise}
+\begin{exercise}
+	Let $V = C^\infty([0,1],\bR)$ be the room of infinitely differentiable functions $[0,1] \to \bR$. Show that the \tib{$L^2$} scalar product
+	\begin{align*}
+		\scalar{f}{g}_{L^2} = \int_0^1 f(t) g(t) ~dt
+	\end{align*}
+	is actually a scalar product.
+\end{exercise}
+\begin{definition}
+	Let $V$ be a vector space over $\Bbbk = \bR$ or $\bC$. Then a \tib{Norm} is a map $\norm{\cdot} : V \to \Bbbk$ fulfilling the following three axioms:
+	\begin{enumerate}
+		\item \tib{Positive definiteness:} $\norm{v} \geq 0$ and $\norm{v} = 0$ iff. $v = \vzero$
+		\item \tib{Homogeneity:} $\norm{\lambda.v} = \abs{\lambda} . \norm{v}$
+		\item \tib{Triangle inequality:} $\norm{v + w} \leq \norm{v} + \norm{w}$
+	\end{enumerate}
+\end{definition}
+A norm is a way of assigning lengths to vectors. Once lengths of vectors are defined, one can easily define distances between vectors too:
+\begin{exercise}
+	Let $\norm{\cdot}$ be a norm on a vector space $V$ over a field $\Bbbk = \bR$ or $\bC$. Show that $d(v,w) := \norm{v - w}$ is a metric on $V$.
+\end{exercise}
+\begin{importanttheorem}{Cauchy-Schwartz Inequality}{}
+	Let $s$ be a scalar product on a vector space $V$ over a field $\Bbbk$. Then we have
+	\begin{align*}
+		\abs{\scalar{v}{w}} \leq \sqrt{\scalar{v}{v}} \cdot \sqrt{\scalar{w}{w}}
+	\end{align*}
+\end{importanttheorem}
+One important property of scalar products is that they induce norms. Notice that the standard norm on $\bR^n$ is just the square root of the standard scalar product on $\bR^n$. This property generalizes to all scalar products:
+\begin{exercise}
+	Let $s : V \times V \to \Bbbk$ be a scalar product on a vector space $V$ over a field $\Bbbk$. Let $\norm{v}_s := \sqrt{s(v,v)}$. Show that:
+	\begin{enumerate}
+		\item $\norm{\cdot}_s$ is a norm on $V$.
+		\item We have the \tib{parallelogram identity}
+		\begin{align*}
+			\norm{v + w}^2_s + \norm{v - w}^2_s = 2\norm{v}_s^2 + 2 \norm{w}_s^2
+		\end{align*}
+		\item If $\Bbbk = \bR$, we have the \tib{real polarisation formula} \begin{align*}
+			s(v,w) = \frac{1}{4}\lr(\norm{v + w}_s^2 - \norm{v - w}_s^2)
+		\end{align*}
+		\item If $\Bbbk = \bC$, we have the \tib{complex polarisation formula} \begin{align*}
+			s(v,w) = \frac{1}{4}\lr(\norm{v + w}_s^2 - \norm{v - w}_s^2
+			- i\norm{v + i.w}_s^2 + i\norm{v-i.w}_s^2)
+		\end{align*}
+	\end{enumerate}
+\end{exercise}
+\begin{exercise}
+	Find a norm on a vector space that cannot be constructed as the square root of a scalar product.
+\end{exercise}
+\begin{theorem}
+	Let $V$ be a vector space over $\Bbbk = \bR$ or $\bC$. Let $\norm{\cdot}$ be a norm on $V$ fulfilling the parallelogram identity. Then there exists a corresponding scalar product $s$ such that $\norm{v} = \sqrt{s(v,v)}$
+\end{theorem}
+\section{Orthogonality}
+\begin{definition}
+	Let $(V,s)$ be a vector space with scalar product over a field $\Bbbk = \bR$ or $\bC$. Then we call two vectors $v,w$ \tib{orthogonal} iff.
+	\begin{align*}
+		s(v,w) = 0
+	\end{align*}
+\end{definition}
+\begin{exercise}
+	Let $B = (v_1, \hdots, v_k)$ be a tuple of orthogonal vectors not containing the zero vector. Then $B$ is linearly independent.
+\end{exercise}
+\begin{definition}
+	A basis consisting of pairwise orthogonal vectors is called an \tib{orthogonal basis}. If the basis vectors are also normalized, i.e. have length $1$, we call the basis an \tib{orthonormal basis}.
+\end{definition}
+\begin{exercise}
+	Let $(V,s)$ be a vector space with scalar product.
+	Show that $B = (b_1, \hdots, b_n) \subset V$ is an orthonormal basis iff.
+	\begin{align*}
+		s(b_i,b_j)
+		= \delta_{ij}
+	\end{align*}
+	(Recall that $\delta_{ij}$ is defined as the function that is $1$ if $i = j$ and $0$ otherwise).
+\end{exercise}
+\begin{definition}
+	Let $(V,s)$ be a vector space with scalar product over a field $\Bbbk = \bR$ or $\bC$. Let $U \subseteq V$ be a subspace. Let $B_U := \lr{b_1, \hdots, b_m}$ be a basis of $U$. Then the \tbf{orthogonal projection of $V$ onto $U$} is the map
+	\begin{align*}
+		p : V &\to U\\
+		v &\mapsto \sum_{i = 1}^m g(b_i,v).b_i
+	\end{align*}
+\end{definition}
+\begin{exercise}
+	\begin{enumerate}
+		\item Show that the orthogonal projection of $V$ onto $U$ leaves vectors in $u$ unchanged.
+		\item Show that for each $v \in V$ and $u \in U$, $u$ is orthogonal to $v - p(v)$.
+		\item Show that for each $v \in V$, $p(v)$ is the unique point in $U$ for which $\norm{v - p(v)}_s$ is minimal.
+	\end{enumerate}
+\end{exercise}
+\begin{theorem}
+	Let $(V,s)$ be a vector space with scalar product over a field $\Bbbk = \bR$ or $\bC$. Let $(v_1, \hdots, v_n)$ be a basis of $V$. Then there are unique vectors $(b_1, \hdots, b_n) \subset V$ such that for all $p \in (1, \hdots, n)$, we have:
+	\begin{enumerate}
+		\item $(b_1, \hdots, b_p)$ is an $s$-orthonormal Basis of $\angles{v_1, \hdots, v_p} \subseteq V$
+		\item $s(b_p,v_p) \in \bR_{> 0}$
+	\end{enumerate}
+	These vectors $b_p$ can be constructed inductively via $b_1 = \frac{v_1}{\norm{v_1}}$ followed by projection onto the already constructed basis vectors, i.e.
+	\begin{align*}
+		w_p &= v_p - \sum_{q = 1}^{p-1} g(b_q,v_p).b_q\\´
+		b_p &= \frac{w_p}{\norm{w_p}}
+	\end{align*}
+\end{theorem}
+\begin{corollary}
+	Every vector space with scalar product has an orthonormal basis.
+\end{corollary}
+\section{Matrix Representations of Inner Products}
+\begin{definition}
+	Let $s$ be a sesquilinear form on a finite dimensional vector space $V$over a field $\Bbbk = \bR$ or $\bC$. Let $B = (b_1, \hdots, b_n)$ be a basis of $V$. Then the \tib{Gram matrix of $B$ by $g$} is defined as the matrix with entries
+	\begin{align*}
+		G_{ij} = s(b_i,b_j) \in \Bbbk^{n \times n}
+	\end{align*}
+\end{definition}
+\begin{exercise}
+	Show that the Gram matrix of the standard basis of $\bR^n$ by the scalar product is the identity matrix.
+\end{exercise}
+\begin{definition}
+	A matrix $A \in \Bbbk^{n \times n}$ is called \tib{positive (semi-)definite} if $s_A(v,w) = v^*Aw$ is positive (semi-)definite.
+\end{definition}
+\begin{exercise}
+	Let $s$ be a sesquilinear form on a finite-dimensional vector space $V$ over a field $\Bbbk = \bR$ or $\bC$. Let $G$ be its Gram matrix. Then we have $s(v,w) = v^* G y$ in basis $B$. In particular, $s$ is a scalar product if and only if its Gram matrix is Hermitian and positive definite.
+\end{exercise}
+\begin{theorem}
+	Let $A \in \Bbbk^{n \times n}$, where $\Bbbk = \bR$ or $\bC$. Then the following are equivalent:
+	\begin{enumerate}
+		\item $A$ is hermitian and psitive definite.
+		\item \tib{Cholesky Decomposition:} There exists an upper triangular Matrix $B$ with positive real diagonal entries such that $A = B^*B$.
+		\item There exists an invertible Matrix $B$ such that $A = B^* B$.
+		\item \tib{Sylvester-Hurwitz Criterion:} $A$ is Hermitian and and all of its square upper left submatrices $A_r$, known as its \tib{leading principal minors}, have strictly positive determinant.
+	\end{enumerate}
+\end{theorem}
+\section{Dual Spaces}
+\begin{importantdefinition}{Dual Space}{}
+	Let $V$ be a vector space over a field $\Bbbk$. Then we define $V^* = \Hom_{\Bbbk}(V, \Bbbk)$. Elements of $V^*$, i.e. linear maps $V \to \Bbbk$, are known as \tib{linear forms}.
+\end{importantdefinition}
+\begin{importanttheorem}{Dual Basis}
+	Given a basis $B = (b_1, \hdots, b_n)$ of a vector space $V$, the set of linear forms $E = (\epsilon_1, \hdots, \epsilon_n)$ given by
+	\begin{align*}
+		\epsilon_p(e_q) = \delta_{pq}
+	\end{align*}
+	is a basis of $V^*$, known as the \tib{dual basis} of $B$.
+\end{importanttheorem}
+\begin{exercise}
+	Let $C^n(\Bbbk, \Bbbk)$, $n \in 0, 1, \hdots, \infty$ be the set of $n$-times continuously differentiable functions $\Bbbk \to \Bbbk$. Then for any $x_0 \in \Bbbk$, the map
+	\begin{align*}
+		\cdot(x_0): f \to f^{(n)}(x_0)
+	\end{align*}
+	is a linear form on $C^n(\Bbbk, \Bbbk)$ (where $f^{(n)}$ denotes the $n$-th derivative of $f$).
+\end{exercise}
+\begin{exercise}
+	The map mapping an integrable function $f$ to $\int_{0}^1 f(x) ~dx$ is a linear form. More generally, for any integrable $g : [0,1] \to \Bbbk$, the map taking $f$ to $\int_0^1 \ol{g(x)} \cdot f(x) ~dx$ is a linear form.
+\end{exercise}
+\begin{theorem}
+	Let $(V,g)$ be a $\Bbbk$-vector space with scalar product. Then $g$ induces an injective antilinear map $g_1 : V \to V^*$ via
+	\begin{align*}
+		g_1(v) = g(v, \cdot)
+	\end{align*}
+	A linear form $\alpha \in V^*$ is called \tib{representable} by $g$ if there exists a $v \in V$ such that $\alpha = g(v, \cdot)$.
+\end{theorem}
+\begin{definition}
+	Let $V$ be a $\Bbbk$-vector space. Then a \tib{antilinear form} is an antilinear forms $\gamma: V \to \Bbbk$. The \tib{antidual space} $\ol V^*$ of $V$  is the space of antilinear maps $V \to \Bbbk$.
+\end{definition}
+\begin{theorem}
+	Let $(V,g)$ be a finite-dimensional vector space over a field $\Bbbk$. Then the maps $g : V \to V^*$ and $\ol g : V \to V^*$ are bijective.
+\end{theorem}
+\begin{corollary}
+	Let $(V,g)$ be a finite-dimensional vector space. Then all linear and antilinear forms on $V$ are representable by $g$.
+\end{corollary}
+\begin{definition}
+	Let $(V,g)$ and $(W,h)$ be $\Bbbk$-vector spaces with scalar products. Then a linear map $F : V \to W$ is called \tib{adjointable} if there exists a map $G : W \to V$ such that
+	\begin{align*}
+		g(G(w),v) = h(w,F(v)
+	\end{align*}
+	for all $v \in V$ and $w \in W$. Such a map $G$ is known as the \tib{adjoint of $F$}, and is written $G = F^*$. If $F = F^*$, we call $F$ \tib{self-adjoint}.
+\end{definition}
+\begin{proposition}
+	If it exists, the adjoint of a given map is unique.
+\end{proposition}
+\begin{proposition}
+	Adjoint maps are linear.
+\end{proposition}
+\begin{proposition}
+	If $G$ is the adjoint of $F$, then $F$ is the adjoint of $G$, i.e. we have $(F^*)^* = F$.
+\end{proposition}
+\begin{proposition}
+	If $A$ is a matrix representation of $F$ by two orthonormal bases, then the conjugate transpose $A^*$ is a matrix representation of $F^*$.
+\end{proposition}
+\begin{definition}
+	Let $V$ and $W$ be $\Bbbk$-vector spaces, with $\Bbbk$ a field. Let $F : V \to W$ be a linear map. Then the \tib{dual} of $F$ is the map 
+	\begin{align*}
+		F^\vee: W^* &\to V^*\\
+		\beta &\mapsto \beta \circ F
+	\end{align*}
+	i.e.
+	\begin{align*}
+		F^\vee(\beta)(\vv) = \beta(F(\vv))
+	\end{align*}
+	for $\beta \in W^*$, $\vv \in V$.
+\end{definition}
+We can construct a dual of any linear map this way, while linear maps involving infinite-dimensional vector spaces are generally not adjoinable.
+\begin{exercise}
+	Verify the following properties of the dual map:
+	\begin{enumerate}
+		\item $(\id_V)^\vee = \id_{V^*}$
+		\item Let $F : V \to W$ and $G : U \to V$ be linear, then $(F \circ G)^\vee = G^\vee \circ F^\vee$
+		\item The dual of a linear map is linear.
+		\item If $F : V \to W$ is given by $F(\vv) = A \cdot \vv$ for some matrix $A$, then $F^\vee(\beta) = \beta \cdot A$, where elements $\beta \in W^*$ are represented as row vectors.
+	\end{enumerate}
+\end{exercise}
+\begin{importanttheorem}{}{}
+	Let $(V,g)$ and $(W,h)$ be $\Bbbk$-vector spaces with scalar products. Let $h_1 : W \to W^*$ and $g_1 : V \to V^*$ be the antilinear maps induced by $g$ and $h$, i.e.
+	\begin{align*}
+		h_1(\vw) = h(\vw, \cdot)\\
+		g_1(\vv) = g(\vv, \cdot)
+	\end{align*} 
+	Let $F : V \to W$ be linear. Then $g_1 \circ F^* = F^\vee \circ h_1$.
+\end{importanttheorem}
+\begin{proof}
+	Let $v \in V$, $w \in W$, then we have:
+	\begin{align*}
+		g_1(F^*(w))(v) 
+		&= g(F^*(w),v)\\
+		&= h(w,F(v))\\
+		&= h_1(w)(F(v))\\
+		&= F^\vee(h_1(w))(v)
+	\end{align*}
+\end{proof}
+\begin{corollary}
+	If $V$ is finite-dimensional, $F : V \to W$ is adjointable.
+\end{corollary}
+\begin{proof}
+	If $V$ is finite-dimensional, $g_1$ is invertible. We get $F^* = g_1^{-1} \circ F^\vee \circ h_1$.
+\end{proof}
+\begin{definition}
+	Let $V$ and $W$ be $\Bbbk$-vector spaces. Let $F : V \to W$ be linear, and let $s : W \times W \to \Bbbk$ be a sesquilinear form. Then we define the \tib{pullback of $s$ by $F$} to be the map $F^*s : V \times V \to \Bbbk$ given by
+	\begin{align*}
+		(F^*s)(u,v) = s(F(u), F(v))
+	\end{align*}
+\end{definition}
+\begin{exercise}
+	Verify that:
+	\begin{enumerate}
+		\item $F^*s$ is a sesquilinear form.
+		\item If $s$ is Hermitian, $F^*s$ is Hermitian.
+		\item If $s$ is positive semidefinite, $F^*s$ is positive semidefinite.
+		\item 
+		If $s$ is positive definite and $F$ is injective, $F^*s$ positive definite.
+		\item If we fix bases of $V$ and $W$ such that $F$ is represented by a matrix $A$ and $s$ is represented by a Gram matrix $G$, then $F^*s$ is represented by $A^*GA$.
+		\item Given $F : V \to W$ antilinear, we can achieve the same results by defining $F^*s(u,v) = s(F(v),F(u))$.
+	\end{enumerate}
+\end{exercise}
+\chapter{Normal Endomorphisms}
+\begin{importantdefinition}{}{}
+	Let $(V,g)$ be a $\Bbbk$-vector space with scalar product. Let $F : V \to V$ be an adjointable endomorphism. Then we call $F$ \tib{normal} if $F^* \circ F = F \circ F^*$.
+\end{importantdefinition}
+\begin{exercise}
+	\begin{enumerate}
+		\item Show that self-adjoint maps are normal.
+		\item A linear map with $F^* = -F$ is called \tib{skew}. Show that skew maps are normal.
+		\item A linear map represented in a given basis by a matric of the form
+		\begin{align*}
+			\begin{pmatrix}
+				a & -b\\
+				b & a
+			\end{pmatrix}
+		\end{align*}
+		is normal.
+	\end{enumerate}
+\end{exercise}
+\begin{importantdefinition}{}{}
+		Let $(V,g)$ and $(W,h)$ be $\Bbbk$-vector spaces with scalar products. Then a linear map $F : V \to W$ is called an \tib{isometric embedding} if $g(v,w) = h(F(v), F(w))$ for all $v,w \in V$.
+\end{importantdefinition}
+\begin{exercise}
+	Show that:
+	\begin{enumerate}
+		\item Isometric embeddings preserve lengths and distances.
+		\item Isometric embeddings preserve angles.
+		\item Isometric embeddings are injective.
+		\item If orthonormal bases are chosen for $V$ and $W$, then the matrix representation $A$ of $F$ fulfills $A^*A = E_n$.
+		\item If $\dim V = \dim W$, $F$ is invertible with $F^{-1} = F^*$. An invertible isometric embedding is called an \tib{isometry}.
+		\item Isometries are normal.
+	\end{enumerate}
+\end{exercise}
+\begin{importanttheorem}{Fundamental Theorem of Normal Endomorphisms}{}
+	Let $(V,g)$ be a finite-dimensional complex vector space with scalar product. Let $F : V \to V$ be an endomorphism. Then there exists an orthonormal basis of $(V,g)$ consisting of eigenvectors of $F$ if and only if $F$ is normal.
+\end{importanttheorem}
+Note that this only works for complex numbers, not for reals:
+\begin{exercise}
+	Recall that any endomorphism represented by a matrix of the form
+	\begin{align*}
+		A
+		=
+		\begin{pmatrix}
+			a & -b\\
+			b & a
+		\end{pmatrix}
+	\end{align*}
+	is normal. Show that, if $b \neq 0$, $A$ has no real eigenvalues.
+\end{exercise}
+\begin{importantcorollary}{A Normal Form for Complex Normal Endomorphisms}{}
+	Let $(V,g)$ be a finite-dimensional real vector space with scalar product. Let $F : V \to V$ be an endomorphism. Then there exists an orthonormal basis of $(V,g)$ in which $F$ is represented by a block diagonal matrix consisting of $1 \times 1$ blocks and $2 \times 2$ blocks of the form
+	\begin{align*}
+		\begin{pmatrix}
+			a & -b\\
+			b & a
+		\end{pmatrix}
+	\end{align*}
+	with $b > 0$ if and only if $F$ is normal. If such a representation exists, it is unique up to permutation of the blocks.
+\end{importantcorollary}
+\begin{importantcorollary}{Spectral Theorem for Self-Adjoint Maps}{}
+	Let $(V,g)$ be a finite dimensional real or complex vector space with scalar product. Let $F : V \to V$ be an endomorphism. Then there exists an orthonormal basis of $V$ in which $F$ is represented by a diagonal matrix with real entries if and only if $F$ is self-adjoint.
+\end{importantcorollary}
+\begin{exercise}
+	Derive an analogous spectral theorem for skew maps.
+\end{exercise}
+\begin{corollary}
+	Let $(V,g)$ be a finite-dimensional real or complex vector space with scalar product. Let $s$ be a sesquilinear form on $V$. Then there exists a $g$-orthonormal Basis of $V$ in which $s$ is represented by a diagonal matrix with real entries if and only $s$ is hermitian.
+\end{corollary}
+\begin{importantcorollary}{Singular Value Decomposition}{}
+	Let $(V,g)$ and $(W,h)$ be finite-dimensional real or complex vector spaces with scalar products. Let $F : V \to W$ be linear. Then there exist orthonormal bases of $V$ and $W$ in which $F$ is represented by a diagonal matrix with uniquely determined real entries $a_n$ such that $a_1 \geq a_2 \geq \hdots$ and $a_n = 0$ if $n \geq \tn{rk}~F$. These entries are known as the \tib{singular values} of $F$.
+\end{importantcorollary}
+Singular value decomposition is fundamental to the JPG compression algorithm, which represents an image by a matrix, then calculates the singular value decomposition of that matrix, and then sets all of the singular values below a given threshold to zero, leading to less data needing to be stored while still maintaining the singular values that 'noticably contribute' to the resulting image.
+\section{Linear Isometries}
+\begin{importantcorollary}{Normal Form for Real Isometries}{}
+	Let $(V,g)$ be a finite-dimensional real vector space with scalar product $g$. Let $F : V \to V$ be a linear isometry. Then there exists an orthonormal basis of $(V,g)$ in which $F$ is represented by a block diagonal matrix consisting of $1 \times 1$ blocks and $2 \times 2$ blocks of the form
+	\begin{align*}
+		\begin{pmatrix}
+			a & -b\\
+			b & a
+		\end{pmatrix}
+	\end{align*}
+	with $a^2 + b^2 = 1$.
+\end{importantcorollary}
+\begin{importantcorollary}{Normal Form for Complex Isometries}{}
+	Let $(V,g)$ be a finite-dimensional complex vector space with scalar product $g$. Let $F : V \to V$ be a linear isometry. Then there exists an orthonormal basis of $(V,g)$ in which $F$ is represented by a diagonal matrix whose entries have absolute value $1$.
+\end{importantcorollary}
+\begin{importantcorollary}{}{}
+	Let $(V,g)$ be a finite-dimensional complex vector space with scalar product $g$. Let $F : V \to V$ be a linear isometry. Then $V$ can be decomposed into a direct sum of subspaces $U$ of dimension one or two, such that $F$ acts on the one-dimensional subspaces as the identity or reflection, and on the two-dimensional subspaces as a rotation around the origin.
+\end{importantcorollary}
+\begin{exercise}
+	A linear isometry is orientation-preserving if and only if the number of invariant subspaces on which it acts as a reflection is even.
+\end{exercise}
+\section{Affine Isometries}
+\begin{theorem}
+	Let $(A, \vA, s))$, $(B, \vB, g)$ be finite-dimensional normed affine spaces of the same dimension over vector spaces with scalar products. Then there exists an affine isometry $F : A \to B$.
+\end{theorem}
+\begin{theorem}
+	Let $(A, \vA, g)$ be a finite-dimensional normed $\Bbbk$-affine space over a vector space with scalar product. Let $F : A \to A$ be an affine sometry. Then there exists a point $b \in A$ and a vector $\vv \in \Eig(\vF, 1)$ such that
+	\begin{align*}
+		F(a) = b + \vv + \vF(\vec{ba})
+	\end{align*}
+	$\vv$ is uniquely determined by $A$, while $b$ is an arbitrary point chosen from an affine-$F$-invariant subspace $(B, \Eig(\vF, 1)) \subseteq (A, \vA)$. 
+\end{theorem}
+\begin{definition}
+	We call $(B, \Eig(\vF, 1))$ the \tib{axis set} of $F$, and call lines of the form
+	\begin{align*}
+		\lr{b + \lambda.\vv \mid \lambda \in \Bbbk} \subseteq B
+	\end{align*}
+	\tib{axes} of $F$.
+\end{definition}
+Our theorem thus states that any affine isometry can be represented as a linear map composed with a translation along the axis set of $F$.
 \chapter{Revisiting Synthetic Geometry}
 \section{Incidence Geometries}
 \begin{importantdefinition}{Incidence Geometries}{}
@@ -1102,10 +1568,12 @@ The primary goal of this chapter will be proving the following result:
 		\item If $(X,G,Z)$ doesn't fulfill the perallel postulate, it is isomorphic to the \tib{hyperbolic plane} $H$.
 	\end{enumerate}
 \end{importanttheorem}
+\section{Projection Maps}
+\section{Projectivization}
 \chapter{Hyperbolic Geometry}
 \section{Circle Inversions}
 \begin{definition}
-	Let $E$ be a Euclidean plane. Then the \tib{extended Euclidean plane} is the set
+	Let $E$ be a Euclidean plane. Then the corresponding \tib{extended Euclidean plane} is the set
 	\begin{align*}
 		\hat E = E \cup \lr{\infty},
 	\end{align*}
@@ -1138,4 +1606,41 @@ The primary goal of this chapter will be proving the following result:
 \begin{exercise}
 	Every circle inversion maps generalized circles to generalized circles.
 \end{exercise}
+
+\pagebreak
 \section{Möbius Transformations}
+\begin{definition}
+	A composition of circle inversions is known as a \tib{Möbius transformation}.
+\end{definition}
+\begin{exercise}
+	The set $\tn{Möb}(\hat E)$ of Möbius transformations of a given extended Euclidean plane $\hat E$ forms a group under composition.
+\end{exercise}
+\begin{exercise}
+	Any two generalized circles in a generalized Euclidean plane can be mapped onto each other by a Möbius transformation.
+\end{exercise}
+\begin{theorem}
+	Given an extended Euclidean plane $E$, its Möbius transformations are precisely the bijections $\phi : \hat E \iso \hat E$ mapping generalized circles to generalized circles.
+\end{theorem}
+\begin{theorem}
+	Any Möbius transformation that leaves a given generalized circle $L$ pointwise unchanged is either the circle inversion $s_L$ at that circle or the identity map.
+\end{theorem}
+\begin{exercise}
+	Given a generalized Euclidean plane $\hat E$, a Möbius transformation $\phi : \hat E \to \hat E$ and a generalized circle $L \subseteq \hat E$, we have $\phi \circ s_L \circ \phi^{-1} = s_{\phi(L)}$
+\end{exercise}
+\begin{exercise}
+	Given a generalized Euclidean plane $\hat E$, a Möbius transformation $\phi : \hat E \to \hat E$, and a generalized circle $L \subseteq \hat E$, we have $\phi(L) = L$ if and only if $\phi \circ s_L = s_L \circ \phi$.
+\end{exercise}
+\begin{definition}
+	Let $\hat E$ be a generalized Euclidean plane. Given a pair of generalized circles $L, M \subset \hat E$ we call $L$ \tib{orthogonal to $M$}, which we write $L \perp M$, if $L \neq M$ and $s_L(M) = M$.
+\end{definition}
+\begin{theorem}
+	Let $L,M \subset \hat E$ be generalized circles in a generalized Euclidean plane $\hat E$ such that $L \perp M$. Let $\phi : \hat E \to \hat E$ be a Möbius transformation. Then $\phi(L) \perp \phi(M)$.
+\end{theorem}
+\begin{proposition}
+	Let $E$ be a Euclidean plane, $g \subset E$ a line, $H \subset E \setminus g$ an open Half-plane with $g$ as its boundary, and $$K_H = \tn{Möb}_H(\hat E) := \lr{\phi \in \tn{Möb}(\hat E) \mid \phi(H) = H}$$ the set of Möbius transformations leaving $H$ invariant. Then:
+	\begin{enumerate}
+		\item Any Möbius transformation that leaves $H$ invariant also leaves the extended line $\hat g$ invariant.
+		\item $\tn{Möb}_H(\hat E)$ operates transitively on $H$, i.e. any point of $H$ can be mapped onto any other by a Möbius transformation $\phi \in \tn{Möb}_H(\hat E)$.
+		\item $\tn{Möb}_H(\hat E)$ is generated by the set of circle inversions $s_L$ with $L \perp \hat g$.
+	\end{enumerate}
+\end{proposition}
