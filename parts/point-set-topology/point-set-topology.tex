@@ -2,3 +2,24 @@
 \chapter{Topological Spaces}
 \epigraph{
 \textit{A very common axiom is the Hausdorff separation axiom, which says that any two distinct points can be housed orf from each other by disjoint open sets.}}{{"Topology via Logic",}\\{Steven Vickers}}
+\chapter{Topologies on Algebraic Structures}
+\section{Topological Groups}
+\begin{importantdefinition}{}{}
+	Let $(G, \circ)$ be a group. Let $\cO$ be a topology on $G$. Then we call $(G, \circ, \cO)$ a \tib{topological group} iff. the maps $^{-1} : g \to g^{-1}$ and $\circ : G \times G \to G$ are continuous.
+\end{importantdefinition}
+\begin{exercise}
+	Show that $(G, \circ, \cO)$ is a topological group if and only if the map
+	\begin{align*}
+		\phi : (g,h) \mapsto g \circ h^{-1}
+	\end{align*}
+	is continuous.
+\end{exercise}
+\begin{exercise}
+	Let $(G, \circ, \cO)$ be a topological groups. Then for any $g \in G$, the left and right group operation maps $l_g : h \mapsto g \circ h$ and $r_g : h \mapsto h \circ g$ are homeomorphisms.
+\end{exercise}
+\begin{exercise}
+	Let $(G, \circ, \cO_G)$ be a topological group. Let $(H, \circ, \cO_H)$ be a normal subgroup equipped with the supspace topology, and let $(G/H, \circ, \cO_q)$ be the quotient group, equipped with the quotient topology. Then the quotient map $p : G \to G/H$ is continuous and open.
+\end{exercise}
+\begin{corollary}
+	If $H$ is closed in $G$ and $G$ is Hausdorff, then $G/H$ is Hausdorff. If $G/H$ is T1, then $H$ is closed.
+\end{corollary}

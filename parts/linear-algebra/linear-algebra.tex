@@ -1478,20 +1478,94 @@ Singular value decomposition is fundamental to the JPG compression algorithm, wh
 	Let $(A, \vA, s))$, $(B, \vB, g)$ be finite-dimensional normed affine spaces of the same dimension over vector spaces with scalar products. Then there exists an affine isometry $F : A \to B$.
 \end{theorem}
 \begin{theorem}
-	Let $(A, \vA, g)$ be a finite-dimensional normed $\Bbbk$-affine space over a vector space with scalar product. Let $F : A \to A$ be an affine sometry. Then there exists a point $b \in A$ and a vector $\vv \in \Eig(\vF, 1)$ such that
+	Let $(A, \vA, g)$ be a finite-dimensional normed $\Bbbk$-affine space over a vector space with scalar product. Let $F : A \to A$ be an affine sometry. Then there exists a point $o \in A$ and a vector $x \in \Eig(\vF, 1)$ such that
 	\begin{align*}
-		F(a) = b + \vv + \vF(\vec{ba})
+		F(a) = o + x + \vF(a - o)
 	\end{align*}
-	$\vv$ is uniquely determined by $A$, while $b$ is an arbitrary point chosen from an affine-$F$-invariant subspace $(B, \Eig(\vF, 1)) \subseteq (A, \vA)$. 
+	$x$ is uniquely determined by $A$, while $o$ is an arbitrary point chosen from an affine-$F$-invariant subspace $(B, \Eig(\vF, 1)) \subseteq (A, \vA)$. 
 \end{theorem}
 \begin{definition}
 	We call $(B, \Eig(\vF, 1))$ the \tib{axis set} of $F$, and call lines of the form
 	\begin{align*}
-		\lr{b + \lambda.\vv \mid \lambda \in \Bbbk} \subseteq B
+		\lr{b + \lambda.x \mid \lambda \in \Bbbk} \subseteq B
 	\end{align*}
+	with $b \in B$ the
 	\tib{axes} of $F$.
 \end{definition}
-Our theorem thus states that any affine isometry can be represented as a linear map composed with a translation along the axis set of $F$.
+Our theorem thus states that any affine isometry can be represented as a linear map composed with a translation along the axis set of $F$. 
+\typeout{(TODO: Cleaner proof using least squares)}
+\begin{proof}
+	We write $F(a) = \vec F(a) + y$. Let $U = \Eig(\vec F, 1$). Then $U$ and $U^\perp$ are both invariant under $\vec F$, and $\vec F|_U = \id_U$.
+	\newpar
+	We write $y = (x,z) \in U \oplus U^\perp$. The map $\id_{U^\perp} - \vec F|_{U^\perp}$ is invertible, since $U^\perp$ doesn't contain any eigenvectors of $\vec F$. We can thus find a $q \in U^\perp$ with $q - \vec F(q) = z$.
+	\newpar
+	We can then choose any $p \in U$ and set $o = (p,q)$. For any other $v = (u,w) \in V$, we then get
+	\begin{align*}
+		F(a) 
+		&:= F(o + v)\\
+		&= y + \vec F(o+v)\\
+		&= (x,z) + \vec F((p,q) + (u,w))\\
+		&= (x,z) + \vec F((p+u,q+w))\\
+		&= (x + \vec F(p) + \vec F(u), z + \vec F(q) + \vec F(w))\\
+		&= (x + p + u, z + \vec F(q) + \vec F(w))\\
+		&= (x + p + u, (q - \vec F(q)) + \vec F(q) + \vec F(w))\\
+		&= (x + p + u, q + \vec F(w))\\
+		&= (p,q) + (x,0) + \vec F(u,w)\\
+		&= o + (x,0) + \vec F(v),\\
+		&= o + x + \vec F(a - o),
+	\end{align*}
+	which is our desired representation.
+	\newpar
+	Now, assume we chose an alternate origin $o' = o + (p', q')$ such that
+	$$F(a) := F(o' + v) = o' + x' + \vec F(v)$$
+	for $v = (u,w)$.
+	Then we get:
+	\begin{align*}
+		x' 
+		&= F(o' + v) - o' - \vec F(v)\\
+		&= F(o + (p',q') + v) - o - (p',q') - \vec F(v)\\
+		&= (o + x + \vec F((p', q') + v)) - o - (p',q') - \vec F(v)\\
+		&= (o + x + \vec F(p', q') + \vec F(v) - o - (p',q') - \vec F(v)\\
+		&= x + \vec F(p', q') - (p',q')\\
+		&= x + \vec (p', \vec F(q')) - (p',q')\\
+		&= (x, \vec F(q') - q')
+	\end{align*}
+	Now, applying $\vec F$ to $x$ and $x'$, we get:
+	\begin{align*}
+		\vec F(x)
+		&=
+		F(x) - (x,z)\\
+		&=
+		F((x,0)) - (x,z)\\
+		&=
+		o + (x,0) + \vec F((x,0) - o) - (x,z)\\
+		&=
+		o + (x,0) + (x,0) - \vec F(o) - (x,z)\\
+		&=
+		o + (x,0) + (x,0) - (p,q-z) - (x,z)\\
+		&=
+		(p,q) + (x,0) + (x,0) - (p,q) + (0,z) - (x,z)\\
+		&=
+		(x,0)
+		=
+		x
+	\end{align*}
+	and thus
+	\begin{align*}
+		\vec F(x') &= (\vec F(x), \vec F(\vec F(q')) - \vec F(q'))\\
+		&= (x, \vec F(\vec F(q')) - \vec F(q'))
+	\end{align*}
+	therefore, we get $\vec F(x') = x'$ if and only if $$\vec F(\vec F(q')) - \vec F(q') = \vec F(q') - q',$$
+	i.e.
+	\begin{align*}
+		\vec F(\vec F(q')) - 2\vec F(q') + q' = 0,
+	\end{align*}
+	i.e.
+	\begin{align*}
+		(\id_W - \vec F|_W)(\id_W - \vec F|_W(q')) = 0
+	\end{align*}
+	Since $\id_W - \vec F|_W$ is invertible by construction, this holds iff. $q' = 0$, i.e. if $x' = (x, \vec F(q') - q') = x$ and $o' = o + (p', 0) = o + \lambda x \in B$.
+\end{proof}
 \chapter{Revisiting Synthetic Geometry}
 \section{Incidence Geometries}
 \begin{importantdefinition}{Incidence Geometries}{}

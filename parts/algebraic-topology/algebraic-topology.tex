@@ -1,0 +1,314 @@
+\part{Algebraic Topology}
+\chapter{Homotopy}
+\begin{importantdefinition}{}{}
+	Let $X,Y$ be topological spaces. Let $f,g : X \to Y$ be continuous. Then $f$ is called \tib{homotopic} to $g$ via a map $h$ iff. $h$ is a "continous interpolation between $f$ and $g$, i.e:
+	\begin{enumerate}
+		\item $h$ is a continous map $X \times [0,1] \to Y$,
+		\item For all $x \in X$, we have $h(x,0) = f(x)$,
+		\item For all $x \in X$, we have $h(x,1) = g(x)$.
+	\end{enumerate}
+	We call $h$ a \tib{free homotopy}, or simply a \tib{homotopy}, between $f$ and $g$. We write $f \sim_h g$ if $f$ is a homotopy between $f$ and $g$. We write $f \sim g$ if there exists a homotopy between $f$ and $g$.
+\end{importantdefinition}
+\begin{exercise}
+	Show that the property of being homotopic is an equivalence relation.
+\end{exercise}
+\begin{definition}
+	We say that $f$ and $g$ are \tib{homotopic relative to a subset $A \subseteq X$} and write $f \sim_{\rel A}$ or $f \sim_{h, \rel A}$ iff:
+	\begin{enumerate}
+		\item $f \sim_h g$,
+		\item For all $t \in [0,1]$, we have $h(t, \cdot)|_A = f|_A = g|_A$
+	\end{enumerate}
+\end{definition}
+I personally find the designation "homotopic relative to $A$" quite unintuitive, given that the property of being homotopic relative to a given subset is stronger than the property of being homotopic.
+\begin{exercise}
+	Show that $f \sim_h g$ is equivalent to $f \sim_{h, \rel \emptyset} g$.
+\end{exercise}
+\begin{exercise}
+	Let $f_0, f_1 : X \to Y$ and $g_0, g_1 : Y \to Z$ be continuous. Let $h_0$ be a homotopy between $f_0$ and $f_1$ and let $h_1$ be a homotopy between $f_1$ and $g_1$. Then $H : (x,t) \mapsto h_1(h_0(x,t),t)$ is a homotopy between $g_0 \circ f_0$ and $g_1 \circ f_1$.
+\end{exercise}
+
+\begin{importantdefinition}{}{}
+	Let $f : X \to Y$ be continuous. Then $f$ is called a \tib{homotopy equivalence} between $X$ and $Y$ iff. there exists a map $g : Y \to X$ such that $g \circ f$ is homotopic to $\id_X$ and $f \circ g$ is homotopic to $\id_Y$. We write $X \simeq_{f,g} Y$, $X \simeq_f Y$, or simply $X \simeq Y$.
+\end{importantdefinition}
+\begin{exercise}
+	Show that the property of being homotopy equivalent is an equivalence relation.
+\end{exercise}
+\begin{exercise}
+	Show that homeomorphism implies homotopy equivalence.
+\end{exercise}
+\begin{definition}
+	A topological space $X$ is called \tib{contractible} iff. $X$ is homotopy equivalent to a one-point space.
+\end{definition}
+\begin{exercise}
+	\begin{enumerate}
+		\item Show that
+		\begin{align*}
+			h : (x,t) \mapsto x - tx
+		\end{align*}
+		is a homotopy between $\id_{\bR^n}$ and $f : \bR^n \mapsto \lr{0}$.
+		\item Conclude that $\bR^n$ is contractible.
+		\item Conclude that homotopy equivalence does not imply homeomorphism.
+	\end{enumerate}
+\end{exercise}
+\begin{exercise}
+	A topological space $X$ is contractible if and only if there exists a point $x_0 \in X$ such that $\id_X$ is homotopic to the constant map $X \to {x_0}$.
+\end{exercise}
+\begin{definition}
+	Let $X$ be a subset of a topological vector space. Then we call $X$ \tib{star-shaped} iff. there exists a point $x_0 \in X$ such that $X$ contains the connecting line between $x_0$ and any other point $x \in X$, i.e.
+	\begin{align*}
+		\forall x \in X:\\
+		\forall t \in [0,1]:\\	
+		(1-t)x_0 + tx \in X
+	\end{align*}
+\end{definition}
+\begin{exercise}
+	Show that any star-shaped set is contractible. Conclude that any convex set is contractible.
+\end{exercise}
+\begin{lemma}
+	Let $X$ be a topological space. Let $A \subseteq X$. Then $A$ and $X$ are homotopy equivalent if there exists a homotopy between $\id_X$ and $\id_X|_A$, i.e. a continuous map $h : X \times [0,1] \to X$ such that for all $x \in X$:
+	\begin{enumerate}
+		\item $h(x,0) = x$,
+		\item $h(x,1) \in A$,
+		\item $x \in A \implies h(x,1) = x$
+	\end{enumerate}
+\end{lemma}
+
+\clearpage
+
+\section{The Fundamental Group}
+\begin{definition}
+	Let $X$ be a topological space. Then a continuous map $\gamma [0,1] \to X$ with $\gamma(0) = \gamma(1)$ is known as a \tib{loop}. We denote the set of all loops in $X$ with $\gamma(0) = \gamma(1) = x_0$ as $\Omega(X, x_0)$.
+\end{definition}
+\begin{lemma}
+	Let $\gamma : [0,1] \to X$ be a loop. Let $\phi : [0,1] \to [0,1]$ be a continuous map such that $\gamma(0) = 0$ and $\gamma(1) = 1$. Then $\gamma \circ \phi$ and $\gamma$ are homotopic relative to $\lr{0,1}$.
+\end{lemma}
+\begin{proof}
+	The map
+	\begin{align*}
+		h : (x,t) \mapsto \gamma((1-t)x + t \phi(x))
+	\end{align*}
+	is a homotopy between $\gamma$ and $\gamma \circ \phi$.
+\end{proof}
+\begin{definition}
+	Let $f, g \in \Omega(X, x_0)$. Then we define the \tib{concatenation of $f$ and $g$} as the map
+	\begin{align*}
+		(f * g)(t) =
+		\begin{cases}
+			f(2t) & 0 \leq t \leq 1/2,\\
+			g(2t - 1) & 1/2 \leq t \leq 1.
+		\end{cases}
+	\end{align*}
+\end{definition}
+\begin{definition}
+	Let $\gamma \in \Omega(X, x_0)$. We define the \tib{inverse loop} of $\gamma$ to be the loop that "moves through gamma backwards", i.e.
+	\begin{align*}
+		\ol \gamma(t) := \gamma(1-t)
+	\end{align*}
+\end{definition} 
+\begin{exercise}
+	Verify that $\ol{\ol{\gamma}} = \gamma$.
+\end{exercise}
+\begin{exercise}
+	Let $\gamma \in \Omega(X, x_0)$. Then $\gamma * \ol \gamma$ is homotopic to $e_{x_0} : X \to \lr{x_0}$ relative to $\lr{0,1}$.
+\end{exercise}
+\begin{importanttheorem}{Existence of the fundamental group}{}
+	Let $X$ be a topological space. Let $x_0 \in X$. Then the quotient space
+	\begin{align*}
+		\pi_1(X, x_0) = \Omega(X, x_0) / \sim_{\rel({0,1})}
+	\end{align*}
+	of loops modulo homotopy
+	becomes a group, known as the \tib{fundamental group of $(X, x_0)$}, when equipped path concatenation
+	\begin{align*}
+		[f] * [g] = [f * g],
+	\end{align*}
+	as the group operation.
+	The neutral element of this group is $e_{x_0} := (x \mapsto x_0)$.
+\end{importanttheorem}
+\begin{theorem}
+	If we additionally define
+	\begin{align*}
+		\pi_1(f) : \pi_1(X,x) &\mapsto \pi_1(Y,f(x))\\
+		[\gamma] &\mapsto [f \circ \gamma]
+	\end{align*}
+	for all continuous $f : X \to Y$, 
+	the map $\pi_1$ becomes a covariant functor from the category of topological spaces into the category of groups.
+\end{theorem}
+\begin{definition}
+	Whenever we need to make the base point clear, we write $\pi_1(f,x) := \pi_1(f) : \pi_1(X,x) \mapsto \pi_1(Y,f(x))$
+\end{definition}
+\begin{importanttheorem}{Fundamental groups at different base points}{}
+	Let $X$ be a topological space. Let $x,y \in X$. Then every continuous path $\delta : [0,1] \to X$ induces a group isomorphism
+	\begin{align*}
+		J_\delta : \pi_1(X, \delta(0)) &\cong \pi_1(X,\delta(1))\\
+		[\gamma] &\mapsto \lr[\ol \delta * \gamma * \delta]
+	\end{align*}
+\end{importanttheorem}
+\begin{proof}
+	\begin{enumerate}
+		\item Since loop concatenation preserves homotopy, $J_\delta$ sends different representatives of the same equivalence class to the same equivalence class.
+		\item $J_\delta$ goes from $\pi_1(X,x)$ to $\pi_1(X,y)$, since for any $\gamma : [0,1] \to X$ with $\gamma(0) = \gamma(1) = x$, $\ol \delta$ traces out a path from $\delta(1)$ to $\delta(0)$, then $\gamma$ traces out a loop from $\delta(0)$ to $\delta(0)$, and then $\delta$ traces out a path from $\delta(0)$ back to $\delta(1)$, i.e. $\ol \delta * \gamma * \delta$ is a loop from $\delta(1)$ to $\delta(1)$.
+		\item $J_\delta$ is a group homomorphism, since
+		\begin{align*}
+			J_\delta([\gamma_1 * \gamma_2])
+			&=
+			\lr[\ol \delta * \gamma_1 * \gamma_2 * \delta]\\
+			&=
+			\lr[\ol \delta * \gamma_1 * e_{x_0} * \gamma_2 * \delta]\\
+			&=
+			\lr[\ol \delta * \gamma_1 * \delta * \ol \delta * \gamma_2 * \delta]\\
+			&=
+			\lr[\ol \delta * \gamma_1 * \delta] * \lr[\ol \delta * \gamma_2 * \delta]\\
+			&=
+			J_\delta([\gamma_1]) * J_\delta([\gamma_2])
+		\end{align*}
+		(Recall that any map that respects the group operation also respects the neutral element and inverses, and is thus a homomorphism.)
+		\item $J_\delta$ is bijective with $J_\delta ^{-1} = J_{\ol \delta}$:
+		\begin{align*}
+			J_\delta(J_{\ol \delta}(\gamma))
+			&=
+			\lr[\ol \delta * \lr(\delta * \gamma * \ol \delta) * \delta]
+			=
+			\lr[\gamma]\\
+			J_{\ol \delta}(J_{\delta}(\gamma))
+			&=
+			\lr[\delta * \lr(\ol \delta * \gamma * \delta) * \ol \delta]
+			=
+			\lr[\gamma]
+		\end{align*}
+	\end{enumerate}
+\end{proof}
+\begin{corollary}
+	If $X$ is path connected, $\pi_1(X,x) \cong \pi_1(X,y)$ for any $x,y \in X$.
+\end{corollary}
+\begin{definition}
+	Let $\gamma_0 \in \Omega(X,x)$ an $\gamma_1 \in \Omega(X,y)$. Then we call $h : [0,1] \times [0,1] \to X$ a \tib{free homotopy of loops}, or simply \tib{loop homotopy}, between $\gamma_0$ and $\gamma_1$ iff. $h$ is a homotopy between $\gamma_0$ and $\gamma_1$ such that $h_t(x) := h(x,t)$ is a loop for any fixed $t \in [0,1]$.
+\end{definition}
+\begin{exercise}
+	\begin{enumerate}
+		\item Verify that $h$ is a loop homotopy iff. $h$ is a homotopy and $h_t(0) = h_t(1)$ for any $t \in [0,1]$.
+		\item Show that any $\lr{0,1}$-homotopy is a loop homotopy.
+	\end{enumerate}	
+\end{exercise}
+The additional constraint that and $h(\cdot, t)$ is a loop may seem superfluous, but there are in fact homotopies between loops that aren't loop homotopies:
+\begin{exercise}
+	\begin{enumerate}
+		\item Let $\gamma_0 = \gamma_1 : [0,1] \to \lr{0}$ be constant loops. Let $h(x,t) := xt(1-t)$. Then $h$ is a homotopy between $\gamma_0$ and $\gamma_1$, but fails to be a loop homotopy.
+		\item Let $\gamma_0(x) = e^{2\pi i x}$. Let $\gamma_1(x) = e^{4 \pi i x}$. Then $h(x,t) := e^{2 \pi i (1+t)x}$ is a homotopy between $\gamma_0$ and $\gamma_1$, but fails to be a loop homotopy.
+		\item Assume that any loop $\gamma : [0,1] \to S^1$ with $1$ as its base point is homotopic a loop of the form $\gamma(x) := e^{2\pi n ix}$ for some $n \in \bZ$ (we will prove this later). Does 2. imply that the fundamental group $\pi_1(S^1,1)$ is trivial?
+	\end{enumerate}
+\end{exercise}
+\begin{definition}
+	A loop $\gamma \in \Omega(X,x)$ is called \tib{contractible in $X$} iff. there exists an $x \in X$ and a loop homotopy $h$ such that $\gamma \sim_h e_x$.
+\end{definition}
+\begin{lemma}
+	$\gamma \in \Omega(X,x)$ is contractible in $X$ if $\gamma \sim_{\rel {0,1}} e_{\gamma(0)}$.
+\end{lemma}
+\begin{theorem}
+	Let $\gamma \in \Omega(X, x)$ be a loop. Let $S^1 \cong I/\lr{0,1}$ be equipped with the quotient topology. Then $\gamma$ is contractible if and only if $\gamma \circ p : S^1 \to X$ has a continuous extension to the closed unit ball $\ol B^2$.
+\end{theorem}
+\begin{theorem}
+	Let $h$ be a homotopy between $f,g : X \to Y$. Let $x_1 \in X$. Then
+	\begin{align*}
+		h(x_1,\cdot) : [0,1] &\to Y\\
+		t &\mapsto h(x_1,t)
+	\end{align*}
+	is a path from $f(x_1)$ to $g(x_1)$
+	which fulfills
+	\begin{align*}
+		\pi_1(g,x_1) = J_{h(x_1, \cdot)} \circ \pi_1(f, x_1)
+	\end{align*}
+\end{theorem}
+Recall that $\pi_{1}(g, x_1)$ is the map $[\gamma] \mapsto [g \circ \gamma]$, and that $J_\delta$ is the map $[\gamma] \mapsto [\ol \delta * \gamma * \delta]$, so this theorem states that
+\begin{align*}
+	[g \circ \gamma] = \lr[\ol h(x_1,\cdot) * (f \circ \gamma) * h(x_1,\cdot)]
+\end{align*}
+for any $\gamma \in \pi_1(X,x_1)$, or, equivalently, that the diagram
+% https://q.uiver.app/#q=WzAsMyxbMCwwLCJcXHBpXzEoWCx4XzEpIl0sWzIsMCwiXFxwaV8xKFksZih4XzEpKSJdLFsxLDIsIlxccGlfMShZLGcoeF8xKSJdLFsxLDIsIkpfe2goeF8xLFxcY2RvdCl9Il0sWzAsMiwiXFxwaV97MSx4XzF9KGcpIiwyXSxbMCwxLCJcXHBpX3sxLHhfMX0oZikiXV0=
+\[\begin{tikzcd}
+	& {\pi_1(X,x_1)} &\\
+	\\
+	{\pi_1(Y,f(x_1))} &&  {\pi_1(Y,g(x_1)}
+	\arrow["{\pi_{1}(f,x_1)}", from=1-2, to=3-1]
+	\arrow["{\pi_{1}(g,x_1)}"', from=1-2, to=3-3]
+	\arrow["{J_{h(x_1,\cdot)}}",  from=3-1, to=3-3]
+\end{tikzcd}\]
+commutes.
+\begin{proof}
+	Define
+	\begin{align*}
+		H_t(x) := h(x_1, t + (1-t)x).
+	\end{align*}
+	We have $(f \circ \gamma) \in \Omega(X, f(x_1)$ and $(g \circ \gamma) \in \Omega(X, g(x_1))$, since
+	\begin{align*}
+		f(\gamma(0)) = f(x_1) = f(\gamma(1))\\
+		g(\gamma(0)) = g(x_1) = g(\gamma(1))
+	\end{align*}
+	Then a homotopy between $g \circ \gamma$ and $\ol h(x_1,\cdot) * (f \circ \gamma) * h(x_1,\cdot)$ is given by:
+	\begin{align*}
+		k(x,t) := (\ol{H_t} * (h(\cdot, t) \circ \gamma) * H_t)(x),
+	\end{align*}
+	since we get:
+	\begin{align*}
+		k(x,0)
+		&=
+		(\ol{H_0} * (h(\cdot, 0) \circ \gamma) * H_0)(x)\\
+		&=
+		(\ol{H_0} * (f \circ \gamma) * H_0)(x)\\
+		&=
+		(\ol h(x_1, \cdot) * (f \circ \gamma) * h(x_1, \cdot))(x)
+	\end{align*}
+	and
+	\begin{align*}
+		k(x,1)
+		&=
+		(\ol{H_1} * (h(\cdot, 1) \circ \gamma) * H_1)(x)\\
+		&=
+		({h(x_1,(1-1) + (1-(1-1))(\cdot))} * (g \circ \gamma) * h(x_1,1 + (1-1)(\cdot)))(x)\\
+		&=
+		({h(x_1,\cdot)} * (g \circ \gamma) * h(x_1,1))(x)\\
+		&=
+		({e_{g(x_1)}} * (g \circ \gamma) * e_{g(x_1)})(x)\\
+		&=
+		(g \circ \gamma)(x),
+	\end{align*}
+	where the second to last step follows since the loop $(g \circ \gamma)$ ends on the base point $g(x_1)$. 
+\end{proof}
+\begin{lemma}
+	Let $\gamma : [0,1] \to X$ be continuous. Let $f : X \to Y$. Then
+	\begin{align*}
+		\pi_{1}(f, \gamma(1)) \circ J_\gamma = J_{f \circ \gamma} \circ \pi_{1}(f, \gamma(0)),
+	\end{align*}
+	i.e. the diagram
+	% https://q.uiver.app/#q=WzAsNCxbMCwwLCJcXHBpXzEoWCwgXFxnYW1tYSgxKSkiXSxbMCwyLCJcXHBpXzEoWCwgXFxnYW1tYSgwKSkiXSxbMiwwLCJcXHBpXzEoWSwgZihcXGdhbW1hKDEpKSkiXSxbMiwyLCJcXHBpXzEoWSwgZihcXGdhbW1hKDApKSkiXSxbMCwxLCJKX1xcZ2FtbWEiXSxbMiwzLCJKX3tmIFxcY2lyYyBcXGdhbW1hfSJdLFswLDIsIlxccGlfezEsIFxcZ2FtbWEoMSl9KGYpIiwxXSxbMSwzLCJcXHBpX3sxLCBcXGdhbW1hKDApfShmKSIsMV1d
+	\[\begin{tikzcd}
+		{\pi_1(X, \gamma(0))} && {\pi_1(Y, f(\gamma(0)))} \\
+		\\
+		{\pi_1(X, \gamma(1))} && {\pi_1(Y, f(\gamma(1)))}
+		\arrow["{\pi_{1}(f, \gamma(0))}"{description}, from=1-1, to=1-3]
+		\arrow["{J_\gamma}", from=1-1, to=3-1]
+		\arrow["{J_{f \circ \gamma}}", from=1-3, to=3-3]
+		\arrow["{\pi_{1}(f, \gamma(1))}"{description}, from=3-1, to=3-3]
+	\end{tikzcd}\]
+	commutes.
+\end{lemma}
+\begin{proof}
+	Let $\sigma \in \Omega(X, \gamma(0))$. Then we have
+	\begin{align*}
+		\pi_{1}(f, \gamma(1)) \circ J_\gamma([\sigma])
+		&=
+		\pi_{1}(f, \gamma(1))(\lr[\ol \gamma * \sigma * \gamma])\\
+		&=
+		\lr[f \circ (\ol \gamma * \sigma * \gamma)]\\
+		&=
+		\lr[(f \circ \ol \gamma) * (f \circ \sigma) * (f \circ \gamma)]\\
+		&=
+		\lr[\ol{(f \circ \gamma)} * (f \circ \sigma) * (f \circ \gamma)]\\
+		&=
+		J_{f \circ \gamma}([f \circ \sigma])\\
+		&=
+		J_{f \circ \gamma} \circ \pi_{1}(f, \gamma(0))([\sigma])
+	\end{align*}
+\end{proof}
+\begin{theorem}
+	Let $f : X \to Y$ be a homotopy equivalence. Let $x_0 \in X$. Then the map $\pi_{1}(f, x_0)$ is a group isomorphism $\pi_1(X, x_0) \cong \pi_1(Y, f(x_0))$.
+\end{theorem}

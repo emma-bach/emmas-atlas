@@ -1,0 +1,128 @@
+\part{Algebraic Structures}
+\chapter{$(\bN, +)$ is a Monoid}
+\chapter{$(\bZ, +, -)$ is a Group}
+\section{Group Homomorphisms}
+\begin{theorem}
+	Let $\phi : (G, \circ_G) \to (H, \circ_H)$ be a map that respects group operations, i.e:
+	\begin{align*}
+		\phi(g_1 \circ_G h_2) = \phi(g_1) \circ_H \phi(g_2)
+	\end{align*}
+	Then $h$ also respects the neutral element and inverses, i.e:
+	\begin{align*}
+		\phi(e_G) = e_H\\
+		\phi(g^{-1}) = \phi(g)^{-1}
+	\end{align*}
+\end{theorem}
+\begin{proof}
+	\begin{enumerate}
+		\item For any $h \in H$, we have:
+		\begin{align*}
+			e_H 
+			&= e_H \circ_H e_H\\
+			&= \lr(\phi(e_G)^{-1} \circ_H \phi(e_G)) \circ_H e_H\\
+			&= \phi(e_G)^{-1} \circ_H \phi(e_G)\\
+			&= \phi(e_G)^{-1} \circ_H \phi(e_G \circ_G e_G)\\
+			&= \phi(e_G)^{-1} \circ_H \phi(e_G) \circ_H \phi(e_G)\\
+			&= e_H \circ_H \phi(e_G)\\
+			&= \phi(e_G)
+		\end{align*}	
+		So $\phi$ respects the neutral element.
+		\item Since $\phi$ respects the neutral element, we get:
+		\begin{align*}
+			\phi(g) \circ_H \phi(g^{-1})
+			&=
+			\phi(g \circ_G g^{-1})\\
+			&=
+			\phi(e_G)\\
+			&=
+			e_H,
+		\end{align*}
+		i.e. $\phi(g^{-1}) = \phi(g)^{-1}$.
+	\end{enumerate}
+\end{proof}
+\section{Group Actions}
+\begin{importantdefinition}{}{}
+	Let $(G, \circ, e)$ be a group. Let $X$ be a set. Then a map $. : G \times X \to X$ is called a \tib{group action} of $G$ on $X$ iff:
+	\begin{enumerate}
+		\item It respects the neutral element:
+		\begin{align*}
+			\forall x \in X:\\
+			e.x = x
+		\end{align*}
+		\item It associates with the group operation:
+		\begin{align*}
+			\forall g,h \in G, x \in X:\\
+			(g \circ h).x = g.(h.x)
+		\end{align*}
+	\end{enumerate}
+\end{importantdefinition}
+\begin{exercise}
+	Show that a map $(g,x) \to g.x$ is a group operation if and only if the map $g \to (x \to g.x)$ is a group homomorphism from $G$ into the symmetric group over $X$.
+\end{exercise}
+\begin{definition}
+	Let $. : G \times X \to X$ be an action of a group $G$ on a set $X$. Let $x \in X$. Then we call the set
+	\begin{align*}
+		Gx := \lr{g.x \mid g \in G}
+	\end{align*}
+	of all points that $x$ can be taken to by an element of $G$ the \tib{orbit} of $x$ under $G$.
+\end{definition}
+\begin{exercise}
+	Let $X = \bR^2$ be the plane. Let $G$ be the group of rotations around the origin. Sketch the orbits of different points $x \in X$.
+\end{exercise}
+\begin{definition}
+	Let $. : G \times X \to X$ be an action of a group $G$ on a set $X$. Then we call the set
+	\begin{align*}
+		X/G := \lr{Gx \mid x \in X}
+	\end{align*}
+	of all orbits under $G$ the \tib{orbit space} of $G$ in $X$.
+\end{definition}
+\begin{exercise}
+	Show that the relation
+	\begin{align*}
+		x \sim y \Leftrightarrow \exists g \in G : g.x = y
+	\end{align*}
+	is an equivalence relation. Show that for any $x \in X$, we the equivalence class of $x$ is exactly the orbit of $x$.
+\end{exercise}
+\begin{definition}
+	Let $. : G \times X \to X$ be an action of a group $G$ on a set $X$. Then we call the action $.$ \tib{transitive} if any point $x \in X$ can be taken to any point $y \in X$ by an element of $G$:
+	\begin{align*}
+		\forall x,y \in X :\\
+		\exists g \in G:\\
+		g.x = y
+	\end{align*}
+\end{definition}
+\begin{exercise}
+	Show that a group action is transitive if and only if $Gx = X$ for all $x \in X$.
+\end{exercise}
+\begin{definition}
+	Let $. : G \times X \to X$ be an action of a group $G$ on a set $X$. Let $x \in X$. Then we call the set
+	\begin{align*}
+		G_x := \lr{g \in G \mid g.x = x}
+	\end{align*}
+	of all elements of $G$ leaving $x$ unchanged the \tib{isotropy group} of $x$.
+\end{definition}
+\begin{exercise}
+	Show that the isotropy group $G_x$ is always a subgroup of $G$.
+\end{exercise}
+\begin{exercise}
+	Show that if the action $(g,x) \mapsto g.x$ is transitive, the map
+	\begin{align*}
+		\phi_x : G/G_x &\to X\\
+		[g] &\mapsto g.x,
+	\end{align*}
+	where $G/G_x$ is the quotient group of $G$ by $G_x$, is well-defined and bijective.
+\end{exercise}
+We can also define the isotropy groups of points: 
+\begin{definition}
+	Let $. : G \times X \to X$ be an action of a group $G$ on a set $X$. Let $A \subseteq X$. Then we define
+	\begin{align*}
+		g.A := \lr{g.a \mid a \in A}
+	\end{align*}
+	and call the set
+	\begin{align*}
+		G_A := \lr{g \in G \mid g.A = A}
+	\end{align*}
+	of all elements of $G$ mapping elements of $A$ to elements of $A$ the \tib{isotropy group} of $A$.
+\end{definition}
+\chapter{$(\bZ, +, -, \cdot)$ is a Ring}
+\chapter{$(\bQ, +, -, \cdot, ^{-1})$ is a Field}
