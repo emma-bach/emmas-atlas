@@ -47,7 +47,7 @@
 
 % Nicer Underlining
 \usepackage{contour}
-\usepackage{ulem}
+\usepackage[normalem]{ulem}
 
 % Multiple Text Columns
 \usepackage{multicol}
@@ -100,7 +100,7 @@
 \newcommand{\tn}[1]{\textnormal{#1}}
 \newcommand{\tit}[1]{\textit{#1}}
 \newcommand{\ttt}[1]{\texttt{#1}}
-\newcommand{\tib}[1]{\tbf{\tit{#1}}}
+\newcommand{\tib}[1]{\tbf{\emph{#1}}}
 
 % make \textbf automatically include math
 \let\oldtextbf=\textbf
@@ -172,6 +172,8 @@
 \newcommand{\cR}{\mathcal{R}}
 \newcommand{\cS}{\mathcal{S}}
 \newcommand{\cT}{\mathcal{T}}
+\newcommand{\cU}{\mathcal{U}}
+\newcommand{\cV}{\mathcal{V}}
 \newcommand{\cW}{\mathcal{W}}
 \newcommand{\cX}{\mathcal{X}}
 \newcommand{\cZ}{\mathcal{Z}}
@@ -277,7 +279,7 @@
 
 % --- THEOREM AND PROOF TYPES ---
 % \newtheorem{codename}{printedname}[countedwith]
-\newtheorem{lemma}{Lemma}[section]
+\newtheorem{lemma}{Lemma}[chapter]
 \newtheorem{theorem}[lemma]{Theorem}
 \newtheorem{proposition}[lemma]{Proposition}
 \newtheorem{corollary}[lemma]{Corollary}

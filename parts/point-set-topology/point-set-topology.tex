@@ -2,6 +2,152 @@
 \chapter{Topological Spaces}
 \epigraph{
 \textit{A very common axiom is the Hausdorff separation axiom, which says that any two distinct points can be housed orf from each other by disjoint open sets.}}{{"Topology via Logic",}\\{Steven Vickers}}
+\chapter{Filters and Convergence}
+\begin{theorem}
+	\label{th:ultrafilteropen}
+	Let $X$ be a topological space. Let $U \subseteq X$. Then $U$ is open iff. $U$ is contained in every ultrafilter converging to some point in $U$.
+\end{theorem}
+\begin{proof}
+	\begin{enumerate}
+		\item[$\Rightarrow$:] By definition, if $U$ is an open neighborhood of $x$, any filter convering to $x$ must contain $U$.
+		\item[$\Leftarrow$:] Let $U \subseteq X$ and assume $U \in \cU$ for every ultrafilter converging to a point $u \in U$. Assume $U$ is not open. Then there exists a point $u \in U$ such that every open neighborhood of $u$ contains at least one point in $X \setminus U$. But then any two members of the family
+		\begin{align*}
+			\lr{X \setminus U} \cup \lr{U(u)}
+		\end{align*}
+		have nonempty intersection. Therefore, this family can be extended to an Ultrafilter $\cU_u$. Since $\cU_u$ contains all open neighborhoods of $u$ by construction, it converges to $u$, and must thus contain $U$. Since it also contains $X \setminus U$, we arrive at a contradiction.
+	\end{enumerate}
+\end{proof}
+\begin{definition}
+	Let $\cF$ be a filter on $X$. Let $f : X \to Y$. Then the \tib{pushforward Filter of $f$ on $\cF$} is the set
+	\begin{align*}
+		f_*(\cF) := \lr{A \subseteq Y \mid p_i^{-1}[A] \in \cF},
+	\end{align*}
+\end{definition}
+\begin{exercise}
+	Verify that the pushforward of a filter is a filter, and that the pushforward of an ultrafilter is an ultrafilter.
+\end{exercise}
+\begin{importanttheorem}{Characterization of continuity in terms of Ultrafilters}{pushforwardfilter}
+	Let $f : X \to Y$. Then $f$ is continuous if and only if $f_*(\cU)$ converges to $f(x)$ for every ultrafilter $\cU$ that converges to $x \in X$.
+\end{importanttheorem}
+\begin{proof}
+	\begin{enumerate}
+		\item Assume $f$ is continuous. Let $\cU$ be an ultrafilter on $X$ converging to $x \in X$. 
+		
+		Let $U \subseteq Y$ be an open neighbourhood of $f(x)$. Then, since $f$ is continuous, $f^{-1}(U)$ is an open neighbourhood of $x$. We thus have $f^{-1}(U) \in \cU$, which gives us $U \in f_*(\cU)$ by the definition of the pushforward filter. 
+		
+		Thus, every open neighbourhood of $f(x)$ is contained in $f_*(\cU)$, so $f_*(\cU)$ converges to $f(x)$.
+		
+		\item Assume that the pushforward of any ultrafilter converging to $x$ converges to $f(x)$. Let $U \subseteq Y$ be open. 
+		
+		Let $\cU$ be an ultrafilter on $X$ converging to some point $x \in f^{-1}(U)$. Then, by our hypothesis, $f_*(\cU)$ converges to $f(x)$. Since $U$ is an open neighborhood of $f(x)$, we have $U \in f_*(\cU)$, and thus $f^{-1}(U) \in \cU$. Thus, by theorem \ref{th:ultrafilteropen}, $f^{-1}(U)$ is open, so $f$ is continuous.
+	\end{enumerate}
+\end{proof}
+\begin{theorem}
+	\label{th:productfilterconvergence}
+	Let $(X_i, \cO_i)_{i \in I}$ be a family of topological spaces. Let $\cF$ be a filter on $\prod_{i \in I} X_i$. Then $\cF$ converges to a point $x \in \prod_{i \in I} X_i$ if and only if each pushforward filter $(p_i)_*(\cF)$ converges to $p_i(x) = x_i$.
+\end{theorem}
+\begin{proof}
+	\begin{enumerate}
+		\item[$\Rightarrow$:] Assume that $\cF$ converges to $x \in \prod_{i \in I} X_i$. Since all projections $p_i$ are continuous, each $(p_i)_*(\cF)$ converges to $p_i(x) = x_i$ by theorem \ref{th:pushforwardfilter}.
+		
+		\item[$\Leftarrow$:] Assume that each $(p_i)_*(\cF)$ converges to $p_i(x) = x_i$. By definition of the product topology, the sets $S_i := p_i^{-1}(U_i)$ for open $U_i \in X_i$ form a subbase of $\prod_{i \in I} X_i$. Therefore, any open neighborhood $U \in \cU(x)$ contains an open neighborhood $B = \bigcap_{i \in J \subseteq I} p_i^{-1}(U_i)$ for some open neighborhoods $U_i \in \cU(x_i)$.
+		
+		Since each $(p_i)_*(\cF)$ converges to $x_i$, we have $U_i \in (p_i)_*(\cF)$ for each $i$. Therefore, by definition of the pushforward filter, we have $p_i^{-1}(U_i) \in \cF$ for all $i$. Since filters are closed under intersection, we get $B \in \cF$, and since $B \subseteq U$ we also get $U \in \cF$ as desired.
+	\end{enumerate}
+\end{proof}
+\chapter{Compactness}
+The familiar notions of open converings and compactness generalize directly from metric spaces to topological spaces. The most major difference is that sequential compactness is generally weaker than "covering compactness", and has to be replaced with a notion of compactness based on ultrafilter convergence.
+\begin{definition}
+	Let $(X, \cO)$ be a topological space. Then we call a set $\cU \subseteq \cO$ of open subsets an \tib{open covering} of $X$ if every point of $X$ is contained in the union of all elements of $\cU$, i.e. if
+	\begin{align*}
+		\bigcup_{U_i \in \cU} U_i = X
+	\end{align*}
+\end{definition}´
+\begin{importantdefinition}{Compactness}{}
+	Let $(X, \cO)$ be a topological space. Then we call $(X, \cO)$ \tib{compact} if every open covering of $X$ contains a finite open covering as a subset. We call a subset $K \subseteq X$ compact if it is compact as a topological space equipped with the subspace topology.
+\end{importantdefinition}
+\begin{exercise}
+	Every closed subset of a compact space is compact.
+\end{exercise}
+\begin{exercise}
+	Let $(X, \cO)$ be compact and $f : X \to Y$ be continuous. Then $f[X]$ is compact.
+\end{exercise}
+\begin{exercise}
+	Let $(X, \cO)$ be a nonempty topological space. Then the following are equivalent:
+	\begin{enumerate}
+		\item $(X,\cO)$ is compact, i.e. every open covering has a finite subcovering.
+		\item Every set $\cA$ of closed sets whose intersection is the empty set has a finite subset whose intersection is the empty set.
+		\item If $\cA$ is a set of closed sets such that the intersection over any finite subset of $\cA$ is non-empty, the intersection of $\cA$ is non-empty.
+		\item Every filter on $(X, \cO)$ has a limit point.
+		\item Every ultrafilter on $(X, \cO)$ is convergent.
+	\end{enumerate}
+\end{exercise}
+\begin{theorem}\tib{(Alexander Subbase Theorem)}
+	Let $(X, \cO)$ be a topological space. Let $\cS$ be a subbasis. Then $X$ is compact if every open covering of $X$ by sets of $\cS$ has a finite subcovering.
+\end{theorem}
+\begin{proof}
+	Assume that $X$ is not compact. Then there exists a non-convergent ultrafilter $\cF$, i.e. we have
+	\begin{align*}
+		\forall &x \in X :\\ 
+		\exists &U_x \in \cU(x) :\\
+		&(X \setminus U_x) \in \cF
+	\end{align*}
+	By definition of subbases, every $U_x \in \cU(x)$ contains an open subset $O_x$ of the form
+	\begin{align*}
+		O_x = \bigcap_{k = 0}^n S_{k,x}
+	\end{align*}
+	for some $S_{k,x} \in \cS$ and $n \in \bN$.
+	We therefore have
+	\begin{align*}
+		X \setminus U_x
+		&\subseteq 
+		X \setminus O_x\\
+		&=
+		X \setminus \bigcap_{k = 0}^n S_{k,x}
+	\end{align*}
+	which implies $X \setminus \bigcap_{k = 0}^n S_{k,x} \in \cF$ by the filter axioms. Since the intersection of this set with $\bigcap_{k = 0}^n S_{k,x} \in \cF$ is empty, and filters are closed under finite intersection, $\cF$ cannot contain every $S_{k,x}$. Therefore, since $\cF$ is an ultrafilter, it must contain at least one set $X \setminus S_{k,x}$ for every $x$. We will refer to these $S_{k,x}$ with $X \setminus S_{k,x} \in X$ as $S_x$. 
+	\newpar
+	Since every $S_x$ is an open neighborhood of $x$, and thus contains $x$, the set of all $S_x$ is an open convering of $X$. By compactness, there must be a finite subcovering 
+	\begin{align*}
+		\bigcup_{x \in X'} S_x = X.
+	\end{align*} 
+	Now, since $\cF$ contains every $X \setminus S_x$, it also contains
+	\begin{align*}
+		\bigcap_{x \in X'} (X \setminus S_x) = X \setminus \bigcup_{x \in X'} S_x = X \setminus X = \emptyset.
+	\end{align*}
+	which contradicts $\cF$ being a filter.
+\end{proof}
+\begin{lemma}
+	Let $(X, \cO)$ be a Hausdorff space. Let $K \subseteq X$ be compact. Then $K$ can be separated from any point $x \in X \setminus K$ by open neighborhoods, i.e:
+	\begin{align*}
+		\forall &x \in X:\\
+		\exists &U_x \in \cU(x), U_K \in \cU(K):\\
+		&U_x \cap U_K = \emptyset
+	\end{align*}
+\end{lemma}
+\begin{exercise}
+	Let $(X, \cO)$ be compact and Hausdorff. Let $A,B \subseteq X$ be closed. Then $A$ and $B$ can be separated from each other by disjoint open neigborhoods.
+\end{exercise}
+\begin{exercise}
+	Every compact subset of a Hausdorff space is closed.
+\end{exercise}
+\begin{exercise}
+	Every continuous function from a compact space into a Hausdorff space is closed.
+\end{exercise}
+\begin{exercise}
+	Every continuous injective function from a compact space into a Hausdorff space is an embedding.
+\end{exercise}
+\begin{importanttheorem}{Tychonoff's Theorem}{}{}
+	Let $(X_i, \cO_i)_{i \in I}$ be a family of topological spaces. Then if all $X_i$ are compact, $\prod_{i \in I} X$ is compact.
+\end{importanttheorem}
+\begin{proof}
+	\begin{enumerate}
+		\item If there exists an $i \in I$ such that $X_i = \emptyset$, then $\prod X_i = \emptyset$ is compact.
+		\item Now, assume $\prod_{i \in I} X_i \neq \emptyset$. Then there exists an ultrafilter $\cU$ on $\prod_{i \in I} X_i$. 
+		
+		Since each $X_i$ is compact, each pushforward $(p_i)_*(\cU)$ converges to an $x_i \in X_i$. Thus, by theorem \ref{th:productfilterconvergence}, $\cU$ converges to $(x_i)_{i \in I}$ and $\prod_{i \in I} X_i$ is compact.
+	\end{enumerate}
+\end{proof}
 \chapter{Topologies on Algebraic Structures}
 \section{Topological Groups}
 \begin{importantdefinition}{}{}
