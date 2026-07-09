@@ -316,6 +316,7 @@ commutes.
 \begin{importantdefinition}{Locally Trivial Fibration}{}
 	Let $\pi : Y \to X$ be continuous. Then $\pi$ is called a \tib{locally trivial fibration} iff. for every $x \in X$, there exists an open neighborhood $U$ such that there exists a homeomorphism $h_u : \pi^{-1}[U] \cong U \times \pi^{-1}[x]$ fulfilling $p_1 \circ h_U = \pi|_{\pi^{-1}[U]}$.
 \end{importantdefinition}
+$\pi^{-1}[x]$ is called the \tib{Fiber of $\pi$ at $x$}, and sometimes written $F_x$.
 % https://q.uiver.app/#q=WzAsMyxbMCwwLCJZIFxcc3Vwc2V0ZXFcXHBpXnstMX1bVV0iXSxbMCwyLCJYIFxcc3Vwc2V0ZXEgVSJdLFsyLDAsIlUgXFx0aW1lcyBcXHBpXnstMX1beF0iXSxbMCwxLCJcXHBpIl0sWzAsMiwiaF9VIiwyXSxbMiwxLCJwXzEiXV0=
 \[\begin{tikzcd}
 	{Y \supseteq\pi^{-1}[U]} && {U \times \pi^{-1}[x]} \\
@@ -326,18 +327,32 @@ commutes.
 	\arrow["{p_1}", from=1-3, to=3-1]
 \end{tikzcd}\]
 \begin{definition}
-	A locally trivial fibration is called a \tib{local covering} if every $\pi^{-1}[x]$ is discrete. A locally trivial fibration is called a \tib{trivial fibration} if we can always pick $U = X$, i.e. $h : \pi^{-1}[X] \cong X \times \pi^{-1}[x]$. A trivial fibration that is also a local covering is simply called a \tib{covering}.
+	Let $\pi : Y \to X$ be a locally trivial fibration. Then:
+	\begin{enumerate}
+		\item If all $\pi^{-1}[x]$ are homeomorphic, we call $\pi$ a \tib{fiber bundle}.
+		\item If every $\pi^{-1}[x]$ is discrete, we call $\pi$ a \tib{covering map}.
+		\item If we can pick $U = X$, $\pi$ is called a \tib{trivial fibration}.
+	\end{enumerate}
 \end{definition}
 \begin{exercise}
 	If we replace $\pi^{-1}[x]$ in the definition by an arbitrary topological space $F_U$, we get $F_U \cong \pi^{-1}[x]$. Thus, both definitions are equivalent.
 \end{exercise}
 \begin{lemma}
-	Let $\pi : Y \to X$ be locally trivial fibrations. Let $X$ be connected. Then fibers of $\pi$ are homeomorphic.
+	Let $\pi : Y \to X$ be a locally trivial fibration. Let $X$ be connected. Then $\pi$ is a trivial fibration.
 \end{lemma}
+\begin{proof}
+	Let $x_0 \in X$. Let $V = \lr{x \in X \mid F_x \cong F_{x_0}}$ be the set of all points whose fibers are homeomorphic to the fiber of $x_0$. Let $U$ be a neighborhood as in the definition. Then the fibers of all $x \in U$ must be homeomorphic by definition. Thus, every point in $V$ has a neighborhood contained in $V$, so $V$ is open. We have
+	\begin{align*}
+		X \setminus V = \bigcup_{y \notin V} \lr{x \in X \mid F_x \cong F_y}
+		:=
+		 \bigcup_{y \notin V} V_y
+	\end{align*}
+	Since every $V_y$ is open by the same argument, $X \setminus V$ must be open. But since $X$ is connected with $(X \setminus V) \cup V = X$ and $V$ nonempty, $X \setminus V$ must be empty.
+\end{proof}
 \begin{theorem}
 	Let $\pi : Y \to X$ be continuous. Then the following are equivalent:
 	\begin{enumerate}
-		\item $\pi$ is a local covering.
+		\item $\pi$ is a covering map.
 		\item For every $x \in X$, there exists an open neighborhood $U$ of $x$ and a non-empty $I$ such that for ecah $i \in I$, there exists an open set $V_i$ such that:
 		\begin{enumerate}
 			\item $\pi^{-1}[U] = \bigcup_{i \in I} V_i$.
