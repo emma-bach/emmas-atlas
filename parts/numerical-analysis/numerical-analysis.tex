@@ -101,4 +101,15 @@ from which we can set $x := x_k$ to get a new iteration
 \begin{align*}
 	x_{k+1} = x_k - Df(x_k)^{-1} f(x_k) \approx x^*
 \end{align*}
-as long as $Df(x_k)$ is regular.
+as long as $Df(x_k)$ is regular. This is the (multidimensional analogue of) the Newton method, and is generally much more efficient than the secant method.
+\begin{theorem}
+	Let $f \in C^2(U, \bR^n)$. Let $x^* \in U$ be a root of $f$ such that $Df(x^*)$ is invertible. Then there exists an $\epsilon > 0$ such that the Newton method converges for any $x_0 \in U$ with $d(x^*, x_0) < \epsilon$. Additionally, there exists a constant $c \geq 0$ such that the iterates $(x_k)_{k \in \bN}$ fulfill
+	\begin{align*}
+		\norm{x^* - x_{k+1}} \leq c \norm{x^* - x_k}^2
+	\end{align*}
+\end{theorem}
+If $d(x^*, x_0) \geq \epsilon$, the Newton method might diverge. In this case, introducing a damping factor $\omega \in (0,1)$ and iterating
+\begin{align*}
+	x_{k+1} = x_k - \omega Df(x_k)^{-1}
+\end{align*}
+can lead to convergence, but makes convergence asymptotically slower (no longer quadratic in general).

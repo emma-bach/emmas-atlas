@@ -1340,6 +1340,24 @@ We can construct a dual of any linear map this way, while linear maps involving 
 		\item If $F : V \to W$ is given by $F(\vv) = A \cdot \vv$ for some matrix $A$, then $F^\vee(\beta) = \beta \cdot A$, where elements $\beta \in W^*$ are represented as row vectors.
 	\end{enumerate}
 \end{exercise}
+\begin{theorem}
+	Let $U \subseteq V$ be vector spaces. Let $\iota : U \to V$ be the inclusion map. Let $q : V \to V / U$ be the quotient map. Then $(V / U)^* \cong \im~ q^\vee = \ker~ \iota^\vee$.
+\end{theorem}
+\begin{proof}
+	Since $q$ maps $V$ to $V/U$, we have $q^\vee : (V/U)^* \to \im~ q^* \subseteq V^*$. Since $q$ is linear, so is $q^\vee$. By definition, any map surjectively maps onto its image. Therefore, all we need to show to obtain $(V / U)^* \cong \im~ q^\vee$ is injectivity.
+	\newpar
+	So, let $\beta \in \ker~ q^\vee \subseteq (V/U)^*$, i.e. let $q^\vee(\beta) = \beta(q)$ be the zero map. Since $q$ is surjective, $\beta(q(v)) = 0$ for all $v \in V$ already implies $\beta(w) = 0$ for all $w \in V/U$, so $\beta$ must have already been the zero map. 
+	\newpar
+	Finally, we want to show $\im~ q^\vee = \ker~ \iota^\vee$. 
+	\newpar
+	First off, recall that $\iota^\vee : V^* \to U^*$. By the universal property of the quotient map, for every $\beta \in \ker \iota^\vee \subseteq V^*$, there exists $\ol \beta : V/U \to \Bbbk$ (i.e. $\ol \beta \in (V/U)^*$) with $\beta = \ol \beta \circ q = \ol \beta(q) \in \im~ q^\vee$, so we have $\ker \iota^\vee \subseteq \im~ q^\vee$.
+	\newpar
+	Conversely, for any $\beta \in (V/U)^*$ and $v \in (V/U)$, we have
+	\begin{align*}
+		q^\vee(\beta)(v) = \beta(q(v)) = \beta(0) = 0,
+	\end{align*}
+	so we also have $\im q^\vee \subseteq \ker \iota^\vee$.
+\end{proof}
 \begin{importanttheorem}{}{}
 	Let $(V,g)$ and $(W,h)$ be $\Bbbk$-vector spaces with scalar products. Let $h_1 : W \to W^*$ and $g_1 : V \to V^*$ be the antilinear maps induced by $g$ and $h$, i.e.
 	\begin{align*}

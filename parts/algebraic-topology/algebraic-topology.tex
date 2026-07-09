@@ -312,3 +312,66 @@ commutes.
 \begin{theorem}
 	Let $f : X \to Y$ be a homotopy equivalence. Let $x_0 \in X$. Then the map $\pi_{1}(f, x_0)$ is a group isomorphism $\pi_1(X, x_0) \cong \pi_1(Y, f(x_0))$.
 \end{theorem}
+\chapter{Fibrations and Coverings}
+\begin{importantdefinition}{Locally Trivial Fibration}{}
+	Let $\pi : Y \to X$ be continuous. Then $\pi$ is called a \tib{locally trivial fibration} iff. for every $x \in X$, there exists an open neighborhood $U$ such that there exists a homeomorphism $h_u : \pi^{-1}[U] \cong U \times \pi^{-1}[x]$ fulfilling $p_1 \circ h_U = \pi|_{\pi^{-1}[U]}$.
+\end{importantdefinition}
+% https://q.uiver.app/#q=WzAsMyxbMCwwLCJZIFxcc3Vwc2V0ZXFcXHBpXnstMX1bVV0iXSxbMCwyLCJYIFxcc3Vwc2V0ZXEgVSJdLFsyLDAsIlUgXFx0aW1lcyBcXHBpXnstMX1beF0iXSxbMCwxLCJcXHBpIl0sWzAsMiwiaF9VIiwyXSxbMiwxLCJwXzEiXV0=
+\[\begin{tikzcd}
+	{Y \supseteq\pi^{-1}[U]} && {U \times \pi^{-1}[x]} \\
+	\\
+	{X \supseteq U}
+	\arrow["{h_U}"', from=1-1, to=1-3]
+	\arrow["\pi", from=1-1, to=3-1]
+	\arrow["{p_1}", from=1-3, to=3-1]
+\end{tikzcd}\]
+\begin{definition}
+	A locally trivial fibration is called a \tib{local covering} if every $\pi^{-1}[x]$ is discrete. A locally trivial fibration is called a \tib{trivial fibration} if we can always pick $U = X$, i.e. $h : \pi^{-1}[X] \cong X \times \pi^{-1}[x]$. A trivial fibration that is also a local covering is simply called a \tib{covering}.
+\end{definition}
+\begin{exercise}
+	If we replace $\pi^{-1}[x]$ in the definition by an arbitrary topological space $F_U$, we get $F_U \cong \pi^{-1}[x]$. Thus, both definitions are equivalent.
+\end{exercise}
+\begin{lemma}
+	Let $\pi : Y \to X$ be locally trivial fibrations. Let $X$ be connected. Then fibers of $\pi$ are homeomorphic.
+\end{lemma}
+\begin{theorem}
+	Let $\pi : Y \to X$ be continuous. Then the following are equivalent:
+	\begin{enumerate}
+		\item $\pi$ is a local covering.
+		\item For every $x \in X$, there exists an open neighborhood $U$ of $x$ and a non-empty $I$ such that for ecah $i \in I$, there exists an open set $V_i$ such that:
+		\begin{enumerate}
+			\item $\pi^{-1}[U] = \bigcup_{i \in I} V_i$.
+			\item 
+			For $i \neq j \in I$, we have $V_i \cap V_j = \emptyset$.
+			\item
+			For all $i \in I$, the restriction of $\pi$ to $V_i$ is a homeomorphism between $V_i$ and $U$.
+		\end{enumerate}
+	\end{enumerate}
+\end{theorem}
+\begin{importantdefinition}{Lifting}{}
+	Let $\pi : Y \to X$ be a locally trivial fibration. Let $f : Z \to X$ be continuous. Then a continuous map $\hat f : Z \to Y$ is called a \tib{lift from $f$ to $Y$} if $\pi \circ \hat f = f$.
+\end{importantdefinition}
+Any path can be lifted:
+\begin{theorem}
+Let $\pi : Y \to X$ be a locally trivial fibration. Let $\gamma : [0,1] \to XX$ be continuous. Let $\pi(y_0) = \gamma(0)$. Then there exists a lift $\hat \gamma : [0,y] \to Y$ with $\hat \gamma(0) = y_0$ such that $\pi \circ \hat f = f$.
+\end{theorem}
+And lifts respect fundamental groups:
+\begin{theorem}
+	Let $\pi : Y \to X$ be a locally trivial fibrations. Let $f : Z \to X$. Let $\hat f : Z \to Y$ be a lift of $f$. Then we have:
+	\begin{align*}
+		\forall &z_0 \in Z:\\
+		\exists &y_0 \in Y:\\
+		&\hat f(z_0) = y_0,\\
+		&\pi_1(f)[\pi_1(Z, z_0)] \subseteq \pi_1(\pi)[\pi_1(Y,y_0)]
+	\end{align*}
+\end{theorem}
+\begin{proof}
+	\begin{align*}
+		\pi_1(f)[\pi_1(Z, z_0)]
+		&=
+		(\pi_1(\pi \circ \hat f))[\pi_1(Z, z_0)]\\
+		&=
+		(\pi_1(\pi) \circ \pi_1(\hat f))[\pi_1(Z, z_0)]\\
+		&=
+	\end{align*}
+\end{proof}
