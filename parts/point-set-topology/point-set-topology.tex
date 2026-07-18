@@ -1,7 +1,5 @@
 \part{Point-Set Topology}
 \chapter{Topological Spaces}
-\epigraph{
-\textit{A very common axiom is the Hausdorff separation axiom, which says that any two distinct points can be housed orf from each other by disjoint open sets.}}{{"Topology via Logic",}\\{Steven Vickers}}
 \chapter{Filters and Convergence}
 \begin{theorem}
 	\label{th:ultrafilteropen}
@@ -55,6 +53,30 @@
 		Since each $(p_i)_*(\cF)$ converges to $x_i$, we have $U_i \in (p_i)_*(\cF)$ for each $i$. Therefore, by definition of the pushforward filter, we have $p_i^{-1}(U_i) \in \cF$ for all $i$. Since filters are closed under intersection, we get $B \in \cF$, and since $B \subseteq U$ we also get $U \in \cF$ as desired.
 	\end{enumerate}
 \end{proof}
+\chapter{Separation Axioms}
+\epigraph{
+	\textit{A very common axiom is the Hausdorff separation axiom, which says that any two distinct points can be housed orf from each other by disjoint open sets.}}{{"Topology via Logic",}\\{Steven Vickers}}
+\begin{importantdefinition}{Separation Axioms}{}
+	Let $(X, \cO)$ be a topological space. Then we call $(X,\cO)$:
+	\begin{enumerate}
+		\item \tib{T0}, if for every pair of points $x,y \in X$, one of them has a neighbourhood that isn't a neighbourhood of the other.
+		\item \tib{T1}, if for every pair of points, both of them have neighbourhoods not containing the other.
+		\item \tib{T2} or \tib{Hausdorff´}, if for every pair of points, both of them have  disjoint neighbourhoods not containing the other.
+		\item
+		\tib{regular}, if every point can be housed orf from any closed set not containing it by disjoint open sets.
+		\item \tib{T3} or \tib{regular Hausdorff}, if it is regular and Hausdorff.
+		\item \tib{completely regular}, If every point can be separated from any closed set not containing it by a continuous function:
+		\begin{align*}
+			\forall &(X \setminus C) \in \cO :\\ 
+			\forall &x \notin C :\\ 
+			\exists &f \in C(X, [0,1]_\bR) :\\ 
+			&f(x) = 1,\ f[A] \subseteq \lr{0}
+		\end{align*}
+		\item \tib{T3a}, \tib{T3$\frac{1}{2}$}, or \tib{completely regular Hausdorff}, if it is completely regular and Hausdorff.
+		\item \tib{normal}, if every pair of closed sets can be housed orf from each other by disjoint neighbourhoods.
+		\item \tib{Normal Hausdorff}, if it is normal and Hausdorff.
+	\end{enumerate}
+\end{importantdefinition}
 \chapter{Compactness}
 The familiar notions of open converings and compactness generalize directly from metric spaces to topological spaces. The most major difference is that sequential compactness is generally weaker than "covering compactness", and has to be replaced with a notion of compactness based on ultrafilter convergence.
 \begin{definition}
