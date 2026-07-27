@@ -350,19 +350,23 @@ $\pi^{-1}[x]$ is called the \tib{Fiber of $\pi$ at $x$}, and sometimes written $
 	Since every $V_y$ is open by the same argument, $X \setminus V$ must be open. But since $X$ is connected with $(X \setminus V) \cup V = X$ and $V$ nonempty, $X \setminus V$ must be empty.
 \end{proof}
 \begin{theorem}
-	Let $\pi : Y \to X$ be continuous. Then the following are equivalent:
-	\begin{enumerate}
-		\item $\pi$ is a covering map.
-		\item For every $x \in X$, there exists an open neighborhood $U$ of $x$ and a non-empty $I$ such that for ecah $i \in I$, there exists an open set $V_i$ such that:
-		\begin{enumerate}
-			\item $\pi^{-1}[U] = \bigcup_{i \in I} V_i$.
-			\item 
-			For $i \neq j \in I$, we have $V_i \cap V_j = \emptyset$.
-			\item
-			For all $i \in I$, the restriction of $\pi$ to $V_i$ is a homeomorphism between $V_i$ and $U$.
-		\end{enumerate}
-	\end{enumerate}
+	A continuous function $\pi : Y \to X$ is a covering map if and only if every $x \in X$ has an open neighborhood $U$ such that $\pi^{-1}[U]$ can be decomposed into disjoint open sets $V_i \subseteq Y$ such that $\pi|_{V_i}$ is a homeomorphism $V_i \cong U$.
 \end{theorem}
+\begin{proof}
+	\begin{enumerate}
+		\item[$\Rightarrow$:] Let $\pi$ be a covering map. Let $I = F_U$. Since $h_U$ is bijective, the sets $V_i := h_U^{-1}[U \times \lr{i}]$ are disjoint. Since $h_U$ is a homeomorphism and $I = F_U$ is discrete, the $V_i$ are also open. Since $p_1|_{U \times \lr{i}}$ is a homeomorphism $U \times \lr{i} \cong U$, the composition
+		\begin{align*}
+			\pi|_{V_i} = (p_1|_{U \times \lr{i}}) \circ h|_{V_i}
+		\end{align*}
+		must be a homeomorphism $V_i \mapsto U$.
+		\item[$\Leftarrow$:] Define 
+		\begin{align*}
+			h_U : \pi^{-1}[U] &\cong U \times I\\
+			y \in V_i &\mapsto (\pi(y),i).
+		\end{align*}
+		Then the restriction of $h_U$ to each $V_i$ is by definition a homeomorphism $V_i \cong U \cong U \times \lr{i}$, and so the whole of $h_U$ is a homeomorphism $\pi^{-1}[U] = \bigsqcup_{i \in I} V_i \cong \bigsqcup_{i \in I} U \times \lr{i} = U \times I$.
+	\end{enumerate}
+\end{proof}
 \begin{importantdefinition}{Lifting}{}
 	Let $\pi : Y \to X$ be a locally trivial fibration. Let $f : Z \to X$ be continuous. Then a continuous map $\hat f : Z \to Y$ is called a \tib{lift from $f$ to $Y$} if $\pi \circ \hat f = f$.
 \end{importantdefinition}

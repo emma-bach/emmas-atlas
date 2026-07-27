@@ -1,2 +1,501 @@
 \part{Numerical Linear Algebra}
+\chapter{Operator Norms and Conditioning}
+\section{Conditioning and Stability}
+\begin{definition}
+	Let $x \in V$ be an element of a normed vector space. Let $\tilde x \in V$ be an approximation of $x$. Then the \tib{relative error} of $\tilde x$ is
+	\begin{align*}
+		\epsilon(x, \tilde x) 
+		:= \frac{\norm{x - \tilde x}}{\norm{x}}.
+	\end{align*}
+\end{definition}
+\begin{definition}
+	A function $\Phi(x) : V \to W$ is called \tib{poorly conditioned} (at $x \in X$) if a small pertubation in the input can lead to a large pertubation in the output, i.e. there exists $\tilde x$ such that 
+	\begin{align*}
+		\eps_\Phi := \epsilon(\Phi(x), \Phi(\tx)) \gg \epsilon(x, \tx) =: \eps_x.
+	\end{align*}
+	
+	$\Phi(x)$ is called \tib{well-conditioned} if there exists a 'reasonable' constant $c$ such that 
+	\begin{align*}
+		\eps_\Phi \leq c \cdot \eps_x
+	\end{align*} for all $x, \tx$.
+\end{definition}
+
+\pagebreak
+
+\begin{lemma}
+	Multiplication $\Phi(x,y) := x \cdot y$ of two numbers is well conditioned, with the approximation
+	\begin{align*}
+		\eps_\Phi \leq \eps_x\eps_y + \eps_x + \eps_y
+	\end{align*}
+\end{lemma}
+\begin{proof}
+	\begin{align*}
+		\epsilon_\Phi
+		&=
+		\frac{\norm{\tx\ty - xy}}{\norm{xy}}\\
+		&=
+		\frac{\norm{\tx\ty - x\ty + x\ty - xy}}{\norm{xy}}\\
+		&=
+		\frac{\norm{(\tx - x)\ty + x(\ty - y)}}{\norm{xy}}\\
+		&\leq
+		\frac{\norm{(\tx - x)\ty}}{\norm{xy}} 
+		+ 
+		\frac{\norm{x(\ty - y)}}{\norm{xy}}\\
+		&=
+		\frac{\norm{\tx - x}}{\norm{x}}\frac{\norm{\ty}}{\norm{y}}
+		+ 
+		\frac{\norm{\ty - y}}{\norm{y}}\\
+		&=
+		\frac{\norm{\tx - x}}{\norm{x}}\frac{\norm{\ty - y + y}}{\norm{y}}
+		+ 
+		\frac{\norm{\ty - y}}{\norm{y}}\\
+		&\leq
+		\frac{\norm{\tx - x}}{\norm{x}}\frac{\norm{\ty - y}}{\norm{y}}
+		+
+		\frac{\norm{\tx - x}}{\norm{x}}
+		\frac{\norm{y}}{\norm{y}}
+		+ 
+		\frac{\norm{\ty - y}}{\norm{y}}\\
+		&=
+		\frac{\norm{\tx - x}}{\norm{x}}\frac{\norm{\ty - y}}{\norm{y}}
+		+
+		\frac{\norm{\tx - x}}{\norm{x}}
+		+ 
+		\frac{\norm{\ty - y}}{\norm{y}}\\
+		&=
+		\eps_x\eps_y + \eps_x + \eps_y
+	\end{align*}
+\end{proof}
+\begin{definition}
+	An algorithm is called \tib{unstable} if rounding errors significantly increase the relative error beyond what the conditioning of the problem would imply, i.e. if the function $\Phi$ is also being approximated by a function $\tilde \Phi$ and
+	\begin{align*}
+		\eps_{\tilde \Phi} := \eps(\tl \Phi(\tx), \Phi(x))
+		\gg \eps_\Phi	
+	\end{align*}
+\end{definition}
+A function is stable if and only if every individual step of the calculation is well-conditioned.
+\begin{theorem}
+	Subtraction of approximately equal real numbers $x$ and $y := (1+\epsilon_y)x$ is poorly conditioned.
+\end{theorem}
+\begin{proof}
+	Let $\tx := (1 + \epsilon_x)x$. Then
+	\begin{align*}
+		\eps_\Phi := \frac{\norm{(\tx - y) - (x - y)}}{\norm{x-y}}
+		&=
+		\frac{\norm{\epsilon_x x}}{\norm{-\epsilon_y x}} =
+		\frac{\eps_x}{\eps_y}
+	\end{align*}
+	If $\eps_y$'s order of magnitude is equal or smaller than that of $\eps_y$, 
+	this relative error will be significantly larger than $1$.
+\end{proof}
+\begin{corollary}
+	The function
+	\begin{align*}
+		\tl \Phi_1(x)
+		:= 
+		\lr(\frac{1}{x}) - \lr(\frac{1}{x+1})
+	\end{align*}
+	is unstable, since it
+	is poorly conditioned even though the mathematically equivalent function
+	\begin{align*}
+		\tl \Phi_2(x)
+		:=
+		\frac{1}{x(x+1)}
+	\end{align*}
+	is well-conditioned.
+\end{corollary}
+\section{Operator Norms}
+\begin{importantdefinition}{Induced Operator Norm}{}
+	Let $(V, \norm{\cdot}_V)$ and $(W, \norm{\cdot}_W)$ be normed vector spaces. Then the operator norm on $\Hom(V,W)$ is defined by
+	\begin{align*}
+		\norm{F}_{V,W} = \sup \lr{\norm{F(x)}_W \mid x \in V : \norm{x}_V = 1}
+	\end{align*}
+\end{importantdefinition}
+The operator norm of $F$ thus tells us the largest norm that any normalized vector ends up with after being transformed.
+
+Equivalently, it tells us the radius of the smallest $W$-circle around the image of the normalized $V$-circle.
+\begin{theorem}
+	$\norm{\cdot}_{V,W}$ is a norm.
+\end{theorem}
+\begin{exercise}
+	Show that $\norm{\id_V}_{V,V} = 1$ for any norm $\norm{\cdot}_V$ on a vector space $V$.
+\end{exercise}
+\begin{exercise}
+	Show that, given any eigenvalue $\lambda$ of $F \in \Hom(V,V)$ and any norm $\norm{\cdot}_V$ on $V$, 
+	\begin{align*}
+		\norm{F}_{V,V} \geq \abs{\lambda}
+	\end{align*}
+\end{exercise}
+\begin{theorem}
+	Let $V,W$ be $\bF$-vector spaces. Then
+	\begin{align*}
+		\norm{F(x)}_{V,W} = \inf \lr{c \in \bF \mid \forall x \in V : \norm{F(x)}_W \leq c \cdot \norm{x}_V}
+	\end{align*}
+\end{theorem}
+\begin{proofsketch}
+	The largest factor by which $\norm{x}_V$ can increase is equivalently the smallest upper bound on such factors.
+\end{proofsketch}
+Note that this means $\norm{F(x)}_W \leq \norm{F}_{V,W} \cdot \norm{x}_V$ for all $x \in V$.
+\begin{corollary}
+	Let $F \in \Hom(V,W)$ and $G \in \Hom(W,U)$. Then $$\norm{G \circ F}_{V,U} \leq \norm{G}_{W,U} \cdot \norm{F}_{V,W}.$$
+\end{corollary}
+\begin{lemma}
+	The infimum is a minimum, i.e. there exists an $x$ attaining it.
+\end{lemma}
+\begin{lemma}
+	Let $F \neq 0$. Let $x \in V$ with $\norm{x}_V \leq 1$. Then $\norm{F(x)}_W = \norm{F}_{V,W}$ implies $\norm{x} = 1$.
+\end{lemma}
+\begin{proposition}
+	The $l^1$-norm
+	\begin{align*}
+		\norm{x}_1 = \sum_{i = 1}^n \abs{x_i}
+	\end{align*} 
+	on $\bR^n$ and $\bR^m$ induces the \tib{column sum norm}
+	\begin{align*}
+		\norm{A}_1 = \max_{j = 1, \hdots, n} \sum_{i = 1}^m \abs{a_{ij}}
+	\end{align*}
+	on $\Hom(\bR^n, \bR^m)$.
+\end{proposition}
+\begin{proposition}
+	The $l^\infty$-norm
+	\begin{align*}
+		\norm{x}_\infty = \max \lr{\abs{x_i} \mid i = 1, \hdots, n}
+	\end{align*} 
+	on $\bR^n$ and $\bR^m$ induces the \tib{row sum norm}
+	\begin{align*}
+		\norm{A}_\infty = \max_{j = 1, \hdots, m} \sum_{j = 1}^n \abs{a_{ij}}
+	\end{align*}
+	on $\Hom(\bR^n, \bR^m)$.
+\end{proposition}
+\begin{importantdefinition}{}{}
+	The \tib{spectral radius} $\rho(F)$ of an endomorphism $F \in \Hom(V,V)$ of a finite-dimensional vector space is the absolute value of the largest eigenvalue of $F$.
+\end{importantdefinition}
+\begin{proposition}
+	The $l^2$-norm
+	\begin{align*}
+		\norm{x}_2 = \sqrt{\sum_{i = 1}^n \abs{x_i}^2}
+	\end{align*} 
+	on $\bR^n$ and $\bR^m$ induces the \tib{spectral norm}
+	\begin{align*}
+		\norm{A}_2 = \sqrt{\rho(A^\top A)}
+	\end{align*}
+	on $\Hom(\bR^n, \bR^m)$.
+\end{proposition}
+\begin{definition}
+	The \tib{Frobenius norm} on $\Hom(\bR^n, \bR^m)$ is the natural norm given by $\Hom(\bR^n, \bR^m) \cong \bR^{mn}$:
+	\begin{align*}
+		\norm{A}_F := \sqrt{\sum_{i = 1}^m \sum_{j = 1}^n a_{ij}^2}
+	\end{align*}
+\end{definition}
+\begin{exercise}
+	Show that the Frobenius norm is not an operator norm.
+\end{exercise}
+
+\clearpage
+
+\section{Condition Number}
+\begin{theorem}
+	Let $\norm{\cdot}$ be an operator norm on $\Hom(\bR^n, \bR^n)$. Let $A \in \Hom(\bR^n, \bR^n)$ be invertible. Let $x,\tx,b,\tb \in \bR^n \setminus \lr{0}$ such that $Ax = b$ and $A\tx = \tb$. Then
+	\begin{align*}
+		\epsilon_x \leq \norm{A}\norm{A^{-1}}\epsilon_b.
+	\end{align*}
+\end{theorem}
+This means that the product $\norm{A}\norm{A^{-1}}$ tells us how much our accumulated relative error increases when we solve a system of linear equations. We want to give this product a special name:
+\begin{importantdefinition}{}{}
+	Let $\norm{\cdot}$ be an operator norm on $\Hom(\bR^n, \bR^n)$. Let $A \in \Hom(\bR^n, \bR^n)$ be invertible. Then we define the \tib{condition number} of $A$ to be
+	\begin{align*}
+		\cond(A, \norm{\cdot}) = \norm{A}\norm{A^{-1}}
+	\end{align*}
+	If $\norm{\cdot}_p$ is a $p$-norm, we write $\cond(A, \norm{\cdot}_p) =: \cond_p(A)$.
+\end{importantdefinition}
+\begin{exercise}
+	Show that $\cond(A, \norm{\cdot}) \geq 1$ for all $A \in \Hom(\bR^n, \bR^m)$ and any operator norm $\norm{\cdot}$.
+\end{exercise}
+\begin{exercise}
+	Show that if $A$ is symmetric with eigenvalues $\lambda_1, \hdots, \lambda_n$, then
+	\begin{align*}
+		\cond_2(A) = \frac{\max \abs{\lambda_i}}{\min \abs{\lambda_j}}
+	\end{align*}
+\end{exercise}
+\begin{exercise}
+	Show that the linear map given by
+	\begin{align*}
+		A = 
+		\begin{pmatrix}
+			1 & 1\\
+			1 & 1+\epsilon
+		\end{pmatrix}
+	\end{align*}
+	is poorly conditioned by approximating $\cond_2(A)$.
+\end{exercise}
 \chapter{Matrix Factorization}
+\section{$LU$-Decomposition}
+Solving a system of linear equations corresponding to a triangular matrix is trivial. Thus, if we can write a given matrix as a product of two triangular matrices, further computations become significantly easier.
+\begin{exercise}
+	Let $U,V$ be upper triangular matrices. Then $U \cdot V$ is an upper triangular matrix. 
+\end{exercise}
+\begin{exercise}
+	Let $U$ be an upper triangular matrix. Then if $U$ is invertible, $U^{-1}$ is an upper triangular matrix whose diagonal entries are the inverses of the diagonal entries of $U$.
+\end{exercise}
+\begin{theorem}
+	Let $A \in \Hom(\bR^n, \bR^n)$ be an upper triangular matrix such that all upper left submatrices are invertible. Then there exists a unique decomposition 
+	\begin{align*}
+		A = L U
+	\end{align*}
+	such that $U$ is an invertible upper triangular matrix and $L$ is an invertible lower triangular matrix with normalized diagonal entries.
+\end{theorem}
+\begin{proof}
+	For $n = 1$, we simply set $L = 1$ and $U = A$.
+	
+	A decomposition $A_{n-1} = L_{n-1}U_{n-1}$ for the upper left block of size $n-1$ in $A$ can be extended to a decomposition $A = L U$ by solving a system of linear equations, whose solvability is guaranteed by the invertibility of $L_{n-1}$ and $U_{n-1}$:
+	\begin{align*}
+		A &= LU\\
+		\Longleftrightarrow
+		\begin{pmatrix}
+			A_{n-1} & a_U\\
+			a_L^\top & a_{nn}
+		\end{pmatrix}
+		&=
+		\begin{pmatrix}
+			L_{n-1} & 0\\
+			l_L & 1
+		\end{pmatrix}
+		\cdot
+		\begin{pmatrix}
+			U_{n-1} & u_U\\
+			0 & u_{nn}
+		\end{pmatrix}\\
+		&=
+		\begin{pmatrix}
+			L_{n-1} \cdot U_{n-1} & L_{n-1}u_U\\
+			(U_{n-1}^\top l_L)^\top & l_L^\top u_U + u_{nn}
+		\end{pmatrix}
+	\end{align*}
+	Since we've already solved the upper left block $A_{n-1} = L_{n-1}U_{n-1}$, we simply need to solve the equations
+	\begin{align*}
+		a_U = L_{n-1} u_U\\
+		a_L = U_{n-1} l_L\\
+		a_{nn} = l_L^\top u_U + u_{nn}
+	\end{align*}
+	Since $L_{n-1}$ and $U_{n-1}$ are invertible, the first two equations are uniquely solvable (and obtaining these solutions is trivial, since both matrices are triangular). The solutions $u_U$ and $l_L$ then give a unique solution for $u_{nn}$ as well.
+\end{proof}
+\begin{exercise}
+	If $A$ is positive definite, it has an $LU$-decomposition.
+\end{exercise}
+\begin{definition}
+	We call a matrix $A \in \Hom(\bR^n,\bR^n)$ \tib{diagonally dominant} if the diagonal entries of $A$ are at least as large as the sum over the other entries in a given row of $A$:
+	\begin{align*}
+		\forall i \in [1..n]:
+		\sum_{j = 1, j \neq i}^n \abs{a_{ij}} \leq \abs{a_{ii}}
+	\end{align*}
+	If this equality is strict, we call $A$ \tib{strictly diagonally dominant}.
+\end{definition}
+\begin{exercise}
+	Show that diagonally dominant matrices are invertible, and thus have an $LU$-decomposition.
+\end{exercise}
+Note that $\cond(A) \leq \cond(L)\cond(U)$, meaning that $LU$-decomposition can lead to a decrease in numerical stability.
+ 
+In practical applications, this decrease is generally not noticable.
+\section{Cholesky Decomposition}
+If $A$ is symmetrical, then $A$ is uniquely defined by the entries on the diagonal and below - thus, a natural followup question would be to ask if we can find a decomposition $A = LL^\top$ of $A$ into the product of a lower diagonal matrix with its transpose.
+\begin{exercise}
+	Show that such a decomposition $A = L L^\top$ can only exist if $A$ is positive definite.
+\end{exercise}
+\begin{exercise}
+	Let $A$ be symmetric and positive definite. Then there exists a unique decomposition $A = LL^\top$, known as the \tib{Cholesky decomposition} of $A$.
+\end{exercise}
+\chapter{Linear Regression}
+\section{The Gauß Normal Equation}
+Many practical problems lead to systems of linear equations with more equations than variables - for example, we might try to find a line that approximates messy data linearly.
+
+In such tasks, an exact solution is generally not achievable. Instead, we seek to find an $x$ that minimizes the error $\norm{Ax - b}$.
+\begin{importanttheorem}{Gauß Normal Equation}{}
+	\begin{enumerate}
+		\item The minimizers of $\norm{Ax - b}$ are exactly the solutions of 
+		\begin{align*}
+			A^\top A x = A^\top b.
+		\end{align*}
+		\item The solution set is non-empty.
+		\item For any two solutions $x,y$, we have $Ax = Ay$.
+	\end{enumerate}
+\end{importanttheorem}
+
+The Gauß normal equation is incredibly useful for establishing theoretical results, but we have $\cond_2(A^\top A) = \cond_2(A)^2$, so solving a linear regression problem by numerically solving the normal equation is generally impractical.
+\begin{exercise}
+	$A^\top A$ is invertible if $\ker A = \lr{0}$.
+\end{exercise}
+\section{$QR$-Decomposition}
+Since orthogonal matrices preserve the euclidean norm, we try to construct an orthogonal matrix $Q$ such that $QA$ is a (possibly non-square) upper triangular matrix, in which case we have
+\begin{align*}
+	\norm{QAx - Qb}_2 = \norm{Ax - b}_2.
+\end{align*}
+Since orthogonal matrices preserve norms, we have $\cond_2(QA) = \cond_2(A)$. This will end up leading us to a more numerically stable solution to linear regression.
+\begin{importanttheorem}{}{}
+	Given a normalized vector $n \in \bR^n$, reflection along the hyperplane $x^\top n = 0$ is given by
+	\begin{align*}
+		P_n = \id_{\bR^n} - 2nn^\top.
+	\end{align*}
+\end{importanttheorem}
+\begin{proof}
+	We have $P_n(x) = x - 2nn^\top x = x - 2\scalar{n}{x}.x$, i.e. $P_n$ orthogonally projects $x$ onto our hyperplane, and then applies the same translation another time, mapping $x$ onto its reflection.
+\end{proof}
+\begin{lemma}
+	Let $x \in \bR^n \setminus \angles{e_i}$. Define
+	\begin{align*}
+		v = x + (\sgn(x_1)\norm{x}_2).e_1,
+	\end{align*}
+	declaring $\sgn(0) = 1$. Let $w = v/\norm{v}_2$. Then 
+	\begin{align*}
+		P_w(x) = (-\sgn(x_1)\norm{x}_2).e_i.
+	\end{align*}
+\end{lemma}
+\begin{importanttheorem}{$QR$-decomposition}{}
+	Let $A \in \Hom(\bR^n, \bR^m)$ with $m \geq n$ and $\ker A = \lr{0}$. Then there exist $Q \in \tn{O}(m)$ and an invertible upper triangular matrix $R \in \Hom(\bR^n, \bR^m)$ such that $A = QR$.
+\end{importanttheorem}
+\begin{proofsketch}
+	Using our Lemma, we can bring $A$ into upper triangular form $R$ by repeated application of hyperplane reflections to its lower right submatrices, at which point $Q$ is given by the product of these reflections.
+\end{proofsketch}
+\noindent
+$QR$-decomposition is $\cO(n^3)$, which is asymptotically the same as $LU$-decomposition. However, the actual runtime of $QR$-decomposition is generally about twice as long.
+\begin{importanttheorem}{}{}
+	Let $A \in \Hom(\bR^n, \bR^m)$ with $m \geq n$ and $\ker A = \lr{0}$. Then $QR$-decomposition of $A$ gives a solution $x$ of the linear regression problem $\norm{Ax -b}_2$ via $$R_U x = b_U,$$ where
+	\begin{align*}
+		\binom{b_U}{b_L} = Q^\top b, \quad \binom{R_U}{0} = R = Q^\top A
+	\end{align*}
+\end{importanttheorem}
+\section{Singular Value Decomposition}
+\begin{importanttheorem}{Singular Value Decomposition}{}
+	Let $A \in \Hom(\bR^n, \bR^m)$. Then there exist orthonormal bases $B_n, B_m$ of $\bR^n$ and $\bR^m$ such that the diagonal of $_{B_m}A_{B_n}$ contains the square roots of the non-zero eigenvalues of $A^\top A$, known as the \tib{singular values} of $A$, ordered by size and followed by some amount of zeroes.
+\end{importanttheorem}
+\begin{definition}
+	Let $A = U \Sigma V^\top$ be a singular value decomposition of $A$. Let $\Sigma^+$ be constructed from $\Sigma$ by inverting all of the singular values. Then
+	$A^+ := V\Sigma^+U^\top$ is known as the \tib{pseudoinverse} or \tib{Moore-Penrose-inverse} of $A$.
+\end{definition}
+\begin{exercise}
+	Show that $A^+ = A^{-1}$ if $A$ is square.
+\end{exercise}
+\begin{proposition}
+	$A^+$ is the unique matrix fulfilling all of the following equations:
+	\begin{enumerate}
+		\item $AA^+A = A$,
+		\item $A^+AA^+ = A^+$,
+		\item $(AA^+)^\top = AA^+$,
+		\item $(A^+A)^\top = A^+A$.
+	\end{enumerate}
+\end{proposition}
+\begin{theorem}
+	$A^+b$ is a minimal solution of the linear regression problem $Ax \approxeq b$.
+\end{theorem}
+
+\chapter{Eigenvalue Problems}
+\section{Localization}
+\begin{theorem}
+	Every eigenvalue of a matrix $A \in \Hom(\bR^n, \bR^n)$ is contained in a set of the form
+	\begin{align*}
+		K_i := \lr{z \in \bC \mid \abs{z - a_{ii}} \leq \sum_{j \neq i} \abs{a_{ij}}}.
+	\end{align*}
+	These sets are known as \tib{Gerschgorin circles}.
+\end{theorem}
+\noindent
+Notice that $K_i$ is a circle of radius $\sum_{j \neq i} \abs{a_{ij}}$ centered on $a_{ii}$. Importantly, this tells us that if the off-diagonal entires of $A$ are small, the diagonal entries will always give us a good approximation of the eigenvalues.
+\begin{proof}
+	Let $x \in \bC^n \setminus \lr{0}$ be an eigenvector of $A$ with eigenvalue $\lambda$. Let $x_i$ be the entry of $x$ with the largest absolute value. Then we have
+	\begin{align*}
+		\lambda x_i = (Ax)_i = \sum_{j = 1}^n a_{ij} x_j.
+	\end{align*}
+	Dividing by $x_i \neq 0$ gives
+	\begin{align*}
+		\lambda = (Ax)_i = \sum_{j = 1}^n a_{ij} \frac{x_j}{x_i},
+	\end{align*}
+	subtraction of $a_{ii}$ gives
+	\begin{align*}
+		\lambda - a_{ii} = (Ax)_i = \sum_{j \neq i}^n a_{ij} \frac{x_j}{x_i}.
+	\end{align*}
+	Applying the triangle equality gives
+	\begin{align*}
+		\abs{\lambda - a_{ii}} \leq (Ax)_i = \sum_{j \neq i}^n \abs{a_{ij} \frac{x_j}{x_i}},
+	\end{align*}
+	and since $x_i$ is maximal, we have $\abs{x_j}/\abs{x_i} \leq 1$, i.e.
+	\begin{align*}
+		\abs{\lambda - a_{ii}} \leq (Ax)_i = \sum_{j \neq i}^n \abs{a_{ij}}.
+	\end{align*}
+\end{proof}
+\begin{theorem}
+	Let $A \in \Hom(\bR^n, \bR^n)$ be symmetric. Then the maximal and minimal eigenvalues of $A$ are the maximum and minimum of the \tib{Rayleigh quotient}
+	\begin{align*}
+		R(x) : \bR^n \setminus \lr{0} &\to \bR\\
+		x &\mapsto \frac{x^\top A x}{\norm{x}_2^2}
+	\end{align*}
+\end{theorem}
+\begin{proofsketch}
+	By the spectral theorem, we can choose an orthonormal basis of $\bR^n$ consisting of eigenvectors of $A$. In this basis, we find that
+	\begin{align*}
+		x^\top A x = \sum_{i = 1}^n \lambda_i x_i^2
+	\end{align*}
+	We can bound this expression from above and below as
+	\begin{align*}
+		\lambda_{\min} \sum_{i = 1}^n x_i^2 \leq x^\top A x \leq \lambda_{\max} \sum_{i = 1}^n x_i^2
+	\end{align*}
+	which gives us our desired result, since
+	\begin{align*}
+		\lambda_{\min} \sum_{i = 1}^n x_i^2 = \norm{x}_2^2.
+	\end{align*}
+\end{proofsketch}
+\begin{theorem}
+	Let $A \in \Hom(\bR^n, \bR^n)$ be diagonalizable with $A = V D V^{-1}$. Let $\lambda_B \in \bC$ be an eigenvalue of $A + B$ for any $B \in \Hom(\bR^n, \bR^n)$. Then there exists an eigenvalue $\lambda_A \in \bC$ of $A$ such that
+	\begin{align*}
+		\abs{\lambda_B - \lambda_A} \leq \cond_2(V)\norm{B}_2.
+	\end{align*}
+\end{theorem}
+\begin{corollary}
+	If $A$ is normal, we get
+	\begin{align*}
+		\abs{\lambda_B - \lambda_A} \leq \norm{B}_2.
+	\end{align*}
+\end{corollary}
+This means that finding eigenvalues of normal matrices is a well-conditioned problem - adding a small amount of noise, represented by another matrix $B$, to a matrix $A$ won't change the eigenvalues much. This doesn't hold for arbitrary matrices - for example, the \tib{Frobenius matrix}
+\begin{align*}
+	A = \begin{pmatrix}
+		0 &   &   && -a_0\\
+		1 & 0 &   && -a_1\\
+		  & \ddots & \ddots && \vdots\\
+		  &   & 1 & 0 & -a_{n-2}\\
+		  &   &   & 1 & -a_{n-1}
+	\end{pmatrix}
+\end{align*}
+has characteristic polynomial $p(t) = (-1)^n \sum_{i = 0}^n a_it^i$, with $a_n = 1$. In general, adding a small constant to an arbitrary polynomial can change the roots quite significantly, so finding the eigenvalues of $A$ is generally not well-conditioned.
+
+\section{Von Mises iteration}
+\begin{importanttheorem}{Von Mises iteration}{}
+	Let $A \in \Hom(\bR^n, \bR^n)$. Let $x_0 \in \bR^n \setminus \lr{0}$. Then the sequence
+	\begin{align*}
+		x_{n+1} = \frac{Ax_n}{\norm{Ax_n}_2}
+	\end{align*}
+	converges to a normalized eigenvector of $A$ corresponding to the eigenvalue with the largest absolute value, as long as $x_0$ is not orthogonal to that eigenvector.
+	
+	More specifically, let $v_i$ be normed eigenvalues of $A$ corresponding to eigenvalues $\lambda_i$, ordered by absolute value. Let $x_0 = \sum_{i = 1}^n \alpha_i v_i$
+	be the representation of $x_0$ by our eigenvalues. Then there exists a constant $c$ such that
+	\begin{align*}
+		\abs{\norm{Ax_K}_2 - \abs{\lambda_1}} \leq 4c \cdot \norm{A}_2 \abs{\frac{\lambda_2}{\lambda_1}}^k
+	\end{align*}
+\end{importanttheorem}
+\begin{proposition}
+	\begin{align*}
+		x_n = \frac{A^kx_0}{\norm{A^kx}_2}
+	\end{align*}
+\end{proposition}
+\begin{proposition}
+	Under "suitable conditions", applying von Mises iteration to $(A - \mu I_n)^{-1}$ gives the eigenvalue closest to $\mu$.
+\end{proposition}
+\section{$QR$ Iteration}
+\begin{importanttheorem}{$QR$ Iteration}{}
+	Let $A_0$ be diagonalizable. Then the sequence
+	\begin{align*}
+		A_k = Q_kR_k\\
+		A_{k+1} = R_kQ_k,
+	\end{align*}
+	obtained by repeatedly finding the $QR$ decomposition of $A_k$ and then swapping the factors, converges to a diagonal matrix containing the eigenvalues of $A_0$, ordered by absolute value.
+\end{importanttheorem}
+In praxis, this iteration generally converges even if $A_0$ is not diagonalizable. Each step of this iteration is $\cO(n^3)$.
+
+This can be decreased to a one-time cost of $\cO(n^3)$ followed by $\cO(n^2)$ for every subsequent step by transforming $A$ into \tit{Hessenberg form} (an upper triangular matrix $\hat A$ with one extra diagonal below the main diagonal), whose $QR$ decomposition is then cheaper to calculate.

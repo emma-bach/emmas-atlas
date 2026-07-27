@@ -56,27 +56,186 @@
 \chapter{Separation Axioms}
 \epigraph{
 	\textit{A very common axiom is the Hausdorff separation axiom, which says that any two distinct points can be housed orf from each other by disjoint open sets.}}{{"Topology via Logic",}\\{Steven Vickers}}
-\begin{importantdefinition}{Separation Axioms}{}
-	Let $(X, \cO)$ be a topological space. Then we call $(X,\cO)$:
-	\begin{enumerate}
-		\item \tib{T0}, if for every pair of points $x,y \in X$, one of them has a neighbourhood that isn't a neighbourhood of the other.
-		\item \tib{T1}, if for every pair of points, both of them have neighbourhoods not containing the other.
-		\item \tib{T2} or \tib{Hausdorff´}, if for every pair of points, both of them have  disjoint neighbourhoods not containing the other.
-		\item
-		\tib{regular}, if every point can be housed orf from any closed set not containing it by disjoint open sets.
-		\item \tib{T3} or \tib{regular Hausdorff}, if it is regular and Hausdorff.
-		\item \tib{completely regular}, If every point can be separated from any closed set not containing it by a continuous function:
-		\begin{align*}
-			\forall &(X \setminus C) \in \cO :\\ 
-			\forall &x \notin C :\\ 
-			\exists &f \in C(X, [0,1]_\bR) :\\ 
-			&f(x) = 1,\ f[A] \subseteq \lr{0}
-		\end{align*}
-		\item \tib{T3a}, \tib{T3$\frac{1}{2}$}, or \tib{completely regular Hausdorff}, if it is completely regular and Hausdorff.
-		\item \tib{normal}, if every pair of closed sets can be housed orf from each other by disjoint neighbourhoods.
-		\item \tib{Normal Hausdorff}, if it is normal and Hausdorff.
-	\end{enumerate}
+\begin{definition}
+	Let $(X, \cO)$ be a topological space. Let $x,y \in X$. Then we call $x$ and $y$ \tib{topologically distinguishable} iff. $\cU(x) \neq \cU(y)$, i.e. one of the points has a neighborhood not containing the other.
+\end{definition}
+\begin{importantdefinition}{$T0$ Space}{}
+	Let $(X, \cO)$ be a topological space. Then we call $(X,\cO)$ \tib{T0} if every pair of points is topologically distinguishable.
 \end{importantdefinition}
+\begin{importantdefinition}{$T1$ Space}{}
+	Let $(X, \cO)$ be a topological space. Then we call $(X,\cO)$ \tib{T1} if for every pair of points, both of them have neighbourhoods not containing the other:
+	\begin{align*}
+		\forall &x,y \in X:\\
+		\exists &U_x \in \cU(x), U_y \in \cU(y):\\
+		&x \notin U_y, y \notin U_x.
+	\end{align*}
+\end{importantdefinition}
+\begin{exercise}
+	Show that T1 implies T0.
+\end{exercise}
+\begin{exercise}
+	Find a space that is T0, but not T1.
+\end{exercise}
+\begin{exercise}
+	Show that $(X, \cO)$ is T1 if and only if every singleton set is closed.
+\end{exercise}
+\begin{exercise}
+	Show that $(X, \cO)$ is T1 if and only if every subset of $X$ is the intersection of all of its neighborhoods:
+	\begin{align*}
+		\forall Y \subseteq X : Y = \bigcap \lr{U \mid U \in \cU(Y)}
+	\end{align*}
+\end{exercise}
+\begin{importantdefinition}{Hausdorff Space}{}
+	Let $(X, \cO)$ be a topological space. Then we call $(X,\cO)$ \tib{T2} or \tib{Hausdorff} if every pair of points can be housed orf from each other, i.e. they have disjoint neighbourhoods:
+	\begin{align*}
+		\forall x \neq y \in X:\\
+		\exists U_x \in \cU(x), U_y \in \cU(y):\\
+		U_x \cap U_Y = \emptyset
+	\end{align*}
+\end{importantdefinition}
+\begin{exercise}
+	Show that every Hausdorff space is T1.
+\end{exercise}
+\begin{exercise}
+	Let $(X, \cO)$ be a topological space. Then $(X, \cO)$ is Hausdorff if and only if every convergent filter has a unique limit.
+\end{exercise}
+\begin{importanttheorem}{Characterization of Hausdorff spaces by diagonals}{}
+	Let $(X, \cO)$ be a topological space. Then $(X, \cO)$ is Hausdorff iff. the diagonal
+	\begin{align*}
+		\Delta := \lr{(x,x) \mid x \in X}
+	\end{align*}
+	is closed in the product topology.
+\end{importanttheorem}
+\begin{proof}
+	\begin{enumerate}
+		\item[$\Rightarrow$] Assume $(X, \cO)$ is Hausdorff. Let $(x,y) \notin \Delta$. Then $x \neq y$ by definition of $\Delta$. Therefore, there exist disjoint neighbourhoods $U_x$, $U_y$ of $x$ and $y$. Since these neighborhoods are disjoint, we have
+		\begin{align*}
+			\Delta \cap (U_x \times U_y) = \emptyset
+		\end{align*}. Therefore, every point $(x,y) \notin \Delta$ has an open neighborhood $(U_x \times U_y)$ that doesn't intersect $\Delta$, i.e. $\Delta$ is closed.
+		\item[$\Leftarrow$] Let $x \neq y$. Assume that $\Delta$ is closed. Then $(x,y) \notin \Delta$ has a basic open neighborhood $U_x \times U_y$ that doesn't intersect $\Delta$. Since $U_x \times U_y$ doesn't intersect $\Delta$, $U_x$ and $U_y$ must be disjoint.
+	\end{enumerate}
+\end{proof}
+\begin{theorem}
+	Let $(X, \cO)$ be a topological space. Then $(X, \cO)$ is Hausdorff iff. every point is the intersection of the closures of all of its neighbourhoods:
+	\begin{align*}
+		\forall x \in X : \lr{x} = \bigcap \lr{\ol U \mid U \in \cU(x)}
+	\end{align*}
+\end{theorem}
+\begin{proof}
+	\begin{enumerate}
+		\item[$\Rightarrow$] Let $(X, \cO)$ be Hausdorff. Let $x,y \in X$ and $y \notin \lr{x}$, i.e. $y \neq x$. Then, by Hausdorff, there exist disjoint neighborhoods $U_x$ and $U_y$ of $x$ and $y$. Since $U_x$ and $U_y$ are disjoint, we have $U_x \subseteq X \setminus U_y.$ But then, by monotonicity of the closure operator, we get
+		\begin{align*}
+			\ol U_x \subseteq \ol{X \setminus U_y} = X \setminus U_y,
+		\end{align*}
+		i.e. $y \notin \ol U_x$, i.e.
+		\begin{align*}
+			y \notin \bigcap \lr{\ol U \mid U \in \cU(x)}.
+		\end{align*}
+		\item[$\Leftarrow$] Let $x \neq y$. Let $\lr{x} = \bigcap \lr{\ol U \mid U \in \cU(x)}$. Then there must be an open neighborhood $U_x$ of $x$ whose closure doesn't contain $y$. But then the complement $U_y := X \setminus \ol U_x$ of that closure is an open neighborhood of $y$ that is disjoint from $U_x$.
+	\end{enumerate}
+\end{proof}
+\begin{importantdefinition}{Regular Space}{}
+	Let $(X, \cO)$ be a topological space. Then we call $(X,\cO)$ \tib{regular} if every point can be housed orf from any closed set not containing it:
+	\begin{align*}
+		\forall &X \setminus C \in \cO:&\\
+		\forall &x \notin C:\\
+		\exists &U_x \in \cU(x), U_C \in \cU(C):\\
+		&U_x \cap U_C = \emptyset
+	\end{align*}
+	We call $(X, \cO)$ \tib{T3} or \tib{regular Hausdorff}, if it is regular and Hausdorff.
+\end{importantdefinition}
+\begin{exercise}
+	Find a topological space that is regular, but not T0.
+\end{exercise}	
+\begin{exercise}
+	Show that a topological space is regular Hausdorff (T3) if and only if it is regular and T1.
+\end{exercise}	
+\begin{importantdefinition}{Completely Regular Space}{}
+	Let $(X, \cO)$ be a topological space. Then we call $(X,\cO)$ \tib{completely regular} if every point can be separated from any closed set not containing it by a continuous function:
+	\begin{align*}
+		\forall &(X \setminus C) \in \cO :\\ 
+		\forall &x \notin C :\\ 
+		\exists &f \in C(X, [0,1]_\bR) :\\ 
+		&f(x) = 1,\ f[A] \subseteq \lr{0}
+	\end{align*}
+	We call $(X, \cO)$ \tib{T3a}, \tib{T3$\frac{1}{2}$}, or \tib{completely regular Hausdorff}, if it is completely regular and Hausdorff.
+\end{importantdefinition}	
+\begin{exercise}
+	Find a space that is completely regular, but not T0.
+\end{exercise}
+\begin{exercise}
+	Show that a space if completely regular Hausdorff if and only if it is completely regular and T1.
+\end{exercise}
+\begin{theorem}
+	Every zero-dimensional space $(X, \cO)$ is completely regular.
+\end{theorem}
+\begin{proof}
+	Since $X$ is zero-dimensional, it has a basis consisting of clopen sets. Given any clopen set $U$, the function
+	\begin{align*}
+		f_U : x \mapsto \begin{cases}
+			1 & x \in U\\
+			0 & x \in X \setminus U
+		\end{cases}
+	\end{align*}
+	is continuous. Now, let $C$ be a closed set not containing $x$. Then $X \setminus C$ is an open neighbourhood of $x$. We can now choose a basic (i.e. clopen) neighbourhood $U \subseteq X \setminus C$ of $x$, at which point $f_U$ is our desired function separating $x$ and $C$.
+\end{proof}
+\begin{theorem}
+	\label{th:completelyregularbase}
+	Let $(X, \cO)$ be completely regular. Then the set
+	\begin{align*}
+		\lr{f^{-1}[U] \mid f \in C((X, \cO), \lr[0,1]_{\bR}), U \in \cO_\bR}
+	\end{align*}
+	is a basis of $X$.
+\end{theorem}
+\begin{proof}
+	\begin{enumerate}
+		\item Since the $f$ are continuous, every basis set is open.
+		\item Let $x \in X$. Let $U$ be an open neighbourhood of $x$.
+		Since $X$ is completely regular, there exists a continuous function $f$ separating $\lr{x}$ and $X \setminus U$. Then the basic set $f^{-1}[(0,1]]$ must be a subset of $U$, since every element outside of $U$ gets mapped to $0$. Thus, every open neighhourhood contains a basic neighbourhood.
+	\end{enumerate}	
+\end{proof}
+\begin{importanttheorem}{Completely regular cubes}{}
+	Every completely regular Hausdorff space $(X, \cO)$ can be embedded into the cube
+	\begin{align*}
+		\prod_{f \in C(X, [0,1])} [0,1]
+	\end{align*}
+\end{importanttheorem}
+\begin{proof}
+	We choose the trivial embedding $\iota : x \mapsto (f(x))_{f \in C(X,[0,1])}$. 
+	\begin{enumerate}
+		\item $\iota$ is continuous, since the projections of $\iota$ are exactly the elements of $C(X,[0,1])$, i.e. continuous.
+		\item Let $x \neq y$. By T1, all singletons are closed. Therefore, by complete regularity, there exists a function $f$ with $f(x) = 1$ and $f(y) = 0$. Therefore, we have $\iota(x)_f \neq \iota(y)_f$, i.e. $\iota(x) \neq \iota(y)$.
+		\item By \ref{th:completelyregularbase}, we only need to show openness for the basis sets
+		\begin{align*}
+			\lr{f^{-1}[U] \mid f \in C((X, \cO), \lr[0,1]_{\bR}), U \in \cO_\bR}.
+		\end{align*}
+		For these sets, we get:
+		\begin{align*}
+			\iota\lr[f^{-1}[U]]
+			&= \iota[(p_f \circ \iota)^{-1}[U]]\\
+			&= \iota[\iota^{-1} (p_f^{-1}[U])]\\
+			&= \iota\lr[\iota^{-1}\lr[U \times \prod_{g \neq f} [0,1]]]\\
+			&= \lr(U \times \prod_{g \neq f} [0,1]) \cap \iota[X]
+		\end{align*}
+		Where $\lr(U \times \prod_{g \neq f} [0,1])$ is open, since every component besides the $f$-component is open.
+	\end{enumerate}
+\end{proof}
+\begin{importantdefinition}{Normal Space}{}
+	Let $(X, \cO)$ be a topological space. Then we call $(X,\cO)$ \tib{normal} if every pair of disjoint closed sets can be housed orf from each other by disjoint neighbourhoods:
+	\begin{align*}
+		\forall &X \setminus C_1, X \setminus C_2 \in \cO:\\
+		&C_1 \cap C_2 = \emptyset \implies\\
+		\exists &U_1 \in \cU(C_1), U_2 \in \cU(C_2):\\
+		&U_1 \cap U_2 = \emptyset
+	\end{align*} We call $(X, \cO)$
+	\tib{T4}, or \tib{normal Hausdorff}, if it is normal and Hausdorff.
+\end{importantdefinition}	
+\begin{exercise}
+	Find a topological space that is normal, but not T0.
+\end{exercise}
+Showing that T4 implies T3 is not an easy task - this statement is \tit{Urysohn's Lemma}, which we will prove later in this chapter after a lot of preparation.	
+		
+
 \chapter{Compactness}
 The familiar notions of open converings and compactness generalize directly from metric spaces to topological spaces. The most major difference is that sequential compactness is generally weaker than "covering compactness", and has to be replaced with a notion of compactness based on ultrafilter convergence.
 \begin{definition}

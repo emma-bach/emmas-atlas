@@ -1511,79 +1511,72 @@ Singular value decomposition is fundamental to the JPG compression algorithm, wh
 	\tib{axes} of $F$.
 \end{definition}
 Our theorem thus states that any affine isometry can be represented as a linear map composed with a translation along the axis set of $F$. 
-\typeout{(TODO: Cleaner proof using least squares)}
+
+\iffalse
+\chapter{A more bottom-up approach*}
+This chapter will focus on exploring why our various constructions (scalar products, orthogonal endomorphisms, etc.) are the "correct" objects to match our geometric intuition. This chapter follows the script "Lineare Algebra II", by Prof. Dr. Wolfgang Soergel.
+\begin{definition}
+	Let $V$ be a real vector space. Then a \tib{ray} is a subset of the form
+	\begin{align*}
+		[v\rangle := \lr{\lambda.v \mid \lambda \in \bR_{\geq} 0}.
+	\end{align*}
+\end{definition}
+\begin{importantdefinition}{Linear Congruence Group}{}
+	Let $E$ be a two-dimensional real vector space. Then we call a subgroup $C \subseteq \GL(E)$ a \tib{linear congruence group on $Z$} if for any pair of rays $A,B \subseteq E$, there are exactly two elements $k,h \in C$ mapping $A$ to $B$.
+\end{importantdefinition}
+\begin{importanttheorem}{Orthogonal maps are linear congruences}{}
+	Given a two-dimensional real vector space with scalar product $(E,s)$, the orthogonal group $O(E,s)$ is a linear congruence group.
+\end{importanttheorem}
 \begin{proof}
-	We write $F(a) = \vec F(a) + y$. Let $U = \Eig(\vec F, 1$). Then $U$ and $U^\perp$ are both invariant under $\vec F$, and $\vec F|_U = \id_U$.
-	\newpar
-	We write $y = (x,z) \in U \oplus U^\perp$. The map $\id_{U^\perp} - \vec F|_{U^\perp}$ is invertible, since $U^\perp$ doesn't contain any eigenvectors of $\vec F$. We can thus find a $q \in U^\perp$ with $q - \vec F(q) = z$.
-	\newpar
-	We can then choose any $p \in U$ and set $o = (p,q)$. For any other $v = (u,w) \in V$, we then get
-	\begin{align*}
-		F(a) 
-		&:= F(o + v)\\
-		&= y + \vec F(o+v)\\
-		&= (x,z) + \vec F((p,q) + (u,w))\\
-		&= (x,z) + \vec F((p+u,q+w))\\
-		&= (x + \vec F(p) + \vec F(u), z + \vec F(q) + \vec F(w))\\
-		&= (x + p + u, z + \vec F(q) + \vec F(w))\\
-		&= (x + p + u, (q - \vec F(q)) + \vec F(q) + \vec F(w))\\
-		&= (x + p + u, q + \vec F(w))\\
-		&= (p,q) + (x,0) + \vec F(u,w)\\
-		&= o + (x,0) + \vec F(v),\\
-		&= o + x + \vec F(a - o),
-	\end{align*}
-	which is our desired representation.
-	\newpar
-	Now, assume we chose an alternate origin $o' = o + (p', q')$ such that
-	$$F(a) := F(o' + v) = o' + x' + \vec F(v)$$
-	for $v = (u,w)$.
-	Then we get:
-	\begin{align*}
-		x' 
-		&= F(o' + v) - o' - \vec F(v)\\
-		&= F(o + (p',q') + v) - o - (p',q') - \vec F(v)\\
-		&= (o + x + \vec F((p', q') + v)) - o - (p',q') - \vec F(v)\\
-		&= (o + x + \vec F(p', q') + \vec F(v) - o - (p',q') - \vec F(v)\\
-		&= x + \vec F(p', q') - (p',q')\\
-		&= x + \vec (p', \vec F(q')) - (p',q')\\
-		&= (x, \vec F(q') - q')
-	\end{align*}
-	Now, applying $\vec F$ to $x$ and $x'$, we get:
-	\begin{align*}
-		\vec F(x)
-		&=
-		F(x) - (x,z)\\
-		&=
-		F((x,0)) - (x,z)\\
-		&=
-		o + (x,0) + \vec F((x,0) - o) - (x,z)\\
-		&=
-		o + (x,0) + (x,0) - \vec F(o) - (x,z)\\
-		&=
-		o + (x,0) + (x,0) - (p,q-z) - (x,z)\\
-		&=
-		(p,q) + (x,0) + (x,0) - (p,q) + (0,z) - (x,z)\\
-		&=
-		(x,0)
-		=
-		x
-	\end{align*}
-	and thus
-	\begin{align*}
-		\vec F(x') &= (\vec F(x), \vec F(\vec F(q')) - \vec F(q'))\\
-		&= (x, \vec F(\vec F(q')) - \vec F(q'))
-	\end{align*}
-	therefore, we get $\vec F(x') = x'$ if and only if $$\vec F(\vec F(q')) - \vec F(q') = \vec F(q') - q',$$
-	i.e.
-	\begin{align*}
-		\vec F(\vec F(q')) - 2\vec F(q') + q' = 0,
-	\end{align*}
-	i.e.
-	\begin{align*}
-		(\id_W - \vec F|_W)(\id_W - \vec F|_W(q')) = 0
-	\end{align*}
-	Since $\id_W - \vec F|_W$ is invertible by construction, this holds iff. $q' = 0$, i.e. if $x' = (x, \vec F(q') - q') = x$ and $o' = o + (p', 0) = o + \lambda x \in B$.
+	Given two rays $A,B \subseteq E$, choose normalized vectors $v_a \in A, v_b \in B$. Now, we can add vectors $w_a, w_b$ that are orthogonal to $v_a$ and $v_b$ to form bases of $E$. Since orthogonal maps preserve lengths, an orthogonal map taking $A$ to $B$ must map $v_a$ to $v_b$, and since they also preserve orthogonality, the only remaining options are to map $w_a$ to either $w_b$ or $-w_b$.
 \end{proof}
+The rest of this chapter will be devoted to showing that $O(E,s)$ is the \tit{only} linear congruence group on $E$.
+\begin{definition}
+	Let $E$ be a two-dimensional real vector space.
+	We call an element $r \in \GL(E)$ a \tib{reflection} if its set of fixed points is a line and its square is the identity.
+\end{definition}
+\begin{proposition}
+	Given a two-dimensional real vector space with linear congruence group $(E,C)$, $C$ contains all reflections of $E$.
+\end{proposition}
+\begin{lemma}
+	\label{lemma:orientationreflection}
+	The orientation-reversing elements of a linear congruence group are exactly the reflections.
+\end{lemma}
+For the following lemmas, let $(E,C)$ be a two-dimensional real vector space with congruence group.
+\begin{lemma}
+	For any two rays $A,B \subseteq E$, there exists exactly one reflection in $C$ mapping each one to the other.
+\end{lemma}
+\begin{proof}
+	Let $c$ be a congruence mapping $A$ to $B$. Let $r_B$ the the reflection at $B$. Then clearly $r_Bc \neq c$, so $r_Bc$ and $c$ must be the two congruences mapping $A$ to $B$. Since $r_B$ has determinant $-1$, either $r_Bc$ or $c$ must be orientation-reversing, and must thus be a reflection by \ref{lemma:orientationreflection}. Since the square of a reflection is the identity, $r$ is self-inverse, and must thus not only map $A$ to $B$, but also $B$ to $A$.
+\end{proof}
+\begin{lemma}
+	Every element of $C$ is either a reflection or the composition of two reflections in $C$.
+\end{lemma}
+\begin{proof}
+	As before, either $r_Bc$ or $c = r_B(r_Bc)$ must be a reflection.
+\end{proof}
+\begin{lemma}
+	Every element of $C$ has determinant $\pm 1$.
+\end{lemma}
+\begin{proof}
+	Since reflections are self-inverse, they must have $\pm 1$ as their eigenvalues, and thus have determinant $\pm 1$. Since they generate $C$, the same holds for the entire group.
+\end{proof}
+\begin{lemma}
+	The elements of $C$ with determinant $1$ form a subgroup $C^+$.
+\end{lemma}
+\begin{lemma}
+	For every reflection $r \in C$ and every $c \in C^+$, we have $rcr = c^{-1}$.
+\end{lemma}
+\begin{lemma}
+	$C^+$ is abelian.
+\end{lemma}
+\begin{lemma}
+	We have $-\id_E \in C$.
+\end{lemma}
+\begin{lemma}
+	There are exactly two elements $r \in C$ such that $r^2 = -\id_E$.
+\end{lemma}
+\fi
 \chapter{Revisiting Synthetic Geometry}
 \section{Incidence Geometries}
 \begin{importantdefinition}{Incidence Geometries}{}
