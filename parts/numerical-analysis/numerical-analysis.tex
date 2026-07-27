@@ -1,7 +1,9 @@
-\part{Numerical Analyis}
-\chapter{Numerical Integration}
-\section{Extrapolation}
-A summed quadrature formula is a function $T(h) : \bR_{\geq 0} \to \bR$ which gives the integral of a function $f \in C^k([a,b])$ in the limit $h \to 0$. If the error of our quadrature formula is of order $h^\gamma$ for a $\gamma \in \bN$, we have
+\chapter{Numerical Analyis}
+\section{Polynomial Interpolation}
+\section{Spline Interpolation}
+\section{Discrete Fourier Transform}
+\section{Numerical Integration}
+A \tib{summed quadrature formula} is a function $T(h) : \bR_{\geq 0} \to \bR$ which gives the integral of a function $f \in C^k([a,b])$ in the limit $h \to 0$. If the error of our quadrature formula is of order $h^\gamma$ for a $\gamma \in \bN$, we have
 \begin{align*}
 	T(h) = T(0) + \phi(h)
 \end{align*}
@@ -22,7 +24,6 @@ This lets us eliminate the $c_1 h^\gamma$-term, which gives us
 	T^*(h) := \frac{T(h) - 2^\gamma T(h/2)}{1 - 2^\gamma} = T(0) + c_2 \frac{1 - 2^{-1}}{1 - 2^\gamma} \cdot h^{\gamma + 1} + o(h^{\gamma + 1}),
 \end{align*}
 which is a new summed quadrature formula with an error of $h^{\gamma + 1}$, instead of $h^\gamma$, which can be a significant improvement for $\gamma \ll 1$.
-\section{Calculating Convergence Order}
 Given a non-polynomial function $f \in C^k([a,b])$ whose exact integral $I(f)$ is known, we can investigate the errors
 \begin{align*}
 	e_h = \abs{I(f) - Q^N(f)}

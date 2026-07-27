@@ -1,6 +1,6 @@
-\part{Numerical Linear Algebra}
-\chapter{Operator Norms and Conditioning}
-\section{Conditioning and Stability}
+\part{Numerical Mathematics}
+\chapter{Numerical Linear Algebra}
+\section{Operator Norms and Conditioning}
 \begin{definition}
 	Let $x \in V$ be an element of a normed vector space. Let $\tilde x \in V$ be an approximation of $x$. Then the \tib{relative error} of $\tilde x$ is
 	\begin{align*}
@@ -19,8 +19,6 @@
 		\eps_\Phi \leq c \cdot \eps_x
 	\end{align*} for all $x, \tx$.
 \end{definition}
-
-\pagebreak
 
 \begin{lemma}
 	Multiplication $\Phi(x,y) := x \cdot y$ of two numbers is well conditioned, with the approximation
@@ -104,7 +102,7 @@ A function is stable if and only if every individual step of the calculation is 
 	\end{align*}
 	is well-conditioned.
 \end{corollary}
-\section{Operator Norms}
+
 \begin{importantdefinition}{Induced Operator Norm}{}
 	Let $(V, \norm{\cdot}_V)$ and $(W, \norm{\cdot}_W)$ be normed vector spaces. Then the operator norm on $\Hom(V,W)$ is defined by
 	\begin{align*}
@@ -191,9 +189,7 @@ Note that this means $\norm{F(x)}_W \leq \norm{F}_{V,W} \cdot \norm{x}_V$ for al
 	Show that the Frobenius norm is not an operator norm.
 \end{exercise}
 
-\clearpage
 
-\section{Condition Number}
 \begin{theorem}
 	Let $\norm{\cdot}$ be an operator norm on $\Hom(\bR^n, \bR^n)$. Let $A \in \Hom(\bR^n, \bR^n)$ be invertible. Let $x,\tx,b,\tb \in \bR^n \setminus \lr{0}$ such that $Ax = b$ and $A\tx = \tb$. Then
 	\begin{align*}
@@ -209,7 +205,7 @@ This means that the product $\norm{A}\norm{A^{-1}}$ tells us how much our accumu
 	If $\norm{\cdot}_p$ is a $p$-norm, we write $\cond(A, \norm{\cdot}_p) =: \cond_p(A)$.
 \end{importantdefinition}
 \begin{exercise}
-	Show that $\cond(A, \norm{\cdot}) \geq 1$ for all $A \in \Hom(\bR^n, \bR^m)$ and any operator norm $\norm{\cdot}$.
+	Show that $\cond\lr(A, \norm{\cdot}) \geq 1$ for all $A \in \Hom(\bR^n, \bR^m)$ and any operator norm $\norm{\cdot}$.
 \end{exercise}
 \begin{exercise}
 	Show that if $A$ is symmetric with eigenvalues $\lambda_1, \hdots, \lambda_n$, then
@@ -228,8 +224,19 @@ This means that the product $\norm{A}\norm{A^{-1}}$ tells us how much our accumu
 	\end{align*}
 	is poorly conditioned by approximating $\cond_2(A)$.
 \end{exercise}
-\chapter{Matrix Factorization}
-\section{$LU$-Decomposition}
+\begin{importantdefinition}{Generalized Condition Number}{}
+	The condition number of an arbitrary function $\Phi : X \to Y$ between normed real vector spaces is defined as
+	\begin{align*}
+		\kappa_{\Phi(x)} = \inf \lr{\kappa \in \bR_{\geq 0} \mid \epsilon_\Phi \leq \kappa \cdot \epsilon_x}
+	\end{align*}
+\end{importantdefinition}
+\begin{exercise}
+	Show that $\cond(A) = \sup \lr{\kappa_{Ax} \mid x \in V}$.
+\end{exercise}
+\begin{exercise}
+	Show that if $\Phi$ is differentiable, we have $\kappa_{\Phi}(x) = \frac{\norm{D\Phi(x)}\norm{x}}{\norm{\Phi(x)}}$
+\end{exercise}
+\section{Triangular Decompositions}
 Solving a system of linear equations corresponding to a triangular matrix is trivial. Thus, if we can write a given matrix as a product of two triangular matrices, further computations become significantly easier.
 \begin{exercise}
 	Let $U,V$ be upper triangular matrices. Then $U \cdot V$ is an upper triangular matrix. 
@@ -293,10 +300,8 @@ Solving a system of linear equations corresponding to a triangular matrix is tri
 \begin{exercise}
 	Show that diagonally dominant matrices are invertible, and thus have an $LU$-decomposition.
 \end{exercise}
-Note that $\cond(A) \leq \cond(L)\cond(U)$, meaning that $LU$-decomposition can lead to a decrease in numerical stability.
- 
-In practical applications, this decrease is generally not noticable.
-\section{Cholesky Decomposition}
+Note that $\cond(A) \leq \cond(L)\cond(U)$, meaning that $LU$-decomposition can lead to a decrease in numerical stability. However, in practical applications, this decrease is generally not noticable.
+\newpar
 If $A$ is symmetrical, then $A$ is uniquely defined by the entries on the diagonal and below - thus, a natural followup question would be to ask if we can find a decomposition $A = LL^\top$ of $A$ into the product of a lower diagonal matrix with its transpose.
 \begin{exercise}
 	Show that such a decomposition $A = L L^\top$ can only exist if $A$ is positive definite.
@@ -304,8 +309,9 @@ If $A$ is symmetrical, then $A$ is uniquely defined by the entries on the diagon
 \begin{exercise}
 	Let $A$ be symmetric and positive definite. Then there exists a unique decomposition $A = LL^\top$, known as the \tib{Cholesky decomposition} of $A$.
 \end{exercise}
-\chapter{Linear Regression}
-\section{The Gauß Normal Equation}
+
+\section{Linear Regression}
+
 Many practical problems lead to systems of linear equations with more equations than variables - for example, we might try to find a line that approximates messy data linearly.
 
 In such tasks, an exact solution is generally not achievable. Instead, we seek to find an $x$ that minimizes the error $\norm{Ax - b}$.
@@ -324,7 +330,7 @@ The Gauß normal equation is incredibly useful for establishing theoretical resu
 \begin{exercise}
 	$A^\top A$ is invertible if $\ker A = \lr{0}$.
 \end{exercise}
-\section{$QR$-Decomposition}
+
 Since orthogonal matrices preserve the euclidean norm, we try to construct an orthogonal matrix $Q$ such that $QA$ is a (possibly non-square) upper triangular matrix, in which case we have
 \begin{align*}
 	\norm{QAx - Qb}_2 = \norm{Ax - b}_2.
@@ -363,7 +369,7 @@ $QR$-decomposition is $\cO(n^3)$, which is asymptotically the same as $LU$-decom
 		\binom{b_U}{b_L} = Q^\top b, \quad \binom{R_U}{0} = R = Q^\top A
 	\end{align*}
 \end{importanttheorem}
-\section{Singular Value Decomposition}
+
 \begin{importanttheorem}{Singular Value Decomposition}{}
 	Let $A \in \Hom(\bR^n, \bR^m)$. Then there exist orthonormal bases $B_n, B_m$ of $\bR^n$ and $\bR^m$ such that the diagonal of $_{B_m}A_{B_n}$ contains the square roots of the non-zero eigenvalues of $A^\top A$, known as the \tib{singular values} of $A$, ordered by size and followed by some amount of zeroes.
 \end{importanttheorem}
@@ -387,8 +393,8 @@ $QR$-decomposition is $\cO(n^3)$, which is asymptotically the same as $LU$-decom
 	$A^+b$ is a minimal solution of the linear regression problem $Ax \approxeq b$.
 \end{theorem}
 
-\chapter{Eigenvalue Problems}
-\section{Localization}
+\section{Eigenvalue Problems}
+\subsection{Localization}
 \begin{theorem}
 	Every eigenvalue of a matrix $A \in \Hom(\bR^n, \bR^n)$ is contained in a set of the form
 	\begin{align*}
@@ -464,8 +470,7 @@ This means that finding eigenvalues of normal matrices is a well-conditioned pro
 	\end{pmatrix}
 \end{align*}
 has characteristic polynomial $p(t) = (-1)^n \sum_{i = 0}^n a_it^i$, with $a_n = 1$. In general, adding a small constant to an arbitrary polynomial can change the roots quite significantly, so finding the eigenvalues of $A$ is generally not well-conditioned.
-
-\section{Von Mises iteration}
+\subsection{Power Iteration}
 \begin{importanttheorem}{Von Mises iteration}{}
 	Let $A \in \Hom(\bR^n, \bR^n)$. Let $x_0 \in \bR^n \setminus \lr{0}$. Then the sequence
 	\begin{align*}
@@ -487,7 +492,7 @@ has characteristic polynomial $p(t) = (-1)^n \sum_{i = 0}^n a_it^i$, with $a_n =
 \begin{proposition}
 	Under "suitable conditions", applying von Mises iteration to $(A - \mu I_n)^{-1}$ gives the eigenvalue closest to $\mu$.
 \end{proposition}
-\section{$QR$ Iteration}
+
 \begin{importanttheorem}{$QR$ Iteration}{}
 	Let $A_0$ be diagonalizable. Then the sequence
 	\begin{align*}
@@ -499,3 +504,103 @@ has characteristic polynomial $p(t) = (-1)^n \sum_{i = 0}^n a_it^i$, with $a_n =
 In praxis, this iteration generally converges even if $A_0$ is not diagonalizable. Each step of this iteration is $\cO(n^3)$.
 
 This can be decreased to a one-time cost of $\cO(n^3)$ followed by $\cO(n^2)$ for every subsequent step by transforming $A$ into \tit{Hessenberg form} (an upper triangular matrix $\hat A$ with one extra diagonal below the main diagonal), whose $QR$ decomposition is then cheaper to calculate.
+\subsection{The Jacobi Eigenvalue Algorithm}
+The Gerschogorin circle theorem tells us that we can find the eigenvalues of $A$ by making $A$ 'almost diagonal', i.e. by transforming $A$ so that the off-diagonal entries become negligible. This is the idea behind the \tib{Jacobi eigenvalue algorithm} (Not to be confused with the \tit{Jacobi Method}, which is an algorithm for approximating the solution to a system of linear equations that we will meet later).
+\begin{definition}
+	Let $A \in \Hom(\bR^n, \bR^n)$. We define $N(A)$ to be the Euclidean norm of the off-diagonal entries of $A$, i.e.
+	\begin{align*}
+		N(A) = \sum_{i \neq j} a_{ij}^2
+	\end{align*}
+\end{definition}
+\begin{proposition}
+	For every diagonal entry $a_{ii}$, there exists an eigenvalue $\lambda$ such that
+	\begin{align*}
+		\abs{\lambda - a_{ii}} \leq \sqrt{N(A)}.
+	\end{align*}
+\end{proposition}
+\begin{lemma}
+	Let $A \in \Hom(\bR^n, \bR^n)$ be symmetrical. Let $R_{ij}(\theta)$ be a rotation of $\theta$ degrees in the plane spanned by the basis vectors $b_i$ and $b_j$. Then $B = R_{ij}(\theta)^\top A R_{ij}(\theta)$ fulfills
+	\begin{align*}
+		N(B) &= N(A) - 2(a_{ij}^2 - b_{ij}^2),\\
+		b_{ij} &= b_{ji} = \cos(2\theta)a_{ij} + \frac{1}{2}\sin(2\theta)(a_{ii} - a_{jj})
+	\end{align*}
+\end{lemma}
+\begin{lemma}
+	Let $a_{ij} \neq 0$. Let
+	\begin{align*}
+		\theta = \frac{1}{2}\arctan \lr( \frac{2a_{ij}}{a_{jj} - a_{ii}})
+	\end{align*}
+	Then $B = R_{ij}(\theta)^\top A R_{ij}(\theta)$ fulfills $b_{ij} = b_{ji} = 0$.
+\end{lemma}
+\begin{proof}
+	We saw in the last lemma that 
+	\begin{align*}
+		b_{ij} &= \cos(2\theta)a_{ij} + \frac{1}{2}\sin(2\theta)(a_{ii} - a_{jj})
+	\end{align*}
+	Setting $b_{ij} = 0$ gives
+	\begin{align*}
+		0 &= \cos(2\theta)a_{ij} + \frac{1}{2}\sin(2\theta)(a_{ii} - a_{jj})\\
+		\Longleftrightarrow
+		\tan(2\theta) &= \frac{\sin(2\theta)}{\cos(2\theta)} = \frac{2a_{ij}}{a_{jj} - a_{ii}}
+	\end{align*}
+\end{proof}
+Note that performing this trick multiple times may return entries we previously transformed to zero back to being non-zero. However, if we whack the off-diagonal entries in descending order of absolute value, we do see convergence:
+\begin{theorem}
+	If we choose $a_{ij}$ to be the off-diagonal entry of $A$ with the largest absolute value and define $R_{ij}(\theta)$ and $B$ as in the previous lemma, we get
+	\begin{align*}
+		N(B) \leq \lr(1 - \frac{2}{n(n-1)})N(A)
+	\end{align*}
+\end{theorem}
+\begin{proof}
+	Since $a_{ij}$ is the element with the largest absolute value, we have $$N(A) \leq n(n-1)a_{ij}^2,$$ giving us
+	\begin{align*}
+		N(B) = N(A) - 2a_{ij}^2 \leq \lr(1 - \frac{2}{n(n-1)})N(A)
+	\end{align*}
+\end{proof}
+Repeated iterations of this procedure is known as the \tib{Jacobi eigenvalue algorithm}. The algorithm requires $\cO(n^2 \log(1/\epsilon))$ iterations to guarantee $N(A_{k+1}) \leq \epsilon$. Searching for the largest off-diagonal entries can be impractical, so instead one often simply iterates over all off-diagonal entries.
+\section{Contraction Methods}
+\begin{theorem}
+	Let $A \in \Hom(\bR^n, \bR^n)$. Then the spectral radius $\rho(A)$ is the greatest lower bound of all operator norms of $A$.
+\end{theorem}
+\begin{corollary}
+	If $\rho(A) < 1$, any affine map $\Phi : x \mapsto Ax + b$ is a contraction.
+\end{corollary}
+We can decompose any matrix $A$ into a sum
+\begin{align*}
+	A = L + D + U
+\end{align*}
+of a strictly lower triangular matrix, a diagonal matrix, and a strictly upper triagonal matrix. Since $D$, $D+U$, and $D+L$ are easy to invert (as long as they *are* invertible), this approach leads to an entire family of iterative algorithms for solving systems of linear equations.
+
+The \tib{Jacobi method} iterates via
+\begin{align*}
+	Lx^k + Dx^{k+1} + Ux^k &= b\\
+	\Leftrightarrow x^{k+1} &= -D^{-1}(A - D)x^k + D^{-1}b\\
+	&:= M^J + c^J.
+\end{align*}
+
+The \tib{Gauß-Seidel method} iterates via
+\begin{align*}
+	Lx^{k+1} + Dx^{k+1} + Ux^k &= b\\
+	\Leftrightarrow x^{k+1} &= -(L+D)^{-1}Ux^k + (L+D)^{-1}b\\
+	&:=M^{GS}x^k + c^{GS}.
+\end{align*}
+
+We want to find sufficient conditions that $A$ needs to fulfill in order for these iterations to be contractions, and thus to converge.
+\begin{exercise}
+	Show that both methods converge if $A$ is strictly diagonally dominant.
+\end{exercise}
+\begin{theorem}
+	If $A$ is symmetric and positive definite, the Gauß-Seidel method iterates over a contraction, and thus converges.
+\end{theorem}
+\begin{definition}
+	We call a matrix $A \in \Hom(\bR^n, \bR^n)$ \tib{reducible} if there exists a decomposition of $[1,..n]$ into disjoint index sets $I,J$ such that $a_{ij} = 0$ for all $(i,j) \in I \times J$.
+\end{definition}
+\begin{theorem}
+	If $A$ is reducible, we can decompose the system of linear equations $Ax = b$ into two systems $A_{II}x_I = b_I$ and $A_{JJ}x_J = b_J - A_{JI}x_I$.
+\end{theorem}
+\begin{theorem}
+	If $A$ is reducible and diagonally dominant, it is invertible with non-zero diagonal entries.
+\end{theorem}
+\begin{theorem}
+	If $A$ is irreducible and diagonally dominant, the Jacobi and Gauß-Seidel methods iterate over contractions, and thus converge.
+\end{theorem}
