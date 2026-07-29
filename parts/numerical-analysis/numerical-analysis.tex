@@ -1,9 +1,305 @@
 \chapter{Numerical Analyis}
 \section{Polynomial Interpolation}
+\begin{definition}
+	The \tib{Lagrange interpolation} problem consists of finding a polynomial $p \in \cP_n$ such that $p(x_i) = y_i$ for some $a \leq x_0 < \hdots < x_n \leq b$ and $y_0, \hdots, y_n$.
+\end{definition}
+A convenient solution to this problem would be finding a set of polynomials $L_i$ such that $L_i(x_j) = \delta_{ij}$, since those would let us solve any interpolation problem using the right linear combination. A first idea is
+\begin{align*}
+	L_i(x) := \prod_{i \neq j} (x - x_j)
+\end{align*}
+which gives us $L_i(x_j) = 0$ if $i \neq j$ and $L_i(x_i) \neq 0$. Now, we only need to normalize these polynomials such that $L_i(x_i) = 1$. This can be done by setting
+\begin{align*}
+	L_i(x) := \prod_{i \neq j} \frac{x - x_j}{x_i - x_j}
+\end{align*}
+\begin{importanttheorem}{}{}
+	Given some $x_0 < x_1 \hdots x_n$, the polynomials
+	\begin{align*}
+		L_i(x) := \prod_{i \neq j} (x - x_j)
+	\end{align*}
+	fulfill $L_i(x_j) = \delta_{ij}$. They are known as \tib{Lagrange polynomials}.
+\end{importanttheorem}
+\begin{corollary}
+	The polynomial 
+	\begin{align*}
+		p(x) = \sum_{i = 0}^n y_i \cdot L_i(x)
+	\end{align*}
+	is the unique solution of the Lagrange interpolation problem.
+\end{corollary}
+\begin{exercise}
+	Show that $\sum_{i = 0}^n L_i(x) = 1$ for all $x \in [a,b]$.
+\end{exercise}
+\begin{theorem}
+	Let $f \in C^{n+1}([a,b])$ such that $f(x_i) = y_i$. Let $p$ be the solution of the corresponding Lagrange polynomial interpolation problem. Then for every $x \in [a,b]$, there exists a $\xi \in [a,b]$ such that
+	\begin{align*}
+		f(x) - p(x) = \frac{1}{(n+1)!} \cdot f^{(n+1)}(\xi) \cdot \prod_{j = 0}^n (x - x_j).
+	\end{align*}
+\end{theorem}
+\begin{corollary}
+	\begin{align*}
+		\norm{f - p}_{\sup} \leq \frac{\norm{f^{(n+1)}}_{\sup}}{(n+1)!} \cdot (b-a)^{n+1}
+	\end{align*}
+\end{corollary}
+\begin{corollary}
+	Increasing the number of nodes $x_i$ or decreasing $b-a$ leads to uniform convergence of the interpolation polynomials to $f$, as long as the derivatives of $f$ don't grow rapidly.
+\end{corollary}
+In practice, this leads to uniform convergence for most $f$. Given uniformly spaced nodes, one counterexample is given by \tib{Runge's function} $f(x) = \frac{1}{1 + 25x^2}$.
+
+Evaluating the interpolation polynomial can be difficult and unstable in practice. We now focus our attention on deriving a scheme that allows a stable evaluation of $p(x)$ in $\cO(n^2)$ time.
+
+\begin{definition}
+	Given nodes $x_0, \hdots, x_n$ and values $y_0, \hdots, y_n$ and $j \in [0..n]$, we define $p_{i,j}$ as the Lagrange interpolation polynomial fulfilling $p_{i,j}(x_k) = y_k$ for all $k \in [i..i+j]$
+\end{definition}
+Note that $p_{i,0}(x) = y_i$ and $p_{0,n}(x) = p(x)$.
+\begin{importanttheorem}{Neville Scheme}{}
+	The polynomials $p_{i,j}$ are given by $p_{i,0}(x) = y_i$ and
+	\begin{align*}
+		p_{i,j}(x) = \frac{(x-x_i) \cdot p_{i+1,j-1}(x) - (x-x_{i+j})p_{i,j-1}(x)}{x_{i+j} - x_i}
+	\end{align*}
+\end{importanttheorem}
+Recursive implementations of the Neville scheme are highly inefficient. A simple successive "forwards" evaluation scheme leads to a runtime in $\cO(n^2)$.
+\begin{definition}
+	Given $x_0, \hdots, x_{n-1}$, the \tib{Newton basis} $q_0, \hdots, q_n$ of $\cP_n$ is given by
+	\begin{align*}
+		q_j(x) = \prod_{k = 0}^{j-1} (x - x_k)
+	\end{align*}
+\end{definition}
+\begin{importanttheorem}{Divided Differences}{}
+	Given $p \in \cP_n$ and $x_0, \hdots, x_n \in [a,b]$, we can find the representation $p(x) = \sum_{j = 0}^n \lambda_j q_j(x)$ of $p$ in the corresponding newton basis by setting $\lambda_{i,0} = y_i$ and iterating
+	\begin{align*}
+		\lambda_{i,j} = \frac{\lambda_{i+1,j-1} - \lambda_{i, j-1}}{x_{i+j} - x_i}
+	\end{align*}
+\end{importanttheorem}
+$p$ can then be evaluated easily using the Horner Scheme
+\begin{align*}
+	p(x) = \lambda_0 + (x- x_0) \cdot \lr(\lambda_1 + (x - x_1) \cdot (\lambda_2 + \hdots (\lambda_{n-1} + (x - x_{n-1}\lambda_n))))
+\end{align*}
+This approach has the advantage of allowing us to easily add more nodes later.
+\newpar
+Now, we shift our attention to the problem of lowering interpolation error. One way of doing this is by cleverly choosing our nodes $x_i$.
+\begin{definition}
+	The \tib{Chebyshev-Polynomials} on $t \in [-1,1]$ are given by
+	\begin{align*}
+		T_n(t) = \cos(n \cdot \arccos(t)).
+	\end{align*}
+	The roots of a Chebyshev polynomial are known as \tib{Chebyshev nodes}.
+\end{definition}
+\begin{lemma}
+	We have $\abs{T_n(t)} \leq 1$ for all $t \in [-1,1]$.
+\end{lemma}
+\begin{lemma}
+	The Chebyshev polynomials are given by the recurrence relation
+	\begin{align*}
+		T_0(t) &= 1\\
+		T_1(t) &= t\\
+		T_{n+1}(t) &= 2t T_n(t) - T_{n-1}(t)
+	\end{align*}
+\end{lemma}
+\begin{corollary}
+	We have
+	\begin{align*}
+		T_{n+1}(x) = 2^n \prod_{j = 0}^n (x - t_j)
+	\end{align*}
+\end{corollary}
+\begin{lemma}
+	The roots of $T_n$ are given by 
+	\begin{align*}
+		t_j = \cos\lr(\frac{\lr(j + \frac{1}{2})\pi}{n})
+	\end{align*}
+	for $j \in [0..n-1]$.
+\end{lemma}
+\begin{lemma}
+	The extreme values of $T_n$ are given by
+	\begin{align*}
+		s_j = \cos\lr(\frac{j\pi}{n})
+	\end{align*}
+	for $j \in [0..n]$.
+\end{lemma}
+\begin{theorem}
+	Among all possible choices of nodes for polynomial interpolation, Chebyshev nodes minimize the supremum norm of the interpolation polynomial. If Chebyshev nodes are used, the interpolation error becomes
+	\begin{align*}
+		\norm{f - p}_{\sup} \leq 2^{-n} \frac{\norm{f^{(n+1)}}_{\sup}}{(n+1)!}
+	\end{align*}
+\end{theorem}
+
+\begin{definition}
+	The \tib{Hermite interpolation problem} consists of finding a polynomial $p \in \cP_N$ such that $p^{(k_i)}(x_i) = y^{(k_i)}_i$, where $N + 1 = \sum_{i = 0}^n (k_i + 1)$.
+\end{definition}
+\begin{proposition}
+	Hermite interpolation has a unique solution. Given only a single node, the solution is the corresponding taylor polynomial.
+\end{proposition}
 \section{Spline Interpolation}
+\begin{importantdefinition}{}{}
+	A function $s : [a,b] \to \bR$ is known as a \tib{Spline of degree $m$ and order $k$} if $s \in C^k([a,b])$ is a piecewise combination of polynomials of degree $m$ over some partition $I_n$ of $[a,b]$ into $n$ nodes. The space of $m,k$-splines on $P$ is written $\cS^{m,k}(I_n)$. If no order is given, it is generally assumed that $k = m-1$.
+\end{importantdefinition}
+\begin{proposition}
+	For $k \geq m$, we have $\cP_m|_{[a,b]} = \cS^{m,k}(I_n)$.
+\end{proposition}
+\begin{theorem}
+	Linear spline interpolation is solved by $s = \sum_{i = 0}^n y_i \phi_i$, where $\phi_i$ are the \tib{hat functions}, given by linearly interpolating $\phi_i(x_j) = \delta_j$
+\end{theorem}
+\begin{theorem}
+	\begin{align*}
+		\dim \cS^{m,m-1}(I_n) = n + m
+	\end{align*}
+\end{theorem}
+\begin{definition}
+	Given a cubic spline interpolation problems, we generally want to fulfill one of the following boundary conditions:
+	\begin{enumerate}
+		\item \tib{Natural boundary conditions}, given by
+		\begin{align*}
+			s''(a) = s''(b) = 0
+		\end{align*}
+		\item \tib{Complete boundary conditions} or \tib{Hermite boundary conditions}, given by
+		\begin{align*}
+			s'(a) = \alpha,\\
+			s'(b) = \beta
+		\end{align*}
+		for some $\alpha, \beta \in \bR$.
+		\item \tib{Periodic boundary conditions} $s'(a) = s'(b)$, $s''(a) = s''(b)$
+	\end{enumerate}
+\end{definition}
+If a thin, elastic board has its position fixed at certain points, the shape that the board takes is exactly the solution of the corresponding cubic spline interpolation problem.
+\begin{theorem}
+	Given a spline $s$ and any other function $g$ interpolating the same points and fulfilling the same boundary condtions, the curvature of $s$ is a lower bound to the curvature of $g$.
+\end{theorem}
+\begin{theorem}
+	Let $s_1$ be the linear spline interpolating $f \in C^2([a,b])$. Then
+	\begin{align*}
+		\norm{f - s_1}_{L^2} \leq \frac{h^2}{2}\norm{f''}_{L^2}
+	\end{align*}
+	with $h = \max\lr{x_i - x_{i-1} \mid i \in [1..n]}$.
+\end{theorem}
+\begin{theorem}
+	Let $s_3$ be a cubic spline interpolating $f \in C^2([a,b])$. Then
+	\begin{align*}
+		\norm{f - s_3}_{L^2} \leq \frac{h^4}{4}\norm{f^{(4)}}_{L^2}
+	\end{align*}
+	with $h = \max\lr{x_i - x_{i-1} \mid i \in [1..n]}$.
+\end{theorem}
 \section{Discrete Fourier Transform}
+\begin{importantdefinition}{Real Trigonometric Interpolation}{}
+	Given an even number of evenly spaces nodes $x_0, \hdots, x_{n-1}$ with $n = 2m$ even, the \tib{real trigonometric ineterpolation problem} consists of finding $a_k, b_k \in \bR$, $k \in [1..m-1]$ and $a_0, a_m \in \bR$ such that
+	\begin{align*}
+		T(x) = \frac{a_0}{2} + \sum_{k = 1}^{m-1} \lr(a_k \cos(kx) + b_k \sin(kx)) + \frac{a_m}{2} \cos(mx)
+	\end{align*}
+	fulfills $T\lr(\frac{2\pi j}{n}) = y_j$ for all $j$.
+\end{importantdefinition}
+Trigonometric interpolation can be written much more compactly in the complex case:
+\begin{importantdefinition}{Real Trigonometric Interpolation}{}
+	Given an even number of evenly spaces nodes $x_0, \hdots, x_{n-1}$ with $n = 2m$ even, the \tib{real trigonometric ineterpolation problem} consists of finding $c_k \in \bC$, $k \in [1..n-1]$ such that
+	\begin{align*}
+		T(x) = \sum_{k = 0}^{n-1} c_k e^{ikx}
+	\end{align*}
+	fulfills $T\lr(\frac{2\pi j}{n}) = y_j$ for all $j$.
+\end{importantdefinition}
+\begin{theorem}
+	A set of coefficients $c_k$ solves the complex trigonometric interpolation problem iff. the coefficients $a_k, b_k$ defined by
+	\begin{align*}
+		a_0 &= 2c_0\\
+		a_k &= c_k + c_{2m-k}\\
+		b_k &= i(c_k - c_{2m-k})\\
+		a_m &= 2c_m
+	\end{align*}
+	solve the corresponding real trigonometric interpolation problem.
+\end{theorem}
+If we write $y = (y_0, \hdots, y_{n-1})^\top$ and $\vec \omega_n^k = (\omega_n^{jk})_{j \in [1..n]}$, the complex trigonometric interpolation problem is given by the system of linear equations
+\begin{align*}
+	y = \sum_{k = 0}^{n-1} \beta_k \vec \omega_n^k
+\end{align*}
+\begin{importanttheorem}{}{}
+	The family $(\vec \omega_n^k)_{k \in [1..n]}$ is an orthogonal basis of $\bC^n$ fulfilling
+	\begin{align*}
+		\scalar{\vec \omega_n^k}{\vec \omega_n^l} = n\delta_{kl}
+	\end{align*}
+	known as the \tib{Fourier basis}.
+\end{importanttheorem}
+Complex trigonometric interpolation thus comes down to performing a change of basis from the standard basis into the Fourier basis. We know from linear algebra that the matrix $T_n = (\vec \omega_n^0, \hdots, \vec \omega_n^n)$ is the basis change matrix from the Fourier basis into the standard basis. Thus, its inverse must be the basis change matrix from the standard basis into the Fourier basis.
+\begin{exercise}
+	Show $T_n^{-1} = \frac{1}{n} T_n^*$
+\end{exercise} Thus, we get:
+\begin{importanttheorem}{Discrete Fourier Transform}{}
+	\begin{enumerate}
+		\item Change of basis from the standard basis of $\bC^n$ into the Fourier basis, known as the \tib{discrete Fourier transform}, is given by
+		\begin{align*}
+			\beta = \frac{1}{n} T_n^* y
+		\end{align*}
+		\item Change of basis from the Fourier basis of $\bC^n$ into the standard basis, known as the \tib{inverse discrete Fourier transform} or as \tib{Fourier synthesis}, is given by
+		\begin{align*}
+			y = T_n \beta
+		\end{align*}
+	\end{enumerate}
+\end{importanttheorem}
 \section{Numerical Integration}
-A \tib{summed quadrature formula} is a function $T(h) : \bR_{\geq 0} \to \bR$ which gives the integral of a function $f \in C^k([a,b])$ in the limit $h \to 0$. If the error of our quadrature formula is of order $h^\gamma$ for a $\gamma \in \bN$, we have
+The goal of numerical integration, also known as \tib{quadrature}\sidenote{Based on the ancient greek practice of finding the area of a shape by constructing a square of equal area.} is numerical approximation of the integral operator
+\begin{align*}
+	I(f) = \int_a^b f(x) ~dx.
+\end{align*}
+\begin{definition}
+	A \tib{quadrature formula} on an interval $[a,b]$ is a linear map $Q : C^0([a,b]) \to \bR$ of the form
+	\begin{align*}
+		Q(f) = \sum_{i = 0}^n w_i.f(x_i)
+	\end{align*}
+\end{definition}
+\begin{definition}
+	The number $$\norm{Q} = \frac{1}{b-a} \sum_{i = 0}^n \abs{w_i}$$ is known as the \tib{stability indicator} of $Q$.
+\end{definition}
+The Riemann integral is defined as the limit of the quadrature formula
+\begin{align*}
+	Q(f) = \sum_{k = 0}^{n-1} (x_{i+1} - x_i).f(x_i)
+\end{align*}
+as the distance between the nodes approaches zero.
+\begin{definition}
+	A quadrature formula $Q$ is called \tib{exact of degree $d$} if $Q(p) = I(p)$ for all $p \in \cP_d$.
+\end{definition}
+\begin{lemma}
+	If a quadrature formula is exact of degree at least $0$, we have $\sum_{i = 0}^n w_i = b-a$.
+\end{lemma}
+\begin{lemma}
+	Given $n = 2m$ equidistant nodes, a quadrature formula on these $n$ nodes that is exact of degree $2d$ is also exact of degree $2d+1$
+\end{lemma}
+\begin{importanttheorem}{}{}
+	The \tib{Newton-Cotes-Formula}
+	\begin{align*}
+		Q(f) = \sum_{i = 0}^n \lr(\int_a^b L_i(x) ~dx).f(x_i)
+	\end{align*}
+	is exact of degree $n$. The case $n = 0$ is known as the \tib{middle point rule}, the case $n = 1$ is known as the \tib{trapeze rule}, and the case $n = 2$ is known as the \tib{Simpson rule}.
+\end{importanttheorem}
+\begin{theorem}
+	The trapeze rule is given in closed form by
+	\begin{align*}
+		T(f) = \frac{b-a}{2}(f(a) + f(b))
+	\end{align*}
+\end{theorem}
+\begin{theorem}
+	The Simpson rule is given in closed form by
+	\begin{align*}
+		T(f) = \frac{b-a}{6}\lr(f(a) + 6f\lr(\frac{a+b}{2})+ f(b)).
+	\end{align*}
+	since we chose equidistant nodes $x_0, x_1, x_2$, it is exact of degree $3$.
+\end{theorem}
+\newpar
+We can increase the accuracy of a quadrature formula by partitioning our interval $[a,b]$ into smaller intervals, and applying a quadrature formula to each one separately. We write this as
+\begin{align*}
+	Q^n(f) = \sum_{k = 1}^n Q_k(f|_{(x_{j-1},x_k)})
+\end{align*}
+A summed quadrature formula is called exact of degree $d$ if
+\begin{align*}
+	\abs{Q^n(f) - I(f)} = \cO\lr(\lr(\frac{b-a}{n})^d)
+\end{align*}
+\begin{proposition}
+	The summed trapeze rule is exact of degree $2$. The summed Simpson rule is exact of degree $4$.
+\end{proposition}
+\begin{lemma}
+	A quadrature formula with $n+1$ weights has exactness degree at most $2n + 1$.
+\end{lemma}
+\begin{lemma}
+	A quadrature formula with $n+1$ weights is exact of degree $n$ if and only if
+	\begin{align*}
+		w_i = \int_a^b L_i(x) ~dx
+	\end{align*}
+	If the Quadrature formula is exact of Degree $2n$, we have $w_i > 0$ for all $i$.
+\end{lemma}
+If the error of a summed quadrature formula $T(h)$ is of order $h^\gamma$ for a $\gamma \in \bN$, we have
 \begin{align*}
 	T(h) = T(0) + \phi(h)
 \end{align*}
@@ -17,9 +313,9 @@ for some $c_1, c_2 \in \bR$ and, i.e.
 \end{align*}
 If we evaluate at $h/2$, we get
 \begin{align*}
-	T(h/2) = T(0) + c_1 h^\gamma + c_2 h^{\gamma + 1} + o\lr(\frac{h^{\gamma + 1}}{2^{\gamma + 1}})
+	T(h/2) = T(0) + \frac{c_1}{2^\gamma} h^\gamma + \frac{c_2}{2^{\gamma + 1}} h^{\gamma + 1} + o\lr(\frac{h^{\gamma + 1}}{2^{\gamma + 1}})
 \end{align*}
-This lets us eliminate the $c_1 h^\gamma$-term, which gives us
+This lets us eliminate the $c_1 h^\gamma$-term by setting
 \begin{align*}
 	T^*(h) := \frac{T(h) - 2^\gamma T(h/2)}{1 - 2^\gamma} = T(0) + c_2 \frac{1 - 2^{-1}}{1 - 2^\gamma} \cdot h^{\gamma + 1} + o(h^{\gamma + 1}),
 \end{align*}
@@ -92,7 +388,7 @@ In general, neither of these problems have closed form solutions. Instead, appro
 		\item Return $x_{k+1}$ if $d(x_{k+1}, x_k) \leq \epsilon$. Otherwise set $k \gets k+1$ and return to step 2.
 	\end{enumerate}
 \end{theorem}
-
+\noindent
 If $f \in C^1(U \subseteq \bR^n, \bR^n)$, Taylor approximation gives
 \begin{align*}
 	0 = f(x^*) = f(x) + Df(x)(x^*-x) + \phi(d(x^*, x))
@@ -114,3 +410,4 @@ If $d(x^*, x_0) \geq \epsilon$, the Newton method might diverge. In this case, i
 	x_{k+1} = x_k - \omega Df(x_k)^{-1}
 \end{align*}
 can lead to convergence, but makes convergence asymptotically slower (no longer quadratic in general).
+

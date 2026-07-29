@@ -236,6 +236,12 @@ This means that the product $\norm{A}\norm{A^{-1}}$ tells us how much our accumu
 \begin{exercise}
 	Show that if $\Phi$ is differentiable, we have $\kappa_{\Phi}(x) = \frac{\norm{D\Phi(x)}\norm{x}}{\norm{\Phi(x)}}$
 \end{exercise}
+\begin{importantdefinition}{Stability Indicator}{}
+	The \tib{stability indicator} of a numerical algorithm $\tPhi_\epsilon$ with rounding accuracy $\epsilon$ is
+	\begin{align*}
+		\inf \lr{\sigma \geq 0 \mid \exists \delta > 0 : \forall \epsilon \leq \delta : \epsilon_{\tPhi_\epsilon} \leq \sigma \kappa_{\Phi(x)}\epsilon} \cdot \epsilon
+	\end{align*}
+\end{importantdefinition}
 \section{Triangular Decompositions}
 Solving a system of linear equations corresponding to a triangular matrix is trivial. Thus, if we can write a given matrix as a product of two triangular matrices, further computations become significantly easier.
 \begin{exercise}
