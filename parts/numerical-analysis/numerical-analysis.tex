@@ -43,8 +43,8 @@ which gives us $L_i(x_j) = 0$ if $i \neq j$ and $L_i(x_i) \neq 0$. Now, we only 
 	Increasing the number of nodes $x_i$ or decreasing $b-a$ leads to uniform convergence of the interpolation polynomials to $f$, as long as the derivatives of $f$ don't grow rapidly.
 \end{corollary}
 In practice, this leads to uniform convergence for most $f$. Given uniformly spaced nodes, one counterexample is given by \tib{Runge's function} $f(x) = \frac{1}{1 + 25x^2}$.
-
-Evaluating the interpolation polynomial can be difficult and unstable in practice. We now focus our attention on deriving a scheme that allows a stable evaluation of $p(x)$ in $\cO(n^2)$ time.
+\newpar
+However, evaluating the interpolation polynomial can be difficult and unstable in practice. We now focus our attention on deriving a scheme that allows a stable evaluation of $p(x)$ in $\cO(n^2)$ time.
 
 \begin{definition}
 	Given nodes $x_0, \hdots, x_n$ and values $y_0, \hdots, y_n$ and $j \in [0..n]$, we define $p_{i,j}$ as the Lagrange interpolation polynomial fulfilling $p_{i,j}(x_k) = y_k$ for all $k \in [i..i+j]$
@@ -230,7 +230,7 @@ Complex trigonometric interpolation thus comes down to performing a change of ba
 	\end{enumerate}
 \end{importanttheorem}
 \section{Numerical Integration}
-The goal of numerical integration, also known as \tib{quadrature}\sidenote{Based on the ancient greek practice of finding the area of a shape by constructing a square of equal area.} is numerical approximation of the integral operator
+The goal of numerical integration, also known as \tib{quadrature}\sidenote{Based on the ancient Greek practice of finding the area of a shape by constructing a square of equal area.} is numerical approximation of the integral operator
 \begin{align*}
 	I(f) = \int_a^b f(x) ~dx.
 \end{align*}
@@ -251,9 +251,9 @@ as the distance between the nodes approaches zero.
 \begin{definition}
 	A quadrature formula $Q$ is called \tib{exact of degree $d$} if $Q(p) = I(p)$ for all $p \in \cP_d$.
 \end{definition}
-\begin{lemma}
-	If a quadrature formula is exact of degree at least $0$, we have $\sum_{i = 0}^n w_i = b-a$.
-\end{lemma}
+\begin{exercise}
+	A quadrature formula is exact of degree $0$ if and only if $\sum_{i = 0}^n w_i = b-a$.
+\end{exercise}
 \begin{lemma}
 	Given $n = 2m$ equidistant nodes, a quadrature formula on these $n$ nodes that is exact of degree $2d$ is also exact of degree $2d+1$
 \end{lemma}
@@ -273,7 +273,7 @@ as the distance between the nodes approaches zero.
 \begin{theorem}
 	The Simpson rule is given in closed form by
 	\begin{align*}
-		T(f) = \frac{b-a}{6}\lr(f(a) + 6f\lr(\frac{a+b}{2})+ f(b)).
+		T(f) = \frac{b-a}{6}\lr(f(a) + 4f\lr(\frac{a+b}{2})+ f(b)).
 	\end{align*}
 	since we chose equidistant nodes $x_0, x_1, x_2$, it is exact of degree $3$.
 \end{theorem}
@@ -292,13 +292,57 @@ A summed quadrature formula is called exact of degree $d$ if
 \begin{lemma}
 	A quadrature formula with $n+1$ weights has exactness degree at most $2n + 1$.
 \end{lemma}
+\begin{proof}
+	Let $Q(f) = \sum_{i = 0}^n w_i \cdot f(x_i)$ be our quadrature formula. Let $p(x) = \prod_{i = 0}^n (x - x_i)^2$. Then we have $Q(p) = 0$, but $I(p) > 0$. Since $p \in \cP_{2n + 2}$, $Q$ cannot have exactness $2n + 2$.
+\end{proof}
 \begin{lemma}
 	A quadrature formula with $n+1$ weights is exact of degree $n$ if and only if
 	\begin{align*}
 		w_i = \int_a^b L_i(x) ~dx
 	\end{align*}
-	If the Quadrature formula is exact of Degree $2n$, we have $w_i > 0$ for all $i$.
 \end{lemma}
+\begin{proof}
+	\begin{enumerate}
+		\item If $Q$ is exact of degree $n$, it must integrate the lagrange polynomials exactly. We get:
+		\begin{align*}
+			\int_a^b L_i(x) ~dx 
+			&= \sum_{j = 0}^n w_j L_i(x_j)\\ 
+			&= \sum_{j = 0}^n w_j \delta_{ij}\\ 
+			&= w_i\\ 
+		\end{align*}
+		\item Any quadrature formula $Q$ that integrates the Lagrange polynomials exactly must also integrate any linear combination of Lagrange polynomials exactly. Since the Lagrange polynomials at $n+1$ nodes form a basis of $\cP_n$, it follows that $Q$ integrates any polynomial of degree $n$ exactly.
+	\end{enumerate}
+\end{proof}
+\begin{lemma}
+	If a quadrature formula is exact of even degree $n = 2m$, we have $w_i > 0$ for all $i$.
+\end{lemma}
+\begin{proofsketch}
+	\begin{align*}
+		w_i = \int_a^b L_i(x)^2 > 0
+	\end{align*}
+\end{proofsketch}
+
+We will now devote our attention to deriving the \tib{Gauß quadrature}, which chooses $n+1$ quadrature points such that the maximum possible exactness degree is achieved.
+\begin{proposition}
+	Let $\omega \in C^0([a,b])$ with $\omega(x) > 0$. Then $\scalar{f}{g}_\omega = \int_a^b f(x) g(x) \omega(x) ~dx$ is a scalar product on $C^0([a,b])$.
+\end{proposition}
+Using Gram-Schmidt starting with the standard monomial basis, we can construct an $\omega$-orthonormal base $(\pi_i)_{i \in [0..n]}$ of $\cP_n$ such that $\pi_i \in \cP_i$ for all $i$.
+\begin{proposition}
+	Using $\omega(x) = (1-x^2)^{-\frac{1}{2}}$ on $(-1,1)$ gives the Chebyshev polynomials.
+\end{proposition} 
+\begin{proposition}
+	Using $\omega(x) = 1$ on $[-1,1]$ gives the Legendre polynomials.
+\end{proposition}
+\begin{lemma}
+	Every orthonormal polynomial $\pi_i$ has $i$ roots of order $1$ lying in the given interval $(a,b)$.
+\end{lemma}
+\begin{importanttheorem}{}{}
+	Let $x_i$ be the roots of $\pi_{n+1}$ for some $\omega \in C^0([a,b])$. Then the quadrature formula with roots $x_i$ and weights
+	\begin{align*}
+		w_i = \int_a^b L_i(x)\omega(x) ~dx
+	\end{align*}
+	is exact of degree $2n+1$.
+\end{importanttheorem}
 If the error of a summed quadrature formula $T(h)$ is of order $h^\gamma$ for a $\gamma \in \bN$, we have
 \begin{align*}
 	T(h) = T(0) + \phi(h)
@@ -377,6 +421,9 @@ In general, neither of these problems have closed form solutions. Instead, appro
 	\end{enumerate}	
 	Then iteration stops after $J \leq 1 + \log_2\lr(\frac{b-1}{\epsilon})$ steps, the interval $[a_J, b_J]$ contains a root, and if $\epsilon = 0$, then the sequence $(c_k)_{k \in \bN}$ converges to a root linearly with $q = \frac{1}{2}$. 
 \end{theorem}
+\begin{proposition}
+	The bisection algorithm converges linearly.
+\end{proposition}
 \begin{theorem}
 	\tib{Secant Method:} Let $f \in C^0([a,b] \to \bR)$. Then the following algorithm converges to a root of $f$, if one exists:
 	\begin{enumerate}
@@ -388,6 +435,9 @@ In general, neither of these problems have closed form solutions. Instead, appro
 		\item Return $x_{k+1}$ if $d(x_{k+1}, x_k) \leq \epsilon$. Otherwise set $k \gets k+1$ and return to step 2.
 	\end{enumerate}
 \end{theorem}
+\begin{proposition}
+	The secant method converges superlinearly, but subquadratically, with convergence order $\phi = \frac{1 + \sqrt{5}}{2}$ (the golden ratio!)
+\end{proposition}
 \noindent
 If $f \in C^1(U \subseteq \bR^n, \bR^n)$, Taylor approximation gives
 \begin{align*}
@@ -402,8 +452,9 @@ as long as $Df(x_k)$ is regular. This is the (multidimensional analogue of) the 
 \begin{theorem}
 	Let $f \in C^2(U, \bR^n)$. Let $x^* \in U$ be a root of $f$ such that $Df(x^*)$ is invertible. Then there exists an $\epsilon > 0$ such that the Newton method converges for any $x_0 \in U$ with $d(x^*, x_0) < \epsilon$. Additionally, there exists a constant $c \geq 0$ such that the iterates $(x_k)_{k \in \bN}$ fulfill
 	\begin{align*}
-		\norm{x^* - x_{k+1}} \leq c \norm{x^* - x_k}^2
+		\norm{x^* - x_{k+1}} \leq c \norm{x^* - x_k}^2,
 	\end{align*}
+	i.e. the Newton method converges quadratically.
 \end{theorem}
 If $d(x^*, x_0) \geq \epsilon$, the Newton method might diverge. In this case, introducing a damping factor $\omega \in (0,1)$ and iterating
 \begin{align*}
