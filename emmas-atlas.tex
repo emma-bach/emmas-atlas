@@ -7,13 +7,7 @@
 
 \usepackage[open=true]{bookmark}
 \usepackage{chngcntr}
-\usepackage{lettrine}
-\usepackage{GoudyIn}
 
-\usepackage[x11names]{xcolor} 
-\renewcommand{\LettrineFontHook}{\color{VioletRed4}\GoudyInfamily{}}
-\LettrineTextFont{\itshape}
-\setcounter{DefaultLines}{3}%
 \counterwithin*{chapter}{part}
 
 % emma's long list of custom macros and universally used packages
@@ -148,7 +142,7 @@ chapter]{axiom}{Axiom}{colback=white,
 	\include{./parts/algebraic-structures/algebraic-structures.tex}
 	\include{./parts/metric-spaces/metric-spaces.tex}
 	\include{./parts/linear-algebra/linear-algebra.tex}
-	\part{Foundations of Differential Geometry}
+	\include{./parts/elementary-differential-geometry/elementary-differential-geometry.tex}
 	\include{./parts/numerical-linear-algebra/numerical-linear-algebra.tex}
 	\include{./parts/numerical-analysis/numerical-analysis.tex}
 	\part{Complex Analysis}

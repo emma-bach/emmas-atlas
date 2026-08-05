@@ -1,0 +1,223 @@
+\part{Elementary Differential Geometry}
+\chapter{Differentiation in $\bR^n$}
+\section{Differentials and Partial Derivatives}
+\section{Rules of Differentiation}
+\begin{importanttheorem}{Chain Rule in $\bR^n$}{}
+	Let $f : U \to \bR^m$ and $g : V \to \bR^r$ with $U \subset \bR^n$, $V \subset \bR^m$ open and $f(U) \subseteq V$. Let $f$ be differentiable at a point $p \in U$ and let $g$ be differentiable at $f(p)$. Then
+	\begin{align*}
+		D(g \circ f)(p)
+		&=
+		Dg(f(p)) \circ Df(p)
+	\end{align*}
+\end{importanttheorem}
+\begin{exercise}
+	Verify that this version of the chain rule agrees with the familiar chain rule for $f,g : \bR \to \bR$.
+\end{exercise}
+\begin{proof}
+	By definition of the differential, we have:
+	\begin{align*}
+		f(x) 
+		&= f(p)\\
+		&+ 
+		Df(p)(x-p)\\
+		&+ 
+		\epsilon_f(x)\norm{x - p}\\
+		g(f(x))
+		&=
+		g(f(p))\\
+		&+
+		Dg(f(p))(f(x)-f(p))\\
+		&+
+		\epsilon_g(f(x))\norm{f(x) - f(p)}
+	\end{align*}
+	For some functions $\epsilon_f : U \to \bR^m$, $\epsilon_g : U \to \bR^r$ which are continuous in $p$ and $f(p)$ and fulfill $\epsilon_f(p) = 0$ and $\epsilon_g(f(p)) = 0$. 
+	
+	The second equation tells us:
+	\begin{align*}
+		g(f(x))
+		&=
+		g(f(p))\\
+		&+
+		Dg(f(p))(f(x) - f(p))\\
+		&+ \epsilon_g(f(x))\norm{f(x) - f(p)}
+	\end{align*}
+	Plugging in our equation for $f(x)$ now lets us regroup our terms into an equation of the same form as the definition of the differential:
+	\begin{align*}
+		g(f(x))
+		&=
+		g(f(p))\\
+		&+
+		\tc{c3}{Dg(f(p))}
+		\biggl[
+			\overbrace{
+			\tc{c4}{f(p)}
+			+ 
+			\tc{c5}{Df(p)(x-p)}
+			+ 
+			\epsilon_f(x)\tc{c1}{\norm{x - p}}}^{f(x)} \tc{c4}{- f(p)}
+		\biggr]
+		\\
+		&+ 
+		\epsilon_g(f(x))
+		\norm{
+			\overbrace{\tc{c4}{f(p)}
+			+ 
+			\tc{c5}{Df(p)(x-p)}
+			+ 
+			\epsilon_f(x)\tc{c1}{\norm{x - p}}}^{f(x)} \tc{c4}{- f(p)}
+		}
+		\\
+	\\
+		&=
+		g(f(p))\\
+		&+
+		\tc{c3}{Dg(f(p))}
+		\biggl[
+			\tc{c5}{Df(p)(x-p)}
+			+ 
+			\epsilon_f(x)\tc{c1}{\norm{x - p}}
+		\biggr]
+		\\
+		&+ 
+		\epsilon_g(f(x))
+		\norm{
+			\tc{c5}{Df(p)(x-p)}
+			+ 
+			\epsilon_f(x)\tc{c1}{\norm{x - p}}
+		}
+		\\
+	\\
+		&=
+		g(f(p))\\
+		&+
+		\tc{c3}{Dg(f(p))}\tc{c5}{Df(p)(x-p)}\\
+		&+ 
+		\tc{c3}{Dg(f(p))}\epsilon_f(x)\tc{c1}{\norm{x - p}}
+		\\
+		&+ 
+		\epsilon_g(f(x))
+		\norm{
+			\tc{c5}{Df(p)(x-p)}
+			+ 
+			\epsilon_f(x)\tc{c1}{\norm{x - p}}
+		}
+		\\
+	\\
+		&=
+		g(f(p))\\ 
+		&+ 
+		\tc{c3}{Dg(f(p))}\tc{c5}{Df(p)(x-p)}\\
+		&+ 
+		\tc{c1}{\norm{x - p}}
+		\cdot 
+		\underbrace{
+			\lr(\epsilon_f(x)\tc{c3}{Dg(f(p))}
+			+ 
+			\epsilon_g(f(x))
+			\norm{\tc{c5}{Df(p)} \lr(\frac{\tc{c5}{x-p}}{\tc{c1}{\norm{x-p}}}) + \epsilon_f(x)})
+		}
+		_
+		{:= \epsilon_{g \circ f}(x)}
+		\\
+		&=
+		g(f(p))\\ 
+		&+ (\tc{c3}{Dg(f(p))} \circ \tc{c5}{Df(p)})\tc{c5}{(x-p)}\\
+		&+ \epsilon_{g \circ f}(x)\tc{c1}{\norm{x - p}} 
+	\end{align*}
+	All that remains is to show that $\epsilon_{g \circ f}(x)$ is continuous if we set
+	\begin{align*}
+		\epsilon_{g \circ f}(p) = 0.
+	\end{align*}
+	Since we have $\epsilon_f(p) = 0$ and $\epsilon_g(f(p)) = 0$, we have our desired result if we can show that 
+	\begin{align*}
+		\norm{Df(p) \lr(\frac{x - p}{\norm{x-p}})}
+		&=
+		\frac{\norm{Df(p)(x-p)}}{\norm{x-p}}.
+	\end{align*}
+	is bounded.
+	Since $\bR^n$ is finite-dimensional, we can find a constant $c$ such that
+	\begin{align*}
+		\norm{Df(p)(x-p)} \leq c \cdot \norm{x-p},
+	\end{align*}
+	which means that our quotient is indeed bounded, completing the proof.
+\end{proof}
+\begin{importanttheorem}{Product Rule in $\bR^n$}{}
+	Let $U \subseteq \bR^n$. Let $f,g : U \to \bR$ at a point $p \in U$. Then
+	\begin{align*}
+		D(f \cdot g)(p) = Df(p) \cdot g(p) + f(p) \cdot Dg(p).
+	\end{align*}
+\end{importanttheorem}
+\begin{exercise}
+	Verify that this version of the product rule agrees with the familiar product rule for $f,g : \bR \to \bR$.
+\end{exercise}
+\begin{proof}
+	We define the multiplication function $m(x,y) := x \cdot y$. The partial derivatives are $\partial_1 m(x,y) = y$ and $\partial_2 m(x,y) = x$, i.e.
+	\begin{align*}
+		Dm(x,y) = 
+		\begin{pmatrix}
+			y & x\\
+		\end{pmatrix}
+	\end{align*}
+	Applying the chain rule now gives
+	\begin{align*}
+		D(f \cdot g)(p)
+		&=
+		D(m \circ (f,g))(p)\\
+		&=	
+		Dm((f,g)(p)) \circ D(f,g)(p)\\
+		&=	
+		Dm(f(p), g(p)) \circ (Df(p), Dg(p))\\
+		&=	
+		Dm(f(p), g(p)) \cdot (Df(p), Dg(p))\\
+		&=	
+		\begin{pmatrix} 
+			g(p) & f(p)
+		\end{pmatrix}
+		\cdot 
+		\begin{pmatrix}
+			Df(p)\\
+			Dg(p)
+		\end{pmatrix}\\
+		&= Df(p) \cdot g(p) + f(p) \cdot Dg(p).
+	\end{align*}
+\end{proof}
+\chapter{The Analysis II Twins}
+\section{The Inverse Function Theorem}
+\begin{importanttheorem}{Inverse Function Theorem}
+	Let $U \subseteq \bR^n$ be open. Let $f : U \to \bR^n$ be continuously differentiable. Let $x \in U$ be a point such that $Df(x) : \bR^n \to \bR^n$ is invertible. Then there exists an open neighbourhood $V$ of $x$ such that:
+	\begin{enumerate}
+		\item $f(V)$ is an open neighbourhood of $f(x)$.
+		\item $f : U \to f(H)$ is a $C^1$-diffeomorphism, i.e. invertible with continuously differentiable inverse.
+	\end{enumerate}
+\end{importanttheorem}
+\begin{lemma}
+	Let $U \subset \bR^n$ be open. Let $f : U \to \bR^k$ be continuously differentiable. Let $p,q \in U$ be points whose connecting line is contained in $U$, i.e.
+	\begin{align*}
+		[p,q] = \lr{p + \lambda(p-q) \mid \lambda \in [0,1]} \subseteq U.
+	\end{align*}
+	Let 
+	\begin{align*}
+		L = \max_{r \in [p,q]} \norm{Df(r)}_{\sup}.
+	\end{align*}
+	Then
+	\begin{align*}
+		d_2(f(p), f(q)) \leq L \cdot d_2(p,q)
+	\end{align*}
+\end{lemma}
+\begin{proof}
+	Let $h = q-p$. Let $g(\lambda) := f(p + \lambda h)$. Since $g$ is a composition of continuously differentiable functions, it is continuously differentiable. By definition, we have $g(0) = f(p)$ and $g(1) = f(q)$. Applying the fundamental theorem of integration gives
+	\begin{align*}
+		f(q) - f(p) 
+		&= g(1) - g(0)\\
+		&= \int_0^1 g'(t) ~dt.
+	\end{align*}
+	Applying the chain rule gives
+	\begin{align*}
+		\int_0^1 g'(t) ~dt
+		&=\int_0^1 Df(p+th)(h) ~dt
+	\end{align*}
+\end{proof}
+\section{The Implicit Function Theorem}
+\chapter{Integration in $\bR^n$}
+\chapter{Curves}
+\chapter{Surfaces}
