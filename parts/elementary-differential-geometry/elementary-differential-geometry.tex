@@ -1,6 +1,127 @@
 \part{Elementary Differential Geometry}
 \chapter{Differentiation in $\bR^n$}
 \section{Differentials and Partial Derivatives}
+\begin{importantdefinition}{Fréchet Derivative}{}
+	Let $V,W$ be normed vector spaces. Let $U$ be an open subset of $V$. Then $f : U \to W$ is called \tib{ Fréchet differentiable} or just \tib{differentiable} at $p \in U$ if there exists a continuous linear map $Df(p) : V \to W$ such that
+	\begin{align*}
+		\lim_{\norm{h}_V \to 0} \frac{\norm{f(p+h) - f(p) - Df(p)(h)}_W}{\norm{h}_V} = 0.
+	\end{align*}
+	We call $Df(p)$ the \tib{differential of $f$ at $p$}. We call $f$ \tib{differentiable} if it is differentiable at every point $p \in U$.
+\end{importantdefinition}
+Recall that linear maps are continuous if and only if they are bounded, which is always the case if $V$ is finite-dimensional.
+\begin{exercise}
+	Verify that if we identify scalars $c \in \bR$ with linear maps $x \mapsto c \cdot x$, this definition agrees with the usual definition for $f : \bR \to \bR$.
+\end{exercise}
+\begin{theorem}
+	If $f : U \to W$ is differentiable, it is continuous.
+\end{theorem}
+\begin{proof}
+	If $f$ is differentiable, we have
+	\begin{align*}
+		\lim_{\norm{h}_V \to 0} \frac{\norm{f(p+h) - f(p) - Df(p)(h)}_W}{\norm{h}_V} = 0.
+	\end{align*}
+	This can only be the case if
+	\begin{align*}
+		\lim_{\norm{h}_V \to 0} \norm{f(p+h) - f(p) - Df(p)(h)}_W = 0,
+	\end{align*}
+	i.e. if
+	\begin{align*}
+		\lim_{\norm{h}_V \to 0} f(p+h) = \lim_{\norm{h}_V \to 0} f(p) + Df(p)(h).
+	\end{align*}
+	Since $Df(p)$ is continous with $Df(0) = 0$, this simplifies to
+	\begin{align*}
+		\lim_{\norm{h}_V \to 0} f(p+h) = f(p),
+	\end{align*}
+	which is the definition of sequential continuity.
+\end{proof}
+\begin{importantdefinition}{Directional and Partial Derivates}{}
+	Let $V$ and $W$ be normed vector spaces. Let $v \in V$. Let Let $U \subseteq V$ be open and $f : U \to W$. Then we call the limit
+	\begin{align*}
+		\pderivative{v} f(p) = \frac{d}{dh} f(p + hv) \bigg |_{h = 0} = \lim_{h \to 0} \frac{f(p + hv) - f(p)}{h}
+	\end{align*}
+	the \tib{directional derivative} of $f$ at $p$ in direction $v$. If $(x_0, \hdots, x_n)$ is a basis of $V$, we call the directional derivatives
+	\begin{align*}
+		\partial_i f(p) := \pderivative{x_i} f(p) 
+	\end{align*}
+	the \tib{partial derivatives of $f$ at $p$}. If all partial derivatives exist, we call $f$ \tib{partially differentiable}.
+\end{importantdefinition}
+Partial derivatives aren't actually any more complicated than standard one-dimensional derivatives - you can calculate partial derivatives by simply fixing all coordinates except one and then taking a regular derivative in the remaining coordinate. For example, if we have a function
+\begin{align*}
+	f : \bR^3 &\to \bR\\
+		(x,y,z) &\mapsto f(x,y,z),
+\end{align*}
+we can define a function $f|_1 : \bR \to \bR$ by restriction to the first coordinate:
+\begin{align*}
+	f|_1(x) := f(x,y,z).
+\end{align*}
+Using this function, we can simplify the partial derivative:
+\begin{align*}
+	\partial_1 f(x,y,z) 
+	&= \lim_{h \to 0} \frac{f((x,y,z) + he_1) - f(x,y,z)}{h}\\
+	&= \lim_{h \to 0} \frac{f(x+h,y,z) - f(x,y,z)}{h}\\
+	&= \lim_{h \to 0} \frac{f|_1(x+h) - f(x)}{h}\\
+	&= \frac{d}{dx} f|_1(x)
+\end{align*}
+This tells us that, for example, the function $f(x,y,z) = x \cdot y \cdot z$ has partial derivatives
+\begin{align*}
+	\partial_1 f(x,y,z) = \frac{d}{dx} xyz = yz\\
+	\partial_2 f(x,y,z) = \frac{d}{dy} xyz = xz\\
+	\partial_3 f(x,y,z) = \frac{d}{dz} xyz = xy.
+\end{align*}
+\begin{exercise}
+	\begin{enumerate}
+		\item Show that if $f$ is differentiable, then all directional derivatives exist and fulfill $\pderivative{v} f(p) = Df(p)(v)$.
+		\item Conclude that $Df(p)$ is represented in basis $(x_0, \hdots, x_n)$ by the \tib{Jacobian matrix}
+		\begin{align*}
+			Jf(p)
+			=
+			\lr(\pderivative{x_1} f(p), \hdots, \pderivative{x_n} f(p))
+			=
+			\begin{pmatrix}
+				\pderivative{x_1}f_1(p) & \hdots & \pderivative{x_n}f_1(p)\\
+				\vdots && \vdots\\
+				\pderivative{x_1}f_n(p) & \hdots & \pderivative{x_n}f_n(p)
+			\end{pmatrix}
+		\end{align*}
+	
+	\end{enumerate}
+\end{exercise}
+If the image of $f$ is one-dimensional, the Jacobian matrix is simply a row vector. We call the transpose of this vector the \tib{gradient of $f$ at $p$} and denote it
+\begin{align*}
+	\nabla f(p)
+	:=
+	Jf(p)^\top
+	=
+	\begin{pmatrix}
+		\pderivative{x_1} f(p)\\
+		\vdots
+		\pderivative{x_n} f(p)
+	\end{pmatrix}
+\end{align*}
+The transposition comes from the fact that we would like to be able to get the directional derivatives of $f$ at $p$ by taking a scalar product with the gradient, which gives us
+\begin{align*}
+	\scalar{\nabla f(p)}{v} 
+	&= \nabla f(p)^\top v\\ 
+	&= Jf(p) \cdot v\\ 
+	&= Df(p)(v)\\
+	&= \pderivative{v} f(p)
+\end{align*}
+There is one very important pitfall to watch out for: We have just shown that if $f$ is differentiable, we can get the differential by construction the Jacobian matrix from the partial derivatives. This makes it look like every partially differentiable function is differentiable, which turns out to not be true in general. For example, take the function
+\begin{align*}
+	f : \bR^2 &\to \bR\\
+	(x,y) &\mapsto 
+	\begin{cases}
+		\frac{xy}{(x^2 + y^2)^2} & (x,y) \neq 0\\
+		0 & (x,y) = 0
+	\end{cases}.
+\end{align*}
+\url{./figures/plot.html}
+Outside of the origin, this function is clearly partially differentiable - the derivatives work out to
+\begin{align*}
+	\partial_1 \frac{xy}{(x^2 + y^2)^2} &= \frac{y(y^2 - 3x^2)}{(x^2 + y^2)^3}\\
+	\partial_2 \frac{xy}{(x^2 + y^2)^2} &= \frac{x(x^2 - 3y^2)}{(x^2 + y^2)^3}
+\end{align*}
+Both of these function converge to $0$ for any path $(x,y) \to 0$, so the function is also partially differentiable at $0$
 \section{Rules of Differentiation}
 \begin{importanttheorem}{Chain Rule in $\bR^n$}{}
 	Let $f : U \to \bR^m$ and $g : V \to \bR^r$ with $U \subset \bR^n$, $V \subset \bR^m$ open and $f(U) \subseteq V$. Let $f$ be differentiable at a point $p \in U$ and let $g$ be differentiable at $f(p)$. Then
@@ -18,16 +139,16 @@
 	\begin{align*}
 		f(x) 
 		&= f(p)\\
-		&+ 
+		&\+ 
 		Df(p)(x-p)\\
-		&+ 
+		&\+ 
 		\epsilon_f(x)\norm{x - p}\\
 		g(f(x))
 		&=
 		g(f(p))\\
-		&+
+		&\+
 		Dg(f(p))(f(x)-f(p))\\
-		&+
+		&\+
 		\epsilon_g(f(x))\norm{f(x) - f(p)}
 	\end{align*}
 	For some functions $\epsilon_f : U \to \bR^m$, $\epsilon_g : U \to \bR^r$ which are continuous in $p$ and $f(p)$ and fulfill $\epsilon_f(p) = 0$ and $\epsilon_g(f(p)) = 0$. 
@@ -37,51 +158,51 @@
 		g(f(x))
 		&=
 		g(f(p))\\
-		&+
+		&\+
 		Dg(f(p))(f(x) - f(p))\\
-		&+ \epsilon_g(f(x))\norm{f(x) - f(p)}
+		&\+ \epsilon_g(f(x))\norm{f(x) - f(p)}
 	\end{align*}
 	Plugging in our equation for $f(x)$ now lets us regroup our terms into an equation of the same form as the definition of the differential:
 	\begin{align*}
 		g(f(x))
 		&=
 		g(f(p))\\
-		&+
+		&\+
 		\tc{c3}{Dg(f(p))}
 		\biggl[
 			\overbrace{
-			\tc{c4}{f(p)}
+			\tc{c2}{f(p)}
 			+ 
-			\tc{c5}{Df(p)(x-p)}
+			\tc{c4}{Df(p)(x-p)}
 			+ 
-			\epsilon_f(x)\tc{c1}{\norm{x - p}}}^{f(x)} \tc{c4}{- f(p)}
+			\epsilon_f(x)\tc{c1}{\norm{x - p}}}^{f(x)} \tc{c2}{- f(p)}
 		\biggr]
 		\\
-		&+ 
+		&\+ 
 		\epsilon_g(f(x))
 		\norm{
-			\overbrace{\tc{c4}{f(p)}
+			\overbrace{\tc{c2}{f(p)}
 			+ 
-			\tc{c5}{Df(p)(x-p)}
+			\tc{c4}{Df(p)(x-p)}
 			+ 
-			\epsilon_f(x)\tc{c1}{\norm{x - p}}}^{f(x)} \tc{c4}{- f(p)}
+			\epsilon_f(x)\tc{c1}{\norm{x - p}}}^{f(x)} \tc{c2}{- f(p)}
 		}
 		\\
 	\\
 		&=
 		g(f(p))\\
-		&+
+		&\+
 		\tc{c3}{Dg(f(p))}
 		\biggl[
-			\tc{c5}{Df(p)(x-p)}
+			\tc{c4}{Df(p)(x-p)}
 			+ 
 			\epsilon_f(x)\tc{c1}{\norm{x - p}}
 		\biggr]
 		\\
-		&+ 
+		&\+ 
 		\epsilon_g(f(x))
 		\norm{
-			\tc{c5}{Df(p)(x-p)}
+			\tc{c4}{Df(p)(x-p)}
 			+ 
 			\epsilon_f(x)\tc{c1}{\norm{x - p}}
 		}
@@ -89,15 +210,15 @@
 	\\
 		&=
 		g(f(p))\\
-		&+
-		\tc{c3}{Dg(f(p))}\tc{c5}{Df(p)(x-p)}\\
-		&+ 
+		&\+
+		\tc{c3}{Dg(f(p))}\tc{c4}{Df(p)(x-p)}\\
+		&\+ 
 		\tc{c3}{Dg(f(p))}\epsilon_f(x)\tc{c1}{\norm{x - p}}
 		\\
-		&+ 
+		&\+ 
 		\epsilon_g(f(x))
 		\norm{
-			\tc{c5}{Df(p)(x-p)}
+			\tc{c4}{Df(p)(x-p)}
 			+ 
 			\epsilon_f(x)\tc{c1}{\norm{x - p}}
 		}
@@ -105,24 +226,23 @@
 	\\
 		&=
 		g(f(p))\\ 
-		&+ 
-		\tc{c3}{Dg(f(p))}\tc{c5}{Df(p)(x-p)}\\
-		&+ 
-		\tc{c1}{\norm{x - p}}
-		\cdot 
+		&\+ 
+		\tc{c3}{Dg(f(p))}\tc{c4}{Df(p)(x-p)}\\
+		&\+ 
 		\underbrace{
 			\lr(\epsilon_f(x)\tc{c3}{Dg(f(p))}
 			+ 
 			\epsilon_g(f(x))
-			\norm{\tc{c5}{Df(p)} \lr(\frac{\tc{c5}{x-p}}{\tc{c1}{\norm{x-p}}}) + \epsilon_f(x)})
+			\norm{\tc{c4}{Df(p)} \lr(\frac{\tc{c4}{x-p}}{\tc{c1}{\norm{x-p}}}) + \epsilon_f(x)})
 		}
 		_
 		{:= \epsilon_{g \circ f}(x)}
-		\\
+		\tc{c1}{\norm{x - p}}
+	\\
 		&=
 		g(f(p))\\ 
-		&+ (\tc{c3}{Dg(f(p))} \circ \tc{c5}{Df(p)})\tc{c5}{(x-p)}\\
-		&+ \epsilon_{g \circ f}(x)\tc{c1}{\norm{x - p}} 
+		&\+ (\tc{c3}{Dg(f(p))} \circ \tc{c4}{Df(p)})\tc{c4}{(x-p)}\\
+		&\+ \epsilon_{g \circ f}(x)\tc{c1}{\norm{x - p}} 
 	\end{align*}
 	All that remains is to show that $\epsilon_{g \circ f}(x)$ is continuous if we set
 	\begin{align*}
