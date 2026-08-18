@@ -1,5 +1,3 @@
-
-
 \part{Linear Algebra}
 \chapter{Analytic Geometry}
 \section{Arithmetic in $n$ dimensions}
@@ -569,97 +567,47 @@ This representation turns out to be a lot more computationally efficient than ot
 \newpar
 This makes quaternions surprisingly practical in many applied contexts, including game development and animation\footnote{For an introduction to quaternions in game development, I highly recommend \href{https://www.youtube.com/watch?v=PMvIWws8WEo}{this excellent talk by Freya Holmer.}}, robotics, and three-dimensional image processing.
 \chapter{Linear Maps}
-\section{Modules and Vector Spaces}
-\begin{importantdefinition}{Modules}{}
-	Let $(R, +, \cdot)$ be a Ring. Then a (left) \tib{$R$-Module} consists of an abelian Group $(M, +)$ equipped with a \tib{scalar multiplication} $. : R \times M \to M$, i.e. scalars are elements of $R$ and "vectors" are elements of $M$, such that:
-	\begin{enumerate}
-		\item Ring multiplication associates with scalar multiplication:
-		\begin{align*}
-			(r \cdot s).m = r . (s . m)
-		\end{align*}
-		\item Scalar multiplication distributes over module addition:
-		\begin{align*}
-			r . (m + n) = r.m + r.n
-		\end{align*}
-		\item Scalar multiplication distributes over scalar addition:
-		\begin{align*}
-			(r + s).m = r.m + s.m 
-		\end{align*}
-	\end{enumerate}
-	If $R$ is unital, then we say that $M$ is unital if the identity of ring multiplication is the identity of scalar multiplication:
-		\begin{align*}
-			1.m = m
-		\end{align*}
-	
-\end{importantdefinition}
-A \tib{right $R$-module} is defined similarly, but with a scalar multiplication $. : M \times R \to M$, which is applied from the right instead of from the left. 
-\begin{exercise}
-	Show that the distinction between right $R$-modules and left $R$-modules is only relevant if $R$ is noncommutative, i.e. that any left $R$-module $M$ over a commutative ring can be turned into a right $R$-module by defining $m.r = r.m$ and vice versa.
-\end{exercise}
-To keep this text in line with familiar conventions of vector multiplication in $\bR^n$, whenever we talk about a module without explicitly specifiying whether scalar multiplication is applied from the right or from the left, it is implied that it is applied from the left.
-\pagebreak
-\begin{exercise}
-	Let $M$ be a module over $R$. Let $m \in M$ and $r \in R$. show that:
-	\begin{enumerate}
-		\item $0_R . m = 0_M$
-		\item $r . 0_M = 0_M$
-		\item $(-r).m = r.(-m) = -(r . m)$
-	\end{enumerate}
-\end{exercise}
-\begin{exercise}
-	Verify that:
-	\begin{enumerate}
-		\item Every ring $R$ forms a module over itself, where scalar multiplication is given by ring multiplication.
-		\item $\bR^n$ forms a module over $\bR$, with scalar multiplication defined the usual way. More generally, given any ring $R$, the cartesian product $R^n$ forms an $R$-module where scalar multiplication is given by ring multiplication applied componentwise.
-		\item Any abelian group $A$ can be turned into a non-unital module over any ring $R$ by equipping it with the trivial scalar multiplication
-		\begin{align*}
-			r.a = 0_A
-		\end{align*}
-	\end{enumerate}
-\end{exercise}
+\section{Vector Spaces}
+Intuitively, a vector space is any algebraic structure $V$ equipped with a field $\bF$, such that elements of $V$ can be added to elements of $V$ or multiplied by elements of $\bF$, and these operations behave how vector addition and scalar addition behave in $\bR^n$. More precisely:
 \begin{importantdefinition}{Vector Spaces}{}
-	A module over a field (or skew field) $\Bbbk$ is known as a \tib{$\Bbbk$-vector space}.
-\end{importantdefinition}
-\begin{importantdefinition}{Linear Maps}{}
-	A \tib{module homomorphism} is a structure-preserving map $F : M \to N$ between two modules over the same ring $R$, i.e. given $m_1,m_2 \in M$ and $r \in R$, we have that:
+	A \tib{vector space $V$ over a field of scalars $\bF$} is a structure $(V,\bF,+,.)$ consisting of a \tib{vector addition operation} $+ : V \times V \to V$ and a \tib{scalar multiplication operation} $. : \bF \times V \to V$ such that:
 	\begin{enumerate}
-		\item $F$ is \tib{additive}, i.e. it is compatible with module addition: 
-		$$F(m_1 +_M m_2) = F(m_1) +_N F(m_2)$$
-		\item $F$ is \tib{homogenous}, i.e. it is compatible with scalar multiplication: $$F(r._M m) = r ._N F(m)$$
+		\item vectors form a commutative group under vector addition, and
+		\item scalar multiplication is a homomorphism from $\bF$ into the endomorphism ring of $(V,+)$.
 	\end{enumerate}
-	Module homomorphisms are also known as \tib{linear maps}.
 \end{importantdefinition}
-As the name suggests, the main goal of linear algebra is to generalize the concept of a \tib{linear map}, and to figure out properties and applications of these maps.
-\begin{exercise}
-	Show that any linear map $F : M \to N$ fulfills
+Spelling everything out, the condition that $(V,+)$ is a commutative group tells us that:
+\begin{enumerate}
+	\item Vector addition is associative:
 	\begin{align*}
-		F(0_M) = 0_N
+		\forall &v,w,u \in V:\\
+		&(v + w) + u = v + (w + u)
 	\end{align*}
-\end{exercise}
-\begin{exercise}
-	Show that any linear map $F : R \to R$ from a unital ring into itself can be represented as multiplication by a constant, i.e. $F(r) = a.r = a \cdot_R r$ for some $a \in R$.
-\end{exercise}
-\begin{exercise}
-	\begin{enumerate}
-		\item Show that complex conjugation is a linear map $\bC \to \bC$ if we view $\bC$ as a module over $\bR$.
-		\item Show that complex conjugation is not linear if we view $\bC$ as a module over $\bC$.
-	\end{enumerate}
-\end{exercise}
+	\item Vector addition is commutative:
+	\begin{align*}
+		\forall &v,w \in V:\\
+		&v + w = w + v
+	\end{align*}
+	\item There exists a vector $0_V \in V$ such that $v + 0_V = v$ for all $v \in V$.
+	\item For every vector $v \in V$, there exists an additive inverse $-v \in V$:
+	\begin{align*}
+		\forall &v \in V:\\
+		\exists &-v \in V:\\
+		&v + (-v) = 0_V
+	\end{align*} 
+	As usual, we write $v - w := v + (-w)$ as an abbreviation.
+\end{enumerate}
+The second condition might seem a bit more obtuse - however, all it tells us is that $.$ assigns to each scalar $\lambda \in \bF$ an endomorphism of $V$, such that $1_\bF.$ is the identity map $\id_\bF$. Putting everything together, we get the following demands for scalar addition:
+\begin{enumerate}
+	\item Scalar multiplication by any scalar respects vector addition, i.e. the operations distribute:
+	\begin{align*}
+		\forall &\lambda \in \bF:\\
+		\forall &v,w \in V:\\
+		&\lambda.(v+w) = \lambda.v + \lambda.w
+	\end{align*}
+\end{enumerate}
 \section{Subspaces and Quotient Spaces}
 \section{Bases and Dimension}
-\begin{importantdefinition}{Linear Combinations}{}
-	Let $M$ be an $R$-module, let $(m_i)_{i \in I} \subseteq M$ and $(r_i)_{i \in I} \subseteq R$. Then a \tib{linear combination} is a sum of the form
-	\begin{align*}
-		\sum_{i \in I} r_i.m_i
-	\end{align*}
-\end{importantdefinition}
-\begin{importantdefinition}{Vector Span}{}
-	Let $M$ be an $R$-module, let $S = (m_i)_{i \in I} \subseteq M$. Then the span of $S$ is the set $\angles{S}$ of all linear combinations over elements of $S$, i.e.
-	\begin{align*}
-		\angles{S} = \lr{\sum_{i \in J \subseteq I} r_i.m_i \mid (r_i)_{i \in I} \subseteq R, m_i \in S}
-	\end{align*}
-\end{importantdefinition}
-For example, the span of one vector $v \in \bR^3$ is the line through the origin on which $v$ lies. The span of two orthogonal vectors $v,w \in \bR^3$ is the plane through the origin on which $v$ and $w$ lie.
 \section{Matrices}
 \section{Systems of Linear Equations}
 \section{The Method of Least Squares}

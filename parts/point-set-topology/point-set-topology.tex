@@ -1,58 +1,67 @@
 \part{Point-Set Topology}
 \chapter{Topological Spaces}
-\chapter{Filters and Convergence}
-\begin{theorem}
-	\label{th:ultrafilteropen}
-	Let $X$ be a topological space. Let $U \subseteq X$. Then $U$ is open iff. $U$ is contained in every ultrafilter converging to some point in $U$.
-\end{theorem}
-\begin{proof}
-	\begin{enumerate}
-		\item[$\Rightarrow$:] By definition, if $U$ is an open neighborhood of $x$, any filter convering to $x$ must contain $U$.
-		\item[$\Leftarrow$:] Let $U \subseteq X$ and assume $U \in \cU$ for every ultrafilter converging to a point $u \in U$. Assume $U$ is not open. Then there exists a point $u \in U$ such that every open neighborhood of $u$ contains at least one point in $X \setminus U$. But then any two members of the family
-		\begin{align*}
-			\lr{X \setminus U} \cup \lr{U(u)}
-		\end{align*}
-		have nonempty intersection. Therefore, this family can be extended to an Ultrafilter $\cU_u$. Since $\cU_u$ contains all open neighborhoods of $u$ by construction, it converges to $u$, and must thus contain $U$. Since it also contains $X \setminus U$, we arrive at a contradiction.
-	\end{enumerate}
-\end{proof}
+\begin{importantdefinition}{Accumulation points and isolated points}{}
+	Let $X$ be a topological space. Let $A \subseteq X$. Then we call $x \in X$ an \tib{accumulation point} of $A$ if every neighbourhood of $x$ contains a point in $A$ \tib{other than $x$ itself}. 
+	
+	If a point $x \in A$ isnt an accumulation point of $A$, we call $x$ an \tib{isolated point}.
+\end{importantdefinition}
 \begin{definition}
-	Let $\cF$ be a filter on $X$. Let $f : X \to Y$. Then the \tib{pushforward Filter of $f$ on $\cF$} is the set
-	\begin{align*}
-		f_*(\cF) := \lr{A \subseteq Y \mid p_i^{-1}[A] \in \cF},
-	\end{align*}
+	Let $X$ be a topological space. Let $A \subseteq X$. Then the set of all limit points is denoted $A'$, and is known as the \tib{derived set of $A$}.
 \end{definition}
 \begin{exercise}
-	Verify that the pushforward of a filter is a filter, and that the pushforward of an ultrafilter is an ultrafilter.
+	Show that $A' \subseteq \ol A$.
 \end{exercise}
-\begin{importanttheorem}{Characterization of continuity in terms of Ultrafilters}{pushforwardfilter}
-	Let $f : X \to Y$. Then $f$ is continuous if and only if $f_*(\cU)$ converges to $f(x)$ for every ultrafilter $\cU$ that converges to $x \in X$.
+\chapter{Bases and Countability}
+\begin{importantdefinition}{}{}
+	We call a topological space \tib{first countable} if it has a countable neighbourhood basis around every point $x$, i.e. a set of neigbourhoods $B_i$ of $x$ such that every neighbourhood of $x$ contains some $B_i$.
+\end{importantdefinition}
+\begin{exercise}
+	Every metric space is first countable.
+\end{exercise}
+It turns out that first countable spaces are exactly the spaces where sequences are sufficient to maintain our intuitions about how sequence convergence interacts with topological properties:
+\begin{importanttheorem}{Detecting openness and closedness using sequences}{}
+	Let $X$ be first countable. Let $A \subseteq X$. Let $x \in X$. Then:
+	\begin{enumerate}
+		\item $x \in \intr A$ if and only if every sequence in $X$ converging to $x$ is eventually in $A$.
+		\item $x \in \ol A$ if and only if there exists a sequence in $A$ converging to $x$.
+	\end{enumerate}
 \end{importanttheorem}
 \begin{proof}
-	\begin{enumerate}
-		\item Assume $f$ is continuous. Let $\cU$ be an ultrafilter on $X$ converging to $x \in X$. 
-		
-		Let $U \subseteq Y$ be an open neighbourhood of $f(x)$. Then, since $f$ is continuous, $f^{-1}(U)$ is an open neighbourhood of $x$. We thus have $f^{-1}(U) \in \cU$, which gives us $U \in f_*(\cU)$ by the definition of the pushforward filter. 
-		
-		Thus, every open neighbourhood of $f(x)$ is contained in $f_*(\cU)$, so $f_*(\cU)$ converges to $f(x)$.
-		
-		\item Assume that the pushforward of any ultrafilter converging to $x$ converges to $f(x)$. Let $U \subseteq Y$ be open. 
-		
-		Let $\cU$ be an ultrafilter on $X$ converging to some point $x \in f^{-1}(U)$. Then, by our hypothesis, $f_*(\cU)$ converges to $f(x)$. Since $U$ is an open neighborhood of $f(x)$, we have $U \in f_*(\cU)$, and thus $f^{-1}(U) \in \cU$. Thus, by theorem \ref{th:ultrafilteropen}, $f^{-1}(U)$ is open, so $f$ is continuous.
-	\end{enumerate}
+	Copy the proof of the metric case, replacing open balls with our countable neighbourhood basis.
 \end{proof}
+\begin{corollary}
+	Let $X$ be first countable. Let $A \subseteq X$. Let $x \in X$. Then:
+	\begin{enumerate}
+		\item $A$ is closed in $X$ if and only if it contains every limit of every convergent sequence of points in $A$.
+		\item $A$ is open in $X$ if and only if every sequence in $X$ converging to a point of $A$ is eventually in $A$.
+	\end{enumerate}
+\end{corollary}
+\begin{importantdefinition}{}{}
+	We call a topological space \tib{separable} if it contains a countable dense subset.
+\end{importantdefinition}
+\begin{exercise}
+	\begin{enumerate}
+		\item Every countable space is separable.
+		\item $\bR^n$ is separable for every $n \in \bN$.
+	\end{enumerate}
+\end{exercise}
+\begin{importantdefinition}{}{}
+	We call a topological space \tib{second countable} if it has a countable basis.
+\end{importantdefinition}
+\begin{exercise}
+	$\bR^n$ is second countable for every $n \in \bN$.
+\end{exercise}
+\begin{exercise}
+	Let $X$ be second countable. Then:
+	\begin{enumerate}
+		\item $X$ is first countable.
+		\item $X$ is separable.
+	\end{enumerate}
+\end{exercise}
 \begin{theorem}
-	\label{th:productfilterconvergence}
-	Let $(X_i, \cO_i)_{i \in I}$ be a family of topological spaces. Let $\cF$ be a filter on $\prod_{i \in I} X_i$. Then $\cF$ converges to a point $x \in \prod_{i \in I} X_i$ if and only if each pushforward filter $(p_i)_*(\cF)$ converges to $p_i(x) = x_i$.
+	A metric space is second countable if and only if it is separable.
 \end{theorem}
-\begin{proof}
-	\begin{enumerate}
-		\item[$\Rightarrow$:] Assume that $\cF$ converges to $x \in \prod_{i \in I} X_i$. Since all projections $p_i$ are continuous, each $(p_i)_*(\cF)$ converges to $p_i(x) = x_i$ by theorem \ref{th:pushforwardfilter}.
-		
-		\item[$\Leftarrow$:] Assume that each $(p_i)_*(\cF)$ converges to $p_i(x) = x_i$. By definition of the product topology, the sets $S_i := p_i^{-1}(U_i)$ for open $U_i \in X_i$ form a subbase of $\prod_{i \in I} X_i$. Therefore, any open neighborhood $U \in \cU(x)$ contains an open neighborhood $B = \bigcap_{i \in J \subseteq I} p_i^{-1}(U_i)$ for some open neighborhoods $U_i \in \cU(x_i)$.
-		
-		Since each $(p_i)_*(\cF)$ converges to $x_i$, we have $U_i \in (p_i)_*(\cF)$ for each $i$. Therefore, by definition of the pushforward filter, we have $p_i^{-1}(U_i) \in \cF$ for all $i$. Since filters are closed under intersection, we get $B \in \cF$, and since $B \subseteq U$ we also get $U \in \cF$ as desired.
-	\end{enumerate}
-\end{proof}
+
 \chapter{Separation Axioms}
 \epigraph{
 	\textit{A very common axiom is the Hausdorff separation axiom, which says that any two distinct points can be housed orf from each other by disjoint open sets.}}{{"Topology via Logic",}\\{Steven Vickers}}
@@ -71,10 +80,11 @@
 	\end{align*}
 \end{importantdefinition}
 \begin{exercise}
-	Show that T1 implies T0.
-\end{exercise}
-\begin{exercise}
-	Find a space that is T0, but not T1.
+	\begin{enumerate}
+		\item Find a topological space that isn't T0.
+		\item Show that every T1  space is T0.
+		\item Find a space that is T0, but not T1.
+	\end{enumerate}	
 \end{exercise}
 \begin{exercise}
 	Show that $(X, \cO)$ is T1 if and only if every singleton set is closed.
@@ -97,10 +107,24 @@
 	Show that every Hausdorff space is T1.
 \end{exercise}
 \begin{exercise}
-	Let $(X, \cO)$ be a topological space. Then $(X, \cO)$ is Hausdorff if and only if every convergent filter has a unique limit.
+	Let $(X, \cO)$ be Hausdorff. Then every convergent sequence in $X$ has a unique limit.
+\end{exercise}
+\begin{exercise}
+	Let $X$ be a Hausdorff space. Let $x$ be an accumulation point of $A \subseteq X$. Then every neighbourhood of $x$ contains infinitely many points of $A$.
+\end{exercise}
+\begin{lemma}
+	Let $X$ be a Hausdorff space. Then the set of accumulation points of any subset is closed.
+\end{lemma}
+\begin{proof}
+	Let $A \subseteq X$. Let $A'$ be the set of accumulation points of $A$. Let $x$ be an accumulation point of $A'$. Since $X$ is Hausdorff, every neighbourhood of $x$ must contain infinitely many points $x_i \in A'$. But since these neighbourhoods are also neighbourhoods of the $x_i$, they must also all contain infinitely many points in $A$. 
+	\newpar
+	Therefore, $x$ is already an accumulation point of $A$, i.e. $x \in A'$. Therefore, $A'$ contains all of its accumulation points, and is thus closed.
+\end{proof}
+\begin{exercise}
+	Find a space $X$ and a subset $A$ such that the set of accumulation points of $A$ isn't closed.
 \end{exercise}
 \begin{importanttheorem}{Characterization of Hausdorff spaces by diagonals}{}
-	Let $(X, \cO)$ be a topological space. Then $(X, \cO)$ is Hausdorff iff. the diagonal
+	Let $(X, \cO)$ be a topological space. Then $(X, \cO)$ is Hausdorff if and only if the diagonal
 	\begin{align*}
 		\Delta := \lr{(x,x) \mid x \in X}
 	\end{align*}
@@ -116,7 +140,7 @@
 	\end{enumerate}
 \end{proof}
 \begin{theorem}
-	Let $(X, \cO)$ be a topological space. Then $(X, \cO)$ is Hausdorff iff. every point is the intersection of the closures of all of its neighbourhoods:
+	Let $(X, \cO)$ be a topological space. Then $(X, \cO)$ is Hausdorff if and only if every point is the intersection of the closures of all of its neighbourhoods:
 	\begin{align*}
 		\forall x \in X : \lr{x} = \bigcap \lr{\ol U \mid U \in \cU(x)}
 	\end{align*}
@@ -233,8 +257,65 @@
 \begin{exercise}
 	Find a topological space that is normal, but not T0.
 \end{exercise}
-Showing that T4 implies T3 is not an easy task - this statement is \tit{Urysohn's Lemma}, which we will prove later in this chapter after a lot of preparation.	
+Showing that T4 implies T3 is not an easy task - this statement is \tit{Urysohn's Lemma}, which we will prove in the next chapter after a lot of preparation.	
 		
+\chapter{Filter Convergence}
+It would be nice to find a generalization of sequence convergence that shares many of its useful properties.... It turns out that we can! The correct objects for the task are \tib{filters}.
+\begin{exercise}
+	Let $(X, \cO)$ be a topological space. Then $(X, \cO)$ is Hausdorff if and only if every convergent filter on $X$ has a unique limit.
+\end{exercise}
+\begin{theorem}
+	\label{th:ultrafilteropen}
+	Let $X$ be a topological space. Let $U \subseteq X$. Then $U$ is open iff. $U$ is contained in every ultrafilter converging to some point in $U$.
+\end{theorem}
+\begin{proof}
+	\begin{enumerate}
+		\item[$\Rightarrow$:] By definition, if $U$ is an open neighborhood of $x$, any filter convering to $x$ must contain $U$.
+		\item[$\Leftarrow$:] Let $U \subseteq X$ and assume $U \in \cU$ for every ultrafilter converging to a point $u \in U$. Assume $U$ is not open. Then there exists a point $u \in U$ such that every open neighborhood of $u$ contains at least one point in $X \setminus U$. But then any two members of the family
+		\begin{align*}
+			\lr{X \setminus U} \cup \lr{U(u)}
+		\end{align*}
+		have nonempty intersection. Therefore, this family can be extended to an Ultrafilter $\cU_u$. Since $\cU_u$ contains all open neighborhoods of $u$ by construction, it converges to $u$, and must thus contain $U$. Since it also contains $X \setminus U$, we arrive at a contradiction.
+	\end{enumerate}
+\end{proof}
+\begin{definition}
+	Let $\cF$ be a filter on $X$. Let $f : X \to Y$. Then the \tib{pushforward Filter of $f$ on $\cF$} is the set
+	\begin{align*}
+		f_*(\cF) := \lr{A \subseteq Y \mid p_i^{-1}[A] \in \cF},
+	\end{align*}
+\end{definition}
+\begin{exercise}
+	Verify that the pushforward of a filter is a filter, and that the pushforward of an ultrafilter is an ultrafilter.
+\end{exercise}
+\begin{importanttheorem}{Characterization of continuity in terms of ultrafilters}{pushforwardfilter}
+	Let $f : X \to Y$. Then $f$ is continuous if and only if $f_*(\cU)$ converges to $f(x)$ for every ultrafilter $\cU$ that converges to $x \in X$.
+\end{importanttheorem}
+\begin{proof}
+	\begin{enumerate}
+		\item Assume $f$ is continuous. Let $\cU$ be an ultrafilter on $X$ converging to $x \in X$. 
+		
+		Let $U \subseteq Y$ be an open neighbourhood of $f(x)$. Then, since $f$ is continuous, $f^{-1}(U)$ is an open neighbourhood of $x$. We thus have $f^{-1}(U) \in \cU$, which gives us $U \in f_*(\cU)$ by the definition of the pushforward filter. 
+		
+		Thus, every open neighbourhood of $f(x)$ is contained in $f_*(\cU)$, so $f_*(\cU)$ converges to $f(x)$.
+		
+		\item Assume that the pushforward of any ultrafilter converging to $x$ converges to $f(x)$. Let $U \subseteq Y$ be open. 
+		
+		Let $\cU$ be an ultrafilter on $X$ converging to some point $x \in f^{-1}(U)$. Then, by our hypothesis, $f_*(\cU)$ converges to $f(x)$. Since $U$ is an open neighborhood of $f(x)$, we have $U \in f_*(\cU)$, and thus $f^{-1}(U) \in \cU$. Thus, by theorem \ref{th:ultrafilteropen}, $f^{-1}(U)$ is open, so $f$ is continuous.
+	\end{enumerate}
+\end{proof}
+\begin{theorem}
+	\label{th:productfilterconvergence}
+	Let $(X_i, \cO_i)_{i \in I}$ be a family of topological spaces. Let $\cF$ be a filter on $\prod_{i \in I} X_i$. Then $\cF$ converges to a point $x \in \prod_{i \in I} X_i$ if and only if each pushforward filter $(p_i)_*(\cF)$ converges to $p_i(x) = x_i$.
+\end{theorem}
+\begin{proof}
+	\begin{enumerate}
+		\item[$\Rightarrow$:] Assume that $\cF$ converges to $x \in \prod_{i \in I} X_i$. Since all projections $p_i$ are continuous, each $(p_i)_*(\cF)$ converges to $p_i(x) = x_i$ by theorem \ref{th:pushforwardfilter}.
+		
+		\item[$\Leftarrow$:] Assume that each $(p_i)_*(\cF)$ converges to $p_i(x) = x_i$. By definition of the product topology, the sets $S_i := p_i^{-1}(U_i)$ for open $U_i \in X_i$ form a subbase of $\prod_{i \in I} X_i$. Therefore, any open neighborhood $U \in \cU(x)$ contains an open neighborhood $B = \bigcap_{i \in J \subseteq I} p_i^{-1}(U_i)$ for some open neighborhoods $U_i \in \cU(x_i)$.
+		
+		Since each $(p_i)_*(\cF)$ converges to $x_i$, we have $U_i \in (p_i)_*(\cF)$ for each $i$. Therefore, by definition of the pushforward filter, we have $p_i^{-1}(U_i) \in \cF$ for all $i$. Since filters are closed under intersection, we get $B \in \cF$, and since $B \subseteq U$ we also get $U \in \cF$ as desired.
+	\end{enumerate}
+\end{proof}
 
 \chapter{Compactness}
 The familiar notions of open converings and compactness generalize directly from metric spaces to topological spaces. The most major difference is that sequential compactness is generally weaker than "covering compactness", and has to be replaced with a notion of compactness based on ultrafilter convergence.
@@ -329,6 +410,30 @@ The familiar notions of open converings and compactness generalize directly from
 		Since each $X_i$ is compact, each pushforward $(p_i)_*(\cU)$ converges to an $x_i \in X_i$. Thus, by theorem \ref{th:productfilterconvergence}, $\cU$ converges to $(x_i)_{i \in I}$ and $\prod_{i \in I} X_i$ is compact.
 	\end{enumerate}
 \end{proof}
+\begin{definition}
+	We call a topological space $X$ \tib{Lindelöf} if every open cover of $X$ has a countable subcover.
+\end{definition}
+\begin{theorem}
+	Every second-countable space is Lindelöf.
+\end{theorem}
+\begin{definition}
+	We call a topological space $X$ \tib{countably compact} if every countable open cover of $X$ has a finite subcover.
+\end{definition}
+\begin{exercise}
+	A countably compact space is compact if and only if it is Lindelöf.
+\end{exercise}
+\begin{theorem}
+	A metric space is Lindelöf if and only if it is second countable.
+\end{theorem}
+\begin{theorem}
+	Every sequentially compact space is countably compact.
+\end{theorem}
+\begin{theorem}
+	A first-countable space is countably compact if and only if it is sequentially compact.
+\end{theorem}
+\begin{theorem}
+	In a second countable Hausdorff space, compactness, countable compactness and sequential compactness are all equivalent to each other.
+\end{theorem}
 \chapter{Topologies on Algebraic Structures}
 \section{Topological Groups}
 \begin{importantdefinition}{}{}

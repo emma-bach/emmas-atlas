@@ -1,12 +1,12 @@
-\part{Elementary Differential Geometry}
+\part{Multivariable Calculus}
 \chapter{Differentiation in $\bR^n$}
 \section{Differentials and Partial Derivatives}
 \begin{importantdefinition}{Fréchet Derivative}{}
 	Let $V,W$ be normed vector spaces. Let $U$ be an open subset of $V$. Then $f : U \to W$ is called \tib{ Fréchet differentiable} or just \tib{differentiable} at $p \in U$ if there exists a continuous linear map $Df(p) : V \to W$ such that
 	\begin{align*}
-		\lim_{\norm{h}_V \to 0} \frac{\norm{f(p+h) - f(p) - Df(p)(h)}_W}{\norm{h}_V} = 0.
+		\lim_{h \to 0} \frac{\norm{f(p+h) - f(p) - Df(p)(h)}_W}{\norm{h}_V} = 0.
 	\end{align*}
-	We call $Df(p)$ the \tib{differential of $f$ at $p$}. We call $f$ \tib{differentiable} if it is differentiable at every point $p \in U$.
+	We call $Df(p)$ the \tib{differential of $f$ at $p$}. We call $f$ \tib{differentiable} if it is differentiable at every point $p \in U$. We call $f$ \tib{continuously differentiable} if the map $Df : p \mapsto Df(p)$ is continuous.
 \end{importantdefinition}
 Recall that linear maps are continuous if and only if they are bounded, which is always the case if $V$ is finite-dimensional.
 \begin{exercise}
@@ -43,7 +43,7 @@ Recall that linear maps are continuous if and only if they are bounded, which is
 	\begin{align*}
 		\partial_i f(p) := \pderivative{x_i} f(p) 
 	\end{align*}
-	the \tib{partial derivatives of $f$ at $p$}. If all partial derivatives exist, we call $f$ \tib{partially differentiable}.
+	the \tib{partial derivatives of $f$ at $p$}. If all partial derivatives exist, we call $f$ \tib{partially differentiable}. If all maps $\partial_i f : p \mapsto \partial_if(p)$ are continuous, we call $f$ \tib{continuously partially differentiable}.
 \end{importantdefinition}
 Partial derivatives aren't actually any more complicated than standard one-dimensional derivatives - you can calculate partial derivatives by simply fixing all coordinates except one and then taking a regular derivative in the remaining coordinate. For example, if we have a function
 \begin{align*}
@@ -66,7 +66,7 @@ This tells us that, for example, the function $f(x,y,z) = x \cdot y \cdot z$ has
 \begin{align*}
 	\partial_1 f(x,y,z) = \frac{d}{dx} xyz = yz\\
 	\partial_2 f(x,y,z) = \frac{d}{dy} xyz = xz\\
-	\partial_3 f(x,y,z) = \frac{d}{dz} xyz = xy.
+	\partial_3 f(x,y,z) = \frac{d}{dz} xyz = xy.\\
 \end{align*}
 \begin{exercise}
 	\begin{enumerate}
@@ -106,23 +106,181 @@ The transposition comes from the fact that we would like to be able to get the d
 	&= Df(p)(v)\\
 	&= \pderivative{v} f(p)
 \end{align*}
-There is one very important pitfall to watch out for: We have just shown that if $f$ is differentiable, we can get the differential by construction the Jacobian matrix from the partial derivatives. This makes it look like every partially differentiable function is differentiable, which turns out to not be true in general. For example, take the function
+There is one very important pitfall to watch out for when it comes to differentiability: We have just shown that if $f$ is differentiable, we can get the differential by construction the Jacobian matrix from the partial derivatives. This makes it look like every partially differentiable function is differentiable, which turns out to not be true in general. 
+\newpar
+For example, there exist functions which are partially differentiable, but not continuous - we showed earlier that all differentiable functions are continuous, so these functions are quick counterexamples.
+\newpar
+One example is
+\begin{align*}
+	f : \bR^2 \to \bR\\
+	(x,y) &\mapsto
+	\begin{cases}
+		\frac{xy}{(x^2 + y^2)^2}
+	\end{cases}.
+\end{align*}
+This function has $\partial_1 f(0) = \partial_2 f(0) = 0$, since $f(h,0) = f(0,h) = 0$ for all $h \in \bR$, but isn't continuous, since $\lim_{n \to \infty} f\lr(\frac{1}{n}, \frac{1}{n}) = \lim_{n \to \infty} \frac{n^2}{4} = \infty \neq f(0)$.
+\newpar
+For a more involved counterexample, consider the function
 \begin{align*}
 	f : \bR^2 &\to \bR\\
 	(x,y) &\mapsto 
 	\begin{cases}
-		\frac{xy}{(x^2 + y^2)^2} & (x,y) \neq 0\\
+		\frac{y^3}{x^2 + y^2} & (x,y) \neq 0\\
 		0 & (x,y) = 0
-	\end{cases}.
+	\end{cases}
 \end{align*}
-\url{./figures/plot.html}
-Outside of the origin, this function is clearly partially differentiable - the derivatives work out to
+This function is continuous - for $(x,y) \neq 0$, it is a composition of continuous functions, and thus continuous, and since $x^2 + y^2 \geq y^2$, we additionally have
 \begin{align*}
-	\partial_1 \frac{xy}{(x^2 + y^2)^2} &= \frac{y(y^2 - 3x^2)}{(x^2 + y^2)^3}\\
-	\partial_2 \frac{xy}{(x^2 + y^2)^2} &= \frac{x(x^2 - 3y^2)}{(x^2 + y^2)^3}
+	\abs{f(x,y)} 
+	&= \frac{\abs{y^3}}{\abs{x^2 + y^2}}\\
+	&= \frac{\abs{y^3}}{x^2 + y^2}\\
+	&\leq \frac{\abs{y^3}}{y^2}\\
+	&= \abs{y},
 \end{align*}
-Both of these function converge to $0$ for any path $(x,y) \to 0$, so the function is also partially differentiable at $0$
+so $f(x,y)$ converges to $f(0,0) = 0$ as $(x,y)$ converges to $0$, implying that $f$ is also continuous at the origin.
+\newpar
+$f$ is also directionally differentiable in all directions:
+\begin{align*}
+	\partial_v f(0)
+	&= \lim_{h \to 0} \frac{f(h \cdot v) - f(0)}{h}\\
+	&= \lim_{h \to 0} \frac{f(h \cdot v)}{h}\\
+	&= \lim_{h \to 0} \frac{\lr(\frac{h^3v_2^3}{h^2 v_1^2 + h^2 v_2^2})}{h}\\
+	&= \lim_{h \to 0} \frac{h^3v_2^3}{h^3 v_1^2 + h^3 v_2^2}\\
+	&= \lim_{h \to 0} \frac{v_2^3}{v_1^2 + v_2^2}\\
+	&= \frac{v_2^3}{v_1^2 + v_2^2}\\ 
+	&= f(v)
+\end{align*}
+In particular, $\partial_1 f(0) = 0$ and $\partial_2 f(0) = 1$. However, $f$ is not differentiable at $0$, since otherwise our representation $Df(0) = Jf(0)$ would give us:
+\begin{align*}
+	\lim_{\vh \to 0} \frac{\abs{f(h) - f(0) - Df(0)(\vh)}}{\norm{\vh}_2}
+	&=
+	\lim_{\vh \to 0} \abs{\frac{f(h) - Df(0)(h)}{\norm{\vh}_2}}\\
+	=
+	\lim_{\vh \to 0} \abs{\frac{f(h) - \partial_1 f(0) \cdot h_1 + \partial_2 f(0) \cdot h_2}{\sqrt{h_1^2 + h_2^2}}}
+	&=
+	\lim_{\vh \to 0} \abs{\frac{f(h) - h_2}{\sqrt{h_1^2 + h_2^2}}}\\
+	=
+	\lim_{\vh \to 0} \abs{\frac{1}{\sqrt{h_1^2 + h_2^2}} \cdot \lr(\frac{h_2^3}{h_1^2 + h_2^2} - h_2)}
+	&=
+	\lim_{\vh \to 0} \abs{\frac{1}{\sqrt{h_1^2 + h_2^2}} \cdot \lr(\frac{h_2^3 - h_2(h_1^2 + h_2^2)}{h_1^2 + h_2^2})}\\
+	=
+	\lim_{\vh \to 0} \abs{\frac{1}{\sqrt{h_1^2 + h_2^2}} \cdot \lr(\frac{h_2^3 - h_2h_1^2 - h_2^3}{h_1^2 + h_2^2})}
+	&=
+	\lim_{\vh \to 0} \abs{\frac{1}{\sqrt{h_1^2 + h_2^2}} \cdot \lr(\frac{h_2h_1^2}{h_1^2 + h_2^2})}
+	=
+	\lim_{\vh \to 0} \abs{\frac{h_2h_1^2}{\sqrt{h_1^2 + h_2^2}^3}}
+\end{align*}
+Since we are only interested in whether this expression converges to $0$, we can square it to simplify slightly:
+\begin{align*}
+	\abs{\frac{h_2h_1^2}{\sqrt{h_1^2 + h_2^2}^3}}^2
+	&=
+	\abs{\frac{h_2^2h_1^4}{(h_1^2 + h_2^2)^3}}
+\end{align*}
+If we now set $h := \lr(\frac{1}{n}, \frac{1}{n})$, we get:
+\begin{align*}
+	\abs{\frac{h_2^2h_1^4}{(h_1^2 + h_2^2)^3}}
+	&=
+	\abs{\frac{\frac{1}{n^6}}{\lr(\frac{2}{n^2})^3}}
+	=
+	\abs{\frac{\frac{1}{n^6}}{\frac{8}{n^6}}}
+	=
+	\frac{1}{8}
+	\neq 
+	0
+\end{align*}
+The important takeaway here is that directional differentiability only guarantees "differentiability along straight paths", while full differentiability also requires "differentiability along curved paths".
+\begin{importanttheorem}{}{}
+	$f : V \to W$ is continuously differentiable if and only if it is continuously partially differentiable.
+\end{importanttheorem}
+\begin{proof}
+	\begin{enumerate}
+		\item[$\Rightarrow$:] We have $\Hom(\bR^n, \bR^m) \cong \bR^{mn}$. Therefore, the map $Jf : \bR^n \mapsto \bR^{mn}$ is continuous if and only if every component $(Jf)_i : \bR^n \mapsto \bR$ is continuous. By the definition of $Jf$, these are the partial derivatives.
+		\item[$\Leftarrow$:]
+		Since every normed complex vector space is isomorphic to a normed real vector space, we can assume without loss of generality that $W$ is real. Since all norms are equivalent, and since a sequence in $W$ converges iff. all components converge, we can additionally assume that $W$ is one-dimensional, i.e. $W \cong \bR$.
+		\newpar
+		We need to show that
+		\begin{align*}
+			\lim_{h \to \vzero} \frac{f(p+h) - f(p) - Jf(p)h}{\norm{h}_2} = \vzero
+		\end{align*}
+		Let $h := \sum_{i = 1}^n h_ie_i$. We decompose the path from $p$ to $p+h$ into its partial steps, taking one coordinate direction at a time:
+		\begin{align*}
+			\forall &k \in [0..n]:\\
+			&p_k = p + \sum_{i = 1}^k h_i e_i
+		\end{align*}
+		Now, by the mean value theorem, there exists an $s_k \in [0,1]$ such that
+		\begin{align*}
+			f(p_k) - f\lr(p_{k-1})
+			&=
+			f(p_{k-1} + h_ke_k) - f\lr(p_{k-1})\\
+			&= \partial_k f(p_{k-1} - s_kh_ne_n)h_k
+		\end{align*}
+		Now, since 
+		\begin{align*}
+			Jf(p)(h) = \sum_{i = 1}^n \partial_i f(p)h_i,
+		\end{align*}
+		we get:
+		\begin{align*}
+			&\frac{\abs{f(p+h) - f(p) - Jf(p)(h)}}{\norm{h}_2}\\
+			=
+			&\frac{1}{\norm{h}_2}\abs{f(p_n) - f(p_0) - \sum_{i = 1}^n \partial_i f(p)h_i}\\
+			=
+			&\frac{1}{\norm{h}_2}
+			\abs{\sum_{i = 1}^n f(p_i) - f(p_{i-1}) - \partial_i f(p) h_i}\\
+			=
+			&\frac{1}{\norm{h}_2}
+			\abs{\sum_{i = 1}^n \partial_i f(p_{i-1} + s_ih_ie_i)h_i - \partial_i f(p) h_i}\\
+			=
+			&\frac{1}{\norm{h}_2}
+			\abs{\sum_{i = 1}^n \lr(\partial_i f(p_{i-1} + s_ih_ie_i) - \partial_i f(p)) h_i}\\
+			=
+			&\frac{1}{\norm{h}_2}
+			\abs{\sum_{i = 1}^n \lr(\partial_i f\lr(p + \sum_{j = 1}^{i-1} h_je_j + s_ih_ie_i) - \partial_i f(p)) h_i}\\
+			\leq
+			&\frac{1}{\norm{h}_2}
+			\sum_{i = 1}^n \abs{\lr(\partial_i f\lr(p + \sum_{j = 1}^{i-1} h_je_j + s_ih_ie_i) - \partial_i f(p)) h_i}\\
+			=
+			&
+			\sum_{i = 1}^n \abs{\partial_i f\lr(p + \sum_{j = 1}^{i-1} h_je_j + s_ih_ie_i) - \partial_i f(p)} \cdot \frac{\abs{h_i}}{\norm{h}_2}\\
+			\leq
+			&
+			\sum_{i = 1}^n \abs{\partial_i f\lr(p + \sum_{j = 1}^{i-1} h_je_j + s_ih_ie_i) - \partial_i f(p)}
+		\end{align*}
+		Since $s_i \in [0,1]$, we have
+		\begin{align*}
+			\lim_{h \to 0} p + \sum_{j = 1}^{i-1} h_je_j + s_ih_ie_i = p
+		\end{align*}
+		And thus, since the partial derivatives $\partial_i f$ are continuous, the right side converges to zero, so $f$ is differentiable.
+	\end{enumerate}
+\end{proof}
+\begin{exercise}
+	Let $V$ be an inner product space over a field $\bF = \bR$ or $\bF = \bC$. Let $v \in V$. Then the function 
+	\begin{align*}
+		\scalar{\cdot}{v} : V &\to \bF\\
+		w &\mapsto \scalar{w}{v}
+	\end{align*}
+	is differentiable, with $D\scalar{\cdot}{v}(w) = v^\top$ for all $w \in V$.
+\end{exercise}
+\begin{exercise}
+	Let $b$ be a symmetric bilinear form. Let
+	\begin{align*}
+		q(v) := b(v,v)
+	\end{align*}
+	be the corresponding quadratic form. Then
+	$q$ is differentiable, with
+	\begin{align*}
+		Dq(v)(w) = 2b(v,w)
+	\end{align*}
+\end{exercise}
+\clearpage
+
 \section{Rules of Differentiation}
+\begin{exercise}
+	Show that the differential operator $D$ is linear, i.e. that we have
+	\begin{align*}
+		D(\alpha f + \beta g)(p) = \alpha Df(p) + \beta Dg(p)
+	\end{align*}
+	for $f, g$ differentiable at $p$.
+\end{exercise}
 \begin{importanttheorem}{Chain Rule in $\bR^n$}{}
 	Let $f : U \to \bR^m$ and $g : V \to \bR^r$ with $U \subset \bR^n$, $V \subset \bR^m$ open and $f(U) \subseteq V$. Let $f$ be differentiable at a point $p \in U$ and let $g$ be differentiable at $f(p)$. Then
 	\begin{align*}
@@ -301,43 +459,75 @@ Both of these function converge to $0$ for any path $(x,y) \to 0$, so the functi
 		&= Df(p) \cdot g(p) + f(p) \cdot Dg(p).
 	\end{align*}
 \end{proof}
-\chapter{The Analysis II Twins}
+\clearpage
+\begin{exercise}
+	Let $f : V \to W$ be differentiable. Let $\gamma : [0,1] \to V$ be differentiable. Then $f \circ \gamma$ is differentiable with
+	\begin{align*}
+		(f \circ \gamma)'(t)
+		&=
+		Df(\gamma'(t)) \cdot \gamma(t)
+	\end{align*}
+\end{exercise}
+\begin{theorem}
+	Let $U \subseteq V$ be open. Let $f : U \to W$ be differentiable with $Df = 0$. Then $f$ is locally constant.
+\end{theorem}
+\begin{corollary}
+	Let $U \subseteq V$ be open and connected. Let $f : U \to W$ be differentiable with $Df = 0$. Then $f$ is constant.
+\end{corollary}
+
+\clearpage
+
+\section{Higher Partial Derivatives}
+\begin{importanttheorem}{Schwartz's Theorem}{}
+	Let $f : U \subseteq V \to W$ be twice continuously partially differentiable. Then the order of partial derivation does not matter, i.e.
+	\begin{align*}
+		\partial_i \partial_j f = \partial_j \partial_i f
+	\end{align*}
+	for all $i,j \in [1..n]$.
+\end{importanttheorem}
+\begin{importanttheorem}{First-Order Taylor Expansion in multiple Variables}{}
+	Let $f : U \subseteq V \to W$. Let $f$ be continuously differentiable. Let $x \in U$, $h \in V$ fulfill $[x,x+h] \subseteq V$. Then
+	\begin{align*}
+		f(x+h) = f(x) + Df(x)(h) + r(h),
+	\end{align*}
+	with $r \in o(\norm{h})$.
+\end{importanttheorem}
+
+\clearpage
+
+\section{Differential Operators}
+\chapter{The Two Queens of Multivariable Calculus}
 \section{The Inverse Function Theorem}
-\begin{importanttheorem}{Inverse Function Theorem}
-	Let $U \subseteq \bR^n$ be open. Let $f : U \to \bR^n$ be continuously differentiable. Let $x \in U$ be a point such that $Df(x) : \bR^n \to \bR^n$ is invertible. Then there exists an open neighbourhood $V$ of $x$ such that:
+\begin{importanttheorem}{Inverse Function Theorem}{}
+	If a continuously differentiable function has an invertible differential at a given point, there exists an open neighbourhood around that point in which the function is invertible.
+	
+	More precisely, let $U \subseteq \bR^n$ be open. Let $f : U \to \bR^n$ be continuously differentiable. Let $x \in U$ be a point such that $Df(x) : \bR^n \to \bR^n$ is invertible. Then there exists an open neighbourhood $V$ of $x$ such that:
 	\begin{enumerate}
 		\item $f(V)$ is an open neighbourhood of $f(x)$.
-		\item $f : U \to f(H)$ is a $C^1$-diffeomorphism, i.e. invertible with continuously differentiable inverse.
+		\item $f|_V$ is a $C^1$-diffeomorphism, i.e. invertible with continuously differentiable inverse.
 	\end{enumerate}
 \end{importanttheorem}
-\begin{lemma}
-	Let $U \subset \bR^n$ be open. Let $f : U \to \bR^k$ be continuously differentiable. Let $p,q \in U$ be points whose connecting line is contained in $U$, i.e.
-	\begin{align*}
-		[p,q] = \lr{p + \lambda(p-q) \mid \lambda \in [0,1]} \subseteq U.
-	\end{align*}
-	Let 
-	\begin{align*}
-		L = \max_{r \in [p,q]} \norm{Df(r)}_{\sup}.
-	\end{align*}
-	Then
-	\begin{align*}
-		d_2(f(p), f(q)) \leq L \cdot d_2(p,q)
-	\end{align*}
-\end{lemma}
-\begin{proof}
-	Let $h = q-p$. Let $g(\lambda) := f(p + \lambda h)$. Since $g$ is a composition of continuously differentiable functions, it is continuously differentiable. By definition, we have $g(0) = f(p)$ and $g(1) = f(q)$. Applying the fundamental theorem of integration gives
-	\begin{align*}
-		f(q) - f(p) 
-		&= g(1) - g(0)\\
-		&= \int_0^1 g'(t) ~dt.
-	\end{align*}
-	Applying the chain rule gives
-	\begin{align*}
-		\int_0^1 g'(t) ~dt
-		&=\int_0^1 Df(p+th)(h) ~dt
-	\end{align*}
-\end{proof}
+\begin{corollary}
+	Let $U \subseteq \bR^n$ be open. Let $f : U \to \bR^n$ be continuously differentiable. Let $Df(x)$ be invertible for all $x \in \bR^n$. Then $f(U)$ is open.
+\end{corollary}
 \section{The Implicit Function Theorem}
+\begin{importanttheorem}{Implicit Function Theorem}{}
+	Under mild assumptions, the level sets of a continuously differentiable function are graphs of continuously differentiable functions.
+	
+	More precisely, let $U \subseteq \bR^m \times \bR^k$ be open. Let $f : U \to \bR^k$ be continuously differentiable.
+	
+	Let $(x,y) \in U$ with $f(x,y) = z$. Let $Df|_{\bR^k}(x,y) : \bR^k \to \bR^k$ be invertible. Then there exist
+	\begin{enumerate}
+		\item open neighbourhoods $V$ of $x$ and $W$ of $y$,
+		\item and a continuously differentiable function $g : V \to W$,
+	\end{enumerate}
+	such that the set of values in $V \times W$ for which $f$ takes the value $z$ is the graph of $g$, i.e.
+	\begin{align*}
+		\lr{(v,w) \in V \times W \mid f(v,w) = z}
+		=
+		\lr{(v,g(v)) \mid v \in V}
+	\end{align*}
+\end{importanttheorem}
 \chapter{Integration in $\bR^n$}
 \chapter{Curves}
 \chapter{Surfaces}

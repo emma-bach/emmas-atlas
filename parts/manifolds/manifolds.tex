@@ -1,0 +1,75 @@
+\part{Manifolds}
+\begin{importantdefinition}{}{}
+	We call a topological space $X$ \tib{locally Euclidean of dimension $n$} if every point $x \in X$ has a neighbourhood that is homeomorphic to an open subset of $\bR^n$.
+\end{importantdefinition}
+\begin{exercise}
+	If a topolocical space $X$ is a locally euclidean of dimension $n$, then:
+	\begin{enumerate}
+		\item Every point $x \in X$ has a neighbourhood homeomorphic to an open ball in $\bR^n$, or
+		\item Every point $x \in X$ has a neighbourhood homeomorphic to $\bR^n$, or
+	\end{enumerate}
+\end{exercise}
+\begin{exercise}
+	Show that a topological space is locally Euclidean of dimension $0$ if and only if it is discrete.
+\end{exercise}
+\begin{importantdefinition}{}
+	A topological space is called an \tib{$n$-dimensional topological manifold}, or just \tib{topological $n$-manifold}, if it is:
+	\begin{enumerate}
+		\item locally euclidean of dimension $n$,
+		\item second countable,
+		\item and Hausdorff.
+	\end{enumerate}
+\end{importantdefinition}
+The latter two requirements exclude some pathological spaces - the long line would be a topological manifold if it was second countable, and the bug-eyed line would be a topological manifold if it was Hausdorff. Most interesting results about topological Manifolds require both of these properties, so little would be gained by omitting them.
+
+Intuitively, it sounds very sensible that a nonempty topological space cannot be both a topological $m$-manifold and a topological $n$-manifold. This statement turns out to be true - however, we will save this proof for later, since it requires a substantial amount of machinery borrowed from algebraic topology.
+\begin{lemma}
+	Every open subset of a topological $n$-manifold is a topological $n$-manifold.
+\end{lemma}
+\begin{exercise}
+	A topological space is a $0$-manifold if and only if it is countable and discrete.
+\end{exercise}
+\begin{theorem}
+	Every manifold is separable and metrizable, and any separable metric space that is locally Euclidean of dimension $n$ is a topological $n$-manifold.
+\end{theorem}
+\begin{importantdefinition}{}{}
+	We call a topological space an \tib{$n$-dimensional manifold with boundary} if it is second countable, Hausdorff, and every open point has a neighbourhood homeomorphic to an open subset of either $\bR^n$, or to the $n$-dimensional upper half-space
+	\begin{align*}
+		\bH^n = \lr{(x_1, \hdots, x_n) \in \bR^n \mid x_n \geq 0}
+	\end{align*}
+\end{importantdefinition}
+\begin{importantdefinition}{}{}
+	Let $M$ be a topological $n$-manifold with boundary. Then a \tib{coordinate chart for $M$} is a pair $(U, \phi)$, consisting of an open subset $U \subseteq M$, called a \tib{coordinate domain}, and a homeomorphism $\phi$ from $U$ to an open subset of $\bR^n$ or $\bH^n$, called a \tib{coordinate map}. If $U$ is homeomorphic to an open ball, we call $U$ a \tib{coordinate ball}.
+	\newpar
+\end{importantdefinition}
+Note that if we can assign coordinate maps for some covering of a topological space $X$, then that space must by definition be locally euclidean.
+\begin{importantdefinition}{Manifold interior and manifold boundary}{}
+	If $\phi(U)$ is an open subset of $\bR^n$, we call $\phi$ an \tib{interior chart} and points $p \in U$ \tib{interior points}. If $\phi(U)$ is a subset of $\bH^n$ with $\phi(U) \cap \partial \bH^n \neq \emptyset$, we call $\phi$ a \tib{boundary chart}. If there exists a boundary chart taking $p$ to $\partial \bH^n$, we call $p$ a \tib{boundary point of $M$}.
+\end{importantdefinition}
+Every manifold is a manifold with boundary, but the opposite might not hold. We sometimes use the redundant term "manifold without boundary" to refer to a manifold with boundary which has the empty set as its boundary. The word "manifold", without further qualifiers, always means a manifold without boundary.
+
+The definition of a manifold's boundary only agrees with the topological definition once we find the right ambient space to embed $M$ into, since $M$ always has empty topological boundary when viewed as a topological space of its own.
+
+For example, the manifold boundary of the closed unit disk $\ol \bB^2$ is the unit circle, which agrees with the topological boundary if the disk is viewed as a subset of $\bR^2$, but not with the topological boundary of the disk when viewed as its own topological space (which is trivially empty, as stated), or with the topological boundary of the disk viewed as a subset of $\bR^3$ (which is the entire disk).
+\begin{theorem}
+	If $M$ is a topological $n$-manifold with boundary, then $\intr M$ is both an open subset of $M$ and a topological $n$-manifold without boundary.
+\end{theorem}
+\begin{proof}
+	Since $\intr M$ is a union of coordinate domains, it is open.
+	
+	Second-countability and Hausdorffness are trivially inherited by subspaces. By definition, $\intr M$ consists only of points homeomorphic to an open subset of $\bR^n$, so $\intr M$ is additionally locally euclidean of dimension $n$.
+\end{proof}
+\begin{proposition}
+	Let $M$ be a topological manifold with boundary. Then a point $x \in M$ cannot be both a boundary point and an interior point.
+\end{proposition}
+The general proof once again requires some tricky algebraic topology, so we save it for later.
+\begin{corollary}
+	If $M$ is a nonempty topological $n$-manifold with boundary, then $\partial M$ is a closed subset of $M$, and $M$ is a topological $n$-manifold if and only if $\partial M = \emptyset$.
+\end{corollary}
+\begin{proof}
+	Since $\intr M$ is an open subset of $M$, $\partial M = M \setminus \intr M$ is closed.
+	
+	If $M$ is a manifold, then every point is an interior point, so $M = \int M$, so $\partial M = \emptyset$, and vice versa.
+\end{proof}
+
+

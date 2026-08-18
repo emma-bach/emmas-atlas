@@ -1,13 +1,259 @@
 \part{Foundations of Analysis}
 \chapter{The Real Numbers $\bR$}
-\section{Ordered Fields}
+\section{Ordered Algebraic Structures}
 \section{Dedekind Cuts}
 \section{Uniqueness of $\bR$}
+\section{Cardinality of $\bR$}
 \chapter{Distance}
 \section{Metric Spaces}
+A metric space is a set, alongside with a \tib{distance function}, more commonly known as a \tib{metric}, $d$ which takes two points and outputs a distance between the points. Naturally, we want this "distance" to actually give us some usable structure on the set.
+\newpar
+Now, what pieces of geometric intuition should we bake into our notion of distance? I would argue that the most fundamenal use of "distance" is to be able to \tib{compare distances between any two pairs of points}. Therefore, our metric should have as its output a \tib{totally ordered set}.
+\newpar
+We also want to be able to add distances together as a way of comparing them - logically, the distance between two points $x$ and $y$ plus the distance between $y$ and $z$ gives us an upper bound to the distance between $x$ and $z$, since we can always take this path to get from $x$ to $z$, but there might be a shorter path we haven't found yet. As a formula, this is the \tib{triangle inequality}
+\begin{align*}
+	d(x,z) \leq d(x,y) + d(y,z)
+\end{align*}
+Finally, if we have an ordered group structure, we would really like for our order to be archimedean - the distance between two distinct points should be greater than zero, and it shouldn't be infinitesimal. 
+\newpar
+This leaves $\bR_{\geq 0}$ as the obvious candidate for the domain of our distance function, since any archimedean ordered group is a subgroup of $\bR_{\geq 0}$ anways. This shouldn't be too much of a surprise, even without this logical background - I assume that when most people read "distance between two points", they intuitively already assume that these distances will be given by positive real numbers.
+\begin{importantdefinition}{Metric Spaces}{}
+	A \tib{metric space} is a set $M$ together with a function $d : M \times M \to \bR_{\geq{0}}$, such that:
+	\begin{enumerate}
+		\item $d$ is \tib{positive definite}, i.e. $d(x,y) = 0$ if and only if $x = y$.
+		\item $d$ is \tib{symmetric}, i.e. $d(x,y) = d(y,x)$
+		\item $d$ fulfills the \tib{triangle inequality}
+		\begin{align*}
+			d(x,z) \leq d(x,y) + d(y,z)
+		\end{align*}
+	\end{enumerate}
+\end{importantdefinition}
+\begin{importantdefinition}{Balls}{}
+	Let $(M,d)$ be a metric space. Then the \tib{open ball of radius $r$ around a point $x$} is the set
+	\begin{align*}
+		B_r(x) := \lr{y \in M : d(x,y) < r},
+	\end{align*}
+	and the \tib{closed ball of radius $r$ around $x$} is the set
+	\begin{align*}
+		\ol B_r(x) := \lr{y \in M : d(x,y) < r},
+	\end{align*}
+\end{importantdefinition}
+\begin{importantdefinition}{Open and Closed Sets}{}
+	Let $(M,d)$ be a metric space. Then we call a subset $U \subseteq M$ \tib{open} (in $M$) if it contains an open ball (of any radius) around all of its points, i.e.
+	\begin{align*}
+		\forall &x \in U:\\
+		\exists &r \in \bR_{\geq 0}:\\
+		B_r(x) \subseteq U.
+	\end{align*}
+	We call $U$ closed if its complement $M \setminus U$ is open.
+\end{importantdefinition}
+Intuitively, a set is open if it contains "a little bit of wiggle room" around any point contained in it. This means that sets with a "clear border", such as our closed balls, aren't open. For example, the interval $[0,1] \subset \bR$ doesn't leave any wiggle room around $0$ and $1$.
+\newpar
+Importantly, while it may seem unintuitive, there are in fact sets that are both closed and open at the same time. We call such sets \tib{clopen}.
+\begin{exercise}
+	There are exactly two clopen subsets of $\bR$. What are they?
+\end{exercise}
+\begin{definition}
+	Let $(M,d)$ be a metric space. We call a subset $N \subseteq M$ \tib{dense in $M$} if every nonempty open subset of $M$ contains an element of $N$.
+\end{definition}
+\begin{lemma}
+	Every nonempty open subset of $\bR$ is uncountable.
+\end{lemma}
+\begin{proof}
+	\begin{enumerate}
+		\item Since every nonempty open subset of $\bR$ contains an open interval $(a,b)$, it suffices to show that open intervals are uncountable.
+		\item The map
+		\begin{align*}
+			\phi_1 : (a, b) &\to \lr(-\frac{b-a}{2}, \frac{b-a}{2})\\
+					      x &\mapsto x - \frac{b+a}{2}
+		\end{align*}
+		is a bijection.
+		\item The map
+		\begin{align*}
+			\phi_2 : \lr(-\frac{b-a}{2}, \frac{b-a}{2}) &\to (-1,1)\\
+			x &\mapsto \frac{2x}{b-a}
+		\end{align*}
+		is also a bijection.
+		\item Finally, the map
+		\begin{align*}
+			\phi_3 : (-1,1) &\to \bR\\
+			x &\mapsto \frac{x}{1 - \abs{x}}
+		\end{align*}
+		is a bijection (the inverse is the map we get by replacing the $-$ with a $+$).
+		\item Therefore, $\phi_3 \circ \phi_2 \circ \phi_1$ is a bijection $(a,b) \cong \bR$, so any open interval is uncountable, so any open subset of $\bR$ is uncountable.
+	\end{enumerate}
+\end{proof}
+\begin{importanttheorem}{}{}
+	The set of rational numbers $\bQ$ is dense in $\bR$. The set of irrational numbers $\bR \setminus \bQ$ is also dense in $\bR$.
+\end{importanttheorem}
+\begin{proof}
+	\begin{enumerate}
+		\item Since any nonempty open subset $U \subseteq \bR$ contains an open interval $(a,b)$, it suffices to show that any open interval contains a rational number. We assume without loss of generality that $0 \leq a < b$, since $a < 0 < b$ already implies $0 \in (a,b)$, while $a < b \leq 0$ implies that $(a,b)$ contains a rational number if and only if $(-b, -a)$ contains a rational number.
+		\newpar
+		Now, since the ordering on the reals is archimedean, we can find a natural number $n \in \bN$ such that $\frac{1}{n} < b-a$.
+		Now, the set
+		\begin{align*}
+			L = \lr{k \in \bN \mid \frac{k}{n} > a}
+		\end{align*}
+		is nonempty - if $a = 0$, then $1 \in M$, and if $a \neq 0$, then the archimedean property tells us that there exists a $k \in \bN$ such that
+		\begin{align*}
+			\frac{1}{k} < \frac{1}{na},
+		\end{align*}
+		which implies $\frac{k}{n} > a$. Since $M$ is a nonempty subset of $\bN$, there must be a smallest element $m$. Since $m$ is minimal, we have $m-1 \neq M$, which implies 
+		\begin{align*}
+			\frac{m-1}{n} \leq a,
+		\end{align*}
+		which in turn implies
+		\begin{align*}
+			\frac{m}{n} = \frac{m-1}{n} + \frac{1}{n} < a + (b-a) = b
+		\end{align*}
+		Therefore, $\frac{m}{n}$ is a rational number contained in $(a,b)$, so $\bQ$ is dense in $\bR$.
+		\item Since any open subset $U \subseteq \bR$ is uncountable, while the rationals are countable, $U$ must contain an uncountable number of irrationals. Therefore, $\bR \setminus \bQ$ is dense in $\bR$. 
+	\end{enumerate}
+\end{proof}
+\begin{importantcorollary}{}{}
+	The set of rational numbers $\bQ$ is neither closed nor open in $\bR$.
+\end{importantcorollary}
+\begin{proof}
+	Since both sets are dense in $\bR$, every open ball containing a rational number must also contain an irrational number, and vice versa.
+\end{proof}
+\section{Topological Spaces}
+Topological spaces generalize metric spaces. By inheriting the concept of open and closed sets from metric spaces, they are able to still capture notions of closeness without putting a numerical value on exactly how close any given pair of points are. The notion of a topology is based on the following insight:
+\begin{exercise}
+	Let $(M,d)$ be a metric space. Then:
+	\begin{enumerate}
+		\item The empty set is open in $M$.
+		\item Any union of sets that are open in $M$ is open in $M$.
+		\item Any finite intersection of sets that are open in $M$ is open in $M$.
+		\item $M$ is open in $M$.
+	\end{enumerate}
+\end{exercise}
+We take this idea and make it a definition:
+\begin{importantdefinition}{}{}
+	Let $X$ be a set. Then a \tib{topology on $X$} is a set $\cO$ of subsets of $X$, called \tib{open sets}, such that:
+	\begin{enumerate}
+		\item The empty set is open.
+		\item Any union of open sets is open.
+		\item Any finite intersection of open sets is open.
+		\item $X$ is open.
+	\end{enumerate}
+\end{importantdefinition}
+Most of the topological spaces we care about in practice are already metric spaces, but many proofs flow more elegantly when phrased in the generalized language of topological spaces, and there *are* topological spaces that aren't metric spaces.
+\begin{importanttheorem}{Extremal Topologies}{}
+	Let $X$ be an arbitrary set. Then the following two sets of subsets are always topologies on $X$:
+	\begin{enumerate}
+		\item The \tib{indiscrete topology}, where the only open sets are $X$ and the empty set.
+		\item The \tib{discrete topology}, where every subset is open.
+	\end{enumerate}
+\end{importanttheorem}
+\begin{proofsketch}
+	Both topologies fulfill all requirements trivially. :)
+\end{proofsketch}
+\begin{definition}
+	We say that a metric $d$ on a space $M$ \tib{generates} a given topology $\cO$ on $M$ if they give the same open sets, i.e. the open sets in $\cO$ are exactly the open sets in $(M,d)$.
+\end{definition}
+\begin{exercise}
+	\begin{enumerate}
+		\item Show that the discrete metric generates the discrete topology.
+		\item Show that there is no metric generating the indiscrete topology.
+	\end{enumerate}
+\end{exercise}
+\newpar Two different metrics can generate the same topology:
+\begin{exercise}
+	Show that the euclidean metric also generates the discrete topology on $\bN$.
+\end{exercise}
+\begin{exercise}
+	Let $d$ be a metric on a set $M$. Let $c \in \bR_{> 0}$. 
+	\begin{enumerate}
+		\item Show that
+		\begin{align*}
+			d_c(x,y) = c \cdot d(x,y)
+		\end{align*}
+		is a metric on $M$.
+		\item Show that $d$ and $d_c$ generate the same topologies on $M$.
+	\end{enumerate}
+\end{exercise}
+This fact can be seen as a formalization of the intuition that changing the specific unit we choose to measure space with doesn't change its underlying structure.
+\begin{importantdefinition}{Interior, Exterior and Boundary}{}
+	Let $X$ be a topological space. Let $A \subseteq X$. Then:
+	\begin{enumerate}
+		\item The \tib{interior} $\intr A$ of $A$ is the set of all points that have an open neighbourhood entirely contained in $A$.
+		\item The \tib{exterior} $\extr A$ of $A$ is interior of the complement of $A$, i.e. the set of all points that have an open neighbourhood entirely contained in $X \setminus A$.
+		\item The \tib{boundary} $\partial A$ of $A$ is the set of all points $x \in X$ lying neither in $\intr A$, nor in $\extr A$.
+	\end{enumerate}
+\end{importantdefinition}
+The interior of $A$ is occasionally written as $\mathring A$.
+Intuitively, the interior is the largest open subset of $A$, and the exterior is the largest open set not containing any point of $A$.
+\begin{exercise}
+	Show that:
+	\begin{enumerate}
+		\item The interior of any set is open.
+		\item The interior of $A$ is the union of all open subsets of $A$.
+		\item The exterior of $A$ is the union of all open subsets of $X \setminus A$.
+		\item The boundary of $A$ is the set of all points $x \in X$ such that every neighbourhood of $x$ contains both points in $A$ and points in $X \setminus A$.
+	\end{enumerate}
+\end{exercise}
+\begin{importantdefinition}{Closure}{}
+	The closure of $A$ is the set $\ol A := A \cup \partial A$ containing $A$ and all of its boundary points.
+\end{importantdefinition}
+\begin{exercise}
+	\phantom{}
+	\begin{enumerate}
+		\item Show that $\ol A$ is closed.
+		\item Show $\ol A$ is the intersection of all closed sets containing $A$.
+	\end{enumerate}
+\end{exercise}
+
+\clearpage
+
 \section{Convergence}
+\begin{importanttheorem}{Detecting openness and closedness using sequences}{}
+	Let $M$ be a metric space. Let $A \subseteq M$. Let $x \in M$. Then:
+	\begin{enumerate}
+		\item $x \in \intr A$ if and only if every sequence in $M$ converging to $x$ is eventually in $A$.
+		\item $x \in \ol A$ if and only if there exists a sequence in $A$ converging to $x$.
+	\end{enumerate}
+\end{importanttheorem}
+\begin{proof}
+	\begin{enumerate}
+		\item If $x \in \intr A$, then there exists an $\epsilon > 0$ such that $B_\epsilon(x) \subseteq A$. If a sequence converges to $x$, it must thus be eventually in $B_\epsilon(x)$, and thus eventually in $A$. 
+		
+		Vice versa, if $x \notin \intr A$, then every open ball $B_n := B_\frac{1}{n}(x)$ around $A$ contains at least one point not in $A$, and so we can construct a sequence converging to $x$ that isn't eventually in $A$ by picking these points.
+		\item If there exists sequence of points in $A$ converging to $x$, then every neighbourhood of $x$ must contain at least one point in $A$, so $x \in \ol A$. 
+		
+		Vice versa, if $x \in \ol A$, then every open ball around $x$ must contain a point from $A$, so we can construct a sequence in $A$ converging to $x$ by taking the sequence $B_n := B_\frac{1}{n}(x)$ of open balls and picking a point $x_n \in A \cap B_n$ for each $n \in \bN$.
+	\end{enumerate}
+\end{proof}
+\begin{corollary}
+	\hphantom{}
+	\begin{enumerate}
+		\item $A$ is closed in $X$ if and only if it contains every limit of every convergent sequence of points in $A$.
+		\item $A$ is open in $X$ if and only if every sequence in $X$ converging to a point of $A$ is eventually in $A$.
+	\end{enumerate}
+\end{corollary}
+
+\clearpage
+
 \section{Continuity}
+
+\clearpage
+
 \section{Connectedness}
+\begin{theorem}
+	Let $U \subseteq (X,d)$ be open and path-connected. Then there exists a piecewise linear path $\gamma_n : [0,1] \to U$ between any two $p,q \in U$.
+\end{theorem}
+\begin{proofsketch}
+	\begin{enumerate}
+		\item Since $U$ is path connected, there exists a curve $\gamma : [0,1] \to U$ connecting $p$ and $q$.
+		\item We can approximate $\gamma$ via a piecewise linear curve $\gamma_n$ by setting
+		\begin{align*}
+			\gamma_n\lr(\frac{x}{n}) := \gamma\lr(\frac{x}{n})
+		\end{align*}
+		\item Since $\gamma$ is continuous and defined on a compact set, it is uniformly continuous. From this, it can be shown that the $\gamma_n$ converge to $\gamma$ uniformly.
+		\item Since $\gamma([0,1]) \subseteq U$ is compact and $X \setminus U$ is closed and disjoint from $U$, we have $\epsilon := d\lr(\gamma([0,1]), X \setminus U) > 0$.
+		\item Therefore, uniform convergence guarantees there is an $n$ such that $d(\gamma_n([0,1]), \gamma([0,1])) < \epsilon$, which implies $\gamma_n([0,1]) \subseteq U$.
+	\end{enumerate}
+\end{proofsketch}
 \section{Compactness}
 \section{Banach's Fixed Point Theorem}
 \chapter{Infinite Series}
