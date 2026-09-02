@@ -2,8 +2,11 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsthm}
+
 \usepackage{epigraph}
 \usepackage{physics}
+
+\usepackage{multirow}
 
 % Nicer Headers and Footers
 \usepackage{fancyhdr}
@@ -179,6 +182,7 @@
 \newcommand{\bP}{\mathbb{P}}
 \newcommand{\bQ}{\mathbb{Q}}
 \newcommand{\bR}{\mathbb{R}}
+\newcommand{\bS}{\mathbb{S}}
 \newcommand{\bV}{\mathbb{V}}
 \newcommand{\bZ}{\mathbb{Z}}
 
@@ -323,13 +327,16 @@
 
 % --- THEOREM AND PROOF TYPES ---
 % \newtheorem{codename}{printedname}[countedwith]
+\theoremstyle{definition}
 \newtheorem{lemma}{Lemma}[chapter]
-\newtheorem{theorem}[lemma]{Theorem}
-\newtheorem{proposition}[lemma]{Proposition}
-\newtheorem{corollary}[lemma]{Corollary}
+
+\theoremstyle{theorem}
 \newtheorem{exercise}[lemma]{Exercise}
 
 \theoremstyle{definition}
+\newtheorem{theorem}[lemma]{Theorem}
+\newtheorem{proposition}[lemma]{Proposition}
+\newtheorem{corollary}[lemma]{Corollary}
 \newtheorem{definition}[lemma]{Definition}
 \newtheorem{example}[lemma]{Example}
 \newtheorem{counterexample}[lemma]{Counterexample}

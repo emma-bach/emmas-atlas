@@ -4,7 +4,7 @@
 \section{Dedekind Cuts}
 \section{Uniqueness of $\bR$}
 \section{Cardinality of $\bR$}
-\chapter{Distance}
+\chapter{The Concept of Distance}
 \section{Metric Spaces}
 A metric space is a set, alongside with a \tib{distance function}, more commonly known as a \tib{metric}, $d$ which takes two points and outputs a distance between the points. Naturally, we want this "distance" to actually give us some usable structure on the set.
 \newpar
@@ -28,6 +28,22 @@ This leaves $\bR_{\geq 0}$ as the obvious candidate for the domain of our distan
 		\end{align*}
 	\end{enumerate}
 \end{importantdefinition}
+\begin{theorem}
+	\label{th:euclideanmetric}
+	Let $M^n := \prod_{i = 1}^n M$ be a finite cartesian product of metric spaces. Then the \tib{Euclidean distance function}
+	\begin{align*}
+		d_\infty(x,y) := \sqrt{\sum_{i = 1}^n (x_i - y_i)^2}
+	\end{align*}
+	gives a metric on $M^n$.
+\end{theorem}
+\begin{theorem}
+	\label{th:chebyshevmetric}
+	Let $M^n := \prod_{i = 1}^n M$ be a finite cartesian product of metric spaces. Then the \tib{Chebyshev distance function}
+	\begin{align*}
+		d_\infty(x,y) := \max_{i \in [1..n]} d(x_i - y_i)
+	\end{align*}
+	gives a metric on $M^n$.
+\end{theorem}
 \begin{importantdefinition}{Balls}{}
 	Let $(M,d)$ be a metric space. Then the \tib{open ball of radius $r$ around a point $x$} is the set
 	\begin{align*}
@@ -117,7 +133,7 @@ Importantly, while it may seem unintuitive, there are in fact sets that are both
 \begin{proof}
 	Since both sets are dense in $\bR$, every open ball containing a rational number must also contain an irrational number, and vice versa.
 \end{proof}
-\section{Topological Spaces}
+\section{Topologies}
 Topological spaces generalize metric spaces. By inheriting the concept of open and closed sets from metric spaces, they are able to still capture notions of closeness without putting a numerical value on exactly how close any given pair of points are. The notion of a topology is based on the following insight:
 \begin{exercise}
 	Let $(M,d)$ be a metric space. Then:
@@ -178,7 +194,7 @@ This fact can be seen as a formalization of the intuition that changing the spec
 	Let $X$ be a topological space. Let $A \subseteq X$. Then:
 	\begin{enumerate}
 		\item The \tib{interior} $\intr A$ of $A$ is the set of all points that have an open neighbourhood entirely contained in $A$.
-		\item The \tib{exterior} $\extr A$ of $A$ is interior of the complement of $A$, i.e. the set of all points that have an open neighbourhood entirely contained in $X \setminus A$.
+		\item The \tib{exterior} $\extr A$ of $A$ is the interior of the complement $X \setminus A$, i.e. the set of all points that have an open neighbourhood entirely contained in $X \setminus A$.
 		\item The \tib{boundary} $\partial A$ of $A$ is the set of all points $x \in X$ lying neither in $\intr A$, nor in $\extr A$.
 	\end{enumerate}
 \end{importantdefinition}
@@ -188,6 +204,7 @@ Intuitively, the interior is the largest open subset of $A$, and the exterior is
 	Show that:
 	\begin{enumerate}
 		\item The interior of any set is open.
+		\item The exterior of any set is open.
 		\item The interior of $A$ is the union of all open subsets of $A$.
 		\item The exterior of $A$ is the union of all open subsets of $X \setminus A$.
 		\item The boundary of $A$ is the set of all points $x \in X$ such that every neighbourhood of $x$ contains both points in $A$ and points in $X \setminus A$.
@@ -199,11 +216,18 @@ Intuitively, the interior is the largest open subset of $A$, and the exterior is
 \begin{exercise}
 	\phantom{}
 	\begin{enumerate}
+		\item Show that $\ol A$ is the set of all points $x \in X$ such that every neighbourhood of $x$ contains points in $A$.
 		\item Show that $\ol A$ is closed.
 		\item Show $\ol A$ is the intersection of all closed sets containing $A$.
 	\end{enumerate}
 \end{exercise}
-
+\begin{theorem}
+	\label{th:boundedinfsup}
+	Let $B \subseteq \bR$ be a bounded subset of $\bR$. Then $\inf B$ and $\sup B$ are contained in $\ol B$.
+\end{theorem}
+\begin{proof}
+	Since $B$ is bounded, completeness of the real numbers tells us that $\inf B$ and $\sup B$ are finite real numbers. If $\inf B \notin B$, then there would exists an open neighbourhood $U_{\inf}$ of $\inf B$ not containing any points of $B$. Since any neighbourhood of a real number $x$ must contain numbers greater than $x$, this would give us a lower bound of $B$ greater than $\inf B$, which contradicts the definition of $\inf B$. Similarly, if $\sup B \notin \ol B$, we could get a lesser upper bound of $B$, which is again a contradition.
+\end{proof}
 \clearpage
 
 \section{Convergence}
@@ -231,30 +255,82 @@ Intuitively, the interior is the largest open subset of $A$, and the exterior is
 		\item $A$ is open in $X$ if and only if every sequence in $X$ converging to a point of $A$ is eventually in $A$.
 	\end{enumerate}
 \end{corollary}
-
 \clearpage
 
 \section{Continuity}
+\begin{definition}
+	Let $f : M \to N$ be a function between metric spaces. Then we call $f$ \tib{uniformly continuous} if it is continuous and fulfills the additional requirement that, given an $\epsilon$, we can pick the same $\delta$ for all points $x \in M$, i.e:
+	\begin{align*}
+		\forall &\epsilon \in \bR_{> 0} :\\
+		\exists &\delta \in \bR_{> 0} :\\
+		\forall &x,y \in M:\\
+		&d(x,y) < \delta \implies d(f(x), f(y)) < \epsilon
+	\end{align*}
+\end{definition}
+
+\clearpage
+
+\section{Compactness}
+\begin{exercise}
+	Any closed subset of a compact set is compact.
+\end{exercise}
+\begin{exercise}
+	A compact subset of a metric space is always closed.
+\end{exercise}
+\begin{importanttheorem}{Compactness in Metric Spaces}{metriccompact}
+	\begin{enumerate}
+		\item A subset of a metric space is compact if and only if it is sequentially compact.
+		\item A compact subset of a metric space is closed and bounded.
+	\end{enumerate}
+\end{importanttheorem}
+\begin{proof}
+	Let $K \subseteq M$ be compact. Since $M$ is a metric space, $K$ is closed. If we cover $K$ using open balls, that cover must have a finite subcover. Thus, $K$ must be contained in a finite union of open balls, which means $K$ must be bounded.
+\end{proof}
+\begin{importanttheorem}{}{}
+	Let $f : M \to N$ be a continuous function between metric spaces. Let $K \subseteq M$ be compact. Then $f(K)$ is compact.
+\end{importanttheorem}
+\begin{proof}
+	Let $K \subseteq M$ be compact. Let $\cU$ be an open cover of $f(K)$. Since $f$ is continuous, $f^{-1}[\cU] := \lr{f^{-1}[U] \mid U \in \cU}$ is an open cover of $N$, which must have a finite subcover $\cV \subseteq f^{-1}[\cU]$. Since $f : K \to f(K)$ is surjective by definition, $f[\cV]$ must be a finite cover of $f(K)$.
+\end{proof}
+\begin{importantcorollary}{Maximum-Minimum-Theorem}{}
+	Let $f : K \to \bR$ be a function from a compact subset of a metric space into the real numbers. Then $f$ attains a maximum and a minimum.
+\end{importantcorollary}
+\begin{proof}
+	By the previous theorem, $f(K)$ is a compact subset of $\bR$, i.e. closed and bounded by Theorem \ref{th:metriccompact}. But then Theorem \ref{th:boundedinfsup} tells us that $\inf f(K)$ and $\sup f(K)$ are already contained in $\ol{f(K)} = f(K)$.
+\end{proof}
+\begin{lemma}
+	Let $M,N$ be metric spaces. Let $K \subseteq M$ be compact. Let $f : K \to N$ be continuous. Then the preimage of any compact subset of $M$ is a compact subset of $K$.
+\end{lemma}
+\begin{proof}
+	Since $N$ is a metric space, compact subsets are closed. Since $f$ is continuous, the preimage of a closed subset is closed. Since $K$ is compact, any closed subset of $K$ is compact.
+\end{proof}
+\begin{importanttheorem}{Countable Metric Tychonoffs Theorem}{}
+	Let $M_1, M_2$ be metric spaces. Let $K_1 \subseteq M_1, K_2 \subseteq M_2$ be compact. Then $K_1 \times K_2 \subseteq M_1 \times M_2$ is compact.
+\end{importanttheorem}
+\begin{proof}
+	Using whichever bijection $\bN^2 \cong \bN$ the reader prefers, we can unroll a sequence $s_n$ in $K_1 \times K_2$ into a sequence $x_n$ in $K_1$ and a sequence $y_n$ in $K_2$, such that the elements of $s_n$ are in one-to-one correspondence with pairs $(x_i, y_j)$ of elements of $x_n$ and $y_n$. Since $K_1$ and $K_2$ are compact, $x_n$ and $y_n$ have convergent subsequences. Using our bijection, these can be reassembled into a subsequence of $s_n$, and since both components of this subsequence converge, the subsequence itself converges. Thus, every sequence in $K_1 \times K_2$ has a convergent subsequence. Since sequential compactness and compactness are equivalent in metric spaces by Theorem \ref{th:metriccompact}, $K_1 \times K_2$ is compact.
+\end{proof}
+\begin{importanttheorem}{}{}
+	\label{th:compactuniformcontinuity}
+	Let $M,N$ be metric spaces. Let $K \subseteq M$ be compact.
+	Then every continuous function $f : K \to N$ is uniformly continuous.
+\end{importanttheorem}
+\begin{proof}
+	Assume that $f : K \to N$ isn't uniformly continuous. Then there exists an $\epsilon \in \bR_{> 0}$ such that for every $n \in \bN$, we can find points $x_n, y_n \in K$ such that $d(x_n, y_n) < 1/n$, but $d(f(x_n) - f(y_n)) \geq \epsilon$.
+	
+	Since $K$ is compact, it is sequentially compact by Theorem \ref{th:metriccompact}, so there exists a subsequence $(x_k) \subset (x_n)$ converging to a point $p$. Since $d(x_n, y_n) < 1/n$, there also exists a subsequence $x_k \subset y_n$ converging to $p$. If $f$ was continuous, we would have
+	\begin{align*}
+		\lim_{k \to \infty} f(x_k) = \lim_{k \to \infty} f(y_k),
+	\end{align*}
+	contradicting the fact that we have $d(f(x_k) - f(y_k)) \geq \epsilon$ for all $k \in \bN$.
+\end{proof}
 
 \clearpage
 
 \section{Connectedness}
-\begin{theorem}
-	Let $U \subseteq (X,d)$ be open and path-connected. Then there exists a piecewise linear path $\gamma_n : [0,1] \to U$ between any two $p,q \in U$.
-\end{theorem}
-\begin{proofsketch}
-	\begin{enumerate}
-		\item Since $U$ is path connected, there exists a curve $\gamma : [0,1] \to U$ connecting $p$ and $q$.
-		\item We can approximate $\gamma$ via a piecewise linear curve $\gamma_n$ by setting
-		\begin{align*}
-			\gamma_n\lr(\frac{x}{n}) := \gamma\lr(\frac{x}{n})
-		\end{align*}
-		\item Since $\gamma$ is continuous and defined on a compact set, it is uniformly continuous. From this, it can be shown that the $\gamma_n$ converge to $\gamma$ uniformly.
-		\item Since $\gamma([0,1]) \subseteq U$ is compact and $X \setminus U$ is closed and disjoint from $U$, we have $\epsilon := d\lr(\gamma([0,1]), X \setminus U) > 0$.
-		\item Therefore, uniform convergence guarantees there is an $n$ such that $d(\gamma_n([0,1]), \gamma([0,1])) < \epsilon$, which implies $\gamma_n([0,1]) \subseteq U$.
-	\end{enumerate}
-\end{proofsketch}
-\section{Compactness}
+
+\clearpage
+
 \section{Banach's Fixed Point Theorem}
 \chapter{Infinite Series}
 \section{Achilles and the Turtle}
@@ -265,3 +341,54 @@ Intuitively, the interior is the largest open subset of $A$, and the exterior is
 \section{The Complex Numbers $\bC$}
 \section{Circles, Angles and Trigonometry}
 \chapter{Function Spaces}
+Since we know that a sequence in a finite cartesian product converges if and only if all components converge, it seems natural to generalize this notion to arbitrary, potentially infinite cartesian products, i.e. arbitrary functions:
+\begin{importantdefinition}{Pointwise Convergence}{}
+	We say that a sequence of functions $f_n : M \to N$ converges \tib{pointwise} to a given function $f : M \to N$ if and only if all components $f_n(x)$ converge in the usual sense, i.e:
+	\begin{align*}
+		\forall & x \in M:\\
+		\forall &\epsilon \in \bR_{> 0}:\\
+		\exists & N \in \bN :\\
+		\forall & n \geq N:\\
+		&d(f_n(x) - f(x)) < \epsilon
+	\end{align*}
+\end{importantdefinition}
+We can't put a metric on $N^M$ in which this form of converges matches regular metric convergence, but the intuition that this is the most natural form of convergence in $N^M$ will be vindicated once we study abstract product spaces in point-set topology, at which point we confirm that in the natural product topology, an infinite cartesian product still converges if and only if every component converges individually.
+
+However, there \tit{is} a natural metric to put on $N^M$, which leads to a stronger form of convergence:
+\begin{definition}
+	An \tib{extended metric space} is a metric space where $d$ can also take on the value $\infty$. 
+\end{definition}
+\begin{importanttheorem}{Supremum Metric}{}
+	The set $N^M$ of functions from a metric space $M$ to a metric space $N$ can be metrized by the extended metric
+	\begin{align*}
+		d_\infty(f, g) := \sup_{x \in M} \abs{f(x) - g(x)}.
+	\end{align*}
+	Additionally, this function is a regular metric on the set $B(M,N) \subset N^M$ of bounded functions $M \to N$.
+\end{importanttheorem}
+Note that is simply a direct generalization of the Chebyshev metric \ref{th:chebyshevmetric} to infinite cartesian products!
+\begin{importanttheorem}{Uniform Convergence}{}
+	In $(N^M, d_\infty)$, a sequence of functions $f_n$ converges to a given function $f$ if and only if
+	\begin{align*}
+		\forall &\epsilon \in \bR_{> 0}:\\
+		\exists & N \in \bN :\\
+		\forall & n \geq N:\\
+		\forall & x \in M:\\
+		&d(f_n(x) - f(x)) < \epsilon
+	\end{align*}
+	we call this form of convergence of a sequence of functions \tib{uniform convergence}.
+\end{importanttheorem}
+\begin{theorem}
+	Let $U \subseteq (X,d)$ be open and path-connected. Then there exists a piecewise linear path $\gamma_n : [0,1] \to U$ between any two $p,q \in U$.
+\end{theorem}
+\begin{proofsketch}
+	\begin{enumerate}
+		\item Since $U$ is path connected, there exists a curve $\gamma : [0,1] \to U$ connecting $p$ and $q$.
+		\item We can approximate $\gamma$ via a piecewise linear curve $\gamma_n$ by setting
+		\begin{align*}
+			\gamma_n\lr(\frac{x}{n}) := \gamma\lr(\frac{x}{n})
+		\end{align*}
+		\item Since $\gamma$ is continuous and defined on a compact set, it is uniformly continuous by Theorem \ref{th:compactuniformcontinuity}. From this, it can be shown that the $\gamma_n$ converge to $\gamma$ uniformly.
+		\item Since $\gamma([0,1]) \subseteq U$ is compact and $X \setminus U$ is closed and disjoint from $U$, we have $\epsilon := d\lr(\gamma([0,1]), X \setminus U) > 0$.
+		\item Therefore, uniform convergence guarantees there is an $n$ such that $d(\gamma_n([0,1]), \gamma([0,1])) < \epsilon$, which implies $\gamma_n([0,1]) \subseteq U$.
+	\end{enumerate}
+\end{proofsketch}

@@ -115,7 +115,8 @@ One example is
 	f : \bR^2 \to \bR\\
 	(x,y) &\mapsto
 	\begin{cases}
-		\frac{xy}{(x^2 + y^2)^2}
+		\frac{xy}{(x^2 + y^2)^2} & (x,y) \neq 0\\
+		0 & (x,y) = 0
 	\end{cases}.
 \end{align*}
 This function has $\partial_1 f(0) = \partial_2 f(0) = 0$, since $f(h,0) = f(0,h) = 0$ for all $h \in \bR$, but isn't continuous, since $\lim_{n \to \infty} f\lr(\frac{1}{n}, \frac{1}{n}) = \lim_{n \to \infty} \frac{n^2}{4} = \infty \neq f(0)$.
@@ -499,22 +500,19 @@ The important takeaway here is that directional differentiability only guarantee
 \chapter{The Two Queens of Multivariable Calculus}
 \section{The Inverse Function Theorem}
 \begin{importanttheorem}{Inverse Function Theorem}{}
-	If a continuously differentiable function has an invertible differential at a given point, there exists an open neighbourhood around that point in which the function is invertible.
-	
-	More precisely, let $U \subseteq \bR^n$ be open. Let $f : U \to \bR^n$ be continuously differentiable. Let $x \in U$ be a point such that $Df(x) : \bR^n \to \bR^n$ is invertible. Then there exists an open neighbourhood $V$ of $x$ such that:
+	Let $U \subseteq \bR^n$ be open. Let $f : U \to \bR^n$ be continuously differentiable. Let $x \in U$ be a point such that $Df(x) : \bR^n \to \bR^n$ is invertible. Then there exists an open neighbourhood $V$ of $x$ such that:
 	\begin{enumerate}
 		\item $f(V)$ is an open neighbourhood of $f(x)$.
 		\item $f|_V$ is a $C^1$-diffeomorphism, i.e. invertible with continuously differentiable inverse.
 	\end{enumerate}
 \end{importanttheorem}
+In short: if a continuously differentiable function has an invertible differential at a given point, there exists an open neighbourhood around that point in which the function is invertible:
 \begin{corollary}
 	Let $U \subseteq \bR^n$ be open. Let $f : U \to \bR^n$ be continuously differentiable. Let $Df(x)$ be invertible for all $x \in \bR^n$. Then $f(U)$ is open.
 \end{corollary}
 \section{The Implicit Function Theorem}
 \begin{importanttheorem}{Implicit Function Theorem}{}
-	Under mild assumptions, the level sets of a continuously differentiable function are graphs of continuously differentiable functions.
-	
-	More precisely, let $U \subseteq \bR^m \times \bR^k$ be open. Let $f : U \to \bR^k$ be continuously differentiable.
+	Let $U \subseteq \bR^m \times \bR^k$ be open. Let $f : U \to \bR^k$ be continuously differentiable.
 	
 	Let $(x,y) \in U$ with $f(x,y) = z$. Let $Df|_{\bR^k}(x,y) : \bR^k \to \bR^k$ be invertible. Then there exist
 	\begin{enumerate}
@@ -528,6 +526,17 @@ The important takeaway here is that directional differentiability only guarantee
 		\lr{(v,g(v)) \mid v \in V}
 	\end{align*}
 \end{importanttheorem}
-\chapter{Integration in $\bR^n$}
+In short: under mild assumptions, the level sets of a continuously differentiable function are graphs of continuously differentiable functions:
+\chapter{Multiple Integrals}
+\begin{theorem}
+	Let $K \subseteq \bR^n$ be compact. Let $f : K \times [a,b] \to \bR$ be continuous. Then the function
+	\begin{align*}
+		x \mapsto \int_a^b f(x,t) ~dt
+	\end{align*}
+	is continuous.
+\end{theorem}
+\begin{proof}
+	$K \times [a,b]$ is a finite product of compact sets, i.e. compact.
+\end{proof}
 \chapter{Curves}
 \chapter{Surfaces}

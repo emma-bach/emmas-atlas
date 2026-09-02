@@ -40,6 +40,26 @@
 		i.e. $\phi(g^{-1}) = \phi(g)^{-1}$.
 	\end{enumerate}
 \end{proof}
+
+\clearpage
+
+\section{Permutations and the Symmetric Groups}
+
+\clearpage
+
+\section{Product Groups}
+\begin{importanttheorem}{}{}
+	Let $G = G_1 \times G_2$ be a product group. Let $H \subseteq G$ be a subgroup. Then $H$ isn't necessarily isomorphic to a product $H_1 \times H_2$ of subgroups of $G_1$ and $G_2$.
+\end{importanttheorem}
+\begin{proof}
+	Let $G = S_3 \times S_3$. Let $H$ be subgroup of elements $(\sigma_1, \sigma_2)$ with $\sgn(\sigma_2 \sigma_1) = 1$. We have $\abs{G} = 36$, giving us $\abs{H} = 18$.
+	\newpar
+	The subgroups of $S_3$ are $S_3$ itself, $C_1$, $A_3 \cong C_3$ and $C_2$. If $H$ was a product of subgroups, we would thus need to have $H \cong A_3 \times S_3$, since every other combination has the wrong order.
+	\newpar
+	Now, notice that $A_3 \times S_3$ contains elements of order $6$, such as $((1,2),(1,2,3))$. Since $S_3$ isn't cyclic, it doesn't contain elements of order $6$, so an element of order $6$ in $H$ must be a pair consisting of an element $\sigma_2$ of order two (i.e. a transposition, which has odd order) and an element $\sigma_3$ of order three (i.e. a three-cycle, which has even order). But then $\sgn(\sigma_2\sigma_1) = -1$, so no such element can be contained in $H$.
+\end{proof}
+\clearpage
+
 \section{Group Actions}
 \begin{importantdefinition}{}{}
 	Let $(G, \circ, e)$ be a group. Let $X$ be a set. Then a map $. : G \times X \to X$ is called a \tib{group action} of $G$ on $X$ iff:

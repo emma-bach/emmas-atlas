@@ -1,68 +1,22 @@
 \part{Point-Set Topology}
 \chapter{Topological Spaces}
+\section{Topologies}
+
 \begin{importantdefinition}{Accumulation points and isolated points}{}
 	Let $X$ be a topological space. Let $A \subseteq X$. Then we call $x \in X$ an \tib{accumulation point} of $A$ if every neighbourhood of $x$ contains a point in $A$ \tib{other than $x$ itself}. 
 	
 	If a point $x \in A$ isnt an accumulation point of $A$, we call $x$ an \tib{isolated point}.
 \end{importantdefinition}
 \begin{definition}
-	Let $X$ be a topological space. Let $A \subseteq X$. Then the set of all limit points is denoted $A'$, and is known as the \tib{derived set of $A$}.
+	Let $X$ be a topological space. Let $A \subseteq X$. Then the set of all accumulation points of $A$ is denoted $A'$, and is known as the \tib{derived set of $A$}.
 \end{definition}
 \begin{exercise}
 	Show that $A' \subseteq \ol A$.
 \end{exercise}
-\chapter{Bases and Countability}
-\begin{importantdefinition}{}{}
-	We call a topological space \tib{first countable} if it has a countable neighbourhood basis around every point $x$, i.e. a set of neigbourhoods $B_i$ of $x$ such that every neighbourhood of $x$ contains some $B_i$.
-\end{importantdefinition}
-\begin{exercise}
-	Every metric space is first countable.
-\end{exercise}
-It turns out that first countable spaces are exactly the spaces where sequences are sufficient to maintain our intuitions about how sequence convergence interacts with topological properties:
-\begin{importanttheorem}{Detecting openness and closedness using sequences}{}
-	Let $X$ be first countable. Let $A \subseteq X$. Let $x \in X$. Then:
-	\begin{enumerate}
-		\item $x \in \intr A$ if and only if every sequence in $X$ converging to $x$ is eventually in $A$.
-		\item $x \in \ol A$ if and only if there exists a sequence in $A$ converging to $x$.
-	\end{enumerate}
-\end{importanttheorem}
-\begin{proof}
-	Copy the proof of the metric case, replacing open balls with our countable neighbourhood basis.
-\end{proof}
-\begin{corollary}
-	Let $X$ be first countable. Let $A \subseteq X$. Let $x \in X$. Then:
-	\begin{enumerate}
-		\item $A$ is closed in $X$ if and only if it contains every limit of every convergent sequence of points in $A$.
-		\item $A$ is open in $X$ if and only if every sequence in $X$ converging to a point of $A$ is eventually in $A$.
-	\end{enumerate}
-\end{corollary}
-\begin{importantdefinition}{}{}
-	We call a topological space \tib{separable} if it contains a countable dense subset.
-\end{importantdefinition}
-\begin{exercise}
-	\begin{enumerate}
-		\item Every countable space is separable.
-		\item $\bR^n$ is separable for every $n \in \bN$.
-	\end{enumerate}
-\end{exercise}
-\begin{importantdefinition}{}{}
-	We call a topological space \tib{second countable} if it has a countable basis.
-\end{importantdefinition}
-\begin{exercise}
-	$\bR^n$ is second countable for every $n \in \bN$.
-\end{exercise}
-\begin{exercise}
-	Let $X$ be second countable. Then:
-	\begin{enumerate}
-		\item $X$ is first countable.
-		\item $X$ is separable.
-	\end{enumerate}
-\end{exercise}
-\begin{theorem}
-	A metric space is second countable if and only if it is separable.
-\end{theorem}
 
-\chapter{Separation Axioms}
+\clearpage
+
+\section{Basic Separation Properties}
 \epigraph{
 	\textit{A very common axiom is the Hausdorff separation axiom, which says that any two distinct points can be housed orf from each other by disjoint open sets.}}{{"Topology via Logic",}\\{Steven Vickers}}
 \begin{definition}
@@ -123,22 +77,6 @@ It turns out that first countable spaces are exactly the spaces where sequences 
 \begin{exercise}
 	Find a space $X$ and a subset $A$ such that the set of accumulation points of $A$ isn't closed.
 \end{exercise}
-\begin{importanttheorem}{Characterization of Hausdorff spaces by diagonals}{}
-	Let $(X, \cO)$ be a topological space. Then $(X, \cO)$ is Hausdorff if and only if the diagonal
-	\begin{align*}
-		\Delta := \lr{(x,x) \mid x \in X}
-	\end{align*}
-	is closed in the product topology.
-\end{importanttheorem}
-\begin{proof}
-	\begin{enumerate}
-		\item[$\Rightarrow$] Assume $(X, \cO)$ is Hausdorff. Let $(x,y) \notin \Delta$. Then $x \neq y$ by definition of $\Delta$. Therefore, there exist disjoint neighbourhoods $U_x$, $U_y$ of $x$ and $y$. Since these neighborhoods are disjoint, we have
-		\begin{align*}
-			\Delta \cap (U_x \times U_y) = \emptyset
-		\end{align*}. Therefore, every point $(x,y) \notin \Delta$ has an open neighborhood $(U_x \times U_y)$ that doesn't intersect $\Delta$, i.e. $\Delta$ is closed.
-		\item[$\Leftarrow$] Let $x \neq y$. Assume that $\Delta$ is closed. Then $(x,y) \notin \Delta$ has a basic open neighborhood $U_x \times U_y$ that doesn't intersect $\Delta$. Since $U_x \times U_y$ doesn't intersect $\Delta$, $U_x$ and $U_y$ must be disjoint.
-	\end{enumerate}
-\end{proof}
 \begin{theorem}
 	Let $(X, \cO)$ be a topological space. Then $(X, \cO)$ is Hausdorff if and only if every point is the intersection of the closures of all of its neighbourhoods:
 	\begin{align*}
@@ -158,6 +96,593 @@ It turns out that first countable spaces are exactly the spaces where sequences 
 		\item[$\Leftarrow$] Let $x \neq y$. Let $\lr{x} = \bigcap \lr{\ol U \mid U \in \cU(x)}$. Then there must be an open neighborhood $U_x$ of $x$ whose closure doesn't contain $y$. But then the complement $U_y := X \setminus \ol U_x$ of that closure is an open neighborhood of $y$ that is disjoint from $U_x$.
 	\end{enumerate}
 \end{proof}
+
+\clearpage
+
+\section{Bases and Countability}
+\begin{importantdefinition}{}{}
+	We call a topological space \tib{first countable} if it has a countable neighbourhood basis around every point $x$, i.e. a set of neigbourhoods $B_i$ of $x$ such that every neighbourhood of $x$ contains some $B_i$.
+\end{importantdefinition}
+\begin{exercise}
+	Every metric space is first countable.
+\end{exercise}
+It turns out that first countable spaces are exactly the spaces where sequences are sufficient to maintain our intuitions about how sequence convergence interacts with topological properties:
+\begin{importanttheorem}{Detecting openness and closedness using sequences}{}
+	Let $X$ be first countable. Let $A \subseteq X$. Let $x \in X$. Then:
+	\begin{enumerate}
+		\item $x \in \intr A$ if and only if every sequence in $X$ converging to $x$ is eventually in $A$.
+		\item $x \in \ol A$ if and only if there exists a sequence in $A$ converging to $x$.
+	\end{enumerate}
+\end{importanttheorem}
+\begin{proof}
+	Copy the proof of the metric case, replacing open balls with our countable neighbourhood basis.
+\end{proof}
+\begin{corollary}
+	Let $X$ be first countable. Let $A \subseteq X$. Let $x \in X$. Then:
+	\begin{enumerate}
+		\item $A$ is closed in $X$ if and only if it contains every limit of every convergent sequence of points in $A$.
+		\item $A$ is open in $X$ if and only if every sequence in $X$ converging to a point of $A$ is eventually in $A$.
+	\end{enumerate}
+\end{corollary}
+\begin{importantdefinition}{}{}
+	We call a topological space \tib{separable} if it contains a countable dense subset.
+\end{importantdefinition}
+\begin{exercise}
+	\phantom{}
+	\begin{enumerate}
+		\item Every countable space is separable.
+		\item $\bR^n$ is separable for every $n \in \bN$.
+	\end{enumerate}
+\end{exercise}
+\begin{importantdefinition}{}{}
+	We call a topological space \tib{second countable} if it has a countable basis.
+\end{importantdefinition}
+\begin{exercise}
+	$\bR^n$ is second countable for every $n \in \bN$.
+\end{exercise}
+\begin{exercise}
+	Let $X$ be second countable. Then:
+	\begin{enumerate}
+		\item $X$ is first countable.
+		\item $X$ is separable.
+	\end{enumerate}
+\end{exercise}
+\begin{theorem}
+	A metric space is second countable if and only if it is separable.
+\end{theorem}
+	
+\clearpage
+
+\chapter{New Spaces from Old}
+\section{The Subspace Topology}
+\begin{importanttheorem}{}{}
+	Let $(X, \cO)$ be a topological space, and let $S \subseteq X$ be any subset. Then the collection
+	\begin{align*}
+		\cO_S := \lr{U \subseteq S \mid \exists V \in \cO : U = S \cap V},
+	\end{align*}
+	consisting of all intersections of open sets of $X$ with $S$, forms a topology, which we call the \tib{subspace topology}.
+\end{importanttheorem}
+\begin{exercise}
+	Let $S \subseteq X$. Show that $B \subseteq S$ is closed in $S$ if and only if it is equal to the intersection of $S$ with some closed subset of $X$.
+\end{exercise}
+\begin{exercise}
+	Let $X$ be a topological space. Let $U \subseteq S \subseteq X$.
+	\begin{enumerate}
+		\item If $U$ is open in $X$, then $U$ is open in $S$.
+		\item If $U$ is closed in $X$, then $U$ is closed in $S$.
+	\end{enumerate}
+\end{exercise}
+\begin{exercise}
+	Let $X$ be a topological space. Let $U \subseteq S \subseteq X$.
+	\begin{enumerate}
+		\item If $U$ is open in $S$, and $S$ is open in $X$, then $U$ is open in $X$.
+		\item If $U$ is closed in $S$, and $S$ is closed in $X$, then $U$ is closed in $X$.
+	\end{enumerate}
+\end{exercise}
+If $U \subseteq S \subseteq X$, the notations $\ol U$, $\intr U$, and $\extr U$ will always refer to the closure, interior, and exterior of $U$ in $X$, not in $S$.
+\begin{exercise}
+	Let $X$ be a topological space. Let $U \subseteq S \subseteq X$.
+	\begin{enumerate}
+		\item The closure of $U$ in $S$ is equal to $\ol U \cap S$.
+		\item Find an example where the interior of $U$ in $S$ is not equal to $\intr U \cap S$.
+		\item Show that $\intr U \cap S$ is a subset of the interior of $U$ in $S$.
+	\end{enumerate}
+\end{exercise}
+\begin{importanttheorem}{Universal Property of the Subspace Topology}{}
+	Let $X$ and $Y$ be topological spaces. Let $S \subseteq Y$. Then $f : X \to S$ is continuous if and only if the embedded map $\iota_S \circ f : X \to Y$ is continuous.
+\end{importanttheorem}
+\begin{corollary}
+	Let $S \subseteq X$. Then the inclusion map $\iota_S : S \inj X$ is continuous.
+\end{corollary}
+\begin{corollary}
+	Let $X$ and $Y$ be topological spaces. Let $f : X \to Y$ be continuous. Then:
+	\begin{enumerate}
+		\item If $S \subseteq X$, the restriction
+		\begin{align*}
+			f|_S : S \to Y
+		\end{align*}
+		is continuous.
+		\item If $f(X) \subseteq T \subseteq Y$, the map
+		\begin{align*}
+			f : X \to T
+		\end{align*}
+		is well-defined and continuous.
+		\item If $Y \subseteq Z$, then the embedded function
+		\begin{align*}
+			\iota_Y \circ f : X \to Z
+		\end{align*}
+		is continuous.
+	\end{enumerate}
+\end{corollary}
+\begin{exercise}
+	Let $X$ be a topological space. Let $R \subseteq S \subseteq X$. Then the subspace topologies of $R$ in $S$ and $X$ agree.
+\end{exercise}
+\begin{exercise}
+	Let $(X, \cO)$ be a topological space. Let $S \subseteq X$. Then if $\cB$ is a basis of $\cO$, the collection
+	\begin{align*}
+		\cB_S = \lr{B \cap S \mid B \in \cB}
+	\end{align*}
+	is a basis of the subspace topology $\cO_S$.
+\end{exercise}
+\begin{exercise}
+	\phantom{}´
+	\begin{enumerate}
+		\item Every subspace of a T0 space is T0.
+		\item Every subspace of a T1 space if T1.
+		\item Every subspace of a Hausdorff space is Hausdorff.
+		\item Every subspace of a first countable space is first countable.
+		\item Every subspace of a second countable space is second countable.
+	\end{enumerate}
+\end{exercise}
+\begin{importantdefinition}{}{}
+	A map that is a homeomorphism onto its image is called a \tib{topological embedding}, or just \tib{embedding}.
+\end{importantdefinition}
+\begin{exercise}
+	A homeomorphism is a surjective topological embedding.
+\end{exercise}
+\begin{exercise}
+	Let $X$ be a topological space. Let $S \subseteq X$. Then the inclusion map $\iota_S : S \inj X$ is an embedding.
+\end{exercise}
+\begin{exercise}
+	Every embedding is continuous and injective.
+\end{exercise}
+\begin{exercise}
+	Every injective continuous map that is open or closed is an embedding.
+\end{exercise}
+\begin{exercise}
+	Find an embedding that is neither open nor closed.
+\end{exercise}
+\begin{importanttheorem}{}{graphhomeo}
+	Let $U \subseteq \bR^n$ be open. Let $f : U \to \bR^k$ be continuous. Then the graph $\Gamma(f)$ of $f$ is homeomorphic to $U$.
+\end{importanttheorem}
+\begin{proof}
+	Let $\Phi_f : U \to \bR^{n+k}$ be the canonical map
+	\begin{align*}
+		\Phi_f(x) = (x,f(x))
+	\end{align*}
+	taking $U$ to its graph.
+	
+	By definition of the graph $\Gamma(f)$, $\Phi_f(x) : U \to \Gamma(f)$ is surjective.
+	
+	Since $\Phi_f$ is a composition of continuous maps, it is continuous. 
+	
+	Since the first $n$ components of $\Phi_f$ are the identity, $\Phi_f$ is injective. 
+	
+	Finally, the projection $p : \bR^{n+k} \to \bR^n$ is continuous, so the restriction $p|_{\Gamma(f)}$ is a continuous inverse of $\Phi_f$.
+\end{proof}
+
+\clearpage
+
+\section{Product Spaces}
+\begin{lemma}
+	Let $(X, \cO)$ be a topological space. Then $(X, \cO)$ is Hausdorff if and only if the diagonal
+	\begin{align*}
+		\Delta := \lr{(x,x) \mid x \in X}
+	\end{align*}
+	is closed in the product topology.
+\end{lemma}
+\begin{proof}
+	\begin{enumerate}
+		\item[$\Rightarrow$] Assume $(X, \cO)$ is Hausdorff. Let $(x,y) \notin \Delta$. Then $x \neq y$ by definition of $\Delta$. Therefore, there exist disjoint neighbourhoods $U_x$, $U_y$ of $x$ and $y$. Since these neighborhoods are disjoint, we have
+		\begin{align*}
+			\Delta \cap (U_x \times U_y) = \emptyset
+		\end{align*}. Therefore, every point $(x,y) \notin \Delta$ has an open neighborhood $(U_x \times U_y)$ that doesn't intersect $\Delta$, i.e. $\Delta$ is closed.
+		\item[$\Leftarrow$] Let $x \neq y$. Assume that $\Delta$ is closed. Then $(x,y) \notin \Delta$ has a basic open neighborhood $U_x \times U_y$ that doesn't intersect $\Delta$. Since $U_x \times U_y$ doesn't intersect $\Delta$, $U_x$ and $U_y$ must be disjoint.
+	\end{enumerate}
+\end{proof}
+
+\clearpage
+
+\section{Disjoint Union Spaces}
+
+\clearpage
+
+\section{Quotient Spaces}
+
+\clearpage
+
+\section{Adjunction Spaces}
+
+\chapter{Topological Manifolds}
+\begin{importantdefinition}{}{}
+	We call a topological space $X$ \tib{locally Euclidean of dimension $n$} if every point $x \in X$ has a neighbourhood that is homeomorphic to an open subset of $\bR^n$.
+\end{importantdefinition}
+\begin{exercise}
+	If a topolocical space $X$ is a locally euclidean of dimension $n$, then:
+	\begin{enumerate}
+		\item Every point $x \in X$ has a neighbourhood homeomorphic to an open ball in $\bR^n$, or
+		\item Every point $x \in X$ has a neighbourhood homeomorphic to $\bR^n$, or
+	\end{enumerate}
+\end{exercise}
+\begin{exercise}
+	Show that a topological space is locally Euclidean of dimension $0$ if and only if it is discrete.
+\end{exercise}
+\begin{importantdefinition}{}{}
+	A topological space is called an \tib{$n$-dimensional topological manifold}, or just \tib{topological $n$-manifold}, if it is:
+	\begin{enumerate}
+		\item locally euclidean of dimension $n$,
+		\item second countable,
+		\item and Hausdorff.
+	\end{enumerate}
+\end{importantdefinition}
+The latter two requirements exclude some pathological spaces - the long line would be a topological manifold if it was second countable, and the bug-eyed line would be a topological manifold if it was Hausdorff. Most interesting results about topological manifolds require both of these properties, so little would be gained by omitting them.
+
+Intuitively, it sounds very sensible that a nonempty topological space cannot be both a topological $m$-manifold and a topological $n$-manifold. This statement turns out to be true - however, we will save this proof for later, since it requires a substantial amount of machinery borrowed from algebraic topology.
+\begin{lemma}
+	Every open subset of a topological $n$-manifold is a topological $n$-manifold.
+\end{lemma}
+\begin{exercise}
+	A topological space is a topological $0$-manifold if and only if it is countable and discrete.
+\end{exercise}
+\begin{theorem}
+	Any separable metric space that is locally Euclidean of dimension $n$ is a topological $n$-manifold.
+\end{theorem}
+\begin{importantdefinition}{}{}
+	We call a topological space an \tib{$n$-dimensional manifold with boundary} if it is second countable, Hausdorff, and every open point has a neighbourhood homeomorphic to an open subset of either $\bR^n$, or to the $n$-dimensional upper half-space
+	\begin{align*}
+		\bH^n = \lr{(x_1, \hdots, x_n) \in \bR^n \mid x_n \geq 0}
+	\end{align*}
+\end{importantdefinition}
+\begin{importantdefinition}{}{}
+	Let $M$ be a topological $n$-manifold with boundary. Then a \tib{coordinate chart for $M$} is a pair $(U, \phi)$, consisting of an open subset $U \subseteq M$, called a \tib{coordinate domain}, and a homeomorphism $\phi$ from $U$ to an open subset of $\bR^n$ or $\bH^n$, called a \tib{coordinate map}. If $U$ is homeomorphic to an open ball, we call $U$ a \tib{coordinate ball}.
+	\newpar
+\end{importantdefinition}
+Note that if we can assign coordinate maps for some covering of a topological space $X$, then that space must by definition be locally euclidean.
+\begin{importantdefinition}{Manifold interior and manifold boundary}{}
+	If $\phi(U)$ is an open subset of $\bR^n$, we call $\phi$ an \tib{interior chart} and points $p \in U$ \tib{interior points}. If $\phi(U)$ is a subset of $\bH^n$ with $\phi(U) \cap \partial \bH^n \neq \emptyset$, we call $\phi$ a \tib{boundary chart}. If there exists a boundary chart taking $p$ to $\partial \bH^n$, we call $p$ a \tib{boundary point of $M$}.
+\end{importantdefinition}
+Every manifold is a manifold with boundary, but the opposite might not hold. We sometimes use the redundant term "manifold without boundary" to refer to a manifold with boundary which has the empty set as its boundary. The word "manifold", without further qualifiers, always means a manifold without boundary.
+
+The definition of a manifold's boundary only agrees with the topological definition once we find the right ambient space to embed $M$ into, since $M$ always has empty topological boundary when viewed as a topological space of its own.
+
+For example, the manifold boundary of the closed unit disk $\ol \bB^2$ is the unit circle, which agrees with the topological boundary if the disk is viewed as a subset of $\bR^2$, but not with the topological boundary of the disk when viewed as its own topological space (which is trivially empty, as stated), or with the topological boundary of the disk viewed as a subset of $\bR^3$ (which is the entire disk).
+\begin{theorem}
+	If $M$ is a topological $n$-manifold with boundary, then $\intr M$ is both an open subset of $M$ and a topological $n$-manifold without boundary.
+\end{theorem}
+\begin{proof}
+	Since $\intr M$ is a union of coordinate domains, it is open.
+	
+	Second-countability and Hausdorffness are trivially inherited by subspaces. By definition, $\intr M$ consists only of points homeomorphic to an open subset of $\bR^n$, so $\intr M$ is additionally locally euclidean of dimension $n$.
+\end{proof}
+\begin{proposition}
+	Let $M$ be a topological manifold with boundary. Then a point $x \in M$ cannot be both a boundary point and an interior point.
+\end{proposition}
+The general proof once again requires some tricky algebraic topology, so we save it for later.
+\begin{corollary}
+	If $M$ is a nonempty topological $n$-manifold with boundary, then $\partial M$ is a closed subset of $M$, and $M$ is a topological $n$-manifold if and only if $\partial M = \emptyset$.
+\end{corollary}
+\begin{proof}
+	Since $\intr M$ is an open subset of $M$, $\partial M = M \setminus \intr M$ is closed.
+	
+	If $M$ is a manifold, then every point is an interior point, so $M = \int M$, so $\partial M = \emptyset$, and vice versa.
+\end{proof}
+
+\clearpage
+
+\section{Manifolds from Embeddings}
+\begin{importanttheorem}{}{graphmanifold}
+	Let $U \subseteq \bR^n$ be open. Let $f : U \to \bR^k$ be continuous. Then the graph $\Gamma(f)$ of $f$ is a topological $n$-manifold.
+\end{importanttheorem}
+\begin{proof}
+	By \ref{th:graphhomeo}, $\Gamma(f)$ is homeomorphic to $U \subseteq \bR^n$, making $\Gamma(f)$ a trivial topological $n$-manifold coverable by a single coordinate domain.
+\end{proof}
+\begin{importanttheorem}{}{}
+	The unit $n$-spheres $\bS^n$ are topological $n$-manifolds.
+\end{importanttheorem}
+\begin{proof}
+	For each $i \in [1...n+1]$, let $U_i^+$ and $U_i^-$ denote the sets 
+	\begin{align*}
+		U_i^+ := \lr{x \in \bR^{n+1} \mid x_i > 0}\\
+		U_i^- := \lr{x \in \bR^{n+1} \mid x_i < 0},
+	\end{align*}
+	which are open in $\bR^{n+1}$.
+	
+	Since $\bS^n$ doesn't contain the origin, every point on $\bS^n$ must have at least one non-zero coordinate, so these sets cover $\bS^{n+1}$. 
+	
+	On these sets, $\norm{x} = 1$ has a unique solution, so we can find the intersection $x \in \bS^n \cap U_i^{\pm}$ by solving for $x_i$, which gives us
+	\begin{align*}
+		\sqrt{\sum_{j = 1}^{n+1} x_j^2} &= 1\\
+		\Leftrightarrow 
+		\sum_{j = 1}^{n+1} x_j^2 &= 1\\
+		\Leftrightarrow 
+		x_i^2 &= 1 - \sum_{j \neq i} x_j^2\\
+		\Leftrightarrow 
+		x_i &= 
+		\begin{cases}
+			\sqrt{1 - \sum_{j \neq i} x_j^2} & x \in U_i^+\\
+			-\sqrt{1 - \sum_{j \neq i} x_j^2} & x \in U_i^-\\
+		\end{cases}
+	\end{align*}
+	We can thus describe the intersections of $\bS^n$ with our sets $U_i^\pm$ by taking every component except the $i$-th to be arbitrary, and setting the $i$-th component to the value taken by these continuous square root functions. 
+	
+	Swapping the $i$-th and the $n+1$-st components is continuous, so our intersections are the graphs of these functions. Since these intersections cover $\bS^n$, and our functions are $\bR^n \to \bR$, $\bS^n$ is a topological $n$-manifold.
+\end{proof}	
+\begin{theorem}
+	Let $p \in \bS^n$. Let $H := \angles{p}^\perp$ be the hyperplane given as the orthogonal complement of the line through $p$ and the origin. Then the \tib{stereographic projection map} $\sigma_p$ taking a point $x \in \bS^n \setminus \lr{p}$ to the point where the line $\vec{px}$ intersects $H$, is a homeomorphism $\bS^n \setminus \lr{p} \cong H (\cong \bR^n)$
+\end{theorem}
+\begin{proof}
+	Let $N := e_{n+1} = (0, \hdots, n+1)^\top$ be the "north pole" of the sphere.
+	Take a rotation $R$ in the plane spanned by $p$ and $N$ mapping $p$ to $N$. Since rotations in the origin preserve $\bS^n$, we get
+	\begin{align*}
+		\sigma_p = R^{-1} \circ \sigma_N \circ R.
+	\end{align*}
+	Since rotations are orthogonal maps, and thus homeomorphisms, it suffices to show that $\sigma_N$ is a homeomorphism.
+	\newpar
+	In this case, the hyperplane $H$ orthogonal to $\angles{N}$ is simply given by $x_{n+1} = 0$. Therefore, the intersection $u := \sigma_N(x)$ of the line $\vec{Nx} = \lr{\lambda.(x - N) + N \mid \lambda \in \bR}$ can be found by finding the value of $\lambda$ that makes the $n+1$st component zero. We get:
+	\begin{align*}
+		\lambda.(x_{n+1} - 1) + 1 &= 0\\
+		\Leftrightarrow \lambda.(x_{n+1} - 1) &= -1\\
+		\Leftrightarrow \lambda &= \frac{1}{1 - x_{n+1}}
+	\end{align*}
+	For $i \neq n+1$, we have $N_i = 0$, so $u_i = \lambda.x_i$. Substituting our $\lambda$ into this equation gives
+	\begin{align*}
+		\sigma_N(x) = \frac{x_1, \hdots, x_n, 0}{1 - x_{n+1}}
+	\end{align*}
+	This map is continuous for $x_{n+1} \neq 1$, i.e. $x \in \bS^n \setminus \lr{N}$.
+	
+	Solving our equations for $x$ instead gives
+	\begin{align*}
+		x_i &= \frac{u_i}{\lambda},\\
+		x_{n+1} &= \frac{\lambda - 1}{\lambda},
+	\end{align*}
+	And since our preimage needs to lie on $\bS^n$, we substitute into $\norm{x}^2 = 1$ and get
+	\begin{align*}
+		1
+		&= 
+		\sum_{i = 1}^{n+1} x_i^2\\
+		&=
+		\lr(\sum_{i = 1}^{n} \lr(\frac{u_i}{\lambda})^2) + \lr(\frac{\lambda - 1}{\lambda})^2\\
+		&=
+		\frac{\sum_{i = 1}^{n} u_i^2}{\lambda^2} + \frac{\lambda^2 - 2\lambda + 1}{\lambda^2}\\
+		&=
+		\frac{\norm{u}^2 + \lambda^2 - 2\lambda + 1}{\lambda^2}\\
+		\Leftrightarrow
+		\lambda^2 
+		&=
+		\norm{u}^2 + \lambda^2 - 2\lambda + 1\\
+		\Leftrightarrow 
+		2\lambda 
+		&= 
+		\norm{u}^2 + 1\\
+		\Leftrightarrow 
+		\lambda 
+		&= 
+		\frac{\norm{u}^2 + 1}{2}\\
+	\end{align*}
+	Substituting back into our two equations gives
+	\begin{align*}
+		\sigma_N^{-1}(u_1, \hdots, u_n) = \frac{(2u_1, \hdots, 2u_n, \norm{u}^2 - 1)^\top}{\norm{u}^2 + 1},
+	\end{align*}
+	which is continuous. Therefore, $\sigma_N : \bS^n \setminus \lr{N} \cong H \cong \bR^n$ is indeed a homeomorphism, implying that every $\sigma_p$ is a homeomorphism.
+\end{proof}
+$\sigma_N$ and $\sigma_S$ (where $S = -N$ is the "south pole") give an alternate coordinate atlas on $\bS^n$, which is sometimes easier to work with than our original atlas given by square root functions.
+\begin{theorem}
+	The unit torus, given by the equations
+\end{theorem} 
+\chapter{Topologies on Algebraic Structures}
+
+\section{Topological Groups}
+\begin{importantdefinition}{}{}
+	Let $(G, \circ)$ be a group. Let $\cO$ be a topology on $G$. Then we call $(G, \circ, \cO)$ a \tib{topological group} iff. the maps $^{-1} : g \to g^{-1}$ and $\circ : G \times G \to G$ are continuous.
+\end{importantdefinition}
+\begin{exercise}
+	Show that $(G, \circ, \cO)$ is a topological group if and only if the map
+	\begin{align*}
+		\phi : (g,h) \mapsto g \circ h^{-1}
+	\end{align*}
+	is continuous.
+\end{exercise}
+\begin{exercise}
+	Let $(G, \circ, \cO)$ be a topological groups. Then for any $g \in G$, the left and right group operation maps $l_g : h \mapsto g \circ h$ and $r_g : h \mapsto h \circ g$ are homeomorphisms.
+\end{exercise}
+\begin{exercise}
+	Let $(G, \circ, \cO_G)$ be a topological group. Let $(H, \circ, \cO_H)$ be a normal subgroup equipped with the supspace topology, and let $(G/H, \circ, \cO_q)$ be the quotient group, equipped with the quotient topology. Then the quotient map $p : G \to G/H$ is continuous and open.
+\end{exercise}
+\begin{corollary}
+	If $H$ is closed in $G$ and $G$ is Hausdorff, then $G/H$ is Hausdorff. If $G/H$ is T1, then $H$ is closed.
+\end{corollary}
+\chapter{Connectedness}
+\chapter{Compactness}
+The familiar notions of open converings and compactness generalize directly from metric spaces to topological spaces. The most major difference is that sequential compactness is generally weaker than "covering compactness", and has to be replaced with a notion of compactness based on ultrafilter convergence.
+\begin{definition}
+	Let $(X, \cO)$ be a topological space. Then we call a set $\cU \subseteq \cO$ of open subsets an \tib{open covering} of $X$ if every point of $X$ is contained in the union of all elements of $\cU$, i.e. if
+	\begin{align*}
+		\bigcup_{U_i \in \cU} U_i = X
+	\end{align*}
+\end{definition}
+\begin{importantdefinition}{Compactness}{}
+	Let $(X, \cO)$ be a topological space. Then we call $(X, \cO)$ \tib{compact} if every open covering of $X$ contains a finite open covering as a subset. We call a subset $K \subseteq X$ compact if it is compact as a topological space equipped with the subspace topology.
+\end{importantdefinition}
+\begin{exercise}
+	Every closed subset of a compact space is compact.
+\end{exercise}
+\begin{exercise}
+	Let $(X, \cO)$ be compact and $f : X \to Y$ be continuous. Then $f[X]$ is compact.
+\end{exercise}
+\begin{exercise}
+	Let $(X, \cO)$ be a nonempty topological space. Then the following are equivalent:
+	\begin{enumerate}
+		\item $(X,\cO)$ is compact, i.e. every open covering has a finite subcovering.
+		\item Every set $\cA$ of closed sets whose intersection is the empty set has a finite subset whose intersection is the empty set.
+		\item If $\cA$ is a set of closed sets such that the intersection over any finite subset of $\cA$ is non-empty, the intersection of $\cA$ is non-empty.
+		\item Every filter on $(X, \cO)$ has a limit point.
+		\item Every ultrafilter on $(X, \cO)$ is convergent.
+	\end{enumerate}
+\end{exercise}
+\begin{theorem}\tib{(Alexander Subbase Theorem)}
+	Let $(X, \cO)$ be a topological space. Let $\cS$ be a subbasis. Then $X$ is compact if every open covering of $X$ by sets of $\cS$ has a finite subcovering.
+\end{theorem}
+\begin{proof}
+	Assume that $X$ is not compact. Then there exists a non-convergent ultrafilter $\cF$, i.e. we have
+	\begin{align*}
+		\forall &x \in X :\\ 
+		\exists &U_x \in \cU(x) :\\
+		&(X \setminus U_x) \in \cF
+	\end{align*}
+	By definition of subbases, every $U_x \in \cU(x)$ contains an open subset $O_x$ of the form
+	\begin{align*}
+		O_x = \bigcap_{k = 0}^n S_{k,x}
+	\end{align*}
+	for some $S_{k,x} \in \cS$ and $n \in \bN$.
+	We therefore have
+	\begin{align*}
+		X \setminus U_x
+		&\subseteq 
+		X \setminus O_x\\
+		&=
+		X \setminus \bigcap_{k = 0}^n S_{k,x}
+	\end{align*}
+	which implies $X \setminus \bigcap_{k = 0}^n S_{k,x} \in \cF$ by the filter axioms. Since the intersection of this set with $\bigcap_{k = 0}^n S_{k,x} \in \cF$ is empty, and filters are closed under finite intersection, $\cF$ cannot contain every $S_{k,x}$. Therefore, since $\cF$ is an ultrafilter, it must contain at least one set $X \setminus S_{k,x}$ for every $x$. We will refer to these $S_{k,x}$ with $X \setminus S_{k,x} \in X$ as $S_x$. 
+	\newpar
+	Since every $S_x$ is an open neighborhood of $x$, and thus contains $x$, the set of all $S_x$ is an open convering of $X$. By compactness, there must be a finite subcovering 
+	\begin{align*}
+		\bigcup_{x \in X'} S_x = X.
+	\end{align*} 
+	Now, since $\cF$ contains every $X \setminus S_x$, it also contains
+	\begin{align*}
+		\bigcap_{x \in X'} (X \setminus S_x) = X \setminus \bigcup_{x \in X'} S_x = X \setminus X = \emptyset.
+	\end{align*}
+	which contradicts $\cF$ being a filter.
+\end{proof}
+\begin{lemma}
+	Let $(X, \cO)$ be a Hausdorff space. Let $K \subseteq X$ be compact. Then $K$ can be separated from any point $x \in X \setminus K$ by open neighborhoods, i.e:
+	\begin{align*}
+		\forall &x \in X:\\
+		\exists &U_x \in \cU(x), U_K \in \cU(K):\\
+		&U_x \cap U_K = \emptyset
+	\end{align*}
+\end{lemma}
+\begin{exercise}
+	Let $(X, \cO)$ be compact and Hausdorff. Let $A,B \subseteq X$ be closed. Then $A$ and $B$ can be separated from each other by disjoint open neigborhoods.
+\end{exercise}
+\begin{exercise}
+	Every compact subset of a Hausdorff space is closed.
+\end{exercise}
+\begin{exercise}
+	Every continuous function from a compact space into a Hausdorff space is closed.
+\end{exercise}
+\begin{exercise}
+	Every continuous injective function from a compact space into a Hausdorff space is an embedding.
+\end{exercise}
+\begin{definition}
+	We call a topological space $X$ \tib{Lindelöf} if every open cover of $X$ has a countable subcover.
+\end{definition}
+\begin{theorem}
+	Every second-countable space is Lindelöf.
+\end{theorem}
+\begin{definition}
+	We call a topological space $X$ \tib{countably compact} if every countable open cover of $X$ has a finite subcover.
+\end{definition}
+\begin{exercise}
+	A countably compact space is compact if and only if it is Lindelöf.
+\end{exercise}
+\begin{theorem}
+	A metric space is Lindelöf if and only if it is second countable.
+\end{theorem}
+\begin{theorem}
+	Every sequentially compact space is countably compact.
+\end{theorem}
+\begin{theorem}
+	A first-countable space is countably compact if and only if it is sequentially compact.
+\end{theorem}
+\begin{theorem}
+	In a second countable Hausdorff space, compactness, countable compactness and sequential compactness are all equivalent to each other.
+\end{theorem}
+
+\chapter{Filters}
+\section{Filter Convergence}
+It would be nice to find a generalization of sequence convergence to non-first-countable spaces that shares many of its useful properties.... It turns out that we can! The correct objects for the task are \tib{filters}.
+\begin{exercise}
+	Let $(X, \cO)$ be a topological space. Then $(X, \cO)$ is Hausdorff if and only if every convergent filter on $X$ has a unique limit.
+\end{exercise}
+\begin{theorem}
+	\label{th:ultrafilteropen}
+	Let $X$ be a topological space. Let $U \subseteq X$. Then $U$ is open iff. $U$ is contained in every ultrafilter converging to some point in $U$.
+\end{theorem}
+\begin{proof}
+	\begin{enumerate}
+		\item[$\Rightarrow$:] By definition, if $U$ is an open neighborhood of $x$, any filter convering to $x$ must contain $U$.
+		\item[$\Leftarrow$:] Let $U \subseteq X$ and assume $U \in \cU$ for every ultrafilter converging to a point $u \in U$. Assume $U$ is not open. Then there exists a point $u \in U$ such that every open neighborhood of $u$ contains at least one point in $X \setminus U$. But then any two members of the family
+		\begin{align*}
+			\lr{X \setminus U} \cup \lr{U(u)}
+		\end{align*}
+		have nonempty intersection. Therefore, this family can be extended to an Ultrafilter $\cU_u$. Since $\cU_u$ contains all open neighborhoods of $u$ by construction, it converges to $u$, and must thus contain $U$. Since it also contains $X \setminus U$, we arrive at a contradiction.
+	\end{enumerate}
+\end{proof}
+\section{Tychonoff's Theorem}
+\begin{definition}
+	Let $\cF$ be a filter on $X$. Let $f : X \to Y$. Then the \tib{pushforward Filter of $f$ on $\cF$} is the set
+	\begin{align*}
+		f_*(\cF) := \lr{A \subseteq Y \mid p_i^{-1}[A] \in \cF},
+	\end{align*}
+\end{definition}
+\begin{exercise}
+	Verify that the pushforward of a filter is a filter, and that the pushforward of an ultrafilter is an ultrafilter.
+\end{exercise}
+Intuitively, the pushforward of a filter under a function generalizes the sequence $f(x_n)$ for some sequence $x_n$ and function $f$. By extension, the following theorem generalizes the fact that in metric spaces, continuity and sequential continuity are equivalent:
+\begin{importanttheorem}{Characterization of continuity in terms of ultrafilters}{pushforwardfilter}
+	Let $f : X \to Y$. Then $f$ is continuous if and only if $f_*(\cU)$ converges to $f(x)$ for every ultrafilter $\cU$ that converges to $x \in X$.
+\end{importanttheorem}
+\begin{proof}
+	\begin{enumerate}
+		\item Assume $f$ is continuous. Let $\cU$ be an ultrafilter on $X$ converging to $x \in X$. 
+		
+		Let $U \subseteq Y$ be an open neighbourhood of $f(x)$. Then, since $f$ is continuous, $f^{-1}(U)$ is an open neighbourhood of $x$. We thus have $f^{-1}(U) \in \cU$, which gives us $U \in f_*(\cU)$ by the definition of the pushforward filter. 
+		
+		Thus, every open neighbourhood of $f(x)$ is contained in $f_*(\cU)$, so $f_*(\cU)$ converges to $f(x)$.
+		
+		\item Assume that the pushforward of any ultrafilter converging to $x$ converges to $f(x)$. Let $U \subseteq Y$ be open. 
+		
+		Let $\cU$ be an ultrafilter on $X$ converging to some point $x \in f^{-1}(U)$. Then, by our hypothesis, $f_*(\cU)$ converges to $f(x)$. Since $U$ is an open neighborhood of $f(x)$, we have $U \in f_*(\cU)$, and thus $f^{-1}(U) \in \cU$. Thus, by theorem \ref{th:ultrafilteropen}, $f^{-1}(U)$ is open, so $f$ is continuous.
+	\end{enumerate}
+\end{proof}
+This theorem generalizes the fact that a sequence in a metric product space converges if and only if every individual component converges.
+\begin{theorem}
+	\label{th:productfilterconvergence}
+	Let $(X_i, \cO_i)_{i \in I}$ be a family of topological spaces. Let $\cF$ be a filter on $\prod_{i \in I} X_i$. Then $\cF$ converges to a point $x \in \prod_{i \in I} X_i$ if and only if each pushforward filter $(p_i)_*(\cF)$ converges to $p_i(x) = x_i$.
+\end{theorem}
+\begin{proof}
+	\begin{enumerate}
+		\item[$\Rightarrow$:] Assume that $\cF$ converges to $x \in \prod_{i \in I} X_i$. Since all projections $p_i$ are continuous, each $(p_i)_*(\cF)$ converges to $p_i(x) = x_i$ by theorem \ref{th:pushforwardfilter}.
+		
+		\item[$\Leftarrow$:] Assume that each $(p_i)_*(\cF)$ converges to $p_i(x) = x_i$. By definition of the product topology, the sets $S_i := p_i^{-1}(U_i)$ for open $U_i \in X_i$ form a subbase of $\prod_{i \in I} X_i$. Therefore, any open neighborhood $U \in \cU(x)$ contains an open neighborhood $B = \bigcap_{i \in J \subseteq I} p_i^{-1}(U_i)$ for some open neighborhoods $U_i \in \cU(x_i)$.
+		
+		Since each $(p_i)_*(\cF)$ converges to $x_i$, we have $U_i \in (p_i)_*(\cF)$ for each $i$. Therefore, by definition of the pushforward filter, we have $p_i^{-1}(U_i) \in \cF$ for all $i$. Since filters are closed under intersection, we get $B \in \cF$, and since $B \subseteq U$ we also get $U \in \cF$ as desired.
+	\end{enumerate}
+\end{proof}
+\begin{importanttheorem}{Tychonoff's Theorem}{}{}
+	Let $(X_i, \cO_i)_{i \in I}$ be a family of topological spaces. Then if all $X_i$ are compact, $\prod_{i \in I} X$ is compact.
+\end{importanttheorem}
+\begin{proof}
+	\begin{enumerate}
+		\item If there exists an $i \in I$ such that $X_i = \emptyset$, then $\prod X_i = \emptyset$ is compact.
+		\item Now, assume $\prod_{i \in I} X_i \neq \emptyset$. Then there exists an ultrafilter $\cU$ on $\prod_{i \in I} X_i$. 
+		
+		Since each $X_i$ is compact, each pushforward $(p_i)_*(\cU)$ converges to an $x_i \in X_i$. Thus, by theorem \ref{th:productfilterconvergence}, $\cU$ converges to $(x_i)_{i \in I}$ and $\prod_{i \in I} X_i$ is compact.
+	\end{enumerate}
+\end{proof}
+\chapter{Higher Separation Properties and Metrizability}
+\section{Regular Spaces}
 \begin{importantdefinition}{Regular Space}{}
 	Let $(X, \cO)$ be a topological space. Then we call $(X,\cO)$ \tib{regular} if every point can be housed orf from any closed set not containing it:
 	\begin{align*}
@@ -244,6 +769,10 @@ It turns out that first countable spaces are exactly the spaces where sequences 
 		Where $\lr(U \times \prod_{g \neq f} [0,1])$ is open, since every component besides the $f$-component is open.
 	\end{enumerate}
 \end{proof}
+
+\clearpage
+
+\section{Normal Spaces}
 \begin{importantdefinition}{Normal Space}{}
 	Let $(X, \cO)$ be a topological space. Then we call $(X,\cO)$ \tib{normal} if every pair of disjoint closed sets can be housed orf from each other by disjoint neighbourhoods:
 	\begin{align*}
@@ -257,201 +786,51 @@ It turns out that first countable spaces are exactly the spaces where sequences 
 \begin{exercise}
 	Find a topological space that is normal, but not T0.
 \end{exercise}
-Showing that T4 implies T3 is not an easy task - this statement is \tit{Urysohn's Lemma}, which we will prove in the next chapter after a lot of preparation.	
-		
-\chapter{Filter Convergence}
-It would be nice to find a generalization of sequence convergence that shares many of its useful properties.... It turns out that we can! The correct objects for the task are \tib{filters}.
-\begin{exercise}
-	Let $(X, \cO)$ be a topological space. Then $(X, \cO)$ is Hausdorff if and only if every convergent filter on $X$ has a unique limit.
-\end{exercise}
-\begin{theorem}
-	\label{th:ultrafilteropen}
-	Let $X$ be a topological space. Let $U \subseteq X$. Then $U$ is open iff. $U$ is contained in every ultrafilter converging to some point in $U$.
-\end{theorem}
-\begin{proof}
-	\begin{enumerate}
-		\item[$\Rightarrow$:] By definition, if $U$ is an open neighborhood of $x$, any filter convering to $x$ must contain $U$.
-		\item[$\Leftarrow$:] Let $U \subseteq X$ and assume $U \in \cU$ for every ultrafilter converging to a point $u \in U$. Assume $U$ is not open. Then there exists a point $u \in U$ such that every open neighborhood of $u$ contains at least one point in $X \setminus U$. But then any two members of the family
-		\begin{align*}
-			\lr{X \setminus U} \cup \lr{U(u)}
-		\end{align*}
-		have nonempty intersection. Therefore, this family can be extended to an Ultrafilter $\cU_u$. Since $\cU_u$ contains all open neighborhoods of $u$ by construction, it converges to $u$, and must thus contain $U$. Since it also contains $X \setminus U$, we arrive at a contradiction.
-	\end{enumerate}
-\end{proof}
+\begin{importantlemma}{Urysohn's Lemma}{}
+	A topological space is normal if and only if any two disjoint closed subsets can be separated by a continuous function.	
+\end{importantlemma}
+\begin{corollary}
+	Every normal Hausdorff space is regular Hausdorff.
+\end{corollary}
+
+\clearpage
+
+\section{Urysohn's metrization theorem}
+
+\chapter{Lattice Theory}
+\section{Lattices}
 \begin{definition}
-	Let $\cF$ be a filter on $X$. Let $f : X \to Y$. Then the \tib{pushforward Filter of $f$ on $\cF$} is the set
+	A partially ordered set $(L,\leq)$ is called a \tib{lattice} if every pair of elements $x,y \in L$ has a least upper bound $x \wedge y$, also known as a \tib{join}, and a greatest lower bound $x \vee y$, also known as a \tib{meet}. A \tib{complete lattice} is a lattice in which every subset $A \subseteq L$ has a join $\sup A$ and a meet $\inf A$.
+\end{definition}
+\begin{definition}
+	Given a complete lattice $L$, the \tib{bottom element} is the element $0 := \inf L$, and the \tib{top element} is the element $\infty := \sup L$.
+\end{definition}
+\begin{definition}
+	Let $L$ be a complete latice. Let $x,y \in L$. Then we say that $x$ is \tib{well above} $y$, denoted $x \succ y$, iff for any subset $A \subseteq L$,
 	\begin{align*}
-		f_*(\cF) := \lr{A \subseteq Y \mid p_i^{-1}[A] \in \cF},
+		y \geq \inf A \implies \exists a \in A : x \geq a
 	\end{align*}
 \end{definition}
-\begin{exercise}
-	Verify that the pushforward of a filter is a filter, and that the pushforward of an ultrafilter is an ultrafilter.
-\end{exercise}
-\begin{importanttheorem}{Characterization of continuity in terms of ultrafilters}{pushforwardfilter}
-	Let $f : X \to Y$. Then $f$ is continuous if and only if $f_*(\cU)$ converges to $f(x)$ for every ultrafilter $\cU$ that converges to $x \in X$.
-\end{importanttheorem}
+\begin{lemma}
+	Let $L$ be a complete lattice. Let $x,y,z \in L$. Then:
+	\begin{enumerate}
+		\item $x \succ y$ implies $x \geq y$,
+		\item $x \succ y$ and $y \geq z$ implies $x \geq z$,
+		\item $x \geq y$ and $y \succ z$ implies $x \succ z$.
+	\end{enumerate}
+\end{lemma}
 \begin{proof}
 	\begin{enumerate}
-		\item Assume $f$ is continuous. Let $\cU$ be an ultrafilter on $X$ converging to $x \in X$. 
-		
-		Let $U \subseteq Y$ be an open neighbourhood of $f(x)$. Then, since $f$ is continuous, $f^{-1}(U)$ is an open neighbourhood of $x$. We thus have $f^{-1}(U) \in \cU$, which gives us $U \in f_*(\cU)$ by the definition of the pushforward filter. 
-		
-		Thus, every open neighbourhood of $f(x)$ is contained in $f_*(\cU)$, so $f_*(\cU)$ converges to $f(x)$.
-		
-		\item Assume that the pushforward of any ultrafilter converging to $x$ converges to $f(x)$. Let $U \subseteq Y$ be open. 
-		
-		Let $\cU$ be an ultrafilter on $X$ converging to some point $x \in f^{-1}(U)$. Then, by our hypothesis, $f_*(\cU)$ converges to $f(x)$. Since $U$ is an open neighborhood of $f(x)$, we have $U \in f_*(\cU)$, and thus $f^{-1}(U) \in \cU$. Thus, by theorem \ref{th:ultrafilteropen}, $f^{-1}(U)$ is open, so $f$ is continuous.
+		\item We have $y \geq \inf \lr{y}$, so $x \succ y$ implies $x \geq y$.
+		\item Follows from applying transitivity to the first part of the lemma.
+		\item $z \geq \inf A \implies \exists a \in A : x \geq y \geq a$.
 	\end{enumerate}
-\end{proof}
-\begin{theorem}
-	\label{th:productfilterconvergence}
-	Let $(X_i, \cO_i)_{i \in I}$ be a family of topological spaces. Let $\cF$ be a filter on $\prod_{i \in I} X_i$. Then $\cF$ converges to a point $x \in \prod_{i \in I} X_i$ if and only if each pushforward filter $(p_i)_*(\cF)$ converges to $p_i(x) = x_i$.
-\end{theorem}
-\begin{proof}
-	\begin{enumerate}
-		\item[$\Rightarrow$:] Assume that $\cF$ converges to $x \in \prod_{i \in I} X_i$. Since all projections $p_i$ are continuous, each $(p_i)_*(\cF)$ converges to $p_i(x) = x_i$ by theorem \ref{th:pushforwardfilter}.
-		
-		\item[$\Leftarrow$:] Assume that each $(p_i)_*(\cF)$ converges to $p_i(x) = x_i$. By definition of the product topology, the sets $S_i := p_i^{-1}(U_i)$ for open $U_i \in X_i$ form a subbase of $\prod_{i \in I} X_i$. Therefore, any open neighborhood $U \in \cU(x)$ contains an open neighborhood $B = \bigcap_{i \in J \subseteq I} p_i^{-1}(U_i)$ for some open neighborhoods $U_i \in \cU(x_i)$.
-		
-		Since each $(p_i)_*(\cF)$ converges to $x_i$, we have $U_i \in (p_i)_*(\cF)$ for each $i$. Therefore, by definition of the pushforward filter, we have $p_i^{-1}(U_i) \in \cF$ for all $i$. Since filters are closed under intersection, we get $B \in \cF$, and since $B \subseteq U$ we also get $U \in \cF$ as desired.
-	\end{enumerate}
-\end{proof}
-
-\chapter{Compactness}
-The familiar notions of open converings and compactness generalize directly from metric spaces to topological spaces. The most major difference is that sequential compactness is generally weaker than "covering compactness", and has to be replaced with a notion of compactness based on ultrafilter convergence.
-\begin{definition}
-	Let $(X, \cO)$ be a topological space. Then we call a set $\cU \subseteq \cO$ of open subsets an \tib{open covering} of $X$ if every point of $X$ is contained in the union of all elements of $\cU$, i.e. if
-	\begin{align*}
-		\bigcup_{U_i \in \cU} U_i = X
-	\end{align*}
-\end{definition}´
-\begin{importantdefinition}{Compactness}{}
-	Let $(X, \cO)$ be a topological space. Then we call $(X, \cO)$ \tib{compact} if every open covering of $X$ contains a finite open covering as a subset. We call a subset $K \subseteq X$ compact if it is compact as a topological space equipped with the subspace topology.
-\end{importantdefinition}
-\begin{exercise}
-	Every closed subset of a compact space is compact.
-\end{exercise}
-\begin{exercise}
-	Let $(X, \cO)$ be compact and $f : X \to Y$ be continuous. Then $f[X]$ is compact.
-\end{exercise}
-\begin{exercise}
-	Let $(X, \cO)$ be a nonempty topological space. Then the following are equivalent:
-	\begin{enumerate}
-		\item $(X,\cO)$ is compact, i.e. every open covering has a finite subcovering.
-		\item Every set $\cA$ of closed sets whose intersection is the empty set has a finite subset whose intersection is the empty set.
-		\item If $\cA$ is a set of closed sets such that the intersection over any finite subset of $\cA$ is non-empty, the intersection of $\cA$ is non-empty.
-		\item Every filter on $(X, \cO)$ has a limit point.
-		\item Every ultrafilter on $(X, \cO)$ is convergent.
-	\end{enumerate}
-\end{exercise}
-\begin{theorem}\tib{(Alexander Subbase Theorem)}
-	Let $(X, \cO)$ be a topological space. Let $\cS$ be a subbasis. Then $X$ is compact if every open covering of $X$ by sets of $\cS$ has a finite subcovering.
-\end{theorem}
-\begin{proof}
-	Assume that $X$ is not compact. Then there exists a non-convergent ultrafilter $\cF$, i.e. we have
-	\begin{align*}
-		\forall &x \in X :\\ 
-		\exists &U_x \in \cU(x) :\\
-		&(X \setminus U_x) \in \cF
-	\end{align*}
-	By definition of subbases, every $U_x \in \cU(x)$ contains an open subset $O_x$ of the form
-	\begin{align*}
-		O_x = \bigcap_{k = 0}^n S_{k,x}
-	\end{align*}
-	for some $S_{k,x} \in \cS$ and $n \in \bN$.
-	We therefore have
-	\begin{align*}
-		X \setminus U_x
-		&\subseteq 
-		X \setminus O_x\\
-		&=
-		X \setminus \bigcap_{k = 0}^n S_{k,x}
-	\end{align*}
-	which implies $X \setminus \bigcap_{k = 0}^n S_{k,x} \in \cF$ by the filter axioms. Since the intersection of this set with $\bigcap_{k = 0}^n S_{k,x} \in \cF$ is empty, and filters are closed under finite intersection, $\cF$ cannot contain every $S_{k,x}$. Therefore, since $\cF$ is an ultrafilter, it must contain at least one set $X \setminus S_{k,x}$ for every $x$. We will refer to these $S_{k,x}$ with $X \setminus S_{k,x} \in X$ as $S_x$. 
-	\newpar
-	Since every $S_x$ is an open neighborhood of $x$, and thus contains $x$, the set of all $S_x$ is an open convering of $X$. By compactness, there must be a finite subcovering 
-	\begin{align*}
-		\bigcup_{x \in X'} S_x = X.
-	\end{align*} 
-	Now, since $\cF$ contains every $X \setminus S_x$, it also contains
-	\begin{align*}
-		\bigcap_{x \in X'} (X \setminus S_x) = X \setminus \bigcup_{x \in X'} S_x = X \setminus X = \emptyset.
-	\end{align*}
-	which contradicts $\cF$ being a filter.
 \end{proof}
 \begin{lemma}
-	Let $(X, \cO)$ be a Hausdorff space. Let $K \subseteq X$ be compact. Then $K$ can be separated from any point $x \in X \setminus K$ by open neighborhoods, i.e:
+	Let $L$ be a complete lattice. Let $x \in L$ and $A \subseteq L$. Then
 	\begin{align*}
-		\forall &x \in X:\\
-		\exists &U_x \in \cU(x), U_K \in \cU(K):\\
-		&U_x \cap U_K = \emptyset
+		x \succ \inf A \Leftrightarrow \exists a \in A : x \succ a
 	\end{align*}
 \end{lemma}
-\begin{exercise}
-	Let $(X, \cO)$ be compact and Hausdorff. Let $A,B \subseteq X$ be closed. Then $A$ and $B$ can be separated from each other by disjoint open neigborhoods.
-\end{exercise}
-\begin{exercise}
-	Every compact subset of a Hausdorff space is closed.
-\end{exercise}
-\begin{exercise}
-	Every continuous function from a compact space into a Hausdorff space is closed.
-\end{exercise}
-\begin{exercise}
-	Every continuous injective function from a compact space into a Hausdorff space is an embedding.
-\end{exercise}
-\begin{importanttheorem}{Tychonoff's Theorem}{}{}
-	Let $(X_i, \cO_i)_{i \in I}$ be a family of topological spaces. Then if all $X_i$ are compact, $\prod_{i \in I} X$ is compact.
-\end{importanttheorem}
-\begin{proof}
-	\begin{enumerate}
-		\item If there exists an $i \in I$ such that $X_i = \emptyset$, then $\prod X_i = \emptyset$ is compact.
-		\item Now, assume $\prod_{i \in I} X_i \neq \emptyset$. Then there exists an ultrafilter $\cU$ on $\prod_{i \in I} X_i$. 
-		
-		Since each $X_i$ is compact, each pushforward $(p_i)_*(\cU)$ converges to an $x_i \in X_i$. Thus, by theorem \ref{th:productfilterconvergence}, $\cU$ converges to $(x_i)_{i \in I}$ and $\prod_{i \in I} X_i$ is compact.
-	\end{enumerate}
-\end{proof}
-\begin{definition}
-	We call a topological space $X$ \tib{Lindelöf} if every open cover of $X$ has a countable subcover.
-\end{definition}
-\begin{theorem}
-	Every second-countable space is Lindelöf.
-\end{theorem}
-\begin{definition}
-	We call a topological space $X$ \tib{countably compact} if every countable open cover of $X$ has a finite subcover.
-\end{definition}
-\begin{exercise}
-	A countably compact space is compact if and only if it is Lindelöf.
-\end{exercise}
-\begin{theorem}
-	A metric space is Lindelöf if and only if it is second countable.
-\end{theorem}
-\begin{theorem}
-	Every sequentially compact space is countably compact.
-\end{theorem}
-\begin{theorem}
-	A first-countable space is countably compact if and only if it is sequentially compact.
-\end{theorem}
-\begin{theorem}
-	In a second countable Hausdorff space, compactness, countable compactness and sequential compactness are all equivalent to each other.
-\end{theorem}
-\chapter{Topologies on Algebraic Structures}
-\section{Topological Groups}
-\begin{importantdefinition}{}{}
-	Let $(G, \circ)$ be a group. Let $\cO$ be a topology on $G$. Then we call $(G, \circ, \cO)$ a \tib{topological group} iff. the maps $^{-1} : g \to g^{-1}$ and $\circ : G \times G \to G$ are continuous.
-\end{importantdefinition}
-\begin{exercise}
-	Show that $(G, \circ, \cO)$ is a topological group if and only if the map
-	\begin{align*}
-		\phi : (g,h) \mapsto g \circ h^{-1}
-	\end{align*}
-	is continuous.
-\end{exercise}
-\begin{exercise}
-	Let $(G, \circ, \cO)$ be a topological groups. Then for any $g \in G$, the left and right group operation maps $l_g : h \mapsto g \circ h$ and $r_g : h \mapsto h \circ g$ are homeomorphisms.
-\end{exercise}
-\begin{exercise}
-	Let $(G, \circ, \cO_G)$ be a topological group. Let $(H, \circ, \cO_H)$ be a normal subgroup equipped with the supspace topology, and let $(G/H, \circ, \cO_q)$ be the quotient group, equipped with the quotient topology. Then the quotient map $p : G \to G/H$ is continuous and open.
-\end{exercise}
-\begin{corollary}
-	If $H$ is closed in $G$ and $G$ is Hausdorff, then $G/H$ is Hausdorff. If $G/H$ is T1, then $H$ is closed.
-\end{corollary}
+\section{Value Quantales}
+\section{Generalized metrics metrize every topological space}
