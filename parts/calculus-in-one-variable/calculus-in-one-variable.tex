@@ -1,3 +1,100 @@
 \part{Calculus in one Variable}
 \chapter{Derivatives}
 \chapter{Integrals}
+\section{The Gamma Function}
+In this section, we discover some basic properties of the so-called gamma function. We will find that it is the canonical extension of the factorial function to positive real numbers. With some knowledge of complex analyis, it can easily be extended to arbitrary complex numbers, but that is beyond the scope of these notes.
+\begin{importantdefinition}{Gamma function}{}
+	For any $x \in \bR_{> 0}$, the gamma function is defined as the improper integral
+	\begin{align*}
+		\Gamma(x) = \int_0^\infty t^{x-1} e^{-t} ~dt
+	\end{align*}
+\end{importantdefinition}
+\begin{theorem}
+	The gamma function obeys the recurrence relation
+	\begin{align*}
+		\Gamma(x + 1) = x \cdot \Gamma(x)
+	\end{align*}
+\end{theorem}
+\begin{proof}
+	Integration by parts gives:
+	\begin{align*}
+		\Gamma(x+1)
+		&= \int_{0}^\infty t^x e^{-t} ~dt\\
+		&= \lr[-t^xe^{-t}]_0^\infty
+		+ \int_0^\infty xt^{x-1} e^{-t} ~dt\\
+		&= 0 - \lim_{n \to \infty} (-t^xe^{-t})
+		+ x \int_0^\infty t^{x-1} e^{-t} ~dt\\
+		&= x \int_0^\infty t^{x-1} e^{-t} ~dt\\
+		&= x \cdot \Gamma(x)
+	\end{align*}
+\end{proof}
+\pagebreak
+\begin{corollary}
+	For any $n \in \bN$, we have
+	\begin{align*}
+		\Gamma(n + 1) = n!
+	\end{align*}
+\end{corollary}
+\begin{proof}
+	Our recurrence relation gives
+	\begin{align*}
+		\Gamma(n + 1) = n! \cdot \Gamma(1)
+	\end{align*}
+	and we have
+	\begin{align*}
+		\Gamma(1) 
+		&=
+		\int_0^\infty t^{1-1}e^{-t} ~dt\\
+		&=
+		\int_0^\infty e^{-t} ~dt\\
+		&=
+		\lr[-e^{-t}]_0^\infty\\
+		&= \lr(\lim_{n \to \infty} -e^{-n}) - (-e^0)\\
+		&= 0 - (-1)\\
+		&= 1
+	\end{align*}
+\end{proof}
+\begin{lemma}
+	We have:
+	\begin{align*}
+		\Gamma(x) = 2c^x \int_0^\infty t^{2x-1} e^{-ct^2} ~dt
+	\end{align*}
+\end{lemma}
+\begin{proof}
+	Substituting $t := cu^2$, we get:
+	\begin{align*}
+		\Gamma(x) &=
+		\int_{0}^\infty t^{x - 1} e^{-t} ~dt\\
+		&= \int_{0}^\infty (cu^2)^{x - 1} e^{-cu^2} \cdot 2cu ~du\\
+		&= \int_0^\infty c^{x-1} u^{2(x-1)} e^{-cu^2} \cdot 2cu ~du\\
+		&= \int_0^\infty c^x u^{2x-1} e^{-cu^2} ~du\\
+		&= c^x \cdot \int_0^\infty u^{2x-1} e^{-cu^2} ~du\\
+		&= c^x \cdot \int_0^\infty t^{2x-1} e^{-ct^2} ~dt\\
+	\end{align*}
+\end{proof}
+\begin{proposition}
+	We have $\Gamma\lr(\frac{1}{2}) = \sqrt{\pi}$
+\end{proposition}
+\begin{proofsketch}
+	By the last lemma, we have:
+	\begin{align*}
+		\Gamma\lr(\frac{1}{2}) &= 2\int_{0}^\infty t^{2 \cdot \frac{1}{2} - 1} e^{-t^2} ~dt\\
+		&= 2\int_{0}^{\infty} e^{-t^2} ~dt\\
+		&= \int_{-\infty}^{\infty} e^{-t^2} ~dt
+	\end{align*}
+	The fact that $\int_{-\infty}^{\infty} e^{-t^2} ~dt = \sqrt{\pi}$ might be familiar if you have a basic knowledge of probability theory, since this is exactly the reason why $\pi$ appears in the formula for a normal distribution:
+	\begin{align*}
+		\cN(\mu,\sigma^2)(t)
+		&=
+		\frac{1}{\sqrt{2\pi\sigma^2}} e^\lr(-\frac{(t-\mu)^2}{2\sigma^2})
+	\end{align*}
+	Setting $\mu = 0$ and $\sigma^2 = \frac{1}{2}$, which was Gauss' original definition for the standard normal distribution, we get:
+	\begin{align*}
+		\cN(0,1)(t)
+		&=
+		\frac{1}{\sqrt{\pi}} e^{-t^2},
+	\end{align*}
+	where the factor $\frac{1}{\sqrt{\pi}}$ appears to normalize the integral of the distribution to $1$, since it wouldn't be a probability distribution otherwise.
+	\newpar
+	We will formally prove this fact much later, when we introduce the substitution formula for multidimensional Lebesque integration.
+\end{proofsketch}

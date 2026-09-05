@@ -1,0 +1,3204 @@
+\chapter{Measure Theory}
+\section{The Measure Problem}
+The most basic goal of measure theory is to establish a generalized notion of a "measure function", which assigns a "volume" to a given set. In particular, we would like to establish a function that assigns volume functions to subsets of $\bR^n$ and has the following properties:
+\begin{enumerate}
+	\item When given a subset with an easily intuitively definable volume, the volume function should agree with that volume. In particular, the volume of a cuboid should be the product of the lengths of its sides, and the length of a real interval $(a,b)$ should be $b-a$.
+	\item The volume of a countable disjoint union of sets should be the sum of the individual volumes. This property is generally referred to as \tit{$\sigma$-additivity}.
+	\item The volume should be invariant under isometries, i.e. functions like rotations, translations, and reflections should not change the volume of a set.
+	\item We want our volume to be a positive real number.
+\end{enumerate}
+We call a $\sigma$-additive function a \tit{measure} - we want to eventually find a meausure on $\bR^n$ that also fulfills the other properties, but we want measures to be far more generally applicable, and as such we want to be able to define measures much more general spaces that may not have a defined notion of an interval or an isometry.
+\newpar
+It will turn out that there exists exactly one function on $\bR^n$, called the \tit{Lebesque measure} $\lambda^n$, that fulfills these conditions for a very large family of sets - enough to include every "somewhat reasonable" subset of $\bR^n$. However, there are still counterexamples.
+\begin{proposition}
+	Every subset of $\bR^n$ being Lebesque-measurable is consistent with ZF (without the axiom of choice).
+\end{proposition}
+\begin{theorem}
+	Assuming the axiom of choice, there exist subsets of $\bR^n$ that cannot be assigned a volume without arriving at a contradiction.
+\end{theorem}
+It turns out that this result crucially relies on the full axiom of choice, and in particular is not implied by commonly used weaker forms of the axiom of choice such as the axiom of dependent choice.
+\newpar
+The following two subsections deal with two different ways of proving this theorem by construction \tit{non-measurable sets}: The \tit{Vitali Sets}, and the decomposition of a sphere given in the \tit{Banach-Tarski-Paradox}.
+\subsection{Vitali Sets}
+\begin{proposition}
+	The relation $x \sim y \Leftrightarrow x - y \in \bQ$ is an equivalence relation on the real numbers.
+\end{proposition}
+\begin{theorem}
+	There exist sets $V \subset [0,1]$ such that for each $r \in \bR$, there exists exactly one number $v \in V$ such that $v - r$ is rational. We call such a set a \tbf{Vitali Set}.
+\end{theorem}
+\begin{proof}
+	Consider the aforementioned equivalence relation $x \sim y$ on $\bR$. Each equivalence class must contain at least one representative also contained in $[0,1]$, since if $x - y  = q \in \bQ$, we have $x - (y +  q) \in \bQ$ for all $q \in \bQ$, letting us pick a $q$ such that $x- (y+q) \in [0,1]$. Being equivalence classes, they must also be disjoint.
+	\newpar
+	This means we can use the axiom of choice to pick exactly one element of each equivalence class of $\sim$, giving us our set $V$.
+\end{proof}
+\begin{lemma}
+	Let $q_1, q_2, \hdots$ be an enumeration of $\bQ \cap [-1,1]$. Then for $j \neq k$, we have
+	\begin{align*}
+		(q_j + V) \cap (q_k + V) = \emptyset
+	\end{align*}
+\end{lemma}
+\begin{proof}
+	Assume the intersection is non-empty. Then there exist $v_1,v_2 \in V$ such that $q_j + v_1 = q_k + v_2$, meaning $v_1 - v_2 \in \bQ$. Therefore, $v_1$ must be in the same equivalence class as $v_2$. Since $V$ contains exactly one element of each equivalence class, we have $v_1 = v_2$, and therefore we also have $q_j = q_k$, i.e. $j = k$.
+\end{proof}
+\begin{lemma}
+	We have
+	\begin{align*}
+		[0,1] \subset \bigcup_{k \in \bN} (q_k + V) \subset [-1,2]
+	\end{align*}
+\end{lemma}
+\begin{proof}
+	\begin{enumerate}
+		\item $\displaystyle \bigcup_{k \in \bN} (q_k + V) \subset [-1,2]$ follows trivially from $q_k \in [-1,1]$ and $V \subset [0,1]$.
+		\item $\displaystyle [0,1] \subset \bigcup_{k \in \bN} (q_k + V)$ follows from the definition of $V$, since for every $y \in [0,1]$ we have a unique $v \in V$ such that $y-v := q \in \bQ$, and since $y \in [0,1]$ and $v \in [0,1]$, we have $q \in [-1,1]$, i.e. $q$ is contained in our enumeration.
+	\end{enumerate}
+\end{proof}
+\begin{corollary}
+	Vitali sets are not measurable by a translation-invariant normed measure.
+\end{corollary}
+\begin{proof}
+	Assume that $\lambda$ is translation-invariant, countably additive and that $\lambda([a,b]) = b-a$. Then we have:
+	\begin{align*}
+		1 = \lambda([0,1]) \leq \lambda\lr(\bigcup_{k \in \bN} (q_k + V)) \leq \lambda\lr([-1,2]) = 3
+	\end{align*}
+	Since our measure is countably additive and invariant under isometries, we can translate each individual set and preserve the measure:
+	\begin{align*}
+		\lambda\lr(\bigcup_{k \in \bN} (q_k + V)) 
+		&= \sum_{k \in \bN} \lambda\lr(q_k + V)\\
+		&= \sum_{k \in \bN} \lambda\lr(V)
+	\end{align*}
+	Now, if $\lambda(V) \leq 0$, we wouldn't have $1 \leq \sum_{k \in \bN} \lambda\lr(V)$, and if $\lambda(V) > 0$, we wouldn't have $\sum_{k \in \bN} \lambda\lr(V) \leq 3$. Therefore every possible measure we could assign to $V$ leads to a contradiction.
+\end{proof}
+\subsection{The Banach-Tarski Paradox}
+\begin{theorem}
+	Given any two sets $A,B \subset \bR^n$, with $n \geq 3$, such that both $A$ and $B$ have a nonempty interior, there exist disjoint decompositions $A_1 \sqcup \hdots \sqcup A_k = A$ and $B_1 \sqcup \hdots \sqcup B_k = B$ such that for each $i$, $A_i$ and $B_i$ can be transformed into each other by an isometry.
+\end{theorem}
+
+\begin{corollary}
+	The unit sphere can be transformed into two copies of the unit sphere by a finite disjoint decomposition followed by an isometry. The subsets of the decomposition therefore violate the countable union condition we expect from measure functions, and can therefore not be a assigned a meaningful volume.
+\end{corollary}		
+
+\clearpage
+
+\section{Lattices and Boolean Algebras}
+We have just seen that we cannot define our desired measure function on the full power set of $\bR^n$. This means we will have to work on smaller systems of subsets of a given set. Naturally, we want to find the largest such systems that are still well-behaved enough to allow us to define a sensible notion of measure.
+\newpar
+We will arrive at different algebraic structures on subsets of power sets, which will serve as the domains of our measure functions.
+\newpar
+In order to gain a full birds-eye view of these definitions, we will first introduce the more general notion of \tit{boolean algebras}:
+\subsection{Boolean Algebras}
+\begin{definition}
+	A \tbf{boolean algebra} is a set $X$, equipped with two binary operations $\wedge$ and $\vee$, a unary operation $\neg$, and two elements $0$ and $1$, such that:
+	\begin{enumerate}
+		\item $\wedge$ and $\vee$ are commutative,
+		\item $1$ is a neutral element of $\wedge$, and $0$ is a neutral element of $\vee$,
+		\item $\wedge$ distributes over $\vee$ and $\vee$ distributes over $\wedge$,
+		\item $x \wedge \neg x = 0$, and $x \vee \neg x = 1$.
+	\end{enumerate}
+\end{definition}
+\begin{corollary}
+	Any boolean algebra also has the following properties:
+	\begin{enumerate}
+		\item $\wedge$ and $\vee$ are associative,
+		\item $\wedge$ and $\vee$ have the following \tbf{absorption property}:
+		\begin{align*}
+			a \wedge (a \vee b) = a\\
+			a \vee (a \wedge b) = a,
+		\end{align*}
+		\item $a = b \wedge a$ if and only if $a \vee b = b$.
+	\end{enumerate}
+\end{corollary}
+There are three "central" boolean algebras, from which most of the terminology describing them is descended:
+\begin{theorem}
+	The set of \tbf{propositional formulas} forms a boolean algebra, where $0$ is the logical falsum ($\bot$, an unfulfillable formula), $1$ is the logical verum ($\top$, a tautological formula), and $\wedge$, $\vee$ and $\neg$ are logical "and", "or" and "not".
+\end{theorem}
+In computer science and circuit engineering, one often considers the subalgebra of this boolean algebra where every formula is directly evaluated to "$0$" or "$1$".
+\begin{theorem}
+	\theoremname{Power set algebra}
+	The \tbf{power set} $\cP(X)$ of any set $X$ forms a boolean algebra, where $0 = \emptyset$, $1 = X$, $\wedge$ is the set intersection operation $\cap$, $\vee$ is the set union operation $\cup$, and $\neg$ is the set complement operation $M \to X \setminus M$.
+\end{theorem}
+\begin{theorem}
+	\theoremname{Restrictions of Boolean algebras}
+	Let $\cB$ be a Boolean algebra on a set $X$, and let $Y$ be a subset of $X$. Then the \tbf{restriction of $\cB$ to $Y$}, defined as
+	\begin{align*}
+		\cB|_Y := \lr{E \cap Y \mid E \in \cB},
+	\end{align*}
+	is a boolean Algebra on $Y$.
+\end{theorem}
+\begin{theorem}
+	If $Y \in \cB$, then
+	\begin{align*}
+		\cB|_Y = \cB \cap \cP(Y) = \lr{E \subset Y \mid E \in \cB}
+	\end{align*}
+\end{theorem}
+\begin{theorem}
+	\theoremname{Atomic algebra} Let $X$ be partioned into a union
+	\begin{align*}
+		X = \bigcup_{\alpha \in I} A_\alpha
+	\end{align*}
+	of disjoint sets $A_\alpha$, which we refer to as \tit{atoms}. Then this partition forms a Boolean algebra 
+	\begin{align*}
+		\cA((A_\alpha)_{\alpha \in I}) 
+		:= \lr{ E \mid E = \bigcup_{\alpha \in J} A_\alpha, J \subset I}
+	\end{align*}
+	of all the sets that can be represented as a union of atoms.
+\end{theorem}
+The power set Algebra on $X$ is exactly the atomic algebra where $X$ is partitioned into singleton atoms.
+\begin{theorem}
+	Atomic algebras are uniquely determined by their atoms, up to relabeling. More precisely:
+	Let $(A_\alpha)_{\alpha \in I}$ and $(B_\beta)_{\beta \in J}$ be two partitions of a set $X$. Then
+	\begin{align*}
+		\cA((A_\alpha)_{\alpha \in I}) 
+		=
+		\cA((B_\beta)_{\beta \in J}) 
+	\end{align*}
+	if and only if there exists a bijection $\phi : I \to J$ such that $B_{\phi(\alpha)} = A_{\alpha}$ for all $\alpha \in I$.
+\end{theorem}
+\begin{theorem}
+	Every finite Boolean algebra is an atomic algebra.
+\end{theorem}
+\begin{corollary}
+	Every finite Boolean algebra has cardinality $2^n$, where $n \in \bN$.
+\end{corollary}
+\begin{corollary}
+	There is a one-to-one correspondence, up to relabeling, between finite Boolean algebras on a set $X$ and finite partitions of $X$ into non-empty sets.
+\end{corollary}
+\begin{theorem}
+	\theoremname{Dyadic algebras} Let $n, i_1, \hdots, i_d \in \bZ$. The \tbf{dyadic algeba} $\cD_n(\bR^d)$ at scale $2^{-n}$ in $\bR^d$ is the atomic algebra generated by the products of the half-open dyadic intervals
+	\begin{align*}
+		I_j := \left[\frac{i_j}{2^n}, \frac{i_j +1}{2^n} \right)
+	\end{align*}
+	of length $2^{-n}$.
+\end{theorem}
+This algebra consists exactly of the "grid figures" made up of a finite number of "pixels" of length $2^{-n}$.
+\begin{theorem}
+	\theoremname{Intersection of Boolean Algebras} The intersection of a family $(\cB_\alpha)_{\alpha \in I}$ of Boolean algebras on a set $X$ is again a Boolean algebra, assuming the convention that, if $I$ is empty, the intersection is the full power set.  Furthermore, this Intersection is the finest Boolean algebra that is coarser than every $\cB_\alpha$.
+\end{theorem}
+\begin{definition}
+	Let $\cF$ be any family of subsets of a set $X$. Then we define $\angles{\cF}_\cB$ to be the intersection of all Boolean algebras that contain $\cF$. We call this the \tbf{Boolean algebra generated by $\cF$}.
+\end{definition}
+Equivalently, $\angles{\cF}_\cB$ is the smallest Boolean algebra containing $\cF$.
+\begin{theorem}
+	$\cF$ is a Boolean algebra if and only if $\angles{\cF}_\cB = \cF$.
+\end{theorem}
+\subsection{Lattices}
+Boolean algebras themselves turn out to be specific instances of \tit{lattices}, which play an important role in order theory and universal algebra.
+\begin{definition}
+	A \tbf{lattice} is an algebraic structure $(L,\vee,\wedge)$, consisting of a set $L$, an operation $\vee$, called \tbf{join}, and an operation $\wedge$, called \tbf{meet}, such that the absorbtion laws $a \vee (a \wedge b) = a$ and $a \wedge (a \vee b) = a$. 
+\end{definition}
+\begin{proposition}
+	Equivalently, a partially ordered set $(L,\leq)$ is a lattice if every pair of elements has a least upper bound $\sup(a,b) := a \vee b \in L$ and a greatest lower bound $\inf(a,b) := a \wedge b \in L$.
+\end{proposition}
+\begin{definition}
+	We call a lattice \tbf{bounded} if there exists a \tbf{least element} $0$, i.e. $0$ fulfills $a \vee 0 = a$, and a \tbf{greatest element} $1$, which fulfills $a \wedge 1 = a$.
+\end{definition}
+\begin{corollary}
+	A boolean algebra is a bounded lattice such that meet and join are distributive over each other and such that complements exist.
+\end{corollary}
+
+\clearpage
+
+\section{Set Algebras}
+\begin{definition}
+	Let $X$ be a set and $\cA \subset \cP(X)$. Then we call $\cA$ a \tbf{set algebra} if it has the following properties:
+	\begin{enumerate}
+		\item $\emptyset \in \cA$
+		\item For any $A \in \cA$, we have $X \setminus A \in \cA$ ($\cA$ is closed under the operation of taking complements).
+		\item For any $F,G \in \cA$, we have $F \cup G$ in $\cA$ ($\cA$ is closed under binary unions).
+	\end{enumerate}
+\end{definition}
+\begin{corollary}
+	If $\cA$ is a set algebra on $X$, it also fulfills the following:
+	\begin{enumerate}
+		\item $X \in \cA$,
+		\item For any $F,G \in \cA$, we have $F \cap G$ in $\cA$,
+		\item For any $A_1, \hdots, A_n \in \cA$, we have $\bigcup_{i = 1}^n A_i \in \cA$,
+		\item For any $A_1, \hdots, A_n \in \cA$, we have $\bigcap_{i = 1}^n A_i \in \cA$. 
+	\end{enumerate}
+\end{corollary}
+Thus, we obtain the following more concise (but less readable) definition of set algebras:
+\begin{corollary}
+	A set algebra is a subalgebra of the power set boolean algebra on $X$.
+\end{corollary}
+\begin{corollary}
+	A topology on $X$ is "simply" a set algebra on $X$ that is closed under arbitrary unions.
+\end{corollary}
+\begin{theorem}
+	\theoremname{Stone's Representation Theorem for Boolean Algebras} Every boolean algebra is isomorphic to a set algebra.
+\end{theorem}
+\subsection{Set Rings}
+A very important weakening of the concept of set algebras is given by \tit{set rings}, which contain the empty set and are closed under intersection and union, but don't have to contain the full set $X$ or be closed under complements.
+\begin{theorem}
+	Let $\cA$ be a set ring. Then it is closed under finite symmetric difference, and forms a ring in the algebraic sense, with symmetric difference as addition and intersection as multiplication. If it contains the full set $X$, it forms a ring with identity.
+\end{theorem}
+\begin{definition}
+	Let $I \subset \bR$. We call $I$ an \tbf{interval} if there exist $a,b \in \bR$ such that $(a,b) \subset I \subset [a,b]$. 
+\end{definition}
+\begin{theorem}
+	The set of subsets of the real numbers which can be written as a finite union of intervals forms a set ring.
+\end{theorem}
+\begin{theorem}
+	Let $\cR$ and $\cS$ be set rings. Then the set of finite unions of cartesian products of elements of $R_i$ and $S_i$, i.e. of elements of the form,
+	\begin{align*}
+		\bigcup_{i \in \bN} R_i \times S_i,
+	\end{align*}
+	is also a set ring, which we will denote by $\cR \boxtimes \cS$.
+\end{theorem}
+\begin{corollary}
+	The set of finite unions of cuboids in $\bR^n$, where we define a cuboid to be a product of arbitrary intervals, i.e. we don't care if the boundary on any particular side is open or closed, forms a set ring. We call sets of this form \tbf{Elementary Sets}.
+\end{corollary}
+\subsection{Set Semirings}
+\begin{theorem}
+	Let $\cS \subset \cP(X)$. We call $\cS$ a \tbf{set semiring}, or \tbf{semiring of sets}, if:
+	\begin{enumerate}
+		\item $\emptyset \in \cS$,
+		\item $\cS$ is closed under finite intersections,
+		\item For $A,B \in \cS$, there exist disjoint sets $S_1, \hdots, S_n \in \cS$ such that $A \setminus B = \bigcup_{i = i}^n S_i$.
+	\end{enumerate}
+\end{theorem}
+This means that a set semiring is a weakened form of a set ring where complements are not necessarily contained in the semiring, but can still be "constructed" from elements of the ring. Any set ring is therefore immediately also a set semiring.
+\newpar
+Sadly, unlike with rings of sets, there is absolutely no connection between set semirings and the algebraic notion of a semiring - a semiring of sets is exclusively a (semi)(ring of sets), and \tit{not} a (semiring)(of sets). This makes it tempting for me to use an alternative name which makes this distinction more clear, but since I haven't encountered any good alternative names anywhere else (and because I already know I will forget to stick with this convention moving forwards) I will stick with the less than perfect established name.
+\newpar
+Set semirings are of fundamental importance to measure theory because the set of cuboids in $\bR^n$ forms a set semiring, and we will end up defining our lebesque measure by approximating sets through coverings of the set with cuboids. Of course, we first have to establish a basic theory of set semirings and prove this claim.
+\begin{theorem}
+	The set $\cI$ of real intervals forms a set semiring.
+\end{theorem}
+\begin{theorem}
+	The product of two set semirings is again a set semiring.
+\end{theorem}
+\begin{corollary}
+	The set $\cQ$ of cuboids in $\bR^n$ (once again with both open and closed sides allowed) forms a set semiring.
+\end{corollary}
+
+\clearpage
+
+\section{$\sigma$-Algebras}
+The most important type of set algebra for the purposes of measure theory is the \tit{$\sigma$-Algebra}, on which we will eventually define the notion of a "measure" in our desired final form.
+\begin{importantdefinition}{$\sigma$-Algebra}{}
+	Let $X$ be an arbitrary set and $\cA \subset \cP(X)$. We call $\cA$ a $\sigma$\tbf{-Algebra on $X$} if:
+	\begin{enumerate}
+		\item $X \in \cA$
+		\item For all $A \in \cA$, we have $X \setminus A \in \cA$ ($\cA$ is closed under the operation of taking a complement).
+		\item For all $A_i \in \cA$, we have $\bigcup_{i \in \bN} \in \cA$ ($\cA$ is closed under the operationg of taking countable unions).
+	\end{enumerate}
+	If $\cA$ is a $\sigma$-algebra on $X$, we call $(X,\cA)$ a \tbf{measure space}, and any set $A \in \cA$ \tbf{$\cA$-measurable}.
+\end{importantdefinition}
+The "$\sigma$" here once again stands for "countable sum", as it also did for $\sigma$-additivity and $F_\sigma$ sets.
+\begin{corollary}
+	Any $\sigma$-algebra contains the empty set and is closed under countable intersection.
+\end{corollary}
+\begin{corollary}
+	A $\sigma$-algebra can be more concisely defined as a set algebra that is closed under \tit{countable} union and intersection, not just finite ones.
+\end{corollary}
+This also trivially makes every $\sigma$-algebra a Boolean algebra.
+\begin{theorem}
+	Every atomic algebra is a $\sigma$-algebra.
+\end{theorem}
+\begin{importanttheorem}{Induced $\sigma$-algebra}{}
+	Just like for Boolean algebras, the restriction $\cA|_Y$ of a $\sigma$-algebra $\cA$ on $X$ to a subset $Y \subset X$, defined by
+	\begin{align*}
+		\cA|_Y = \lr{A \cap Y \mid A \in \cA},
+	\end{align*}
+	is again a $\sigma$-algebra on $Y$.
+\end{importanttheorem}
+\begin{theorem}
+	We have $\cA|_Y \subset \cA$ if and only if $Y \in \cA$.
+\end{theorem}
+\begin{proof}
+	\phantom{}
+	\begin{enumerate}
+		\item Assume $\cA|_Y \subset \cA$. We have $X \cap Y = Y \in \cA|Y$, and thus we get $Y \in \cA$.
+		\item Assume $Y \in \cA$. Then since $\sigma$-algebras are closed under intersection, we have $A \cap Y \in \cA$ for all $A \in \cA$, i.e. we have $\cA|_Y \subset \cA$.
+	\end{enumerate}
+\end{proof}
+\begin{theorem}
+	Let $X \neq \emptyset$, let $(Y, \cB)$ be a measurable space and let $f : X \to Y$ be an arbitrary map. Then
+	\begin{align*}
+		f^{-1}(\cB) = \lr{f^{-1}(B) \mid B \in \cB}
+	\end{align*}
+	is a $\sigma$-algebra.
+\end{theorem}
+Note however that we don't necessarily have $f^{-1}(\cB) = \cA$, or even $f^{-1}(\cB) \subset \cA$! We call maps that fulfill the latter property \tit{measurable}. Measurable maps play a key role in measure theory and especially in integration theory, entirely analogous to the role continuous functions play in topology. We will study them in more detail in a later chapter.
+\begin{theorem}
+	The intersection of arbitrarily many $\sigma$-algebras is on the same set $X$ is once again a $\sigma$-algebra.
+\end{theorem}
+\begin{importantcorollary}{Generated $\sigma$-algebra}{}
+	Let $\cE \subset \cP(X)$. Then $\angles{\cE}_\sigma$ denotes the intersection of all $\sigma$-algebras containing $\cE$.
+\end{importantcorollary}
+In particular, note that if $\cA$ is a $\sigma$-Algebra containing $\cE$, we have
+\begin{align*}
+	\angles{\cE}_\sigma \subseteq \cA.
+\end{align*}
+\begin{theorem}
+	We have $\angles{\cF}_\cB = \angles{\cF}_\sigma$ if and only if $\angles{\cF}_\cB$ is a $\sigma$-algebra.
+\end{theorem}
+\begin{theorem}
+	Let $X$ be any set. Let $\cE_i \subset \cP(X)$ be a family of sets of subsets of $X$ indexed by $i \in I$. Then we have:
+	\begin{align*}
+		\angles{\bigcup_{i \in I} \angles{\cE_i}_\sigma}_\sigma = \angles{\bigcup_{i \in I} \cE_i}_\sigma
+	\end{align*}
+\end{theorem}
+\clearpage
+
+\subsection{The Borel $\sigma$-Algebra}
+\begin{definition}
+	Let $X$ be a topological space. The \tbf{Borel $\sigma$-algebra $\cB[X]$ of $X$} is the $\sigma$-Algebra generated by the open subsets of $X$.
+\end{definition}
+\begin{theorem}
+	The Borel $\sigma$-Algebra $\cB[\bR^d]$ is equivalently generated by any of the following:
+	\begin{multicols}{2}
+		\begin{enumerate}
+			\item The closed subsets of $\bR^d$,
+			\item The compact subsets of $\bR^d$,
+			\item The open balls of $\bR^d$,
+			\item The boxes in $\bR^d$,
+			\item The elementary sets in $\bR^d$.
+			\item[]
+		\end{enumerate}
+	\end{multicols}
+\end{theorem}
+\clearpage
+
+\section{Dynkin Systems}
+\begin{importantdefinition}{Dynkin System}{}
+	Let $\cD \subset \cP(X)$. Then we call $\cD$ a \tbf{Dynkin system} iff:
+	\begin{enumerate}
+		\item $X \in \cD$
+		\item $\cD$ is closed under complements $B \setminus A$ as long as $A \subset B$
+		\item $\cD$ is closed under coutable pairwise disjoint union
+	\end{enumerate}
+\end{importantdefinition}	
+\begin{importanttheorem}{}{}
+	A Dynkin system is a $\sigma$-algebra iff. it is closed under intersection.
+\end{importanttheorem}
+\begin{theorem}
+	Let $\cE \subset \cP(X)$ be closed under intersection. Then $\angles{\cE}_\cD = \angles{\cE}_\sigma$.
+\end{theorem}
+\clearpage
+
+\section{Monotone Classes}
+\begin{importantdefinition}{Monotone classes}{}
+	Let $\cM \subset \cP(X)$. Then we call $\cM$ a \tbf{monotone class} if:
+	\begin{enumerate}
+		\item 
+		For any family $(A_i)_{i \in \bN} \subset \cM$ such that $A_i \subset A_{i + 1}$ holds for all $i \in \bN$, we have
+		\begin{align*}
+			\bigcup_{i = 1}^\infty A_i \in \cM
+		\end{align*}
+		\item 
+		For any family $(A_i)_{i \in \bN} \subset \cM$ such that $A_i \supset A_{i + 1}$ holds for all $i \in \bN$, we have
+		\begin{align*}
+			\bigcap_{i = 1}^\infty A_i \in \cM
+		\end{align*}
+	\end{enumerate}
+	We denote the smallest monotone class containing a set $\cS \subset \cP(X)$ as $\angles{\cS}_\cM$.
+\end{importantdefinition}
+\begin{corollary}
+	Every $\sigma$-algebra is a monotone class.
+\end{corollary}
+\begin{corollary}
+	Given $\cF \subset \cP(X)$, we have $\angles{\cF}_\cM \subseteq \angles{\cF}_\sigma$
+\end{corollary}
+Recall that a \tit{set algebra} is a set $\cA \subset \cP(X)$ that contains the empty set and is closed under complements and binary unions.
+\begin{theorem}
+	Let $\cF \subset \cP(X)$ be a set algebra and a monotone class. Then $\cF$ is a $\sigma$-algebra.
+\end{theorem}
+\begin{proof}
+	We need to show that $\cF$ is closed under countable unions. Let $(F_j)_{j \in \bN} \subset \cF$ be a family of elements of $\cF$. Since $\cF$ is closed under finite union, the increasing sequence of sets
+	\begin{align*}
+		A_i := \bigcup_{j = 1}^i F_j 
+	\end{align*}
+	must be contained in $\cF$. Therefore, since $\cF$ is a monotone class, the union
+	\begin{align*}
+		\bigcup_{i \in \bN} A_i = \bigcup_{i \in \bN} \lr(\bigcup_{j = 1}^i F_j) = \bigcup_{j \in \bN} F_j
+	\end{align*}
+	must also be contained in $\cF$. Therefore, $\cF$ is closed under countable union, making it a $\sigma$-algebra.
+\end{proof}
+The relevance of monotone classes is given by the following theorem, which gives us an additional way of verifying whether a given subset of a power set forms a $\sigma$-algebra:
+\begin{importanttheorem}{Monotone class theorem}{}
+	Let $\cA \subset \cP(X)$ be a set algebra. Then
+	\begin{align*}
+		\angles{\cA}_\cM 
+		=
+		\angles{\cA}_\sigma
+	\end{align*}
+\end{importanttheorem}
+\begin{proof}
+	We have already observed that, since any $\sigma$-algebra is a monotone class, we have $\angles{\cA}_\cM \subset \angles{\cA}_\sigma$. Therefore, it suffices to show that we also have $\angles{\cA}_\cM \supset \angles{\cA}_\sigma$. This holds automatically if $\angles{\cA}_\cM$ is a $\sigma$-algebra, and since we already know that any monotone class is a $\sigma$-algebra if it is a set algebra, it suffices to show that $\angles{\cA}_\cM$ is a set algebra.
+	\newpar
+	For any $E \in \angles{\cA}_\cM$, let $\cM_E$ be the system of "good subsets" of $X$ which can be combined with $E$ as desired, i.e.
+	\begin{align*}
+		\cM_E := \lr{F \subset X \mid \begin{array}{c}
+				F \setminus E \in \angles{\cA}_\cM\\
+				E \setminus F \in \angles{\cA}_\cM\\
+				E \cup F \in \angles{\cA}_\cM
+		\end{array}}
+	\end{align*}
+	\begin{enumerate}
+		\item First, we want to show that $\cM_E$ is a monotone class.
+		\item Next, we want to show that for every $E \in \cA$, we have $\angles{\cA}_\cM \subset \cM_E$. Since $\cA$ is a set algebra, every element of $\cA$ combines with $E$ as desired, giving us $\cA \subset \cM_E$. Therefore, since $\cM_E$ is a monotone class, we have 
+		\begin{align*}
+			\angles{\cA}_\cM \subset \angles{\cM_E}_\cM = \cM_E.
+		\end{align*}
+		\item Next, we want to show that for every $F \in \angles{\cA}_\cM$, we have $\angles{\cA}_\cM \subset \cM_F$. We just showed that $\angles{\cA}_\cM \subset \cM_F$, which means we have $F \in \cM_E$ for any $E \in \cA$. Since the definition of $\cM_E$ is entirely symmetric in $E$ and $F$, we also have $E \in \cM_F$. Therefore, since all $E \in \cA$ are contained in $\cM_F$, we have $\cA \subset \cM_F$, implying 
+		\begin{align*}
+			\angles{\cA}_\cM \subset \angles{\cM_F}_\cM = \cM_F.
+		\end{align*}
+		\item We have just shown that, for any $E,F \in \monotone{\cA}$, we have $E \in \cM_F$, implying that $\monotone{\cA}$ is closed under complementation and binary union. Since $X \in \cA$, we also have $X \in \monotone{\cA}$. Therefore, $\monotone{\cA}$ is a set algebra.
+	\end{enumerate}
+	Therefore, $\monotone{\cA}$ is indeed both a set algebra and a monotone class, making it a $\sigma$ algebra. 
+\end{proof}
+\clearpage
+
+\section{Measures}
+With our different subset systems in place, we can finally give a general formal definition of a measure. Along the way, we will encounter outer measures, contents, and premeasures, which are "weakened" measures that we can use to generate proper ones.
+
+\begin{importantdefinition}{Outer measure}{}
+	Let $X$ be a set and $\mu$ be a function $\cP(X) \to [0,\infty]$. We call $\mu$ an \tbf{outer measure on $X$} if it is $\sigma$-subadditive.
+\end{importantdefinition}
+\begin{theorem}
+	Let $X$ be any set. Then the constant function $\mu = 0$ is an outer measure on $X$, which is known as the \tbf{trivial measure}.
+\end{theorem}
+\begin{theorem}
+	Let $X$ be any set. Let $A \subset X$ and $x \in X$. Then the function
+	\begin{align*}
+		\delta_x(A) :=
+		\begin{cases}
+			1 & x \in A\\
+			0 & x \in X \setminus A
+		\end{cases}
+	\end{align*}
+	is an outer measure on $X$, which is known as the \tbf{Dirac measure}.
+\end{theorem}
+\begin{importanttheorem}{Counting measure}{}
+	Let $X$ be any set. Let $A \subset X$. Then the function
+	\begin{align*}
+		\card(A) := 
+		\begin{cases}
+			\abs{A} & \abs{A} \tn{ is finite}\\
+			\infty & \abs{A} \tn{ is infinite}
+		\end{cases}
+	\end{align*}
+	is an outer measure on $X$, which is known as the \tbf{counting measure}.
+\end{importanttheorem}
+\begin{importantdefinition}{Measurable set}{}
+	Let $\mu$ be an outer measure on a set $X$. Then we call a subset $A \subset X$ \tbf{$\mu$-measurable}, or just \tbf{measurable}, if for all $S \subseteq X$ we have
+	\begin{align*}
+		\mu(S) = \mu(S \cap A) + \mu(S \setminus A)
+	\end{align*}
+	The system of all $\mu$-measurable sets is sometimes denoted $\cM(\mu)$.
+\end{importantdefinition}
+By this definition, $\mu$-measurable sets are exactly the sets for which $\mu$ is $\sigma$-additive. This means that if we restrict $\mu$ to its measurable sets, we get a proper measure.
+\newpar		
+Note that by the subadditivity of outer measures, we already get that the left side is at most as large as the right side, meaning that this condition can equivalently be weakened to
+\begin{align*}
+	\mu(S) \geq \mu(S \cap A) + \mu(S \setminus A).
+\end{align*}
+\begin{importanttheorem}{Importance of $\sigma$-algebras}{}
+	Let $\mu$ be an outer measure. Then the set of $\mu$-measurable sets forms a $\sigma$-Algebra.
+\end{importanttheorem}
+Since the restriction of an outer measure to its measurable sets forms a proper measure, this theorem tells us that $\sigma$-algebras give us the most sensible definition for which properties the domain of a measure should fulfill. Therefore, we finally get a proper definition of a measure:
+\begin{importantdefinition}{Measure}{}
+	Let $\cA$ be a \ul{$\sigma$-Algebra}. Then we call a $\sigma$-additive function $\mu : \cA \to [0,\infty]$ a \tbf{measure}.
+\end{importantdefinition}
+\begin{definition}
+	If $\cA$ is a $\sigma$-algebra on $X$, and $\mu$ is a measure on $\cA$, we call the triple $(X,\cA,\mu)$ a \tbf{measure space}.
+\end{definition}
+\begin{definition}
+	Let $(X, \cA, \mu)$ be a meausure space. Then we call this space a \tbf{probability space}, and $\mu$ a \tbf{probability measure}, iff $\mu(X) = 1$.
+\end{definition}
+\begin{importantdefinition}{Content, Premeasure}{}
+	Let $\cS$ be a \ul{set semiring.} Then we call a \ul{finitely additive} function $\cS \to [0,\infty]$ a \tbf{content}, and a \ul{$\sigma$-additive} function $\cS \to [0,\infty]$ a \tbf{premeasure}.
+\end{importantdefinition}
+In effect, a premeasure is a measure whose domain might not be as big as it could be. Every measure is trivially also a content and a premeasure, and every measure defined on $\cP(X)$ is an outer measure.
+\begin{importanttheorem}{Restriction of a measure}{}
+	Let $(X, \cA, \mu)$ be a measure space. Let $Y \in \cA$. Then if we define
+	\begin{align*}
+		\mu|_Y(A \cap M) := \mu(A \cap M),
+	\end{align*}
+	$\mu|_Y$ defines a measure on $\cA|_Y$.¸
+\end{importanttheorem}
+\begin{importanttheorem}{Image measure}{}
+	Let $X,Y$ be sets. Let $f : X \to Y$ be a function. Let $\mu$ be an outer measure on $X$. then the function
+	\begin{align*}
+		f(\mu) : \cP(X) &\to [0, \infty]\\
+		f(\mu)(B) &= \mu\lr(f^{-1}(B))
+	\end{align*}
+	is a measure on $Y$, which is known as the \tbf{image measure of $\mu$ under $f$}.
+\end{importanttheorem}
+\begin{proof}
+	\begin{enumerate}
+		\item First, note that we have:
+		\begin{align*}
+			f(\mu)(\emptyset) 
+			&= \mu\lr(f^{-1}(\emptyset))\\
+			&= \mu(\emptyset)\\
+			&= 0
+		\end{align*}
+		\item Furthermore, for $B \subset \bigcup_{i \in \bN} B_i$, we have $f^{-1}(B) \subset \bigcup_{i \in \bN} B_i$. By the subadditivity of $\mu$, we get:
+		\begin{align*}
+			f(\mu)(B) &= \mu(f^{-1}(B))\\
+			&\leq \sum_{i \in \bN} \mu(f^{-1}(B_i))\\
+			&= \sum_{i \in \bN} f(\mu)(B_i).
+		\end{align*}
+		Therefore, $f(\mu)$ is also subadditive and thus an outer measure.¸
+	\end{enumerate}
+\end{proof}
+\begin{lemma}
+	Let $X,Y$ be sets. Let $f : X \to Y$ be a function. Let $\mu$ be an outer measure on $X$ and let $f(\mu)$ be the corresponding image measure.
+	Then $B \subset Y$ is $f(\mu)$ measurable if $f^{-1}(B)$ is $\mu$-measurable.
+\end{lemma}
+\begin{proof}
+	By the definition of measurability:
+	\begin{enumerate}
+		
+		\item $B \subset Y$ is $f(\mu)$-measurable if and only if for all $T \subset Y$, we have:
+		\begin{align*}
+			f(\mu)(T) 
+			&\geq 
+			f(\mu)(T \cap B) + f(\mu)(T \setminus B)
+		\end{align*}
+		i.e.
+		\begin{align*}
+			\mu\lr(f^{-1}(T))
+			&\geq 
+			\mu\lr(f^{-1}(T \cap B)) + \mu(f^{-1}(T \setminus B))	
+		\end{align*}
+		Since $f^{-1}(T \cap B) = f^{-1}(T) \cap f^{-1}(B)$ and $f^{-1}(T \setminus B) = f^{-1}(T) \setminus f^{-1}(B)$, this is equivalent to:
+		\begin{align*}
+			\mu\lr(f^{-1}(T))
+			&\geq 
+			\mu(f^{-1}(T) \cap f^{-1}(B))
+			+
+			\mu(f^{-1}(T) \setminus f^{-1}(B))
+		\end{align*}
+		\item $f^{-1}(B)$ is $\mu$-measurable if and only if for all $S \subset X$, we have:
+		\begin{align*}
+			\mu(S) \geq \mu(S \cap f^{-1}(B)) + \mu(S \setminus f^{-1}(B)).
+		\end{align*} 
+		In particular, if $f^{-1}(B)$ is $\mu$-measurable, this equation must hold for $S = f^{-1}(T)$, implying that $B$ is $f(\mu)$-measurable.
+	\end{enumerate}
+\end{proof}
+\begin{importantdefinition}{($\sigma$)-finite measure}{}
+	Let $(X, \cA, \mu)$ be a measure space. Then:
+	\begin{enumerate}
+		\item We call $\mu$ \tbf{finite} if $\mu(X) < \infty$.
+		\item We call $\mu$ \tbf{$\sigma$-finite} if $X$ can be written as a countable union of sets of finite measure.
+	\end{enumerate}
+\end{importantdefinition}
+\begin{importanttheorem}{Measures are $\sigma$-subadditive}{}
+	Let $(X, \cA, \mu)$ be a measure space. Let $(A_i)_{i \in \bN} \subset \cA$ be a family of (not necessarily disjoint!) measurable subsets of $X$. Then we have:
+	\begin{align*}
+		\mu\lr(\bigcup_{i \in \bN} A_i) \leq \sum_{i \in \bN} \mu(A_i)
+	\end{align*}
+\end{importanttheorem}
+\begin{importanttheorem}{Continuity from above and below}{}
+	Let $(X, \cA, \mu)$ be a measure space. Let $(A_i)_{i \in \bN} \subset \cA$. Then we have:
+	\begin{enumerate}
+		\item \tbf{Continuity from below:} If $A_i \subset A_{i+1}$ for every $i \in \bN$, we have
+		\begin{align*}
+			\lim_{i \to \infty} \mu(A_i) = \mu\lr(\bigcup_{i \in \bN} A_i)
+		\end{align*}
+		\item \tbf{Continuity from above:} If $\mu(A_k) < \infty$ for any $k \in \bN$ and $A_i \supset A_{i+1}$ for every $i \in \bN$, we have
+		\begin{align*}
+			\lim_{i \to \infty} \mu(A_i) = \mu\lr(\bigcap_{i \in \bN} A_i)
+		\end{align*}
+	\end{enumerate}
+\end{importanttheorem}
+\begin{definition}
+	Let $(X, \cA, \mu)$. We call a set $A \in \cA$ a \tbf{$\mu$-zero set}, or simply zero set, iff $\mu(A) = 0$. We denote the set of all $\mu$-zero sets by $\cN(\mu)$.
+\end{definition}
+\begin{importantdefinition}{$\mu$-almost everywhere}{}
+	Let $(X, \cA, \mu)$ be a measure space. Let $P$ be some property. We say that $P$ holds \tbf{$\mu$-almost everywhere on $M$}, or that $P$ holds for \tbf{$\mu$-almost all $x \in M$}, iff the set of $x \in M$ such that $P(x)$ is false is a zero set.
+\end{importantdefinition}
+\begin{importantdefinition}{Complete measure}{}
+	We call a measure $\mu$ \tbf{complete} if any subset of a $\mu$-zero set is also a $\mu$-zero set.
+\end{importantdefinition}
+Note that, in particular, any subset of a $\mu$-zero set needs to be $\mu$-measurable in the first place.
+\begin{lemma}
+	Let $(X, \cA, \mu)$ be a measure space. Let
+	$\cZ_\mu$ be the system of all subsets of $X$ that are also subsets of a $\mu$-zero set. Then $\mu$ is complete if and only if $\cZ_\mu \subset \cA$.
+\end{lemma}
+\begin{corollary}
+	Let $\mu$ be an outer measure. Then $\mu|_{\cM(\mu)}$ is complete.
+\end{corollary}
+\begin{importanttheorem}{Completion of a Measure}{}
+	Let $(X, \cA, \mu)$ be a measure space.  Let
+	\begin{align*}
+		\ol \cA = \lr{A \cup N \mid A \in \cA, N \in \cZ_\mu}.
+	\end{align*}
+	and
+	\begin{align*}
+		\ol \mu(A \cup N) := \mu(A).
+	\end{align*}
+	Then $\ol \cA_\mu$ is a $\sigma$-algebra and $\ol \mu$ is a complete measure on $\ol \cA_\mu$.
+\end{importanttheorem}
+\begin{theorem}\theoremname{Uniqueness of Completion}
+	Let $(X, \cA, \mu)$ be a measure space. Let $(X, \cB, \nu)$ be a complete measure space such that $\cA \subset \cB$ and $\mu(A) = \nu(A)$ for all $A \in \cA$. Then we have $\ol \cA_\mu \subset \cB$ and $\ol \mu = \nu$ on $\ol \cA_\mu$.
+\end{theorem}
+\clearpage
+
+\section{Carathéodory Extension}
+We can construct outer measures from a very large class of functions by the following construction:
+\begin{importanttheorem}{Carathéodory Extension}{}
+	Let $\cS$ be a system of subsets of a set $X$ containing the empty set. Let $\lambda : \cS \to [0,\infty]$ be a function such that $\lambda(\emptyset) = 0$. Then the function
+	\begin{align*}
+		\mu(E) := \inf\lr{\sum_{i = 1}^\infty \lambda(P_i) \mid P_i \in \cS, E \subset \bigcup_{i = 1}^\infty P_i}
+	\end{align*}
+	is an outer measure on $X$.
+\end{importanttheorem}
+\begin{importantdefinition}{Regular Measure}{}
+	Let $\mu$ be an outer measure on $X$. Then we call $\mu$ \tbf{regular} iff. for every $M \subset X$, we can find a $\mu$-measurable set $D \supset M$ such that $\mu(M) = \mu(D)$.
+\end{importantdefinition}
+\begin{lemma}
+	The Carathéodory extension of a premeasure is regular.
+\end{lemma}
+\begin{importanttheorem}{Characterization of measurable sets}{}
+	Let $\lambda : \bR \to [0,\infty]$ be a \ul{$\sigma$-finite} premeasure on a ring $\cR \subset \cP(X)$. Let $\ol \lambda$ be its Carathéodory extension. Then a set $D \subset X$ is $\mu$ measurable if and only if either of the following hold:
+	\begin{enumerate}
+		\item There exists an $E \supset D$ such that $E \in \angles{\cR}_\sigma$ and $\ol \lambda(E \setminus D) = 0$.
+		\item There exists a $C \subset D$ such that $C \in \angles{\cR}_\sigma$ and $\ol \lambda(D \setminus C) = 0$.
+	\end{enumerate}
+\end{importanttheorem}
+\iffalse
+\section{Uncountable Sums}
+\begin{definition}
+	Let $X$ be an uncountable set and $f : X \to [0,\infty]$. Then we define
+	\begin{align*}
+		\sum_{x \in X} f(x) = \sup_{\abs{F} < \infty} \sum_{x \in F} f(x)
+	\end{align*}
+\end{definition}
+It may seem odd that we can sum over an uncountable set by simply summing over the finite subsets - this is partly justified by the following lemma:
+\begin{lemma}
+	If all terms of a sum are positive, and uncountably many of these terms are non-zero, then the sum diverges.
+\end{lemma}
+\begin{proof}
+	Assume that a sum over a set converges, i.e. 
+	\begin{align*}
+		\sum_{x \in X} f(x) = L \in \bR
+	\end{align*}
+	Let $S_n = \lr{x \in X : f(x) > \frac{1}{n}}$ for $n \in \bN$. Then we have:
+	\begin{align*}
+		L &= \sum_{x \in X} f(x)\\
+		&\geq \sum_{x \in S_n} f(x)\\
+		&> \sum_{x \in S_n} \frac{1}{n}\\
+		&= \frac{\abs{S_n}}{n}
+	\end{align*}
+	So we have $\abs{S_n} < nL$ for all $n \in \bN$, meaning that all $S_n$ are finite. The set of all non-zero terms is given by:
+	\begin{align*}
+		S = \lr{x \in X \mid f(x) > 0} = \bigcup_{n \in \bN} \lr{x \in X \mid f(x) > \frac{1}{n}}
+	\end{align*}
+	And since $S$ is a countable union of finite sets, it must be countable. Therefore a finite limit $L$ can't exist if $S$ is uncountable.
+\end{proof}
+\begin{definition}
+	If our sum is absolutely convergent, we can also define
+	\begin{align*}
+		\sum_{x \in X} f(x) = \sum_{x \in X, f(x) \geq 0} f(x) - \sum_{x \in X, f(x) \leq 0} \abs{f(x)}
+	\end{align*}
+\end{definition}
+\fi
+\clearpage
+
+\section{Measures on $\bR^n$}
+\subsection{Jordan Content}
+\begin{definition}
+	Let $E \subset \bR^n$ be an elementary set. Then we can assign to it the \tbf{elementary volume} $\vol(E)$, where the volume of a cuboid is the product of its side lengths and the volume of a finite union of cuboids is the sum of the volumes of the individual cuboids making up $E$.
+\end{definition}
+\begin{definition}
+	\theoremname{Inner and outer Jordan content}
+	Let $E \subset \bR^n$.
+	\begin{enumerate}
+		\item  The \tbf{inner Jordan measure} $J_*(E)$ is
+		\begin{align*}
+			J_*(E) := \sup_{\substack{\textnormal{$Q_i \in \cQ$},\\ \bigcup_{i = 1}^n Q_i \subset E}} \vol(Q)
+		\end{align*}
+		\item The \tbf{outer Jordan measure} $J_*(E)$ is 
+		\begin{align*}
+			J^*(E) := \inf_{\substack{\textnormal{$Q_i \in \cQ$},\\ \bigcup_{i = 1}^n Q_i \supset E}} \vol(Q)
+		\end{align*}
+	\end{enumerate}
+\end{definition}
+\begin{definition}
+	\theoremname{Jordan measurable set, Jordan content}
+	We call $E$ \tbf{Jordan-measurable} if $J_*(E) = J^*(E)$. Then we call $J(E) = J_*(E) = J^*(E)$ the \tbf{Jordan content}.
+\end{definition}
+\begin{theorem}
+	The Jordan content is $\sigma$-additive.
+\end{theorem}
+\begin{theorem}
+	The following are equivalent:
+	\begin{enumerate}
+		\item $E$ is Jordan measurable,
+		\item For every $\epsilon > 0$, there exist elementary sets $A \subset E \subset B$ such that $\vol(B \setminus A) \leq \epsilon$,
+		\item For every $\epsilon > 0$, there exists an elementary set $A$ such that
+		$J^*(A \symdiff E) \leq \epsilon$.
+	\end{enumerate}
+\end{theorem}
+\begin{theorem}
+	The collection of subsets of $\bR^n$ that are either Jordan measurable or have a Jordan-measurable complement form a Boolean algebra, known as the Jordan algebra.
+\end{theorem}
+\begin{theorem}
+	The Jordan algebra is non-atomic.
+\end{theorem}
+\begin{theorem}
+	\theoremname{Regions under continuous Graphs are Jordan measurable}
+	Let $B$ be a closed box in $\bR^n$, and let $f : B \to \bR$ be a continuous function. Then the set
+	\begin{align*}
+		\lr{(x,t) \mid x \in B, 0 \leq t \leq f(x)} \subset \bR^{n+1}
+	\end{align*}
+	is Jordan measurable.
+\end{theorem}
+\begin{theorem}
+	Triangles are Jordan measurable.
+\end{theorem}
+\begin{theorem}
+	Convex polytopes in $\bR^n$ are Jordan measurable.
+\end{theorem}
+\begin{theorem}
+	Open and closed Euclidean balls are Jordan measurable.
+\end{theorem}
+\begin{theorem}
+	Every subset of a Jordan null set is Jordan measurable and also a Jordan null set.
+\end{theorem}
+\begin{theorem}
+	The sets $[0,1]^2 \setminus \bQ^2$ and $[0,1]^2 \cap \bQ^2$ are both not Jordan measurable.
+\end{theorem}
+Informally, sets with a lot of "holes" or with very messy, fractal-like boundaries are generally not Jordan-measurable.
+\begin{theorem}
+	There exist countable unions, and countable intersections, of Jordan measurable sets which are not Jordan measurable.
+\end{theorem}
+\clearpage
+
+\subsection{Lebesque Measure}
+One can extend the Jordan measure to a significantly larger number of subsets of $\bR^n$ by simply allowing countable unions of cuboids (instead of finite unions of cuboids). The Lebesque measure is simply this generalization of the Jordan measure. Formally:
+\begin{definition}
+	Let $E \subset \bR^n$. The \tbf{Lebesque outer measure} of $E$ is given by
+	\begin{align*}
+		\lambda^*(E) := \inf_{\substack{E \subset \bigcup_{i = 1}^\infty Q_n,\\ Q_n \in \cQ}} \lr{\sum_{n = 1}^\infty \vol^n{Q_n}},
+	\end{align*}
+	i.e. the Lebesque outer measure of $E$ is the greatest lower bound of the measures of all coverings of $E$ by cuboids.
+\end{definition}
+\begin{theorem}
+	We have $\lambda^0 = \card$ - the zero-dimensional lebesque measure is the counting measure.
+\end{theorem}
+\begin{proof}
+	$\bR^0$ is by definition cartesian product of $\bR$ with a set of cardinality $0$ i.e. the empty set, as its index set:
+	\begin{align*}
+		\bR^0 = \prod_\emptyset \bR
+	\end{align*}
+	By definition of cartesian products, its members must be functions $\emptyset \to \bR$. There is exactly one such "empty function", which we will denote $f_\emptyset$. Thus, the only subsets of $\bR^0$ are the empty set and $\lr{f_\emptyset}$.
+	\begin{enumerate}
+		\item Since $\lambda^0$ and $\card$ are measures, we have 
+		\begin{align*}
+			\lambda^0(\emptyset) = 0 = \card(\emptyset)
+		\end{align*}
+		\item By definition, a $0$-dimensional cuboid must be a function $\emptyset \to I$ to an interval $I \subset \bR$. Since all functions from the empty set to any set are identical, $f_\emptyset$ qualifies as a cuboid. We thus have:
+		\begin{align*}
+			\lambda^0(\lr{f_\emptyset}) 
+			&= \vol^0(\lr{f_\emptyset})\\ 
+			&= \prod_{\emptyset} \vol(I)\\
+			&= 1\\
+			&= \card(\lr{f_\emptyset})
+		\end{align*}
+		Where the last step follows since empty products evaluate to the multiplicative identity, in this case the number $1$.
+	\end{enumerate}
+\end{proof}
+\begin{theorem}
+	Let $U \subset \bR^n$ be open. Then $U$ is a countable union of cuboids.
+\end{theorem}
+Therefore, we can define Lebesque measurability similarly to Jordan measurability - a set is Lebesque measurable if it is "almost" an open set.
+\begin{definition}
+	A set $E \subset \bR^n$ is \tbf{Lebesque measurable} if for every $\epsilon > 0$, there exists an open set $U \subset \bR^n$ such that $U \subset E$ and $\lambda^*(U \setminus E) \leq \epsilon$. If $E$ is Lebesque measurable, we refer to $\lambda(E) := \lambda^*(E)$ as the \tbf{Lebesque measure} of $E$. If the dimension $n$ should be emphasized, we sometimes write $\lambda(E)$ as $\lambda^n(E)$.
+\end{definition}
+\begin{theorem}
+	The Lebesque measure fulfills:
+	\begin{align*}
+		E \subset \bigcup_{i \in N} E_i \implies \lambda(E) \leq \sum_{i \in \bN} \lambda(E_i)
+	\end{align*}
+	This is a weakened form of $\sigma$-additivity, which is known as \tbf{$\sigma$}-subadditivity.
+\end{theorem}
+\begin{theorem}
+	The Lebesque measure defines a $\sigma$-additive function on the Lebesque measurable sets.
+\end{theorem}
+\begin{theorem}
+	The collection of subsets of $\bR^n$ that are either Lebesque measurable or have a Lebesque-measurable complement form a Boolean algebra.
+\end{theorem}
+\begin{theorem}
+	There exist Lebesque measurable sets which are not Borel.
+\end{theorem}
+
+\clearpage
+You may have heard in linear algebra that the determinant of a matrix $S$ tells us how the matrix scales the volume of the unit cube. Since the Lebesque measure is defined using volumes of unit cubes, this intuition also holds for the image of any set $E$ under $S$:
+\begin{importanttheorem}{Linear Transformation Equation}{}
+	\label{thm:lineartransformationequation}
+	Let $S \in \bRnn$. Then for all $E \subset \bR^n$, we have:
+	\begin{align*}
+		\lambda^n(S(E)) = \abs{\det(S)} \cdot \lambda^n(E)
+	\end{align*}
+\end{importanttheorem}
+\begin{importantdefinition}{Smith-Volterra-Cantor Set}{}
+	The Smith-Volterra-Cantor set is the set obtained by removing the middle $1/8$ of the interval $[0,1]$, and then iteratively removing the middle $1/8$ of any remaining intervals.
+\end{importantdefinition}
+\begin{importanttheorem}{Compact does not imply Jordan measurable}{}
+	The Smith-Volterra-Cantor set is compact, but not Jordan measurable.
+\end{importanttheorem}
+\chapter{Measurable Functions}
+\begin{importantdefinition}{Measurable Functions}{}
+	Let $(X, \cA)$ and $(Y, \cB)$ be measurable spaces. Then we call a map $f : X \to Y$ \tbf{$\cA$-$\cB$-measurable}, or just \tbf{measurable}, if the preimage of every measurable set is again measurable, i.e.
+	\begin{align*}
+		B \in \cB \implies f^{-1}(B) \in \cA
+	\end{align*}
+\end{importantdefinition}
+Once again, note the similarities between this definition and the topological definition of a continuous function. 
+\newpar
+If the $\sigma$-algebra on one of the sets is supposed to be clear from context, many authors only specify one of the the two sigma algebras. For example, for a function $f : X \to \barR$, many authors talk about $\cA$-measurability when they implicitly mean $\cA-\cB(\barR)$-measurability.
+\begin{importantcorollary}{}{}
+	The composition of two measurable functions is again measurable.
+\end{importantcorollary}
+\begin{lemma}
+	Let $(X, \cA)$, $(Y, \cB)$ be measurable spaces and $f : X \to Y$. Let $\cE \subset \cB$. Then
+	\begin{align*}
+		f^{-1}(\angles{\cE}_\sigma) = \angles{f^{-1}(\cE)}_\sigma
+	\end{align*}
+\end{lemma}
+\begin{importantcorollary}{}{}
+	Let $\cE$ be a base of $\cB$, i.e. $\angles{\cE}_\sigma = \cB$. Then $f : X \to Y$ is $\cA$-$\cB$ measurable if and only if 
+	\begin{align*}
+		E \in \cE \implies f^{-1}(E) \in \cA,
+	\end{align*}
+\end{importantcorollary}
+This means we don't need to check the preimage of every single set in $\cB$ to show that $f$ is measurable - it suffices to check a base.
+\begin{corollary}
+	Every continuous function between topological spaces is measurable in the corresponding Borel-$\sigma$-algebras.
+\end{corollary}
+\begin{proof}
+	Let $f : X \to Y$ be continuous. Then the preimage of every open set of $Y$ is open in $X$, i.e. contained in the Borel $\sigma$-algebra on $X$, and the open sets of $Y$ form a base of the Borel $\sigma$-algebra on $Y$.
+\end{proof}
+\begin{importanttheorem}
+	{Simple criteria for measurability}{} Let $(X, \cA)$ be a measureable space. Let $f : X \to \barR$. Then the following are equivalent:
+	\begin{enumerate}
+		\item $f$ is $\cA$-$\cB(\barR)$ measurable,
+		\item $\forall c \in \bR: \lr{f > c} \in \cA$,
+		\item $\forall c \in \bR: \lr{f \geq c} \in \cA$,
+		\item $\forall c \in \bR: \lr{f < c} \in \cA$,
+		\item $\forall c \in \bR: \lr{f \leq c} \in \cA$,
+	\end{enumerate}
+\end{importanttheorem}
+\begin{proof}
+	\begin{enumerate}
+		\item The latter four conditions are equivalent to each other, since:
+		\begin{enumerate}
+			\item $\lr{f \geq c} = \bigcap_{k \in \bN} \lr{f > c - \frac{1}{k}}$,
+			\item $\lr{f > c} = \bigcup_{k \in \bN} \lr{f \geq c + \frac{1}{k}}$,
+			\item $\lr{f < c} = X \setminus \lr{f \geq c}$,
+			\item $\lr{f \leq c} = X \setminus \lr{f > c}$.
+		\end{enumerate}
+		\item The intervals $[c,\infty]$ form a base of $\cB(\barR)$, since:
+		\begin{enumerate}
+			\item $\lr{\infty} = \bigcap_{k \in \bN} [k, \infty]$
+			\item $\lr{-\infty} = \bigcap_{k \in \bN} [-\infty,-k]$
+			\item $(a,b) = [a,\infty] \setminus ([b, \infty] \cap [-\infty, a])$
+		\end{enumerate}
+	\end{enumerate}
+\end{proof}
+\begin{importanttheorem}{}{}
+	Let $f,g : X \to \barR$ be $\cA$-$\cB(\barR)$ measurable. Then the following sets are contained in $\cA$:
+	\begin{enumerate}
+		\item $\lr{f > g}$,
+		\item $\lr{f \geq g}$,
+		\item $\lr{f = g}$,
+		\item $\lr{f \neq g}$.
+	\end{enumerate}
+\end{importanttheorem}
+\begin{theorem}
+	Let $f,g : X \to \barR$ be $\cA$-$\cB[\barR]$ measurable. Then the following functions are also $\cA$-measurable:
+	\begin{enumerate}
+		\item $cf$, for all $c \in \bR$,
+		\item $\abs{f}^p$, for all $p \in \bR_{> 0}$,
+		\item $f + g$, assuming the sum is defined everywhere on $X$, i.e. there exists no $x \in X$ such that $f(x) =\infty$ and $g(x) = -\infty$ or vice versa,
+		\item $f \cdot g$.
+	\end{enumerate}
+\end{theorem}
+\begin{theorem}
+	Let $(X, \cA)$ be a measurable space and $\boldone_E : X \to \bR$ be the indicator function of a set $E \subset X$. Then $\boldone_E$ is $\cA$-$\cB[\bR]$ measurable if and only if $E \in \cA$.
+\end{theorem}
+\begin{proof}
+	We have $\lr{1} = (-\infty,1) \cup (1, \infty) \in \cB[\bR]$ and $\boldone_E^{-1}(\lr{1}) = E$, so $E$ has to be in $\cA$ for $\boldone_E$ to be measurable.
+	\newpar
+	$E \in \cA$ is also a sufficient condition for $\boldone_E$ to be measurable, since the only other possible preimages are $\emptyset \in \cA$, $X \in \cA$, $X \setminus E \in \cA$
+\end{proof}
+\begin{theorem}
+	Let $(X, \cA)$ be a measurable space, let $D \in \cA$, and let $f_k : D \to \bR$ be $\cA$ measurable. Then the following functions are $\cA$-measurable:
+	\begin{enumerate}
+		\item $\inf_{n \in \bN} f_n$
+		\item $\sup_{n \in \bN} f_n$
+		\item $\liminf_{n \to \infty} f_n$
+		\item $\limsup_{n \to \infty} f_n$
+	\end{enumerate}
+\end{theorem}
+\begin{proof}
+	For $s \in \bR$, we have:
+	\begin{enumerate}
+		\item $\displaystyle \lr{(\inf_{n \in \bN} f_n) \geq s} = \bigcap_{k = 1}^\infty \lr{f_k \geq s} \in \cA$
+		\item $\displaystyle \lr{(\sup_{n \in \bN} f_n) \leq s} = \bigcap_{k = 1}^\infty \lr{f_k \leq s} \in \cA$
+	\end{enumerate}
+	Therefore $\inf_{n \in \bN} f_n$ and $\sup_{n \in \bN} f_n$ are measurable. The same argument holds for $\sup$ and $\inf$ over subsets of $\bN$. Therefore, the compositions
+	\begin{align*}
+		\liminf_{n \to \infty} f_n = \sup_{n \in \bN} \lr(\inf_{k \geq n} f_k)
+	\end{align*}
+	and
+	\begin{align*}
+		\limsup_{n \to \infty} f_n = \inf_{n \in \bN} 	\lr(\sup_{k \geq n} f_k)
+	\end{align*}
+	are also measurable.
+\end{proof}
+\begin{importantcorollary}{}{}
+	Let $f_n$ be a sequence of $\cA$-measurable functions with a pointwise limit $f$. Then $f$ is $\cA$-measurable.
+\end{importantcorollary}
+\begin{importantdefinition}{$\mu$-measurable}{}
+	Let $(X, \cA, \mu)$ be a measure space. Let $D \in \cA$. Then we call a function $f : D \to \barR$ $\mu$-measurable iff:
+	\begin{enumerate}
+		\item $X \setminus D$ is a $\mu$-zero set, and
+		\item $f$ is $\cA|_D$-measurable.
+	\end{enumerate}
+\end{importantdefinition}
+\begin{lemma}
+	Let $f : D \to \barR$ be $\mu$-measurable. Then the function
+	\begin{align*}
+		g(x) =
+		\begin{cases}
+			f(x) & x \in D\\
+			0 & x \notin D
+		\end{cases}
+	\end{align*}
+	is $\cA$-measurable.
+\end{lemma}
+\begin{importantlemma}{}{}
+	Let $(X, \cA, \mu)$ be a \tbf{complete} measure space. Let $f$ be $\mu$-measurable. Then every function $g$ such that $g = f$ $\mu$-almost everywhere is $\mu$-measurable.
+\end{importantlemma}
+\begin{importanttheorem}{$\mu$-measurable pointwise limits}{}
+	Let $(X, \cA, \mu)$ be a \tbf{complete} measure space. Let $(f_k)_{k \in \bN}$ be a family of $\mu$-measurable functions. Then if $f_k$ converges pointwise to a function $f$ $\mu$-almost everywhere, $f$ is $\mu$-measurable.
+\end{importanttheorem}
+
+\chapter{Lebesque Integration}
+\section{Step Functions}
+\begin{definition}
+	Let $(X, \cA)$ be a measurable space. Then we call a function $f : Y \to \bR$ a \tbf{step function} if it can be represented as a finite linear combination of indicator functions of sets in $\cA$, i.e there exist $\alpha_i \in \bR$ and $A_i \in \cA$ such that:
+	\begin{align*}
+		f = \sum_{i \leq k} \alpha_i \cdot \boldone_{A_i}
+	\end{align*}
+\end{definition}
+\begin{proposition}
+	Step functions form a vector space over $\bR$.
+\end{proposition}
+\begin{proposition}
+	Step functions can only take finitely different values.
+\end{proposition}
+\begin{proposition}
+	Every step function is (extensionally) equal to a step function over pairwise disjoint sets.
+\end{proposition}
+\begin{proof}
+	Let 
+	\begin{align*}
+		s = \sum_{i \leq k} \alpha_i \cdot \boldone_{A_i}
+	\end{align*}
+	Then if $\beta_1, \hdots, \beta_m$ are all of the finitely many different values that $s$ can take, $s$ is by definition equal to
+	\begin{align*}
+		t := \sum_{i \leq m} \beta_i \cdot \boldone_{\lr{s = \beta_i}}
+	\end{align*}
+	And since a function cannot take two values at once, the sets $\lr{s = \beta_i}$ are disjoint.
+\end{proof}
+\begin{lemma}
+	\theoremname{Sum of Step Functions} Let $s_1$ and $s_2$ be step functions
+	\begin{align*}
+		s_1 = \sum_{i = 0}^m \alpha_i \boldone_{A_i}, \qquad
+		s_2 = \sum_{j = 0}^n \beta_j \boldone_{B_j}
+	\end{align*}
+	defined on pairwise disjoint sets. Then we have:
+	\begin{align*}
+		s_1 + s_2 = \sum_{i = 0}^m \sum_{j = 0}^n (\alpha_i + \beta_j)\boldone_{A_i \cap B_j}
+	\end{align*}
+\end{lemma}
+\begin{proof}
+	\begin{enumerate}
+		\item Assume $s_1$ and $s_2$ are nonnegative step functions
+		\begin{align*}
+			s_1 = \sum_{i = 0}^m \alpha_i \cdot \boldone_{A_i}, \qquad
+			s_2 = \sum_{j = 0}^n \beta_j \cdot \boldone_{B_j}
+		\end{align*}
+		defined on pairwise disjoint sets.
+		\newpar
+		Then:
+		\begin{align*}
+			s_1(x) + s_2(x)
+			&=
+			\sum_{i = 0}^m \alpha_i \cdot \boldone_{A_i}(x)
+			+
+			\sum_{j = 0}^n \beta_j \cdot \boldone_{B_j}(x)
+		\end{align*}
+		Since the $A_i$ and $B_j$ are disjoint coverings of $X$, for every $x \in X$, there exists exactly one $i$ such that $x \in A_i$ and exactly one $j$ such that $x \in B_j$. Therefore, every $x$ contributes exactly one $\alpha_i$ for $x \in A_i$ and one $\beta_j$ for $x \in B_j$, i.e. $x \in A_i \cap B_j$ and $s_1(x) + s_2(x) = \alpha_i + \beta_j$. Since this is the only intersection which contains $x$, we can put everything together to get our desired formula:
+		\begin{align*}
+			s_1(x) + s_2(x)
+			&=
+			\sum_{i = 0}^m \sum_{j = 0}^n (\alpha_i + \beta_j) \cdot \boldone_{A_i \cap B_j}(x)
+		\end{align*}
+	\end{enumerate}
+\end{proof}
+
+The integral of an indicator function is already clear from our intuition: The points contained in the area under an indicator function $\boldone_A$ are exactly the cartesian product of $A$ with the interval $[0,1]$, forming a "rectangle with gaps" whose side lengths are $1$ and $\mu(A)$. Therefore the integral should be:
+\begin{definition}
+	\theoremname{Lebesque integral of an indicator function}
+	\begin{align*}
+		\int_X \boldone_A ~d\mu = \mu(A)
+	\end{align*}
+\end{definition}
+The definition for the integral of a step function should follow naturally - a step function is just a finite sum of scaled characteristic functions, therefore the integral of a step function is the sum of the scaled integrals of the step functions.
+\begin{definition}
+	\theoremname{Lebesque integral of a step function}
+	Let $D \subset X$, $A_i \subset X$ pairwise disjoint, and $\alpha_i \geq 0$. Then:
+	\begin{align*}
+		\int_D s ~d\mu 
+		&= \int_D \lr(\sum_{i \leq k} \alpha_i \cdot \boldone_{A_i}) ~d\mu\\ 
+		&:=\sum_{i \leq k} \lr(\alpha_i \cdot \int_D \boldone_{A_i} ~d\mu)\\ 
+		&= \sum_{i \leq k} \lr(\alpha_i \cdot \mu(D \cap A_i))
+	\end{align*}
+\end{definition}
+\begin{theorem}
+	\theoremname{Linearity of the step function integral}
+\end{theorem}
+\begin{theorem}
+	\theoremname{Monotonicity of the step function integral}
+\end{theorem}
+\clearpage
+\section{Defining the Lebesque Integral}
+We can now use the step function integral to define the integral of more general functions:
+\begin{importanttheorem}{Approximation via step functions}{}
+	Let $(X, \cA)$ be a measurable space. Let $f : X \to \barR$ be a nonnegative $\cA$-measurable function. Then there exists a monotonically increasing sequence $s_n$ of nonnegative step functions whose pointwise limit is $f$.
+\end{importanttheorem}
+\begin{proof}[Construction 1]
+	For $n \in \bN$ and $k \in \lr{0, \hdots, n \cdot 2^n}$, we set:
+	\begin{align*}
+		F_{n,k} := \lr{x \in X \mid \frac{k}{2^n} \leq f(x) < \frac{k+1}{2^n}}.
+	\end{align*}
+	Then
+	\begin{align*}
+		s_n(x) = 
+		\begin{cases}
+			\frac{k}{2^n}& x \in F_{n,k}\\
+			n & \tn{otherwise}
+		\end{cases}
+	\end{align*}
+	are step functions converging to $f$.
+\end{proof}
+\begin{proof}[Construction 2]
+	Define $s_0 = 0$. Then we can inductively define
+	\begin{align*}
+		E_n := \lr{s_{n-1} + \frac{1}{n} \leq f}
+	\end{align*}
+	and
+	\begin{align*}
+		s_n := s_{n-1} + \frac{1}{n} \cdot \boldone_{E_n},
+	\end{align*}
+	meaning we have
+	\begin{align*}
+		s_n = \sum_{k = 1}^n \frac{1}{k} \cdot \boldone_{E_i}.
+	\end{align*}
+	We now need to show that this series converges pointwise to $f$. Let $n \in \bN$.
+	\begin{enumerate}
+		\item Assume $x \in E_n$. Then, by definition, 
+		\begin{align*}
+			f_n(x) = f_{n - 1} + \frac{1}{n} \leq f(x)
+		\end{align*}
+		\item Assume $x \notin E_n$. Then, by induction, we have
+		\begin{align*}
+			f_n(x) = f_{0}(x) = 0 \leq f(x).
+		\end{align*}
+	\end{enumerate}
+	Therefore, we have $f_0 \leq f_1 \leq \hdots$ and $f_n \leq f$ for all $n$, meaning that
+	\begin{align*}
+		\lim_{n \to \infty} f_n(x) \leq f(x).
+	\end{align*}
+	If $f(x) = \infty$, then $x \in E_n$ for every $n$, and we have
+	\begin{align*}
+		\lim_{n \to \infty} f_n(x) = \sum_{k = 1}^\infty \frac{1}{k} = \infty
+	\end{align*}
+	If $f(x) < \infty$, then there must be an infinite number of $n \in \bN$ such that $f_{n-1}(x) > f_n(x) - \frac{1}{n}$, implying
+	\begin{align*}
+		\lim_{n \to \infty} f_n(x) \geq f(x)
+	\end{align*}
+\end{proof}
+\begin{importantdefinition}{Lebesque integral of a positive function}{}
+	Let $f : D \to [0,\infty]$ be $\cA$-measurable. Then:
+	\begin{align*}
+		\int_D f ~d\mu = \sup_{\substack{\tn{$s$ is a step function,}\\0 \leq s \leq f}}\lr{\int_D s ~d\mu}
+	\end{align*}
+\end{importantdefinition}
+\begin{definition}
+	\theoremname{Lebesque integral of an arbitrary measurable function}
+	Let $f$ be $\cA$-mesurable and
+	\begin{align*}
+		f^+ = f \cdot \boldone_{f \geq 0}, \qquad
+		f^- = -f \cdot \boldone_{f < 0}
+	\end{align*}
+	Note that $f^+ \geq 0$ and $f^- > 0$. Then, as long as $f^+$ or $f^-$ have a finite integral, we can define:
+	\begin{align*}
+		\int_D f ~d\mu \int_D f^+ ~d\mu - \int_D f^{-} ~d\mu
+	\end{align*}
+\end{definition}
+\begin{corollary}
+	\theoremname{Integrating over subsets}
+	\begin{align*}
+		\int_M f ~d\mu = \int_X f \cdot \boldone_M ~d\mu = \int_M f ~d\mu|_M
+	\end{align*}
+\end{corollary}
+It is common to derive from this corollary a slight abuse of notation: Assume that $f$ is not $\cA$-measurable, but it is $\mu$-measurable, i.e. $f : D \to \barR$ such that $\mu(X \setminus D) = 0$ and $f$ is $\cA|_D$-measurable. Then it is common to implicitly expand the domain of $D$ to $X$ by setting $f(x) = 0$ on $X \setminus D$, and to therefore write:
+\begin{align*}
+	\int_X f ~d\mu := \int_D f ~d\mu
+\end{align*}
+\begin{corollary}
+	\theoremname{Integrating over zero sets}
+	Let $N$ be a set such that $\mu(N) = 0$. Then 
+	\begin{align*}
+		\displaystyle \int_N f ~d\mu = 0.
+	\end{align*} 
+\end{corollary}
+\begin{importantdefinition}{Integrable function}{}
+	We call a function $f : X \to \barR$ $\tbf{integrable}$ with regards to a measure $\mu$ if it is $\mu$-measurable and
+	\begin{align*}
+		\int_X f~d\mu \in \bR
+	\end{align*}
+\end{importantdefinition}
+\begin{proposition}\theoremname{Integrating with the counting measure}
+	Let $X$ be an arbitrary set. Let $\card$ be the counting measure on $\cP(X)$. Let $f : X \to \barR$. Then $f$ is integrable with respect to $\card$ if and only if $\sum_{x \in X} f(x)$ is absolutely convergent, and we have
+	\begin{align*}
+		\int_X f ~d\card = \sum_{x \in X} f(x)
+	\end{align*}
+\end{proposition}
+\begin{importanttheorem}
+	{Monotonicity of the Lebesque integral}{}
+	Let $\mu$ be an outer measure on $X$ such that $f,g : X \to \barR$ are $\mu$-measurable. Then if $f \leq g$ $\mu$-almost everywhere and $\int_X f ~d\mu > -\infty$, then the integral of $g$ exists and we have
+	\begin{align*}
+		\int_X f ~d\mu \leq \int_X g ~d\mu
+	\end{align*}
+\end{importanttheorem}
+\begin{proof}
+	\begin{enumerate}
+		\item Assume $f,g$ are nonnegative. Then if $s$ is a step function such that $s \leq f$. Then if we define $t := \boldone_{f \leq g} \cdot s$, we have $t \leq g$. Furthermore, for all $c \geq 0$, we have:
+		\begin{align*}
+			\mu(\lr{s = c})
+			&= \mu(\lr{s = c} \cap)
+		\end{align*}
+		\item
+	\end{enumerate}
+\end{proof}
+\begin{importanttheorem}{}{}
+	Let $f,g : X \to \barR$ and let $f$ be $\mu$-measurable. Then if $g = f$ $\mu$-almost everywhere, then $g$ is $\mu$-measurable, and
+	\begin{align*}
+		\int_X g ~d\mu = \int_X f ~d\mu
+	\end{align*}
+	as long as the right integral exists.
+\end{importanttheorem}
+\begin{lemma}\theoremname{Chebyshev Inequality}
+	Let $f : X \to [0, \infty]$ be $\mu$-measurable with $\int_X f ~d\mu < \infty$. Let $s \in (0,\infty]$. Then:
+	\begin{align*}
+		\mu(\lr{x : f(x) \geq s}) \leq 
+		\begin{cases}
+			\displaystyle\frac{1}{s}\int_X f ~d\mu & s \in (0,\infty)\\
+			0 & s = \infty
+		\end{cases}
+	\end{align*}
+\end{lemma}
+\begin{corollary}
+	Let $f : X \to \barR$ be $\mu$-measurable. Then:
+	\begin{enumerate}
+		\item If $\int_X f ~d\mu < \infty$, $\lr{x : f(x) = \infty}$ is a $\mu$-zero set.
+		\item If $f \geq 0$ and $\int_X f ~d\mu = 0$, $\lr{x : f(x) > 0}$ is a $\mu$-zero set.
+	\end{enumerate}
+\end{corollary}
+\begin{importanttheorem}
+	{Monotone Convergence Theorem}{}
+	Let $f_n : X \to [0,\infty]$ be $\mu$-measurable such that $f_i \leq f_{i+1}$. Let $\lim_{n \to \infty} f_n = f$. Then
+	\begin{align*}
+		\int_X \lim_{n \to \infty} f_n ~d\mu
+		= 	\lim_{n \to \infty} \int_X f_n ~d\mu
+		= 	\sup_{n \in \bN} \int_X f_n ~d\mu
+	\end{align*}
+\end{importanttheorem}
+\begin{importanttheorem}{Linearity of the Lebesque integral}{}
+	Let $\mu$ be a measure on $X$. Let $f,g : X \to \barR$ and $\alpha, \beta \in \bR$. Then we have:
+	\begin{align*}
+		\int_X (\alpha f + \beta g) ~d\mu = \alpha \int_X f ~d\mu + \beta \int_X g ~d\mu
+	\end{align*}
+\end{importanttheorem}
+\begin{corollary}
+	Let $f : X \to \barR$ be $\mu$-measurable. Then $f$ is integrable if and only if $\abs{f}$ is integrable.
+\end{corollary}
+\begin{corollary}
+	Let $f : X \to \barR$ be $\mu$-measurable. Then, assuming the integral of $f$ exists, we have
+	\begin{align*}
+		\abs{\int_X f ~d\mu} \leq \int_X \abs{f} ~d\mu
+	\end{align*}
+\end{corollary}
+\begin{importantcorollary}
+	{Dominated Convergence Theorem}{}
+	Let $g : X \to [0,\infty]$ be $\mu$-measurable such that $\abs{f} \leq g$ $\mu$-almost everywhere. Then if
+	\begin{align*}
+		\int_X g ~d\mu < \infty,
+	\end{align*}
+	$f$ is integrable.
+\end{importantcorollary}´
+
+\clearpage
+
+\section{Comparing Riemann Integration and Lebesque Integration}
+\begin{theorem}
+	The Dirichlet function $\boldone_\bQ$ is Lebesque integrable, but not Riemann integrable.
+\end{theorem}
+\begin{importanttheorem}{}{}
+	A Lebesque-integrable function is not necessarily "almost Riemann-integrable". More formally, there exists a function $f : \bR \to \bR$ with the following properties:
+	\begin{enumerate}
+		\item $f$ is Lebesque-integrable.
+		\item There exists no Riemann-integrable function $g$ such that $f = g$ almost everywhere.
+	\end{enumerate}
+\end{importanttheorem}
+\begin{proof}
+	Consider the indicator function $\boldone_{SVC}$ of the Smith-Volterra-Cantor set.
+\end{proof}
+\begin{importanttheorem}{}{}
+	Let $f : [a,b] \to \bR$. Then $f$ is Riemann integrable if and only if it is the limit of a uniformly convergent sequence of step functions over Jordan measurable sets.
+\end{importanttheorem}
+
+\clearpage
+
+\section{Convergence Theorems}
+\begin{importanttheorem}{Levi's Stronger Monotone Convergence Theorem}{}
+	The monotone convergence theorem continues to hold if $f_n \leq f_{n+1}$ and $f_n \nearrow f$ only hold $\mu$-almost everywhere.
+\end{importanttheorem}
+\begin{importantcorollary}{Exchange of Integrals and Sums}{}
+	Let $f_n$ be nonnegative and $\mu$-measurable. Then
+	\begin{align*}
+		\int_X \lr(\sum_{n = 1}^\infty f_n) ~d\mu
+		&=
+		\sum_{n = 1}^\infty \lr(\int_x f_n ~d\mu)
+	\end{align*}
+\end{importantcorollary}
+\begin{importanttheorem}{Fatou's Lemma}{}
+	Let $(f_n)$ be a sequence of $\mu$-measurable functions $X \to \barR$. Let $g \in \cL^1$. Then if we have $f_n \geq g$ $\mu$-almost everywhere for all $n \in \bN$, we have
+	\begin{align*}
+		\int_X \lr(\liminf_{n \to \infty} f_n) ~d\mu
+		\leq
+		\liminf_{n \to \infty} \int_X f_n ~d\mu
+	\end{align*}
+\end{importanttheorem}
+\begin{importanttheorem}{Lebesque's Dominated Convergence Theorem}{}
+	Let $f$, $f_k$ be $\mu$-measurable functions such that $f_k \to f$ $\mu$-almost everywhere. Assume there exists a nonnegative Function $g \in \cL^1$ such that $\sup_k \abs{f_k} \leq g$ $\mu$-almost everywhere. Then we have $f \in \cL^1$ and
+	\begin{align*}
+		\int_X f ~d\mu = \lim_{k \to \infty} \int_X f_k ~d\mu
+	\end{align*}
+\end{importanttheorem}
+\begin{lemma}\theoremname{Continuity of Parametrized Integrals}{}
+	Let $(X, \cA, \mu)$ be a measure space. Let $U \subset \bR^n$ be open. Let $f : U \times X \to \bR$. Then
+	\begin{align*}
+		\phi : U &\to \bR\\
+		\phi(y) &= \int_X f(y,x) ~d\mu(x)
+	\end{align*}
+	is continuous if the following hold:
+	\begin{enumerate}
+		\item $f(\cdot,x)$ is continuous in $U$ for $\mu$-almost all $x \in X$,
+		\item $f(y, \cdot)$ is $\mu$-measurable for all $y \in U$,
+		\item there exists a function $g \in \cL^1(\mu)$ such that for all $y \in U$ and $\mu$-almost all $x \in X$, we have
+		\begin{align*}
+			\norm{f(y,x)} \leq g(x)
+		\end{align*}
+	\end{enumerate}
+\end{lemma}
+\begin{importanttheorem}{Differentiation under the Integral Sign}{}
+	Let $(X, \cA, \mu)$ be a measure space, $U \subset \bR^n$ open, and $f : U \times X \to \bR$.
+	Then
+	\begin{align*}
+		\phi(y) := \int_X f(y,x) ~d\mu(x)
+	\end{align*}
+	is continuously differentiable with
+	\begin{align*}
+		\frac{\partial}{\partial y_i} \int_X f(y,x) ~d\mu(x) = \int_x \frac{\partial}{\partial y_i} f(y,x) ~d\mu(x)
+	\end{align*}
+	if the following hold:
+	\begin{enumerate}
+		\item $f(\cdot,x)$ is continuously differentiable in $U$ for almost all $x$,
+		\item $f(y,\cdot)$ is $\mu$-measurable for almost all $y \in U$,
+		\item There exists a function $g \in \cL^1(\mu)$ such that
+		\begin{align*}
+			\abs{\frac{\partial}{\partial y_i} f(y,x)} \leq g(x)
+		\end{align*}
+		for all $y \in U$, $\mu$-almost all $x \in X$ and $i \in \lr{1,\hdots,n}$.
+	\end{enumerate}
+\end{importanttheorem}
+\begin{theorem}\theoremname{Absolute continuity of the Lebesque integral}
+	Let $f \in \cL^1(\mu)$. Let $\epsilon > 0$. Then there exists a $\delta > 0$ such that, for all $A \in \cA$:
+	\begin{align*}
+		\mu(A) < \delta \implies \int_A \abs{f} ~d\mu < \epsilon
+	\end{align*}
+\end{theorem}
+\clearpage
+
+\section{$L^p$-Spaces}
+\begin{importantdefinition}{$\cL^p$}{}
+	Let $1 \leq p < \infty$. We denote by $\cL^p = \cL^p(X, \cA, \mu)$ the set of all $\mu$-measurable functions $f$ such that
+	\begin{align*}
+		\int_X \abs{f}^p ~d\mu < \infty
+	\end{align*}
+\end{importantdefinition}
+\begin{importantdefinition}{$L^p$ Norm}{}
+	Let $1 \leq p < \infty$ and $f \in \cL^p(X, \cA, \mu)$. We call
+	\begin{align*}
+		\norm{f}_p = \sqrt[p]{\int_X \abs{f}^p ~d\mu}
+	\end{align*}
+	The $L^p$-Norm, or just $p$-Norm of $f$.
+\end{importantdefinition}
+Note that, if we view integration as the natural "continuous analogue of summation"\footnote{We can actually formalize this by going the other way - summation is just integration over a discrete space, using the counting measure as the canonical measure.} and $f$ as a vector with uncountably many components, this is a direct generalization of the familiar $p$-norm of vectors, such as the euclidean norm
+\begin{align*}
+	\norm{\vx}_2 = \sqrt{\sum_{i = 1}^n x_i^2}
+\end{align*}
+\begin{importanttheorem}{$L^\infty$-Norm}{}
+	We have
+	\begin{align*}
+		\norm{f}_\infty := \lim_{p \to \infty} \norm{f}_p = \inf_{s > 0} \mu\lr{\abs{f} > s}
+	\end{align*}
+\end{importanttheorem}
+\begin{lemma}\theoremname{Young Inequality}{}
+	Let $p,q \in (1,\infty)$ such that $\frac{1}{p} + \frac{1}{q} = 1$. Then, for nonnegative $a,b \geq 0$, we have:
+	\begin{align*}
+		ab \leq \frac{a^p}{p} + \frac{b^q}{q}
+	\end{align*}
+\end{lemma}
+\begin{proof}
+	From the concavity of the logarithm, we get:
+	\begin{align*}
+		\ln(\frac{a^p}{p} + \frac{b^q}{q})
+		&\geq
+		\frac{1}{p} \ln(a^p) + \frac{1}{q} \ln(b^q)
+	\end{align*}
+	Which we can immediately simplify to get:
+	\begin{align*}
+		\frac{1}{p} \ln(a^p) + \frac{1}{q} \ln(b^q)
+		&=
+		\ln(a) + \ln(b)
+		=
+		\ln(ab)
+	\end{align*}
+	Exponentiating both sides gives us our desired result.
+\end{proof}
+\begin{anmerkung}
+	Keep in mind that:
+	\begin{align*}
+		\frac{1}{p} + \frac{1}{q} &= 1\\
+		\Longleftrightarrow \frac{1}{q} &= 1 - \frac{1}{p}\\
+		&= \frac{p-1}{p}\\
+		\Longleftrightarrow q &= \frac{p}{p-1}
+	\end{align*}
+\end{anmerkung}
+
+Now, letting $\frac{1}{\infty} = 0$, we get:
+\begin{importantcorollary}{Hölder Inequality}{}
+	Let $p,q \in [1,\infty]$ such that $\frac{1}{p} + \frac{1}{q} = 1$. Let $f \in \cL^p$ and $g \in \cL^q$. Then we have $fg \in \cL^1$ and, in particular,
+	\begin{align*}
+		&\abs{\int_X f(x) \cdot g(x) ~d\mu(x)}\\
+		\leq &\norm{fg}_1 \leq \norm{f}_p \cdot \norm{g}_q			
+	\end{align*}
+\end{importantcorollary}
+\begin{proof}
+	\phantom{}
+	\begin{enumerate}
+		\item[$p = 1$:]
+		In this case, we have $q = \infty$. We have
+		\begin{align*}
+			g(x) < \inf_{s > 0} \lr{\mu(\abs{g} > s) = 0} = \norm{g}_\infty
+		\end{align*}
+		$\mu$-almost everywhere, and thus
+		\begin{align*}
+			\int_X \abs{f(x) \cdot g(x)} ~d\mu(x)
+			&\leq
+			\int_X \abs{f(x)} \cdot \norm{g}_\infty ~d\mu(x)\\
+			&=
+			\int_X \abs{f(x)} ~d\mu(x) \cdot \norm{g}_\infty\\
+			&=
+			\norm{f}_1 \cdot \norm{g}_\infty
+		\end{align*}
+		
+		\item[$p > 1$:] Assume that $\norm{f}_p \cdot \norm{g}_q > 0$. Then, applying the Young inequality with $\displaystyle a = \frac{\abs{f(x)}}{\norm{f}_p}$ and $\displaystyle b = \frac{\abs{g(x)}}{\norm{g}_q}$, we get
+		\begin{align*}
+			\frac{f(x)g(x)}{\norm{f}_p\norm{g}_q}
+			&\leq
+			\frac{\abs{f(x)}\abs{g(x)}}{\norm{f}_p\norm{g}_q}\\
+			&\leq
+			\frac{\abs{f(x)}^p}{p\norm{f}_p^p}
+			+
+			\frac{\abs{g(x)}^q}{q\norm{g}_q^q}
+		\end{align*}
+		Integrating both sides gives:
+		\begin{align*}
+			\frac{\norm{fg}_1}{\norm{f}_p \norm{g}_q}
+			&=
+			\frac{1}{\norm{f}_p\norm{g}_q} \cdot \int_X f(x)g(x) ~d\mu(x)\\
+			&\leq			
+			\frac{1}{\norm{f}_p\norm{g}_q} \cdot \int_X \abs{f(x)}\abs{g(x)} ~d\mu(x)\\	
+			&\leq 
+			\frac{1}{p\norm{f}_p^p} \cdot \int_X \abs{f(x)}^p ~d\mu(x)
+			+
+			\frac{1}{q\norm{g}_q^q} \cdot \int_X \abs{g(x)}^q ~d\mu(x)\\
+			&=
+			\frac{1}{p\norm{f}_p^p} \cdot \norm{f}_p^p
+			+
+			\frac{1}{q\norm{g}_q^q} \cdot \norm{g}_q^q\\
+			&= \frac{1}{p} + \frac{1}{q}\\
+			&= 1
+		\end{align*}
+		Which gives us our desired inequality.
+	\end{enumerate}
+\end{proof}
+\begin{lemma}
+	$\cL^p$ is closed under addition.
+\end{lemma}
+\begin{proof}
+	\begin{enumerate}
+		\item $p = 1$: Follows from the triangle inequality on $\bR$:
+		\begin{align*}
+			\norm{f + g}_1 
+			&=
+			\int_X \abs{f(x) + g(x)} ~d\mu(x)\\
+			&\leq 
+			\int_X \abs{f(x)} + \abs{g(x)} ~d\mu(x)\\
+			&= \int_X \abs{f(x)} ~d\mu(x) + \int_X \abs{g(x)} ~d\mu(x)\\
+			&= \norm{f}_1 + \norm{g}_1
+		\end{align*}
+		\item $p \in (1, \infty)$: Since the function $t \mapsto t^p$ is convex on $[0,\infty)$, we have:
+		\begin{align*}
+			\abs{f + g}^p 
+			&=
+			2^p \abs{\frac{f + g}{2}}^p\\
+			&\leq
+			2^{p-1}(\abs{f}^p + \abs{g}^p)
+		\end{align*}
+		\item $p = \infty$:
+		We have $\abs{f(x)} \leq \norm{f}_\infty$ and $\abs{g(x)} \leq \norm{g}_\infty$ for $\mu$-almost all $x$, which immediately gives us
+		\begin{align*}
+			\abs{f(x) + g(x)} \leq \abs{f(x)} + \abs{g(x)} \leq \norm{f}_\infty + \norm{g}_\infty
+		\end{align*}
+		$\mu$-almost everywhere
+		and thus
+		\begin{align*}
+			\norm{f + g}_\infty = \inf_{s > 0}\lr{\abs{f + g} \leq s \tn{ $\mu$-almost everywhere}} \leq \norm{f}_\infty + \norm{g}_\infty
+		\end{align*}
+	\end{enumerate}
+\end{proof}
+We now want to show that the $L^p$ norm defines a seminorm, which we will then easily be able to turn into a proper norm.
+\begin{importanttheorem}{Minkowski Inequality}{}
+	Let $f, g \in \cL^p$. Then we have
+	\begin{align*}
+		\norm{f + g}_p \leq \norm{f}_p + \norm{g}_p
+	\end{align*}
+\end{importanttheorem}
+\begin{proof}
+	We already showed the cases $p = 1$ and $p = \infty$
+	while proving $\cL^p$ is closed under addition.
+	Thus, let $p \in (1, \infty)$.
+	Then the triangle inequality on $\bR$ gives:
+	\begin{align*}
+		\abs{f(x) + g(x)}^p 
+		&=
+		\abs{f(x) + g(x)} \cdot \abs{f(x) + g(x)}^{p-1}\\
+		&\leq (\abs{f(x)} + \abs{g(x)}) \cdot \abs{f(x) + g(x)}^{p-1}\\
+		&=
+		\abs{f(x)}\abs{f(x) + g(x)}^{p-1}
+		+
+		\abs{g(x)}\abs{f(x) + g(x)}^{p-1}
+	\end{align*}
+	Applying the Hölder inequality with $q = \frac{p}{p-1}$ gives:
+	\begin{align*}
+		&~\int_X \abs{f(x)}\abs{f(x) + g(x)}^{p-1} ~d\mu(x)\\
+		\leq
+		&~\norm{f}_p \cdot \norm{\abs{f + g}^{p-1}}_q\\
+		=
+		&~\norm{f}_p \cdot \lr(\int_X \abs{f(x) + g(x)}^{(p-1)q} ~d\mu(x))^\frac{1}{q}\\
+		=
+		&~\norm{f}_p \cdot \lr(\int_X \abs{f(x) + g(x)}^{p} ~d\mu(x))^\frac{p-1}{p}\\
+		=
+		&~\norm{f}_p \cdot \norm{f+g}_p^{p-1}
+	\end{align*}
+	Switching the roles of $f$ and $g$ similarly gives:
+	\begin{align*}
+		\int_X \abs{g(x)}\abs{f(x) + g(x)}^{p-1} ~d\mu(x)
+		\leq \norm{g}_p \cdot \norm{f+g}_p^{p-1}
+	\end{align*}
+	And putting everything together, we get:
+	\begin{align*}
+		\norm{f + g}_p^p 
+		&= \int_X \abs{f(x) + g(x)}^p ~d\mu(x)\\
+		&\leq 
+		\int_X \abs{f(x)}\abs{f(x) + g(x)}^{p-1} ~d\mu(x)
+		+
+		\int_X \abs{g(x)}\abs{f(x) + g(x)}^{p-1} ~d\mu(x)\\
+		&\leq
+		\norm{f}_p \cdot \norm{f+g}_p^{p-1}
+		+
+		\norm{g}_p \cdot \norm{f+g}_p^{p-1}\\
+		&=
+		\norm{f + g}_p \cdot \norm{f+g}_p^{p-1}
+	\end{align*}
+	From which we get our desired result by dividing out the factor of $\norm{f+g}_p^{p-1}$.
+\end{proof}
+\begin{importantcorollary}{}{}
+	The $\cL^p$-norm is a seminorm on $\cL^p$. In particular, we have:
+	\begin{enumerate}
+		\item $\norm{f}_p \geq 0$, with $\norm{f}_p = 0$ iff. $f = 0$ $\mu$-almost everywhere
+		\item $\norm{\lambda f}_p = \abs{\lambda} \cdot \norm{f}_p$
+		\item $\norm{f + g}_p \leq \norm{f}_p + \norm{g}_p$
+	\end{enumerate}
+\end{importantcorollary}
+\begin{importantcorollary}{$L^p$-space}{}
+	Define $L^p$-space to be the quotient space of $\cL^p$ under $\mu$-almost-everywhere equality. Then $\norm{\cdot}_p$ forms a proper norm on $L^p$.
+\end{importantcorollary}
+\begin{lemma}
+	Let $1 \leq p < \infty$. Let $u_j \in L^p$ and
+	\begin{align*}
+		f_k = \sum_{j = 1}^k u_j
+	\end{align*} 
+	Then, if $\sum_{j = 1}^\infty \norm{u_j}p < \infty$, we have:
+	\begin{enumerate}
+		\item The pointwise limit $f(x) = \lim_{k \to \infty} f_k(x)$ exists for $\mu$-almost all $x \in X$,
+		\item $f \in L^p$,
+		\item $\norm{f - f_k}_p \to 0$
+	\end{enumerate}
+\end{lemma}
+\begin{importantlemma}{Convergence in $L^p$}{}
+	If we have $f_k \to f$ in $L^p$ Norm for $1 \leq p \leq \infty$, then there exists a subsequence $f_{k_i}$ such that $f_{k_i} \to f$ pointwise $\mu$-almost everywhere.
+\end{importantlemma}
+\begin{importanttheorem}{Riesz-Fischer}{}
+	For $1 \leq p \leq \infty$, $(L^p, \norm{\cdot}_p)$ is a Banach space.
+\end{importanttheorem}
+\begin{definition}
+	Let $1 \leq p < \infty$. Let the sequence $(f_n) \subset L^p$ converge pointwise $\mu$-almost everywhere against the $\mu$-measurable function $f$. Let
+	\begin{align*}
+		\nu(A) := \limsup_{n \to \infty} \int_A \abs{f_n}^p ~d\mu
+	\end{align*}
+	Then we call $f_k$ \tbf{uniformly integrable} iff, for any $A \in \cA$, we have:
+	\begin{enumerate}
+		\item $\displaystyle
+		\forall \epsilon > 0 : \exists \delta > 0 : \forall A \in \cA : \mu(A) < \delta \implies \nu(A) < \epsilon
+		$
+		\item $\forall \epsilon > 0 : \exists E \in \cA: \mu(E) < \infty, \nu(X \setminus E) < \epsilon$
+	\end{enumerate}
+\end{definition}
+\begin{importanttheorem}{Vitali Convergence Theorem}{}
+	Let $1 \leq p < \infty$. Let the sequence $(f_n) \subset L^p$ converge pointwise $\mu$-almost everywhere against the $\mu$-measurable function $f$. Then the following are equivalent:
+	\begin{enumerate}
+		\item $f \in L^p$ and $\norm{f_n - f}_p \to 0$,
+		\item 
+		$f_k$ is uniformly integrable.
+	\end{enumerate}
+\end{importanttheorem}
+\begin{definition}
+	Let $\Omega \subset \bR^n$ be open. Then the \tbf{support of a function} $f : \Omega \to \bR$ is the set
+	\begin{align*}
+		\spt f := \ol{\lr{x \in \Omega : f(x) \neq 0}}
+	\end{align*}
+	The space of $k$ times continuously differentiable functions with compact support in $\Omega$ is denoted $C^k_c(\Omega)$.
+\end{definition}
+\begin{importanttheorem}{$C_c^0(\Omega)$ is dense in $L^p(\Omega)$}{}
+	Let $\Omega \subset \bR^n$ be open. Let $1 \leq p < \infty$. Then, for every $f \in L^p(\Omega)$, there exists a sequence $f_k$ in $C_c^0(\Omega)$ such that $\norm{f - f_k}_p \to 0$.
+\end{importanttheorem}
+\clearpage
+
+\section{Density Functions}
+\begin{importanttheorem}{}{}
+	Let $(X, \cA, \mu)$ be a measure space. Let $\theta : X \to \barR$ be nonnegative and $\mu$-measurable. Then the map
+	\begin{align*}
+		\nu : \cA &\to \barR\\
+		A &\mapsto \int_A \theta ~d\mu
+	\end{align*}
+	is a measure, which we denote $\mu_\theta$. We call $\theta$ the \tbf{density of $\nu$ with respect to $\mu$}.
+\end{importanttheorem}
+\begin{corollary}
+	The following hold for $\mu_\theta$:
+	\begin{enumerate}
+		\item $\mu(A) = 0$ implies $\mu_\theta(A) = 0$.
+		\item For every nonnegative $\mu$-measurable function $f$, we have
+		\begin{align*}
+			\int_X f ~d\mu_\theta = \int_X f \cdot \theta ~d\mu.
+		\end{align*}
+		\item $\theta$ is unique up to equality $\mu$-almost everywhere.
+	\end{enumerate}
+\end{corollary}
+\begin{importantdefinition}{}{}
+	Let $\mu$ and $\nu$ be measures on $(X, \cA)$. Then we call $\nu$ \tbf{absolutely continuous with respect to $\mu$}, which we denote $\nu \ll \mu$, if $\mu(A) = 0$ implies $\nu(A) = 0$.
+\end{importantdefinition}
+\begin{lemma}
+	Let $\sigma$ and $\nu$ be finite measures on $(X, \cA)$ such that $\nu(A) \leq \sigma(A)$ for every $A \in \cA$. Then there exists a density function $\theta$ such that $\nu = \sigma_\theta$.
+\end{lemma}
+This lemma is actually a special case of the significantly more general Riesz representation theorem for Hilbert spaces, which I sadly do not have the time to go into at this point (but look it up, it's really neat!).
+\begin{lemma}
+	Let $\mu, \nu$ be measures on $(X, \cA)$. Let $\sigma := \mu + \nu$. Then if $f \in \cL^*(\sigma)$, then $f \in \cL^*(\mu)$ and $f \in \cL^*(\nu)$ and we have
+	\begin{align*}
+		\int_X f ~d\sigma = \int_X f ~d\mu + \int_X f ~d\nu
+	\end{align*}
+\end{lemma}
+\begin{theorem}
+	\theoremname{Mini-Radon-Nikodym} Let $\mu$, $\nu$ be finite measures on $(X, \cA)$ such that $\nu \ll \mu$. Then there exists a density function $\theta \in L^1(\mu)$ such that $\nu = \mu_\theta$.
+\end{theorem}
+In this case, $\theta$ is sometimes also called the \tbf{Radon-Nikodym derivative of $\nu$ with respect to $\mu$} and denoted $\frac{d\nu}{d\mu}$.
+\begin{theorem}
+	Let $\mu$ and $\nu$ be finite measures on $(X, \cA)$. Then the following are equivalent:
+	\begin{enumerate}
+		\item $\nu \ll \mu$,
+		\item There exists a density function $\theta \in L^1(\mu)$ such that $\nu = \mu_\theta$,
+		\item For all $\epsilon > 0$, there exists a $\delta > 0$ such that $\mu(A) < \delta$ implies $\nu(A) < \epsilon$.
+	\end{enumerate}
+\end{theorem}
+\begin{proof}
+	(i) $\implies$ (ii) is our mini-Radon-Nikodym theorem. (ii) $\implies$ (iii) follows from absolute continuity of the Lebesque integral. (iii) $\implies$ (i) follows immediately from the definition of $\ll$.
+\end{proof}
+\begin{importanttheorem}
+	{Radon-Nikodym}{} Let $\mu$, $\nu$ be $\sigma$-finite measures on $(X, \cA)$ such that $\nu \ll \mu$. Then there exists a density function $\theta \in L^1(\mu)$ such that $\nu = \mu_\theta$.
+\end{importanttheorem}
+\begin{importantdefinition}{}{}
+	Let $\mu$ and $\nu$ be measures on $(X, \cA)$. Then we call $\mu$ and $\nu$ \tbf{singular with respect to each other}, which we denote $\mu \perp \nu$, if there exists a set $M \in \cA$ such that
+	\begin{align*}
+		\mu(M) = \nu(X \setminus M) = 0.
+	\end{align*}
+\end{importantdefinition}
+\begin{importanttheorem}
+	{Lebesque's decomposition theorem}{} Let $\mu$ and $\nu$ be measures on $(X, \cA)$, and let $\nu$ be $\sigma$-finite. Then there exists a unique decomposition $\nu = \nu_a + \nu_s$ such that $\nu_a \ll \mu$ and $\nu_a \perp \mu$.
+\end{importanttheorem}
+\chapter{Integration in $\bR^n$}
+\section{Products of Measure Spaces}
+In this section, we will be interested in finding a canonical $\sigma$-Algebra on cartesian products of measurable spaces. Category theory tells us the correct solution directly: The product $\sigma$-algebra of an indexed family of $\sigma$-algebras as the sigma algebra fulfilling the universal property of product objects. We are working in the category of measurable spaces, where morphisms are measurable functions.
+\newpar
+Therefore, our definition simply amounts to defining product sigma algebras as the $\sigma$-algebras induced by the projection functions, which in turn is the smallest $\sigma$-algebra such that all projections are measurable. 
+\begin{importantdefinition}{Product $\sigma$-Algebra}{}
+	Let $(X_i, \cA_i)_{i \in I}$ be a family of measurable spaces. Then the product $\sigma$-algebra on the cartestian product $\prod_{i \in I} X_i$ is the smallest $\sigma$-Algebra $\Tensor_{i \in I} \cA_i$ such that every projection $\pi_j$ is $\Tensor_{i \in I} \cA_i - \cA_j$-measurable.
+\end{importantdefinition}
+Explicitly, this means we have:
+\begin{align*}
+	\Tensor_{i \in I} \cA_i = \angles{\bigcup_{i \in I} \pi_i^{-1}(\cA_i)}_\sigma
+\end{align*}
+Note that this is also entirely analogous to the definition of the product topology, which is the coarsest (i.e. "smallest") topology such that projections are continuous.
+\newpar
+If the cardinality of $I$ is a small finite number, we may sometimes write out the product $\sigma$-algebra as:
+\begin{align*}
+	\Tensor_{i \in I} \cA_i = \cA_1 \tensor \cA_2 \tensor \hdots
+\end{align*}
+\begin{importanttheorem}{}{}
+	Let $(X, \cA)$ and $(Y_i, \cB_i)$ be measurable spaces. Let $g : X \to \prod_{i \in I} Y_i$. Then $g$ is $\cA-\Tensor_{i \in I} \cB_i$-measurable if and only if all maps $\pi_i \circ g$ are $\cA-\cB_i$-measurable.
+\end{importanttheorem}
+\begin{proof}
+	\begin{enumerate}
+		\item Assume $g$ is measurable. We know that $\pi_i$ are measurable by definition, and we know that compositions of measurable functions are measurable. Therefore, $\pi_i \circ g$ are measurable.
+		\item Assume $\pi_i \circ g$ are measurable. Then we have:
+		\begin{align*}
+			g^{-1}\lr(\bigcup_{i \in I} \pi_i^{-1}(\cA_i))
+			&= \bigcup_{i \in I} g^{-1}(\pi_i^{-1}(\cA_i))\\
+			&= \bigcup_{i \in I} (\pi_i \circ g)^{-1}(\cA_i)) \subset \cA
+		\end{align*}
+		Where the last step follows from the measurability of $\pi_i \circ g$. Therefore, since $\bigcup_{i \in I} \pi_i^{-1}(\cA_i)$ forms a basis of $\Tensor_{i \in I} \cA_i$, we have that $g$ is measurable.
+	\end{enumerate}
+\end{proof}
+As a corollary, we get that our product space actually fulfills the universal property of product objects:
+\begin{corollary}
+	Let $(X, \cA)$ and $(Y_i, \cB_i)_{i \in I}$ be measurable spaces. Let $g_i : X \to Y_i$ be a family of $\cA - \cB_i$-measurable functions. Then there exists a $\cA-\cB_i$-measurable function $g : X \to \prod_{i \in I} Y_i$ such that, for each $i \in I$, $g_i = \pi_i \circ g$.
+\end{corollary}
+\begin{proof}
+	Define $g$ as the cartesian product of all $g_i$:
+	\begin{align*}
+		g : I &\to \lr(X \to \prod_{i \in I} Y_i)\\
+		i &\mapsto g_i
+	\end{align*}
+	Then our previous lemma tells us that, since all $g_i = \pi_i \circ g$ are measurable, $g$ is measurable as well.
+\end{proof}
+\begin{corollary}
+	Let $(X_i, \cA_i)_{i \in I}$ be measurable spaces, and let $J \subset I$ be nonempty. Then the projection $\pi_J$ is $\Tensor_{i \in I} \cA_i-\Tensor_{j \in J} \cA_j$-measurable.
+\end{corollary}
+\begin{definition}{\theoremname{Embedding into a larger product space}}
+	Let $p_j \in X_j$. Then we define the \tbf{embedding of $\prod_{i \in I \setminus j} X_i$ into $\prod_{i \in I} X_i$ by $x_j$} to be the map $e_{x_j}$ which takes a product $(x_i)_{i \in I \setminus j}$ and "adds in $x_j$ as a new component", i.e. it maps $(x_i)_{i \in I \setminus j}$ to the product $(x'_i)_{i \in I}$ with $x'_j = x_j$ and $(x'_i)_{i \in I \setminus j} = (x_i)_{i \in I \setminus j}$.
+\end{definition}
+\begin{importantdefinition}{Cuts of subsets}{}
+	Let $M \subseteq \prod_{i \in I} X_i$, and let $x_j \in X_j$. Then we define the \tbf{cut of $M$ through $x_j$} to be the set $M^{x_j} = e_{x_j}^{-1}(M)$. 
+\end{importantdefinition}
+More explicitly, $M^{x_j}$ is the set such that for for every $y \in M$, we have $y|_{I \setminus \lr{j}} \in M^{x_j}$ if and only if $y_j = x_j$.
+\begin{corollary}
+	Let $(X_i, \cA_i)_{i \in I}$ be measurable spaces, let $M \in \Tensor_{i \in I} \cA_i$, and let  $x_j \in X_j$ for $j \in I$. Then we have
+	\begin{align*}
+		M^{x_j} \in \Tensor_{i \in I \setminus j} \cA_i
+	\end{align*}
+\end{corollary}
+\begin{proof}
+	Let $x_j \in X_j, j \in I$. We want to show that $e_{x_j}$ is measurable, which would follow immediately if we could show that all projections $\pi_i^I \circ e_{x_j}$ are measurable.
+	\begin{enumerate}
+		\item Let $i \in I \setminus \neq j$. Then $\pi_i^I \circ e_{x_j} = \pi_i^{I \setminus j}$, which is measurable.
+		\item Let $i = j$. Then $\pi_i^I \circ e_{x_j} = \pi_j^I \circ e_{x_j}$, which is just the constant map onto $x_j$, which is measurable.
+	\end{enumerate}
+	Since all projections are measurable, $e_{x_j}$ itself must also be measurable. Therefore, since $M$ is measurable, the preimage $M^{x_j} = e_{x_j}^{-1}(M)$ must also be measurable.
+\end{proof}
+Note that, in particular, this tells us that if $(X_1, \cA_1)$ and $(X_2, \cA_2)$ are measurable spaces, then for any $M \in \cA_1 \tensor \cA_2$, $x_1 \in X_1$, and $x_2 \in X_2$, we have 
+\begin{align*}
+	M^{x_2} = \lr{x \in X_1 \mid (x, x_2) \in M} \in \cA_1
+\end{align*}
+and 
+\begin{align*}
+	M^{x_1} = \lr{x \in X_2 \mid (x_1, x) \in M} \in \cA_2
+\end{align*} 
+\begin{importanttheorem}{A basis of the product $\sigma$-Algebra}{}
+	Let $(X_i, \cA_i)_{i \in I}$ be a family of measurable spaces. For each $i \in I$, let $\cE_i$ be a basis of $\cA_i$. Then we have
+	\begin{align*}
+		\Tensor_{i \in I} \cA_i = \angles{\bigcup_{i \in I} \pi_i^{-1}(\cE_i)}_\sigma.
+	\end{align*}
+\end{importanttheorem}
+\begin{proof}
+	Recall that, for any map $f$ and any system of subsets $\cS \subset \cA$ of a $\sigma$-algebra $\cA$, we have 
+	\begin{align*}
+		f^{-1}\lr(\angles{\cS_i}_\sigma) = \angles{f^{-1}(\cS_i)}_\sigma
+	\end{align*}
+	and
+	\begin{align*}
+		\angles{\bigcup_{i \in I} \cS_i}_\sigma
+		&=
+		\angles{\bigcup_{i \in I}  \angles{\cS_i}_\sigma}_\sigma,
+	\end{align*} which gives us:
+	\begin{align*}
+		\Tensor_{i \in I} \cA_i 
+		&= \angles{\bigcup_{i \in I} \pi_i^{-1}(\cA_i)}_\sigma\\
+		&= \angles{\bigcup_{i \in I} \pi_i^{-1}(\angles{\cE_i}_\sigma)}_\sigma\\
+		&= \angles{\bigcup_{i \in I}\angles{\pi_i^{-1}(\cE_i)}_\sigma}_\sigma\\
+		&= \angles{\bigcup_{i \in I} \pi_i^{-1}(\cE_i)}_\sigma
+	\end{align*}
+\end{proof}
+If $I$ is finite, we get the following representation of the product $\sigma$-algebra:
+\begin{corollary}
+	For each $i \in \lr{1, \hdots, n}$, let $(X_i, \cA_i)$ be a measurable space such that $\cE_i$ is a basis of $\cA_i$ and such that $X_i$ can be represented as a countable union of basis elements $E_i^k \in \cE_i$. Then 
+	\begin{align*}
+		\cQ_0 := \lr{\prod_{i = 1}^n E_i \mid E_i \in \cE_i}
+	\end{align*}
+	is a basis of $\Tensor_{i = 1}^n \cA_i$.
+\end{corollary}
+\begin{proof}
+	We need to show $\angles{\cQ_0}_\sigma = \Tensor_{i = 1}^n \cA_i$.
+	\begin{enumerate}
+		\item 			
+		Let $E_i \in \cE_i$. We know that
+		\begin{align*}
+			\pi_i^{-1}(E_i) = E_i \times \prod_{j \neq i} X_j,
+		\end{align*}
+		which gives us the following representation for the basis $\cQ$ we just established in the last theory:
+		\begin{align*}
+			\cQ = \bigcup_{i = 1}^n \pi_i^{-1}(\cE_i)
+			&=
+			\bigcup_{i = 1}^n \lr{E_i \times \prod_{j \neq i} X_j \mid E_i \in \cE_i}
+		\end{align*}
+		Furthermore, $\cap$-stability of $\sigma$-algebras gives us that any element
+		\begin{align*}
+			\prod_{i = 1}^n E_i =
+			\bigcap_{i = 1}^n \pi_i^{-1}(E_i)
+		\end{align*}
+		of $\cQ_0$
+		must be contained in $\angles{\cQ}_\sigma$.
+		\newpar
+		Therefore, we have
+		\begin{align*}
+			´\angles{\cQ_0}_\sigma \subset \angles{\cQ}_\sigma = \Tensor_{i = 1}^n \cA_i
+		\end{align*}
+		\item Now, let $E_i \in \cE_i$ and $k \in \bN$. By definition of $\cQ_0$, we have
+		\begin{align*}
+			E_i \times \prod_{j \neq i} E_j^k \in \cQ_0,
+		\end{align*}
+		which gives us:
+		\begin{align*}
+			\pi_i^{-1}(E_i)
+			&= \bigcup_{k = 1}^\infty \lr(E_i \times \prod_{j \neq i} E_j^k)
+			\in \angles{\cQ_0}_\sigma,
+		\end{align*}
+		and by extension:
+		\begin{align*}
+			\cQ = \bigcup_{i = 1}^n \pi_i^{-1}(E_i)
+			\subset \angles{\cQ_0}_\sigma
+		\end{align*}
+		which means we also have
+		\begin{align*}
+			\Tensor_{i = 1}^n \cA_i
+			= \angles{\cQ}_\sigma
+			\subset \sigma(\cQ_0).
+		\end{align*}
+	\end{enumerate}
+\end{proof}
+\begin{corollary}
+	The Borel $\sigma$-algebra $\cB(\bR^n)$ is the product of the Borel $\sigma$-algebra $\cB(\bR)$, i.e. we have:
+	\begin{align*}
+		\cB(\bR^n) = \Tensor_{i = 1}^n \cB(\bR)
+	\end{align*}
+\end{corollary}
+\begin{proof}
+	We know that the set $\cI$ of real intervals forms a basis of $\cB(\bR)$. Given this basis, the set $\cQ_0$ is exactly the set of $n$-dimensional real cuboids, which forms a basis of $\cB(\bR^n)$. Therefore, we have:
+	\begin{align*}
+		\cB(\bR^n)
+		= \angles{\cQ_0}_\sigma 
+		= \Tensor_{i = 1}^n \cB(\bR)
+	\end{align*}
+\end{proof}
+For the final part of this chapter, we establish some notation for commonly encountered subsets of product $\sigma$-algebras.
+\begin{definition}
+	Let $I$ be a set. Then we denote by $\cP_0(I)$ the finite, nonenmpty subsets of $I$.
+\end{definition}
+\begin{importantdefinition}{Measurable Cuboids}{}
+	Let $(X_i, \cA_i)_{i \in I}$ be a family of measurable spaces. Then we define the set of \tbf{measurable cuboids in $\prod_{i \in I} X_i$} as:
+	\begin{align*}
+		\cQ := \bigcup_{J \in \cP_0(I)} \lr{\prod_{j \in J} A_j \times \prod_{I \setminus J} X_i \mid A_j \in \cA_j},
+	\end{align*}
+	i.e. a finite number of the sides of our cuboid can be arbitrary measurable sets, and the remaining sides must correspond to the remaining domain sets $(X_i)_{i \in I \setminus J}$.
+\end{importantdefinition}
+\begin{importantdefinition}{Cylindrical Sets}{}
+	Let $(X_i, \cA_i)_{i \in I}$ be a family of measurable spaces. Then we define the set of \tbf{cylinder sets in $\prod_{i \in I} X_i$} as:
+	\begin{align*}
+		\cZ :=
+		&\bigcup_{J \in \cP_0(I)} \lr{A_J \times \prod_{i \in I \setminus J} X_i
+			\mid
+			A_J \in \Tensor_{j \in J} \cA_j}\\
+		=
+		&\bigcup_{J \in \cP_0(I)}
+		\pi_J^{-1}\lr(\Tensor_{j \in J} \cA_j),
+	\end{align*}
+	i.e. the base of the cylinder is a measurable set $A_j \subset \prod_{i \in I} X_i$ and all other sides are once again the remaining domain sets $(X_i)_{i \in I \setminus J}$.
+\end{importantdefinition}
+Note that if we view an everyday geometric cylinder $Z \subset \bR^3$ as the product of of the circle at its base with a finite real interval, it doesn't actually qualify as a cylindrical set in $\bR^3$, since it would have to be a product of the base circle with all of $\bR$, i.e. only "infinite" cylinders immediately qualify.
+\newpar
+By technicality, normal cylinders are still cylindrical sets though, since we can set $J = I$ and have view the entire cylinder as the base, without adding any additional "sides". 
+\newpar
+Therefore, this definition is not very useful if $I$ is finite, since every measurable set is a cylindrical with itself as its base and every cylindrical set is a product of measurable sets, i.e. measurable.
+\begin{importanttheorem}{}{}
+	Let $(X_i, \cA_i)_{i \in I}$ be a family of measurable spaces. Then the measurable cuboids in $\prod_{i \in I} X_i$ and the cylindrical sets in $\prod_{i \in I} X_i$ form bases of $\Tensor_{i \in I} \cA_i$.
+\end{importanttheorem}
+\begin{proof}
+	We will show $\cQ \subset \cZ \subset \Tensor_{i \in I} \cA_i \subset \angles{\cQ}_\sigma$, which implies $ \angles{\cQ}_\sigma \subset \angles{\cZ}_\sigma \subset \Tensor_{i \in I} \cA_i \subset \angles{\cQ}_\sigma$, proving the theorem.
+	\begin{enumerate}
+		\item $\cQ \subset \cZ$: Let $A \in \cQ$. Then $A$ is given as
+		\begin{align*}
+			A 
+			&= \prod_{j \in J}^n A_j \times \prod_{i \notin J} X_i\\
+			&= \pi_J^{-1}\lr(\prod_{j \in J} A_j).
+		\end{align*}
+		Therefore, since $\prod_{j \in J} A_j \in \Tensor_{j \in J} \cA_j$, $A$ is a cylinder set.
+		\item $\cZ \subset \Tensor_{i \in I} \cA_i$: Recall that $\pi_J$ is $\Tensor_{i \in I} \cA_i-\cA_J$-measurable. Therefore, for any $J \in \cP_0(I)$, we have that $\pi_J^{-1}(\cA_j) \subset \Tensor_{i \in I} \cA_i$, which means any cylinder set is contained in $\Tensor_{i \in I} \cA_i$.
+		\item $\Tensor_{i \in I} \cA_i \subset \angles{\cQ}_\sigma$: For any $i \in I$ and $A_i \in \cA_i$, we have:
+		\begin{align*}
+			\pi_i^{-1}(A_i) = A_i \times \prod_{j \neq i} X_j \in \cQ,
+		\end{align*}
+		i.e. $\pi_i^{-1}(\cA_i) \subset \cQ$ for all $i \in I$, which means we also have:
+		\begin{align*}
+			\bigcup_{i \in I} \pi_i^{-1}(\cA_i) \subset \cQ.
+		\end{align*}
+		By definition of $\Tensor_{i \in I} \cA_i$, we get:
+		\begin{align*}
+			\Tensor_{i \in I} \cA_i  = \angles{\bigcup_{i \in I} \pi_i^{-1}(\cA_i)}_\sigma \subset \angles{\cQ}_\sigma.
+		\end{align*}
+	\end{enumerate}
+\end{proof}
+\clearpage
+
+\section{Product Measures and Fubini's Theorem}
+In this section, given two measure spaces $(X, \cA, \mu)$ and $(Y, \cB, \nu)$, we want to derive a canonical measure $\mu \tensor \nu$ on $\cA \tensor \cB$. Our intuition already tells us what the measure of a cuboid should be: Given a cuboid
+\begin{align*}
+	Q = A \times B \subset X \times Y,
+\end{align*}
+where $A \in \cA$ and $B \in \cB$, we want the measure of the cuboid to be the product of the measures of its sides:
+\begin{align*}
+	(\mu \tensor \nu)(M) = \mu(A) \cdot \nu(B)
+\end{align*}
+Recall that, for any $M \in X \times Y$, the cuts through $M$ by $x \in X$ and $y \in Y$ are simply defined as
+\begin{align*}
+	M^x = \lr{y \in Y \mid (x,y) \in M},\\
+	M^y = \lr{x \in X \mid (x,y) \in M}.
+\end{align*}
+\begin{importanttheorem}{}{}
+	Let $(X,\cA, \mu)$ and $(Y, \cB, \nu)$ be $\sigma$-finite measure spaces. Let $M \in \cA \tensor \cB$. Then:
+	\begin{enumerate}
+		\item The function $x \mapsto \nu(M^x)$ is $\cA$-measurable,
+		\item The function $y \mapsto \mu(M^y)$ is $\cB$-measurable,
+		\item We have
+		\begin{align*}
+			\int_X \nu(M^x) ~d\mu(x)
+			&=
+			\int_Y \mu(M^y) ~d\nu(y)
+		\end{align*}
+	\end{enumerate}
+\end{importanttheorem}
+\begin{proof}
+	Let $\cS$ be the system of all sets $M \in \cA \tensor \cB$ for which this theorem holds.
+	\newpar
+	Let $\cQ$ be the system of all measurable cuboids in $X \times Y$, which we have just established are simply given by $Q = A \times B$ such that $A \in \cA$ and $B \in \cB$.
+	\newpar
+	Let $\cF$ be the system of finite unions of cuboids (which by our definition of cuboids inherently includes complements of cuboids). Since we count $X \times Y$ as a cuboid, $\cF$ forms a set algebra.
+	\newpar
+	We will show that $\cS$ is a monotone class containing $\cF$, which will give us
+	\begin{align*}
+		\cA \tensor \cB = \sigalg{\cQ} = \sigalg{\cF} = \mono{\cF} \subseteq \cS
+	\end{align*}
+	since $\cS \subseteq \cA \tensor \cB$ by definition, this implies $\cA \tensor \cB = \cS$.
+	\newpar
+	The proof the $\cS$ is a monotone class is however left as an exercise to the reader :)
+\end{proof}
+\begin{importanttheorem}{Product measure}{}
+	Let $(X, \cA, \mu)$ and $(Y, \cB, \nu$ be $\sigma$-finite measure spaces. Then there exists exactly one measure $\mu \otimes \nu$ on $\cA \otimes \cB$ such that for any $A \in \cA$ and $B \in \cB$, we have
+	\begin{align*}
+		(\mu \otimes \nu)(A \times B) = \mu(A)\nu(B)
+	\end{align*}
+	This measure is given by
+	\begin{align*}
+		(\mu \otimes \nu)(M) = \int_X \nu(M^x) ~d\mu(x) = \int_Y \mu(M^y) ~d\mu(y)
+	\end{align*}
+\end{importanttheorem}
+\begin{importantcorollary}{Cavalieri's Principle}{}
+	Let $(X, \cA, \mu)$ and $(Y, \cB, \nu)$ be $\sigma$-finite measure spaces. Then, for all $M \in \cA \tensor \cB$, we have
+	\begin{align*}
+		(\mu \tensor \nu)(M) 
+		&=
+		\int_X \nu(M^x) ~d\mu(x)\\
+		&=
+		\int_X \int_Y \chi_M(x,y) ~d\nu(y) ~d\mu(x)\\
+		&=
+		\int_Y \mu(M^Y) ~d\nu(x)\\
+		&=
+		\int_Y \int_X \chi_M(x,y) ~d\mu(x) ~d\nu(y)
+	\end{align*}
+\end{importantcorollary}
+\begin{corollary}
+	Let $(X, \cA, \mu)$ and $(Y, \cB, \nu)$ be $\sigma$-finite measure spaces. Then, for any $M \in \cA \tensor \cB$, the following are equivalent:
+	\begin{enumerate}
+		\item $(\mu \tensor \nu)(M) = 0$,
+		\item $\mu(M^y) = 0$ $\nu$-almost everywhere,
+		\item $\nu(M^x) = 0$ $\mu$-almost everywhere.
+	\end{enumerate}
+\end{corollary}
+\begin{lemma}
+	Let $(X, \cA, \mu)$ and $(Y, \cB, \nu)$ be $\sigma$-finite measure spaces. Let $f : X \times Y \to \bR$ be $\cA \tensor \cB$ measurable. Then the function $f(x, \cdot) : Y \to \bR$ is $\cB$-measurable for all $x \in X$.
+\end{lemma}
+\begin{importanttheorem}{Fubini's Theorem}{}
+	Let $(X, \cA, \mu)$ and $(Y, \cB, \nu)$ be $\sigma$-finite measure spaces. Let $f \in \cL^*(\mu \otimes \nu)$. Then:
+	\begin{align*}
+		\int_{X \times Y} f ~d(\mu \tensor \nu)
+		&=
+		\int_X \int_Y f(x,y) ~d\nu(y) ~d\mu(x)\\
+		&=
+		\int_Y \int_X f(x,y) ~d\mu(x) ~d\nu(y)
+	\end{align*}
+\end{importanttheorem}
+\pagebreak
+\begin{corollary}
+	The volume of the open ball
+	\begin{align*}
+		B^n_r(0) = \lr{\vx \in \bR^n \mid \norm{\vx}_2 < r}.
+	\end{align*}
+	is given by:
+	\begin{align*}
+		\lambda^n(B^n_r(0))
+		&=
+		\frac{\pi^{n/2}}{\Gamma(\frac{n}{2}+1)} \cdot r^n
+		=
+		\begin{cases}
+			\frac{\pi^k}{k!} \cdot r^n & n = 2k\\
+			\frac{\pi^k}{\prod_{i = 1}^k \frac{1}{2} + k - i} \cdot r^n & n = 2k + 1
+		\end{cases}
+	\end{align*}
+\end{corollary}
+In particular:
+\begin{enumerate}
+	\item The $1$-dimensional unit ball is simply the interval $(-1,1)$ and thus has length $2$,
+	\item The $2$-dimensional unit ball is a circle of radius $1$ and has area $\pi$
+	\item The $3$-dimensional unit ball has volume
+	$\frac{4\pi}{3}$
+	\item The $4$-dimensional unit ball has volume $\frac{\pi^2}{2}$
+	\item The $5$-dimensional unit ball has volume $\frac{8\pi^2}{15}$
+	\item $\hdots$
+\end{enumerate}
+\begin{proof}
+	By Cavalieri's principle and the linear transformation formula for the Lebesque measure, we get:
+	\begin{align*}
+		\lambda^n(B^n_r(0))
+		&=
+		\int_\bR \lambda^{n-1}\lr(B^n_r(0)^y) ~dy\\
+		&=
+		\int_{(-r,r)} \lambda^{n-1}\lr(B^n_r(0)^y) ~dy\\
+		&=
+		\int_{-1}^1 = \det\lr(\sqrt{r^2-y^2} \cdot I_n) \cdot \lambda^{n-1}\lr{x \in \bR^{n-1} \mid \norm{x}_2 < 1} ~dy\\
+		&=
+		r^n \cdot \int_{-1}^1 \lr(\sqrt{r^2-y^2})^{n-1} \cdot \lambda^{n-1} \lr{x \in \bR^{n-1} \mid \norm{x}_2 < 1} ~dy\\
+		&=
+		r^n \cdot \lambda^{n-1}(B^{n-1}_1(0)) \cdot \int_{-1}^1 \lr(\sqrt{1 - y^2})^{n-1} ~dy
+	\end{align*}
+	We can thus get our result by solving the integral
+	\begin{align*}
+		I_n &:= \int_{-1}^1 \lr(\sqrt{1-y^2})^{n-1} ~dy
+	\end{align*}
+	Substituting $\cos(\theta) = y$ gives:
+	\begin{align*}
+		I_n &= \int_{-1}^1 \lr(\sqrt{1-y^2})^{n-1} ~dy\\
+		&= \int_{-1}^1 \lr(\sqrt{1-\cos(\theta)^2})^{n-1} \cdot \sin(\theta) ~d\theta\\
+		&= \int_{0}^\pi \sin^n(\theta) ~d\theta
+	\end{align*}
+	Now, partial integration gives:
+	\begin{align*}
+		I_n 
+		&= \int_{0}^\pi \sin^n(\theta) ~d\theta\\
+		&= \int_{0}^\pi \sin(\theta) \cdot \sin^{n-1}(\theta) ~d\theta\\
+		&=
+		\lr[-\cos(\theta) \cdot \sin^{n-1}(\theta)]_0^\pi + (n-1) \cdot \int_{0}^\pi \cos^2(\theta) \cdot \sin^{n-2}(\theta) ~d\theta\\
+		&=
+		(n-1) \cdot \int_{0}^\pi \cos^2(\theta) \cdot \sin^{n-2}(\theta) ~d\theta\\
+		&=
+		(n-1) \cdot \int_{0}^\pi (1 - \sin^2) \cdot \sin^{n-2}(\theta) ~d\theta\\
+		&=
+		(n-1) \cdot (I_{n-2} - I_n),
+	\end{align*}
+	which means:
+	\begin{align*}
+		I_n &= (n-1) \cdot I_{n-2} - (n-1) \cdot I_n\\
+		\implies n I_n &= (n-1) \cdot I_{n-2}\\
+		\implies I_n &= \frac{n-1}{n} \cdot I_{n-2}
+	\end{align*}
+	Unrolling this recursive formula, we get:
+	\begin{align*}
+		I_{2k} = I_0 \cdot \prod_{i = 1}^n \frac{2i - 1}{2i}\\
+		I_{2k+1} = I_1 \cdot \prod_{i = 1}^n \frac{2i}{2i+1}\\
+	\end{align*}
+	We can easily calculate $I_0$ and $I_1$ explicitly:
+	\begin{align*}
+		I_0 
+		&= \int_{0}^\pi \sin^0(\theta) ~d\theta\\
+		&= \int_{0}^\pi 1 ~d\theta\\
+		&= \pi
+	\end{align*}
+	\begin{align*}
+		I_1 
+		&= \int_{0}^\pi \sin(\theta) ~d\theta\\
+		&= (-\cos(\pi)) - (-\cos(0))\\
+		&= 2
+	\end{align*}
+	Thus, we have:
+	\begin{align*}
+		I_{2k} = \pi \cdot \prod_{i = 1}^k \frac{2i - 1}{2i}\\
+		I_{2k+1} = 2 \cdot \prod_{i = 1}^k \frac{2i}{2i+1}
+	\end{align*}
+	This gives us:
+	\begin{align*}
+		I_{2k+1}I_{2k} 
+		&= 2\pi \cdot \prod_{i = 1}^k \frac{2i - 1}{2i} \cdot \prod_{i = 1}^k \frac{2i}{2i+1}\\
+		&= 2\pi \cdot \prod_{i = 1}^k \frac{2i - 1}{2i+1}\\
+		&= \frac{2\pi}{2k+1}\\
+		&= \frac{\pi}{k + \frac{1}{2}}
+	\end{align*}
+	\begin{align*}
+		I_{2k}I_{2k-1} 
+		&= 2\pi \cdot \prod_{i = 1}^k \frac{2i - 1}{2i} \cdot \prod_{i = 1}^{k-1} \frac{2i}{2i+1}\\
+		&= 2\pi \cdot \frac{2k - 1}{2k} \cdot \prod_{i = 1}^{k-1} \frac{2i - 1}{2i} \cdot \prod_{i = 1}^{k-1} \frac{2i}{2i+1}\\
+		&= 2\pi \cdot \frac{2k - 1}{2k} \cdot \frac{1}{2k-1}\\
+		&= \frac{\pi}{k}
+	\end{align*}
+	We know that 
+	\begin{align*}
+		\lambda(B_1^1(0)) = \lambda((-1,1)) = 2
+	\end{align*}
+	And, recalling the fact that $\lambda^0$ is the counting measure, we also know that \begin{align*}
+		\lambda^0(B_1^0(0)) = \lambda^0(\lr{()}) = 1
+	\end{align*}
+	Thus, at long last, we can calculate the volumes of our unit balls:
+	\begin{align*}
+		\lambda^{2k}(B^{2k}_1(0)) 
+		&= (I_{2k}I_{2k-1}) \cdot (I_{2k - 2}I_{2k-3}) \cdot \hdots \cdot (I_2 I_1) \cdot \lambda^0(B^0(0))\\
+		&= \lr(\prod_{i = 1}^k \frac{\pi}{i}) \cdot 1\\
+		&= \frac{\pi^k}{k!} = \frac{\pi^{n/2}}{\Gamma\lr(\frac{n}{2} + 1)}
+	\end{align*}
+	\begin{align*}
+		\lambda^{2k+1}(B^{2k+1}_1(0)) 
+		&= (I_{2k+1}I_{2k}) \cdot (I_{2k - 1}I_{2k-2}) \cdot \hdots \cdot (I_3 I_2) \cdot \lambda^1(B^1(0))\\
+		&= \lr(\prod_{i = 1}^k \frac{\pi}{i + \frac{1}{2}}) \cdot 2\\
+		&= \frac{\pi^k}{\prod_{i = 1}^k i + \frac{1}{2}} \cdot 2\\
+		&= \frac{\pi^k}{\prod_{i = 0}^k i + \frac{1}{2}}\\
+		&= \frac{\pi^k \cdot \sqrt{\pi}}{\lr(\prod_{i = 0}^k i + \frac{1}{2}) \cdot \sqrt{\pi}}\\
+		&= \frac{\pi^\frac{n}{2}}{\lr(\prod_{i = 0}^k i + \frac{1}{2}) \cdot \Gamma\lr(\frac{1}{2})}\\
+		&= \frac{\pi^\frac{n}{2}}{\lr(\prod_{i = 1}^{k+1} i - \frac{1}{2}) \cdot \Gamma\lr(\frac{1}{2})}\\
+		&= \frac{\pi^\frac{n}{2}}{\Gamma\lr(k + \frac{1}{2} + 1)}\\
+		&= \frac{\pi^{n/2}}{\Gamma\lr(\frac{n}{2} + 1)}
+	\end{align*}
+	Which gives us
+	\begin{align*}
+		\lambda^n(B^n_r(0))
+		&=
+		\frac{\pi^{n/2}}{\Gamma(\frac{n}{2}+1)} \cdot r^n
+	\end{align*}
+	as desired.
+\end{proof}
+\begin{proposition}
+	The $5$-dimensional unit ball has the highest volume out of any unit ball. As the dimension increases, the volume of the unit ball converges to zero.  
+\end{proposition}
+\begin{proofsketch}
+	Plugging small natural numbers into our formula, we see that the formula is monotonically increasing for $n \leq 5$ and monotonically decreasing for $n \geq 5$. Furthermore, we have $\Gamma(\frac{n}{2} + 1) \geq \Gamma(k + 1) = k!$, which grows asymptotically faster than $\pi^{n/2} \leq \sqrt{\pi} \cdot \pi^k$.
+\end{proofsketch}
+\begin{importantlemma}{}{}
+	Let $j \in \lr{1, \hdots, n}$. Let $f : \bR^n \to \bR$ be continously differentiable with $f, \partial_j f \in L^1(\bR^n)$. Then
+	\begin{align*}
+		\int_{\bR^n} \partial_j f(x) ~d\lambda^n(x) = 0
+	\end{align*}
+\end{importantlemma}
+\begin{proof}
+	\begin{enumerate}
+		\item First, assume there is an $R > 0$ such that $f(x) = 0$ for all $\norm{x}_2 \geq R$. Let $x = (y, x_n) \in \bR^{n-1} \times \bR$. Then by Fubini we get:
+		\begin{align*}
+			\int_{\bR^n} \partial_j f(x) ~d\lambda^n(x) 
+			&=
+			\int_{\bR^n} \partial_j f(y, x_n) ~d\lambda^n(y, x_n)\\
+			&= \int_{\bR^{n-1}} \int_{\bR} \partial_j f(y, x_n) ~d\lambda^1(x_n) ~d\lambda^{n-1}(y).
+		\end{align*}
+		For $j = n$, we apply the fundamental theorem of calculus and our assumption that $f(x) = 0$ for all $\norm{x}_2 \geq R$ and get:
+		\begin{align*}
+			\int_{\bR} \partial_j f(y, x_n) ~d\lambda^1(x_n)
+			&= \lim_{x_n \to \infty} f(y,x_n) - f(y,-x_n)\\
+			&= 0
+		\end{align*}
+		By induction, the same holds for all $j$.
+		\item Now, let $\phi : \bR \to \bR$ be a smooth function fulfilling:
+		\begin{align*}
+			\phi(t)
+			=
+			\begin{cases}
+				1 & \abs{t} \leq 1,\\
+				0 & \abs{t} \geq 2.
+			\end{cases}
+		\end{align*}
+		And let
+		\begin{align*}
+			\phi_R : \bR^n &\to \bR\\
+			\phi_R(x) &= \phi\lr(\frac{\norm{x}_2}{R})
+		\end{align*}
+		Then we have
+		\begin{align*}
+			(\phi_R f)(x) = 0
+		\end{align*}
+		for all $\norm{x}_2 \geq 2R$, meaning that by the product rule of differentiation and step 1 we get:
+		\begin{align*}
+			\int_{\bR^n} \phi_R(x) \cdot \partial_j f(x) ~d\lambda^n(x)
+			&+
+			\int_{\bR^n} \partial_j \phi_R(x) \cdot f(x) ~d\lambda^n(x)\\
+			&=
+			\int_{\bR^n} \partial_j (\phi_R(x) \cdot f(x)) ~d\lambda^n(x)\\ &= 0,
+		\end{align*}
+		i.e.
+		\begin{align*}
+			\int_{\bR^n} \phi_R(x) \cdot \partial_j f(x) ~d\lambda^n(x)
+			= -
+			\int_{\bR^n} \partial_j \phi_R(x) \cdot f(x) ~d\lambda^n(x)
+		\end{align*}
+		Now, notice we also have $\phi_R(x) = 1$ for $\norm{x} \leq R$ - in particular, we have $\phi_R \to 1$ and $\partial_j \phi_R \to 0$ pointwise on $\bR^n$ for $R \to \infty$, which means we have
+		\begin{align*}
+			\int_{\bR^n} \partial_j f(x) ~d\lambda^n(x)
+			&= \int_{\bR^n} \lim_{R \to \infty}\phi_R(x) \cdot \partial_j f(x) ~d\lambda^n(x)
+		\end{align*}
+		and
+		\begin{align*}
+			\int_{\bR^n}  \lim_{R \to \infty}\partial_j \phi_R(x) \cdot f(x) ~d\lambda^n(x)
+			&= 0
+		\end{align*}
+		Finally, we also have:
+		\begin{align*}
+			\abs{\phi_R \cdot (\partial_j f)}
+			\leq \abs{\partial_j f} \in L^1(\bR^n)
+		\end{align*}
+		and
+		\begin{align*}
+			\abs{(\partial_j \phi_R) \cdot f}
+			&\leq
+			\frac{\max \abs{\phi'}}{R} \cdot \abs{f}\\
+			&\leq
+			(\max \abs{\phi'}) \cdot \abs{f} \in 
+			L^1(\bR^n)
+		\end{align*}
+		Thus, we can apply Lebesque's dominated convergence theorem to pull out the limits and connect the two equalities, giving us:
+		\begin{align*}
+			\int_{\bR^n} \partial_j f(x) ~d\lambda^n(x)
+			&= \int_{\bR^n} \lim_{R \to \infty}\phi_R(x) \cdot \partial_j f(x) ~d\lambda^n(x)\\
+			&= \lim_{R \to \infty} \int_{\bR^n} \phi_R(x) \cdot \partial_j f(x) ~d\lambda^n(x)\\
+			&= -\lim_{R \to \infty} \int_{\bR^n}  \partial_j \phi_R(x) \cdot f(x) ~d\lambda^n(x)\\
+			&= -\int_{\bR^n}  \lim_{R \to \infty}\partial_j \phi_R(x) \cdot f(x) ~d\lambda^n(x)\\
+			&= 0
+		\end{align*}
+	\end{enumerate}
+	
+\end{proof}
+\begin{importantcorollary}{Partial Integration-ish Formula}{}
+	Let $f, g : \bR^n \to \bR$ be continuously differentiable such that $f, \partial_j f \in L^p(\bR^n)$ and $g, \partial_j g \in L^q(\bR^n)$ with $\frac{1}{p} + \frac{1}{q} = 1$. Then we have
+	\begin{align*}
+		\int_{\bR^n} (\partial_j f(x)) \cdot g(x) ~d\lambda^n(x) = 0 - \int_{\bR^n} f(x) \cdot (\partial_j g(x)) ~d\lambda^n(x)
+	\end{align*}
+\end{importantcorollary}
+\begin{proof}
+	Applying the product rule of differentiation, and then the last lemma, we get:
+	\begin{align*}
+		\int_{\bR^n} (\partial_j f(x)) \cdot g(x) ~d\lambda^n(x) &+ \int_{\bR^n} f(x) \cdot (\partial_j g(x)) ~d\lambda^n(x)\\
+		&= \int_{\bR^n} \partial_j (f(x) \cdot g(x)) ~d\lambda^n(x)\\
+		&= 0	
+	\end{align*}
+\end{proof}
+\clearpage
+
+\section{Change of Variables}
+\begin{lemma}
+	Let $U \subset \bR^n$ and $x_0 \in U$. Let $\phi : U \to \bR^n$ be a function such that $D\phi(x_0)$ is invertible.
+	\newpar
+	Then for a sequence $Q_j = Q(x_j, r_j) \subset U$ of cuboids of sidelength $r_j$ with center $x_j$ such that $r_j \to 0$ and $x_0 \in Q_j$, we have:
+	\begin{align*}
+		\limsup_{j \to \infty} \frac{\lambda^n(\phi(Q_j))}{\lambda^n(Q_j)}
+		\leq
+		\abs{\det D\phi(x_0)}
+	\end{align*}
+\end{lemma}
+\begin{proof}
+	We can assume $x_0 = 0$ and $\phi(0) = 0$, since otherwise we can translate space as needed before doing any calculations without breaking any of our assumptions.
+	\begin{enumerate}
+		\item  Assume $D(\phi(0)) = E_n$. Then, by definition of differentiablity and equivalence of norms on finite-dimensional vector spaces, we have
+		\begin{align*}
+			0 &= \lim_{x \to 0}
+			\frac{\norm{\phi(x) - \phi(0) - D\phi(0)x}\infty}{\norm{x}_\infty}\\
+			&= \lim_{x \to 0} \frac{\norm{\phi(x) - x}_\infty}{\norm{x}_\infty},
+		\end{align*}
+		Let $\epsilon > 0$. Then, by the definition of convergence, for every $x$ with a sufficiently small norm, we have:
+		\begin{align*}
+			\frac{\norm{\phi(x) - x}_\infty}{\norm{x}_\infty} \leq \epsilon,
+		\end{align*}
+		which means
+		\begin{align*}
+			\norm{\phi(x) - x}_\infty \leq \epsilon{\norm{x}_\infty}.
+		\end{align*}
+		Furthermore, for $x \in Q_j$, we have:
+		\begin{align*}
+			\norm{x}_\infty 
+			&= \norm{x - \vzero}_\infty\\
+			&= \norm{x - x_0}_\infty\\
+			&\leq \norm{x - x_j}
+			+ \norm{x_j - x_0}\\
+			&\leq 2r_j
+		\end{align*}
+		For sufficiently large $j$, these imply:
+		\begin{align*}
+			\norm{\phi(x) - x}_\infty &\leq \epsilon \norm{x}_\infty\\
+			&\leq 2\epsilon r_j.
+		\end{align*}
+		Further applying the triangle inequality, we get:
+		\begin{align*}
+			\norm{\phi(x) - \phi(x)}
+			&\leq \norm{\phi(x) - x}_\infty\\
+			&+ \norm{x - x_j}_\infty\\
+			&+ \norm{x_j - \phi(x_j)}_\infty\\
+			&\leq 2\epsilon r_j + r_j + 2\epsilon r_j\\
+			&\leq (1 + 4\epsilon)r_j,
+		\end{align*}
+		which means that $\phi$ increases the side length of our cube by a factor of at most $(1 + 4\epsilon)$. Therefore, it increases the volume by a factor at most $(1 + 4\epsilon)^n$, i.e:
+		\begin{align*}
+			\frac{\lambda^n(\phi(Q_j))}{\lambda^n(Q_j)}
+			\leq (1 + 4\epsilon)^n
+		\end{align*}
+		Letting $j \to \infty$ and $\epsilon \searrow 0$, we have
+		\begin{align*}
+			\limsup_{j \to \infty }\frac{\lambda^n(\phi(Q_j))}{\lambda^n(Q_j)}
+			&\leq \lim_{\epsilon \to 0} (1 + 4\abs{\epsilon})^n\\
+			&= 1\\
+			&= \abs{\det E_n}
+		\end{align*}
+		\item Now, let $S := D\phi(0)$ and $\phi_0 := S^{-1} \circ \phi$, i.e. $\phi = S \circ \phi_0$. Then $D\phi_0(0) = E_n$. By the linear transformation equation $\lambda^n(S(E)) = \abs{\det(S)} \lambda^n(E)$ (\ref{thm:lineartransformationequation}), we have:
+		\begin{align*}
+			\limsup_{j \to \infty} \frac{\lambda^n(\phi(Q_j))}{\lambda^n(Q_j)}
+			&=
+			\limsup_{j \to \infty} \frac{\lambda^n(S(\phi_0(Q_j)))}{\lambda^n(Q_j)}\\
+			&= \abs{\det S} \limsup_{j \to \infty} \frac{\lambda^n(\phi_0(Q_j))}{\lambda^n(Q_j)}\\
+			&\leq \abs{\det S}\\
+			&= \abs{\det D\phi(0)}
+		\end{align*}
+	\end{enumerate}
+\end{proof}
+\begin{importanttheorem}{Multivariable Substitution Formula}{}
+	Let $U \subset \bR^n$ be open. Let $\phi : U \to \bR^n$ be $C^1$. Then if $f : V \to \barR$ is $\lambda^n$-measurable, we have:
+	\begin{align*}
+		\int_V f(y) ~dy = \int_{\phi^{-1}(V)} f(\phi(x)) \cdot \abs{\det D\phi(x)} ~dx.
+	\end{align*}
+\end{importanttheorem}
+\begin{importantcorollary}{}{}
+	Let $U,V \subset \bR^n$ be open. Let $\phi : U \to \bR^n$ be $C^1$. Then if $A \subset U$ is $\lambda^n$-measurable, so is $\phi(A)$, and we have
+	\begin{align*}
+		\lambda^n(\phi(A)) = \int_A \abs{\det D\phi(x)} ~dx.
+	\end{align*}
+\end{importantcorollary}
+\begin{proof}
+	Apply the previous equation to $f = \boldone_{\phi(A)}$.
+\end{proof}
+\begin{importantdefinition}{Gram Matrix of a Diffeomorphism}{}
+	Let $\phi : U \to V$ be a $C^k$-diffeomorphism between open subsets of $\bR^n$. Then the \tbf{Gram matrix} $g(\phi) \in C^{k-1}(U, \bRnn)$ is given by:
+	\begin{align*}
+		g(\phi)(x) = D\phi(x)^\top D\phi(x),
+	\end{align*}
+	or equivalently:
+	\begin{align*}
+		g(\phi)_{ij}(x) = \scalar{\pdv{x_i}\phi(x)}{\pdv{x_j}\phi(x)}
+	\end{align*}
+\end{importantdefinition}
+Since $g(\phi)(x)$ is the product of a matrix with its own transpose, it is symmetric and strictly positive definite. This lets us alternatively write the multivariable substitution formula as:
+\begin{align*}
+	\int_V f(y) dy = \int_{\phi^{-1}(V)} f(\phi(x)) \sqrt{\det g(\phi)(x)} ~dx
+\end{align*}
+
+\clearpage
+
+\section{Alternative coordinate systems on $\bR^2$ and $\bR^3$}
+\subsection{Polar Coordinates}
+A commonly used alternative coordinate system on $\bR^2$ is given by \tbf{polar coordinates}, which describes a point $x \in \bR^2$ based on its distance $r$ from the origin and the \tit{polar angle} $\omega$ between $x$ and $(0,r)^\top$. These might be familiar from dealing with complex numbers, where any $z \in \bC$ can be represented as
+\begin{align*}
+	z = r \cdot e^{\omega i}
+\end{align*}
+\begin{importantdefinition}{Polar Coordinates on $\bR^2$}{}
+	Let $U = (0, \infty) \times (0,2\pi)$ and $V = \bR^2 \setminus \lr{(x,0)^\top : x \geq 0}$. The \tbf{polar coordinate transformation} is the map:
+	\begin{align*}
+		\phi : U &\to V\\
+		\binom{r}{\omega} &\mapsto \binom{r \cos \omega}{r \sin \omega}
+	\end{align*}
+	which maps a point given in polar coordinates to its corresponding point in the cartesian coordinate system. 
+\end{importantdefinition}
+The Jacobian of the polar coordinate transform is:
+\begin{align*}
+	D\phi(r,\omega)
+	&=
+	\begin{pmatrix}
+		\pdv{r} r \cos \omega & \pdv{\omega} r \cos \omega\\
+		\pdv{r} r \sin \omega & \pdv{\omega} r \sin \omega
+	\end{pmatrix}
+	\\
+	&=
+	\begin{pmatrix}
+		\cos \omega & -r \sin \omega\\
+		\sin \omega & r \cos \omega
+	\end{pmatrix}
+\end{align*}
+Which means the determinant is:
+\begin{align*}
+	\det D\phi(r,\omega)
+	&=
+	\det 
+	\begin{pmatrix}
+		\cos \omega & -r \sin \omega\\
+		\sin \omega & r \cos \omega
+	\end{pmatrix}
+	\\
+	&=
+	r\cos(\omega)^2 + r\sin(\omega)^2 
+	\\
+	&= r
+\end{align*}
+\begin{importantcorollary}{Polar Coordinate Integral Transform}{}
+	Let $f : \bR^2 \to \bR$ be integrable. Then we have:
+	\begin{align*}
+		\int_{\bR^2} f(x,y) ~d\lambda(x,y) 
+		&=
+		\int_{0}^{2\pi} \int_{0}^\infty r \cdot f(r \cos(\omega), r\sin(\omega)) ~dr ~d\omega
+	\end{align*}
+\end{importantcorollary}
+\begin{proposition}
+	The inverse of the polar coordinate transform $\phi$ is:
+	\begin{align*}
+		\phi^{-1}(x,y) 
+		&=
+		\begin{cases}
+			\lr(r, ~\arccos(\frac{x}{r}))^\top & y \geq 0\\
+			\lr(r, ~2\pi - \arccos(\frac{x}{r}))^\top & y < 0
+		\end{cases}
+	\end{align*}
+	where $r = \sqrt{x^2 + y^2}$.
+\end{proposition}
+\pagebreak
+\begin{example}
+	\theoremname{The Gaussian Integral}
+	We want to find the area under the Gaussian bell curve pre-normalization, i.e.
+	\begin{align*}
+		\int_\bR e^{-x^2} ~dx
+	\end{align*}
+	To do this, we add an additional dimension and exploit the resulting rotational symmetry.
+	By Fubini's Theorem, we have:
+	\begin{align*}
+		\int_{\bR^2} e^{-(x^2 + y^2)} ~d\lambda^2(x,y)
+		&=
+		\int_{\bR} \lr(\int_{\bR} e^{-(x^2 + y^2)} ~d\lambda(y)) ~d\lambda(x)\\
+		&=
+		\int_{\bR} \lr(\int_{\bR} e^{-x^2} \cdot e^{-y^2} ~d\lambda(y)) ~d\lambda(x)\\
+		&=
+		\int_{\bR} e^{-x^2} \cdot \lr(\int_{\bR} e^{-y^2} ~d\lambda(y)) ~d\lambda(x)\\
+		&= \int_{\bR} e^{-x^2} ~d\lambda(x) \cdot \int_{\bR} e^{-y^2} ~d\lambda(y)\\
+		&= \lr(\int_{\bR} e^{-x^2} ~d\lambda(x))^2
+	\end{align*}
+	Therefore, we have
+	\begin{align*}
+		\int_{\bR} e^{-x^2} ~d\lambda(x) &= \sqrt{\int_{\bR^2} e^{-(x^2 + y^2)} ~d\lambda(x,y)^2}
+	\end{align*}
+	We can now calculate the two-dimensional integral using multivariable substitution to transform to polar coordinates:
+	\begin{align*}
+		\int_{\bR^2} e^{-(x^2 + y^2)} ~d\lambda^2(x,y)
+		&= \int_{(0,\infty) \times (0,2\pi)} re^{-r^2}  ~d\lambda^2(r,\omega)\\
+		&= \int_0^\infty \lr(\int_{0}^{2\pi} re^{-r^2} ~d\omega) ~dr\\
+		&= \int_0^\infty 2\pi re^{-r^2} ~dr\\
+		&= 2\pi \int_0^\infty re^{-r^2} ~dr\\
+		&= 2\pi \int_0^\infty \frac{1}{2}e^{-r^2} ~2rdr\\
+		&= 2\pi \int_{-\infty}^0 \frac{1}{2} e^{s} ~ds\\
+		&= \pi \int_{-\infty}^0 e^{s} ~ds\\
+		&= \pi
+	\end{align*}
+	Which means that the area under the bell curve is $\sqrt{\pi}$.
+\end{example}
+\pagebreak
+\begin{example} \theoremname{Beta function}
+	For $p,q \in \bR_{> 0}$, the beta function $B$ is defined as:
+	\begin{align*}
+		B(p,q) = \int_{0}^1 t^{p-1} \cdot (1-t)^{q-1} ~dt
+	\end{align*}
+	The beta function is of interest primarily because of its close relationship to the gamma function:
+	\begin{theorem}
+		We have:
+		\begin{align*}
+			B(p,q) = \frac{\Gamma(p)\Gamma(q)}{\Gamma(p+q)}
+		\end{align*}
+	\end{theorem}
+	\begin{proof}
+		Substituting $t = g(\omega) := \sin(\omega)^2$ into the definition of the beta function gives us:
+		\begin{align*}
+			g'(\omega) &= \dv{\omega} \sin(\omega)^2\\
+			&= \sin(\omega)\cos(\omega) + \cos(\omega) + \sin(\omega)\\
+			&= 2 \sin(\omega) \cos(\omega)
+		\end{align*}
+		and:
+		\begin{align*}
+			1 = \sin(\omega)^2 \Leftrightarrow \omega = \frac{\pi}{2},
+		\end{align*}
+		which means we have:
+		\begin{align*}
+			B(p,q) 
+			&= \int_{0}^1 t^{p-1} \cdot (1-t)^{q-1} ~dt\\
+			&= \int_{0}^{\pi/2} \sin(\omega)^{2p-2} \cdot (1-\sin(\omega)^2)^{q-1} \cdot 2\sin(\omega) \cos(\omega) ~d\omega\\
+			&= \int_{0}^{\pi/2} \sin(\omega)^{2p-2} \cdot \cos(\omega)^{2q-2} \cdot 2\sin(\omega) \cos(\omega) ~d\omega\\
+			&= 2 \cdot \int_{0}^{\pi/2} \sin(\omega)^{2p-1} \cdot \cos(\omega)^{2q-1} ~d\omega
+		\end{align*}
+		Meanwhile, performing a reverse substitution with $t := g(r) = r^2$ in the definition of the gamma function gives:
+		\begin{align*}
+			\Gamma(m) 
+			&= \int_0^\infty t^{m-1} e^{-t} ~dt\\
+			&= \int_0^\infty (r^2)^{m-1} e^{-r^2} \cdot 2r ~dr\\
+			&= 2 \int_0^\infty r^{2m-1} e^{-r^2} ~dr
+		\end{align*}
+		Now, we get:
+		\begin{align*}
+			B(p,q)\Gamma(p+q)
+			&=
+			2 \int_0^\infty B(p,q) \cdot r^{2p + 2q - 1} \cdot e^{-r^2} ~dr\\
+			&=
+			4 \int_0^\infty \int_0^{\pi/2} (\sin \omega)^{2p-1} \cdot r^{2p-1} \cdot (\cos \omega)^{2q-1} \cdot r^{2q-1} \cdot r \cdot e^{-r^2} ~d\omega ~dr\\ 
+			&=
+			4 \int_0^\infty \int_0^{\pi/2} (r\sin \omega)^{2p-1} \cdot (r\cos \omega)^{2q-1} \cdot r \cdot e^{-r^2} ~d\omega ~dr\\ 
+		\end{align*}
+		By applying the polar coordinate integral transform in reverse, we get:
+		\begin{align*}
+			B(p,q)\Gamma(p+q) &=
+			4 \int_0^\infty \int_0^{\pi/2} (r\sin \omega)^{2p-1} \cdot (r\cos \omega)^{2q-1} \cdot r \cdot e^{-r^2} ~d\omega ~dr\\ 
+			&=
+			4 \int_0^\infty \int_0^{\infty} x^{2p-1} \cdot y^{2q-1} \cdot e^{-\sqrt{x^2 + y^2}^2} ~dy ~dx\\ 
+			&=
+			4 \int_0^\infty \int_0^{\infty} x^{2p-1} \cdot y^{2q-1} \cdot e^{-x^2 - y^2} ~dy ~dx\\ 
+			&=
+			\lr(2 \int_0^\infty x^{2p-1} e^{-x^2} ~dx) \cdot \lr(2 \int_0^\infty y^{2q-1} e^{-y^2} ~dy)\\
+			&= \Gamma(p)\Gamma(q)
+		\end{align*}
+	\end{proof}
+\end{example}
+\clearpage
+
+\subsection{Spherical Coordinates}
+The most natural generalization of polar coordinates to $\bR^3$ are \tit{spherical coordinates}, in which $\theta \in (0,\pi)$ describes the \tit{polar angle} between a point $P$ and the $z$-Axis and $\omega \in (0,2\pi)$ describes the \tit{azimuthal angle} between the $x$-axis and the projection $P'$ of $P$ onto the $xy$-plane.
+We can derive spherical coordinates from two dimensional coordinates as follows:
+\begin{enumerate}
+	\item Take a point $P = (x,y,z) \in \bR^3$. Notice that $z = r\cos(\theta)$.
+	\item Project $P$ to a point $P' = (x,y)$. The distance of $P'$ from $(0,0)$ is exactly $\rho := r \sin \theta$. Therefore, $P'$ has polar coordinates $(\rho, \omega)$, which gives us:
+	\begin{align*}
+		P = 
+		\begin{pmatrix}
+			x\\
+			y\\
+			z
+		\end{pmatrix}
+		=
+		\begin{pmatrix}
+			\rho \cos \omega\\
+			\rho \sin \omega\\
+			r \cos \theta
+		\end{pmatrix}
+		=
+		\begin{pmatrix}
+			r \sin \theta \cos \omega\\
+			r \sin \theta \sin \omega\\
+			r \cos \theta
+		\end{pmatrix}
+	\end{align*}
+\end{enumerate}
+\begin{importantdefinition}{Spherical Coordinates on $\bR^3$}{}
+	Let $U = (0,\infty) \times (0,\pi) \times (0, 2\pi)$ and $V = \bR^3 \setminus \lr{(x,0,z)^\top : x \geq 0}$. The \tbf{spherical coordinate transformation} is the map:
+	\begin{align*}
+		\phi : 
+		U &\to V\\
+		\begin{pmatrix}
+			r\\
+			\theta\\
+			\omega
+		\end{pmatrix}
+		&\mapsto
+		\begin{pmatrix}
+			r \sin \theta \cos \omega\\
+			r \sin \theta \sin \omega\\
+			r \cos \theta
+		\end{pmatrix}
+	\end{align*}
+	which maps a point given in spherical coordinates to its corresponding point in the cartesian coordinate system. 
+\end{importantdefinition}
+The Jacobian of the spherical coordinate transform is:
+\begin{align*}
+	D\phi(r, \theta, \omega)
+	&=
+	\begin{pmatrix}
+		\pdv{r} r \sin \theta \cos \omega & \pdv{\theta} r \sin \theta \cos \omega & \pdv{\omega} r \sin \theta \cos \omega\\
+		\pdv{r} r \sin \theta \sin \omega & \pdv{\theta} r \sin \theta \sin \omega & \pdv{\omega} r \sin \theta \sin \omega\\
+		\pdv{r} r \cos \theta & \pdv{\theta} r \cos \theta &  \pdv{\omega} r \cos \theta
+	\end{pmatrix}\\
+	&=
+	\begin{pmatrix}
+		\sin \theta \cos \omega & r \cos \theta \cos \omega & -r \sin \theta \sin \omega\\
+		\sin \theta \sin \omega & r \cos \theta \sin \omega & r \sin \theta \cos \omega\\
+		\cos \theta & -r \sin \theta & 0
+	\end{pmatrix}
+\end{align*}
+And a long, tedious and unenlightening calculation eventually gives the determinant as:
+\begin{align*}
+	\det D\phi(r, \theta, \omega) = r^2 \sin(\theta)
+\end{align*}
+Which gives us:
+\begin{importantcorollary}{Spherical Coordinate Integral Transform}{}
+	Let $f : \bR^3 \to \bR$ be integrable. Then we have:
+	\begin{align*}
+		&\int_{\bR^3} f(x,y,z) ~d\lambda^3(x,y,z)\\ 
+		= &\int_{0}^{2\pi} \int_{0}^\pi \int_{0}^{\infty} r^2 \sin \theta \cdot f(r\sin \theta \sin \omega, r\sin \theta \cos \omega, r \cos \theta)~dr ~d\theta ~d\omega
+	\end{align*}
+\end{importantcorollary}
+\begin{example}
+	\theoremname{Another derivation of the volume of $B^3_R$}
+	\begin{align*}
+		\lambda^3(B^3_R)
+		&=
+		\int_{\bR^3} \boldone_{{B^3_R}}(x,y,z) ~d\lambda^3(x,y,z)\\
+		&=
+		\int_{\bR^3} \boldone_{\lr{\sqrt{x^2 + y^2 + z^2}~ <~ R}}(x,y,z) ~d\lambda^3(x,y,z)\\
+		&=
+		\int_0^{2\pi} \int_0^\pi \int_0^\infty \boldone_{\lr{r~ <~ R}}(r) \cdot r^2 \sin \theta ~dr ~d\theta ~d\omega\\
+		&=
+		\int_0^{2\pi} \int_0^\pi \int_0^\infty \boldone_{(0,R)}(r) \cdot r^2 \sin \theta ~dr ~d\theta ~d\omega\\
+		&= \lr(\int_0^\infty \boldone_{(0,R)}(r) \cdot r^2 ~dr) \cdot \lr(\int_0^\pi \sin \theta ~d\theta) \cdot \lr(\int_0^{2\pi} 1 ~d\omega)\\
+		&= \lr(\int_0^R r^2 ~dr) \cdot \lr(\int_0^\pi \sin \theta ~d\theta) \cdot \lr(\int_0^{2\pi} 1 ~d\omega)\\
+		&= \frac{1}{3} R^3 \cdot (-\cos(\pi) + \cos(0)) \cdot 2\pi\\
+		&= \frac{4}{3} \pi R^3
+	\end{align*}
+\end{example}
+\begin{example}
+	\theoremname{Gravitational Potential of a Sphere:}
+	The gravitational potential that a body $B \subset \bR^3$ with mass distribution $m : B \to \bR$ exerts on a point $x \in \bR^3 \setminus B$ is given by:
+	\begin{align*}
+		V(x) &= -G \cdot \int_{B} \frac{m(r)}{\norm{x - y}_2} ~d\lambda^3(y)
+	\end{align*}
+	We will derive a closed form expression for the case $B = B_R^3$.
+	If we assume that the mass distribution is rotationally symmetric, we can replace $m : \bR^3 \to \bR$ with a function $\tilde m = m(\norm{y}_2): \bR \to \bR$. We will commit a slight abuse of notation here and let $m$ be this new function $\tilde m$ from now on. Because of this rotational symmetry, we also have $V(x) = V(0,0,\norm{x})$.
+	\newpar
+	Now, if $y$ has spherical coordinates $(r, \theta, \omega)$, then assuming $y$ lies outside of our ball we can use the Pythagorean theorem to get:
+	\begin{align*}
+		\norm{x-y}_2^2 
+		&= (\norm{x}_2 - r \cos \theta)^2 + r^2 \sin^2 \theta\\
+		& = \norm{x}_2^2 + r^2 - 2r \norm{x}_2 \cos \theta
+	\end{align*}
+	Thus, we have:
+	\begin{align*}
+		V(x) 
+		&= -G \cdot \int_{B_R^3} \frac{m(r)}{\norm{x - y}_2} ~d\lambda^3(y)\\
+		&= -G \int_0^{2\pi} \int_0^\pi \int_0^R \lr(\frac{m(r)}{\sqrt{\norm{x}_2^2 + r^2 - 2r \norm{x}_2 \cos \theta}} \cdot r^2 \sin \theta) ~dr ~d\theta ~d\omega\\
+		&= -2\pi G \int_0^R r^2 \cdot m(r) \cdot \lr(\int_0^\pi \frac{\sin \theta}{\sqrt{\norm{x}_2^2 + r^2 - 2r \norm{x}_2 \cos \theta}} ~d\theta) ~dr
+	\end{align*}
+	Substituting $t = g(\theta) = -\cos \theta$ into the inner integral, we get:
+	\begin{align*}
+		&\int_0^\pi \frac{\sin \theta}{\sqrt{\norm{x}_2^2 + r^2 - 2r \norm{x}_2 \cos \theta}} ~d\theta\\
+		=
+		&\int_{-1}^1 \frac{1}{\sqrt{\norm{x}_2^2 + r^2 + 2r \norm{x}_2t}} ~dt\\
+		=
+		&\lr[\frac{1}{r \cdot \norm{x}_2} \cdot \sqrt{\norm{x}_2^2 + r^2 + 2r \norm{x}_2t}]^{t = 1}_{t = -1}\\
+		&= \frac{1}{r \cdot \norm{x}_2} \cdot \lr(\sqrt{\norm{x}_2^2 + r^2 + 2r \norm{x}_2}
+		- \sqrt{\norm{x}_2^2 + r^2 - 2r \norm{x}_2})\\
+		&= \frac{1}{r \cdot \norm{x}_2} \cdot ((\norm{x}_2 + r) - \norm{x}_2 - r)\\
+		&= \frac{2}{\norm{x}_2}
+	\end{align*}
+	Therefore, we have:
+	\begin{align*}
+		V(x) = \frac{4\pi}{\norm{x}_2} \cdot \int_0^R m(r) r^2 ~dr
+	\end{align*}
+	Now, we can once again use the rotational symmetry of $m$ to describe the total mass $M$ of our body in terms of spherical coordinates:
+	\begin{align*}
+		M 
+		&= \int_{B^3_R(0)} m(y) ~d\lambda^3(y)\\
+		&= \int_0^{2\pi} \int_0^\pi \int_0^R m(r) r^2 \sin \theta ~dr ~d\theta ~d\omega\\
+		&= 4 \pi \int_0^R m(r) r^2 ~dr
+	\end{align*}
+	Thus, the total mass distribution of our sphere is simply:
+	\begin{align*}
+		V(x) = -\frac{GM}{\norm{x}}
+	\end{align*}
+	which is exactly the same mass distribution we would get if we concentrated the entire mass of our sphere at its center. This relation is part of a theorem in classical mechanics known as the \tbf{shell theorem}.
+\end{example}
+\clearpage
+\subsection{Cylindrical Coordinates}
+Alternatively, one can trivially extend polar coordinates into three dimensions by simply leaving the $z$ coordinate unchanged, leading to \tit{cylindrical coordinates}:
+\begin{importantdefinition}{Cylindrical Coordinates on $\bR^3$}{}
+	Let $U = (0,\infty) \times (0, 2\pi) \times \bR$ and $V = \bR^3 \setminus \lr{(x,0,z)^\top : x \geq 0}$. The \tbf{spherical coordinate transformation} is the map:
+	\begin{align*}
+		\phi : 
+		U &\to V\\
+		\begin{pmatrix}
+			r\\
+			\omega\\
+			z
+		\end{pmatrix}
+		&\mapsto
+		\begin{pmatrix}
+			r \cos \omega\\
+			r \sin \omega\\
+			z
+		\end{pmatrix}
+	\end{align*}
+	which maps a point given in cylindrical coordinates to its corresponding point in the cartesian coordinate system. 
+\end{importantdefinition}
+Since the cylindrical coordinate transform leaves the $z$ coordinate unchanged, its
+Jacobian and its determinant end up being almost identical:
+\begin{align*}
+	D\phi(r,\omega,z)
+	&=
+	\begin{pmatrix}
+		\pdv{r} r \cos \omega & \pdv{\omega} r \cos \omega & \pdv{z} r \cos \omega\\
+		\pdv{r} r \sin \omega & \pdv{\omega} r \sin \omega & \pdv{z} r \sin \omega\\
+		\pdv{r} z & \pdv{\omega} z & \pdv{z} z
+	\end{pmatrix}
+	\\
+	&=
+	\begin{pmatrix}
+		\cos \omega & -r \sin \omega & 0\\
+		\sin \omega & r \cos \omega & 0\\
+		0 & 0 & 1
+	\end{pmatrix}
+\end{align*}
+
+\begin{align*}
+	\det D\phi(r,\omega,z)
+	&=
+	\det 
+	\begin{pmatrix}
+		\cos \omega & -r \sin \omega & 0\\
+		\sin \omega & r \cos \omega & 0\\
+		0 & 0 & 1
+	\end{pmatrix}
+	\\
+	&=
+	\det 
+	\begin{pmatrix}
+		\cos \omega & -r \sin \omega\\
+		\sin \omega & r \cos \omega
+	\end{pmatrix}
+	\\
+	&=
+	r\cos(\omega)^2 + r\sin(\omega)^2 
+	\\
+	&= r
+\end{align*}
+\begin{importantcorollary}{Cylindrical Coordinate Integral Transform}{}
+	Let $f : \bR^2 \to \bR$ be integrable. Then we have:
+	\begin{align*}
+		\int_{\bR^3} f(x,y,z) ~d\lambda(x,y,z) 
+		&=
+		\int_{\bR }\int_{0}^{2\pi} \int_{0}^\infty r \cdot f(r \cos(\omega), r\sin(\omega), z) ~dr ~d\omega ~dz
+	\end{align*}
+\end{importantcorollary}
+\begin{proposition}
+	The inverse of the cylindrical coordinate transform $\phi$ is:
+	\begin{align*}
+		\phi^{-1}(x,y,z) 
+		&=
+		\begin{cases}
+			\lr(r, ~\arccos(\frac{x}{r}), ~z)^\top & y \geq 0\\
+			\lr(r, ~2\pi - \arccos(\frac{x}{r}), ~z)^\top & y < 0
+		\end{cases}
+	\end{align*}
+	where $r = \sqrt{x^2 + y^2}$.
+\end{proposition}
+\begin{importanttheorem}{Volume of a Solid of Revolution}{}
+	Let $S$ be a solid constructed by rotating a function $\rho(z)$ around the $z$ axis, i.e.
+	\begin{align*}
+		S = \lr{(x,y,z) \in \bR^3 : x^2 + y^2 < \rho(z)^2}
+	\end{align*}
+	Then we have:
+	\begin{align*}
+		\lambda^3(S) = \pi \int_\bR \rho(z)^2 ~d\lambda^1(z)
+	\end{align*}
+\end{importanttheorem}
+\begin{proof}
+	\begin{align*}
+		\lambda^3(S) 
+		&= \int_{\bR^3} \boldone_{\lr{x^2 + y^2~ <~ \rho(z)^2}}(x,y,z) ~d\lambda^3(x,y,z)\\
+		&= \int_{\bR} \int_{0}^{2\pi} \int_0^\infty r \cdot \boldone_{\lr{r^2~ <~ \rho(z)^2}}(r,\omega,z) ~dr ~d\omega ~dz\\
+		&= \int_{\bR} \int_{0}^{2\pi} \int_0^\infty r \cdot \boldone_{\lr{r~ <~ \rho(z)}}(r,\omega,z) ~dr ~d\omega ~dz\\
+		&= \int_{\bR} \int_{0}^{2\pi} \int_0^{\rho(z)} r ~dr ~d\omega ~dz\\
+		&= \int_{\bR} \int_{0}^{2\pi} \frac{1}{2} \rho(z)^2 ~d\omega ~dz\\
+		&= \int_{\bR} \pi \rho(z)^2 ~dz\\
+		&= \pi \int_{\bR} \rho(z)^2 ~dz
+	\end{align*}
+\end{proof}
+\clearpage
+\section{The Surface Area Measure}
+\begin{definition}
+	Let $U \supset \bR^n$ be open. We call a map $f : U \to \bR^{n+k}$ an \tit{immersion} iff $f$ is continuously differentiable and $ Df(x)$ is invertible.
+\end{definition}
+\begin{definition}
+	Let $M \subset \bR^{n+k}$ be an $n$-dimensional $C^1$ submanifold. Then a \tit{local parametrization of $M$} is an injective immersion $f : \bR^n \supset U \to M \subset \bR^{n+k}$
+\end{definition}
+\begin{importantdefinition}{Gram Matrix}{}
+	Let $U \subset \bR^n$ and $f : U \to \bR^{n+k}$. Then the \tit{Gram matrix} $g_f(x)$ is the matrix
+	\begin{align*}
+		g_f(x) = Df(x)^\top Df(x)
+	\end{align*}
+\end{importantdefinition}
+Our goal now is to find a sensible definition of \tit{surface area}, i.e. of an $n$-dimensional measure associated with an object embedded into $n+k$-dimensional space.
+\begin{importantcorollary}{Area of an Embedded Diffeomorphism of a Set}{}
+	Let $f = S \circ \phi$, where $\phi : U \to V$ is a diffeomorphism with $U,V \subset \bR^n$ and $S$ is a linear isometry. Then we have
+	\begin{align*}
+		\lambda^n(\phi(E)) = \int_E \sqrt{\det g_f}
+	\end{align*}
+\end{importantcorollary}
+This theorem suggests that it is sensible to use the same definition for arbitrary immersions:
+\begin{importantdefinition}{Area of an Immersion of a Set}{}
+	Let $f \in C^1(U, \bR^{n+k})$ be an $n$-dimensional immersion. Let $E \subset U$ be $\lambda^n$-measurable. Then the $n$-dimensional area of $f(E)$ is given by:
+	\begin{align*}
+		A(f,E) = \int_E \sqrt{\det g_f}
+	\end{align*}
+\end{importantdefinition}
+$\sqrt{\det g_f}$ is known as the \tit{Jacobian of $f$}, and often denoted $Jf$, but I dislike notation that hides the actual calculation being done behind multiple layers of nested notation and will thus be sticking to $\sqrt{\det g_f}$.
+\begin{importantcorollary}{Length of a Regular Curve}{}
+	An Immersion $f : I = (a,b) \to \bR^n$ is known as a \tit{regular curve}. The one-dimensional area of the curve, i.e. its length, is given by
+	\begin{align*}
+		L(f) := A(f,I) = \int_a^b \norm{Df(t)}_2 ~dt
+	\end{align*}
+\end{importantcorollary}
+\begin{proof}
+	We have:
+	\begin{align*}
+		Df(t) = 
+		\begin{pmatrix}
+			f_1'(t)\\
+			\vdots\\
+			f_n'(t)
+		\end{pmatrix}
+	\end{align*}
+	and thus
+	\begin{align*}
+		g_f(t) = Df(t)^\top Df(t) = \norm{Df(t)}_2^2
+	\end{align*}
+\end{proof}
+Note that if some areas of the curve are covered multiple times, then this length formula counts them multiple times as well.
+\begin{importantcorollary}{Area of a Regular Surface}{}
+	An immersion $f : U \supset \bR^2 \to \bR^3$, with $U$ open, is known as a \tit{regular surface}. Its area is given by
+	\begin{align*}
+		A(f) := A(f,U) 
+		&= \int_U \sqrt{\norm{\pdv{x}f}_2^2 \cdot \norm{\pdv{y}f}_2^2 - \scalar{\pdv{x} f}{\pdv{y}f}^2} ~d\lambda^2(x,y)\\
+		&= \int_U \norm{\pdv{x}f \times \pdv{y} f} ~d\lambda^2(x,y)\\
+	\end{align*}
+\end{importantcorollary}
+\begin{proof}
+	We have
+	\begin{align*}
+		Df(x,y) = 
+		\begin{pmatrix}
+			\pdv{x} f(x,y) & \pdv{y} f(x,y)
+		\end{pmatrix},
+	\end{align*}
+	therefore our Gram matrix is
+	\begin{align*}
+		g_f
+		&=
+		\begin{pmatrix}
+			\norm{\pdv{x}f}_2^2 & \scalar{\pdv{x} f}{\pdv{y}f}_2\\
+			\scalar{\pdv{x} f}{\pdv{y}f} & \norm{\pdv{y}f}_2^2
+		\end{pmatrix},
+	\end{align*}
+	giving our desired result for $\sqrt{\det g_f}$.´
+\end{proof}
+\begin{importanttheorem}{Area of a Graph}{}
+	Let $U \subset \bR^n$ be open, $u : U \to \bR^k$ and
+	\begin{align*}
+		f : U &\to \bR^{n+k}\\
+		x &\mapsto (x, u(x))
+	\end{align*}
+	Then we have:
+	\begin{align*}
+		A(f,U) = \int_U \sqrt{\det(E_n + Du(x)^\top Du(x))} ~d\lambda^n(x)
+	\end{align*}
+	If $k = 1$, i.e. $U \subset \bR^n$, $u : U \to \bR$, then we can simplify significantly and get:
+	\begin{align*}
+		A(f,U) = \int_U \sqrt{1 + \norm{Du(x)}^2¸} ~d\lambda^n(x)
+	\end{align*}
+\end{importanttheorem}
+\begin{importanttheorem}{Surface Measure}{}
+	Let $M$ be an $n$-dimension $C^1$-submanifold of $\bR^{n+k}$ locally parametrized by $f : U \to M$. Let $E \subset M$. Then there exists a measure $\omega_M$ such that
+	\begin{align*}
+		\omega_M(E) = A(f,E)
+	\end{align*}
+\end{importanttheorem}
+
+\begin{importanttheorem}{Surface of Revolution}{}
+	Let $S$ be a solid of revolution generated by $\rho(z)$. Then the surface area of $S$ is:
+	\begin{align*}
+		\omega_S(S) = 2\pi \int_\bR \rho(z) \sqrt{1 + \lr(\dv{z} \rho(z))^2} dz
+	\end{align*}
+\end{importanttheorem}
+\begin{proof}
+	This follows from our formula for the surface area of a regular surface.
+	However, as additional practice, let us derive the formula from scratch.
+	We can parametrize $S$ up to a zero set via:
+	\begin{align*}
+		f: \binom{\theta}{z} \mapsto \trinom{\rho(z) \cos(\theta)}{\rho(z) \sin(\theta)}{z}
+	\end{align*}
+	Which gives us:
+	\begin{align*}
+		Df(\theta,z)
+		&=
+		\begin{pmatrix}
+			\pdv{\theta} \rho(z) \cos(\theta) & \pdv{z} \rho(z) \cos(\theta)\\
+			\pdv{\theta} \rho(z) \sin(\theta) & \pdv{z} \rho(z) \sin(\theta)\\
+			\pdv{\theta} z & \pdv{z} z
+		\end{pmatrix}\\
+		&=
+		\begin{pmatrix}
+			-\rho(z) \sin(\theta) & \cos(\theta) \cdot \pdv{z} \rho(z)\\
+			\rho(z) \cos(\theta) & \sin(\theta) \cdot \pdv{z} \rho(z)\\
+			0 & 1
+		\end{pmatrix}
+	\end{align*}
+	This gives us the Gram matrix:
+	\begin{align*}
+		g_f(\theta,z) &=
+		\begin{pmatrix}
+			-\rho(z) \sin(\theta) & \rho(z) \cos(\theta) & 0\\
+			\cos(\theta) \cdot \pdv{z} \rho(z)
+			& \sin(\theta) \cdot \pdv{z} \rho(z)& 1
+		\end{pmatrix}
+		\cdot
+		\begin{pmatrix}
+			-\rho(z) \sin(\theta) & \cos(\theta) \cdot \pdv{z} \rho(z)\\
+			\rho(z) \cos(\theta) & \sin(\theta) \cdot \pdv{z} \rho(z)\\
+			0 & 1
+		\end{pmatrix}\\
+		&=
+		\begin{pmatrix}
+			\rho(z)^2 \cdot (\sin^2(\theta) + \cos^2(\theta)) & \stack{-\rho(z)\sin(\theta)\cos(\theta) \dv{z}\rho(z)}
+			{+ \rho(z)\sin(\theta)\cos(\theta) \dv{z}\rho(z)}\\
+			\stack{-\rho(z)\sin(\theta)\cos(\theta) \dv{z}\rho(z)}
+			{+ \rho(z)\sin(\theta)\cos(\theta) \dv{z}\rho(z)} & (\cos^2(\theta) + \sin^2(\theta)\lr(\pdv{z} \rho(z))^2 + 1
+		\end{pmatrix}\\
+		&=
+		\begin{pmatrix}
+			\rho(z)^2 & 0\\
+			0 & \lr(\pdv{z} \rho(z))^2 + 1
+		\end{pmatrix}
+	\end{align*}
+	and thus:
+	\begin{align*}
+		\sqrt{\abs{\det g_f(\theta,z)}} 
+		&= \sqrt{\rho(z)^2\lr(\pdv{z} \rho(z))^2 + \rho(z)^2}\\
+		&= \rho(z)\sqrt{1 + \pdv{z} \rho(z))^2}
+	\end{align*}
+	Which leaves us with:
+	\begin{align*}
+		\omega_S(S) 
+		&= \int_0^{2\pi} \int_{\bR} \rho(z)\sqrt{1 + \pdv{z} \rho(z))^2} ~dz ~d\theta\\
+		&= 2\pi \int_{\bR} \rho(z)\sqrt{1 + \pdv{z} \rho(z))^2} ~dz
+	\end{align*}
+\end{proof}
+\begin{example}
+	\theoremname{Gabriel's Horn}
+	We want to show that the solid of rotation $G$ generated by $z \in [1,\infty)$ and $\rho(z) = \frac{1}{z}$ has finite volume, but infinite surface area.
+	\begin{enumerate}
+		\item We already showed in the section on cylindrical coordinates that the volume is simply:
+		\begin{align*}
+			\lambda^3(G) 
+			&= \pi \cdot \int_1^\infty \rho(z)^2 ~dz\\
+			&= \pi \cdot \int_1^\infty \frac{1}{z^2} ~dz\\
+			&= -\frac{\pi}{2} \cdot \lr[\frac{1}{z}]_{z = 1}^{z = \infty}\\
+			&= -\frac{\pi}{2} \cdot (0 - 1)\\ 
+			&= \frac{\pi}{2}
+		\end{align*}
+		\item We have just shown that the surface area is given by:
+		\begin{align*}
+			\omega_S(S) 
+			&= 2\pi \int_{\bR} \rho(z)\sqrt{1 + \pdv{z} \rho(z))^2} ~dz\\
+			&= 2\pi \int_{1}^\infty \frac{1}{z}\sqrt{1 - \frac{1}{z^2}} ~dz\\
+			&> 2\pi \int_{1}^\infty \frac{1}{z} ~dz\\
+			&= 2\pi (\ln(\infty) - \ln(1))\\
+			&= \infty
+		\end{align*}
+	\end{enumerate}
+\end{example}
+\begin{importanttheorem}{Surface Integral}{}
+	Let $M \subset \bR^{n+k}$ be an $n$-dimensional $C^1$ submanifold of $\bR^{n+k}$, and let $M = \bigsqcup_{i \in I} M_i$ be a decomposition of $M$ into countably many pairwise disjoint measure sets such that $M_i \subset V_i$ for a local parametrization $f_i : U_i \to V_i$. Then for any measurable function $u : M \to \barR$, we have:
+	\begin{align*}
+		\int_M u(x) ~d\omega_M(x) = \sum_{i \in I} \int_{f_i^{-1}(M_i)} u(f_i(x)) \cdot \abs{\sqrt{\det g_{f_i}(x)}} ~d\lambda^n(x)
+	\end{align*}
+\end{importanttheorem}
+In particular, if we can find a local parametrization $f : U \to V$ such that $M \setminus V$ is a zero set, we have:
+\begin{align*}
+	\int_M u(x) ~d\omega_M(x) = \int_{f^{-1}(M)} u(f(x)) \cdot \abs{\det Df(x)} ~d\lambda^n(x)
+\end{align*}
+\begin{importanttheorem}{Onion Formula}{}
+	Integrating a function $f$ over $\bR^n$ is the same thing as integrating over all surface integrals of the function over all balls $B_r^n$, i.e. we have:
+	\begin{align*}
+		\int_{\bR^n} f(x) ~d\lambda^n(x) 
+		= \int_{0}^{\infty} \lr( \int_{\partial B_r^n} f(y) ~d\omega_{\partial B_r^n}(y)) ~dr
+	\end{align*}
+\end{importanttheorem}
+Note that via multivariable substitution we also get:
+\begin{align*}
+	\int_{0}^{\infty} \lr( \int_{\partial B_r^n} f(y) ~d\omega_{\partial B_r^n}(y)) ~dr
+	= \int_{0}^{\infty} \lr( \int_{\partial B_1^n} r^n f(ry) ~d\omega_{\partial B_1^n}(y)) ~dr
+\end{align*}
+\begin{corollary}
+	We have:
+	\begin{align*}
+		\omega_{\partial B_1^n}(\partial B_1^n) = (n+1) \cdot \lambda^{n+1}(B_1^{n+1}),
+	\end{align*}
+	i.e. the surface area of the $n$-dimensional unit ball is $(n+1)$ times the volume of the $n+1$-dimensional unit ball.
+\end{corollary}
+\begin{proof}
+	Applying the onion formula and then Fubini twice, we get:
+	\begin{align*}
+		\lambda^{n+1}(B_1^{n+1}) 
+		&= \int_{\bR^n} \boldone_{B_1^n}(x) ~d\lambda^n(x)\\
+		&= \int_{0}^\infty \int_{\partial{B_r^n}} \boldone_{B_1^n}(y) ~d\omega_{\partial B_r^n}(y) ~dr\\
+		&= \int_{\partial{B_r^n}} \int_{0}^\infty  \boldone_{B_1^n}(y)  ~dr ~d\omega_{\partial B_r^n}(y)\\
+		&= \int_{\partial{B_r^n}} \int_{0}^1  1  ~dr ~d\omega_{\partial B_r^n}(y)\\
+		&= \int_{0}^1  \int_{\partial{B_r^n}} 1  ~d\omega_{\partial B_r^n}(y) ~dr\\
+		&= \int_0^1 \omega_{\partial B_r^n}(\partial B_r^n) ~dr\\
+		&= \int_0^1 r^n \cdot \omega_{\partial B_1^n}(\partial B_1^n) ~dr\\
+		&= \frac{\omega_{\partial B_1^n}(\partial B_1^n)}{n+1}
+	\end{align*}
+\end{proof}
+\clearpage
+
+\section{The Divergence Theorem}
+\begin{definition}
+	Let $\Omega \in \bR^n$. We say $\Omega$ has a $C^1$ boundary if $\partial\Omega$ is an $n-1$ dimensional $C^1$-manifold such that $\Omega$ locally lies on only one side of $\partial \Omega$.
+	\newpar
+	More precisely, $\Omega$ has a $C^1$ boundary iff for every point $p \in \partial \Omega$, there exists an open set $U \subset \bR^n$, an open interval $I \subset \bR$, an a $C^1$-function $u : U \to I$ such $p \in U \times I$ and
+	\begin{align*}
+		\Omega \cap (U \times I) = \lr{(x,y) \in U \times I : y < u(x)}
+	\end{align*}	
+\end{definition}
+\begin{lemma}
+	Let $\Omega \in \bR^n$ be open with $C^1$ boundary. Then we have:
+	\begin{enumerate}
+		\item $\partial \Omega \cap (U \times I) = \lr{(x,y) \in U \times I : y = u(x)}$
+		\item $(\bR^n \setminus \ol \Omega) \cap (U \times I) = \lr{(x,y) \in U \times I : y \geq u(x)}$
+	\end{enumerate}
+	In particular, $\partial \Omega$ is an $n-1$ dimensional manifold given via the graph criterion as $(x,u(x))$.
+\end{lemma}
+
+\begin{importanttheorem}{Outer Normal Field}{}
+	Let $\Omega \subset \bR^n$ be open with $C^1$ boundary. Then there exists exactly one map $\nu_\Omega : \partial \Omega \to \bR^n$ such that:
+	\begin{enumerate}
+		\item $\nu_\Omega(p) \perp T_p(\partial\Omega)$,
+		\item $\norm{\nu_\Omega(p)}_2 = 1$,
+		\item $\exists \epsilon > 0 : t \in (0,\epsilon) \implies p + t\nu_\Omega(p) \notin \Omega$.
+	\end{enumerate}
+	This map is continuous and unique and is known as the \tit{outer normal field of $\Omega$}. If $u$ is given as in the definition of $C^1$ boundary, and $p = (x, u(x))$, then we have:
+	\begin{align*}
+		\nu_\Omega(p) = \frac{(-Du(x),1)^\top}{\sqrt{1 + \norm{Du(x)}_2^2}}
+	\end{align*}
+\end{importanttheorem}
+\begin{importantlemma}{Partition of Unity}{}
+	Let $W_i, i \in I$ be an open cover of a compact set $K \subset \bR^n$. Then there exists a finite family of smooth functions $\chi_j : \bR^n \to \bR^n$ with compact support such that
+	\begin{enumerate}
+		\item For all $x \in K$, we have $\sum_{j \in J} \chi_j(x) = 1$
+		\item For all $j \in J$, there exists an $i$ such that $\spt \chi_j \subset W_i$.
+	\end{enumerate}
+\end{importantlemma}
+\begin{importanttheorem}{Divergence Theorem / Gauss's Theorem}{}
+	Let $\Omega \subset \bR^n$ be a bounded open set with $C^1$ boundary and outer normal $\nu_\Omega : \partial \Omega \to \bR^n$. Let $f : \ol \Omega \bR$ be continuously differentiable. Then we have:
+	\begin{align*}
+		\int_\Omega \div f(x) ~d\lambda^n(x)
+		&=
+		\int_{\partial \Omega} \scalar{f(x)}{\nu(x)} ~d\omega(x).
+	\end{align*}
+\end{importanttheorem}
+\begin{importanttheorem}{Multidimensional Partial Integration}{}
+	Let $\Omega \subset \bR^n$ be a bounded open set with $C^1$ boundary and outer normal $\nu_\Omega : \partial \Omega \to \bR^n$. Let $f : \bR^n \to \bR$ and $G : \bR^n \to \bR^n$ be continuously differentiable. Then we have:
+	\begin{align*}
+		&\int_{\Omega} f \cdot \div(G) ~d\lambda^n(x)\\
+		=
+		&\int_{\partial \Omega} f \cdot \scalar{G}{\nu_\Omega} ~d\omega(x)
+		-
+		\int_\Omega \scalar{\grad f}{G} ~d\lambda^n(x)
+	\end{align*}
+\end{importanttheorem}
+\begin{proof}
+	By the product rule for divergence, we have:
+	\begin{align*}
+		~&f(x) \cdot \div(G(x)) + \scalar{\grad f(x)}{G(x)}\\
+		=~&\div(f(x) \cdot G(x))
+	\end{align*}
+	Now, simply apply the divergence theorem, together with basic properties of scalar products, to get:
+	\begin{align*}
+		&
+		\int_\Omega f(x) \cdot \div(G(x)) + \scalar{\grad f(x)}{G(x)} ~d\lambda^n(x)\\
+		=&
+		\int_\Omega \div (f(x) \cdot G(x)) ~d\lambda^n(x)\\
+		=&
+		\int_{\partial \Omega} \scalar{f(x) \cdot G(x)}{\nu_\Omega(x)} ~d\omega(x)\\
+		= &\int_{\partial \Omega} f(x) \cdot \scalar{G(x)}{\nu_\Omega(x)} ~d\omega(x),
+	\end{align*}
+	which we can rearrange to get our desired identity.
+\end{proof}
+If we plug $G(x) := \grad g(x)$ into this formula, we get:
+\begin{importantcorollary}{Green's First Identity}{}
+	Let $\Omega \subset \bR^n$ be open and bounded with $C^1$ boundary. Let $f: \ol \Omega \to \bR$ be continuously differentiable and let $g : \ol \Omega \to \bR$ be twice continuously differentiable. Then we have:
+	\begin{align*}
+		&\int_\Omega f \cdot \Delta g + \scalar{\grad f}{\grad g} ~d\lambda^n\\
+		= &\int_{\partial \Omega} f \cdot \scalar{\nu_\Omega}{\grad g} ~d\omega\\
+		\bigg{(}= &\int_{\partial \Omega} f \cdot \pdv{\nu_\Omega} g ~d\omega(x)\bigg{)} 
+	\end{align*}
+\end{importantcorollary}
+\begin{importanttheorem}{Green's Second Identity}{}
+	Let $\Omega \subset \bR^n$ be open and bounded with $C^1$ boundary. Let $f: \ol \Omega \to \bR$ and $g : \ol \Omega \to \bR$ be twice continuously differentiable. Then we have:
+	\begin{align*}
+		&\int_\Omega f \cdot  \Delta g - g \cdot \Delta f ~d\lambda^n\\ = &\int_{\partial \Omega} f \cdot \scalar{\nu_\Omega}{\grad g}
+		-
+		g(x)
+		\cdot
+		\scalar{\nu_\Omega(x)}{\grad f(x)}
+		~d\omega(x)
+	\end{align*}
+\end{importanttheorem}
+\begin{proof}
+	This is just two instances of Green's first identity subtracted from each other:
+	\begin{align*}
+		&\int_\Omega f(x) \cdot  \Delta g(x) - g(x) \cdot \Delta f(x) ~d\lambda^n\\ 
+		=
+		&\int_\Omega f(x) \cdot  \Delta g(x) + \scalar{\grad f(x)}{\grad g(x)} ~d\lambda^n\\ 
+		-
+		&\int_\Omega g(x) \cdot \Delta f(x) + \scalar{\grad f(x)}{\grad g(x)} ~d\lambda^n\\
+		=
+		&\int_{\partial \Omega} f(x) \cdot \scalar{\nu_\Omega(x)}{\grad g(x)} ~d\omega(x) \\
+		-
+		&\int_{\partial \Omega} g(x) \cdot \scalar{\nu_\Omega(x)}{\grad f(x)} ~d\omega(x) \\
+		=
+		&\int_{\partial \Omega} f(x) \cdot \scalar{\nu_\Omega(x)}{\grad g(x)}
+		-
+		g(x)
+		\cdot
+		\scalar{\nu_\Omega(x)}{\grad f(x)}
+		~d\omega(x)
+	\end{align*}
+\end{proof}
+\chapter{Convolutions}
+Convolution is a way of creating a function by taking a weighted average of two functions. Among other things, it can be used to smooth a given function.
+\begin{lemma}{}{}
+	$\tau_h : \bR^n \to \bR^n$ be the function that translates a vector by the vector $h$, i.e. $\tau_h(x) = x + h$. Let $f \in L^p(\bR^n)$ for $1 \leq p < \infty$. Then the following hold: 
+	\begin{enumerate}
+		\item $f \circ \tau_h \in L^p(\bR^n)$
+		\item $\norm{f \circ \tau_h}_p = \norm{f}_p$
+		\item $\displaystyle \lim_{h \to 0} \norm{f \circ \tau_h - f}_p = 0$
+	\end{enumerate}
+\end{lemma}
+\begin{importantdefinition}{Convolution}{}
+	Let $1 \leq p < \infty$, $f \in L^p(\bR^n)$ and $g \in L^1(\bR^n$. The \tit{convolution of $f$ and $g$} is defined to be:
+	\begin{align*}
+		f * g : 
+		\bR^n &\to \barR\\
+		(f * g)(x) &= \int_{\bR^n} f(x-y)g(y) ~d\lambda^n(y)
+	\end{align*}
+\end{importantdefinition}
+\begin{theorem}
+	Let $1 \leq p < \infty$, $f \in L^p(\bR^n)$ and $g \in L^1(\bR^n$. Then we have:
+	\begin{enumerate}
+		\item $f * g \in L^p(\bR^n)$
+		\item $\norm{f * g}_p \leq \norm{f}_p \norm{g}_1$
+		\item $f * g = g * f$
+	\end{enumerate}
+\end{theorem}
+\pagebreak
+\begin{theorem}\theoremname{Approximation through convolution}{}
+	Let $\eta \in L^1(\bR^n)$ such that
+	\begin{align*}
+		\int_{\bR^n} \eta(x) ~d\lambda^n(x).
+	\end{align*}
+	Let $\rho > 0$ and
+	\begin{align*}
+		\eta_\rho(x) := \rho^{-n} \cdot \eta\lr(\frac{x}{\rho}).
+	\end{align*}
+	Let $1 \leq p < \infty$ and $f \in L^p(\bR^n)$. Then we have:
+	\begin{enumerate}
+		\item $f * \eta_\rho \in L^p(\bR^n)$
+		\item $\norm{f * \eta_\rho}_p \leq \norm{f}_p \cdot \norm{\eta}_1$
+		\item 
+		$\norm{(f * \eta_\rho) - f}_p \to 0$
+	\end{enumerate}
+\end{theorem}
+\begin{importantdefinition}{Multi-index Notation}{}
+	Let $\alpha = (\alpha_1, \hdots, \alpha_n) \in \bN_0^n$. Then we define:
+	\begin{enumerate}
+		\item $\displaystyle \abs{\alpha}= \sum_{i = 1}^n \alpha_i$
+		\item $\partial^\alpha f(x) = \pdv[\alpha_1]{x_1} \hdots \pdv[\alpha_n]{x_n} f(x)$
+	\end{enumerate}
+\end{importantdefinition}
+\begin{importanttheorem}{Smoothing}{}
+	Let $\eta \in C^k(\bR^n)$ such that for $\abs{\alpha} \leq k$, we have
+	\begin{align*}
+		\norm{\partial^\alpha \eta}_{C^0(\bR^n)} \leq K.
+	\end{align*}
+	Let $f \in L^1(\bR^n)$. Then we have:
+	\begin{enumerate}
+		\item $f * \eta \in C^k(\bR^n)$,
+		\item $\partial^\alpha(f * \eta) = f * (\partial^\alpha \eta)$,
+		\item $\norm{\partial^\alpha (f * \eta)}_{C^0(\bR^n)} \leq K \norm{f}_1$
+	\end{enumerate}
+\end{importanttheorem}
+Smoothing lets us strengthen our result on the density of continous functions in $L^p(\Omega)$:
+\begin{importantcorollary}{Density of $C_0^\infty$ in $L^p(\Omega)$}{}
+	Let $\Omega \subset \bR^n$ be open. Let $1 \leq p < \infty$. Then, for every $f \in L^p(\Omega)$, there exists a sequence $f_k \in C_0^\infty(\Omega)$ such that $\norm{f - f_k}_{L^p(\Omega)} \to 0$.
+\end{importantcorollary}
+\begin{importantdefinition}{Locally integrable Function}{}
+	Let $\Omega \subset \bR^n$ open and $1 \leq p \leq \infty$. Then we call a function $f : \Omega \to \bR$ \tit{locally integrable} iff for any compact set $K \subset \Omega$, we have $\boldone_K \cdot f \in L^p(\Omega)$. We denote the set of all locally integrable functions $f : \Omega \to \bR$ by
+	\begin{align*}
+		L_{\tn{loc}}^p(\Omega)
+	\end{align*} 
+\end{importantdefinition}
+\begin{importantlemma}{Fundamental Lemma of the Calculus of Variations}{}
+	Let $\Omega \subset \bR^n$ be open. Let $f \in L^1_{\tn{loc}}(\Omega)$ such that
+	\begin{align*}
+		\forall &\phi \in C_0^\infty(\Omega) :\\
+		&\phi \geq  0 \implies \int_\Omega f \phi ~d\lambda^n(x) \geq 0
+	\end{align*}
+	Then we have $f(x) \geq 0$ for $\lambda^n$-almost all $x \in \Omega$.
+\end{importantlemma}
+\begin{importantcorollary}{There is no identity of convolution.}{}
+	There exists no function $\eta \in L^1(\bR^n)$ such that for all $f \in C_0^\infty(\bR^n)$, we have $f * n = f$.
+\end{importantcorollary}

@@ -47,6 +47,42 @@ The subset relation is frequently written as $A \subset B$. However, other autho
 \section{Pairing, Union, and Power Sets}
 \section{Relations}
 \section{Functions}
+\section{Cartesian Products}
+\begin{importantdefinition}{General Products in Category Theory}{}
+	Let $C$ be a category. Let $X_1$ and $X_2$ be objects of $C$. Then the \tbf{product of $X_1$ and $X_2$} is an object $X_1 \times X_2$ equipped with two morphisms $\pi_1 : X \to X_1$, $\pi_2 : X \to X_2$ with the property that for every object $Y$ and every pair of morphisms $f_1 : Y \to X_1$, $f_2 : Y \to X_2$, there exists a unique morphism $f : Y \to X_1 \times X_2$ such that:
+	\begin{enumerate}
+		\item $f_1 = \pi_1 \circ f$
+		\item $f_2 = \pi_2 \circ f$
+	\end{enumerate}
+	We call this property the \tbf{universal property of product objects.}
+\end{importantdefinition}
+In the case of sets, this definition leads us to the familiar cartesian products, where $\pi_1$ and $\pi_2$ are the projections to the first and second component of the product respectively. We can generalize the cartesian product to uncountably infinite products as follows:
+\begin{importantdefinition}{Cartesian Product of sets}{}
+	Let $I$ be any set. Let $(X_i)_{i \in I}$ be a Family of nonempty sets indexed by $I$, i.e. there exists a function assigning to each element $i \in I$ an element of $(X_i)_{i \in I}$. Then the cartesian product of $(X_i)_{i \in I}$ is the unique set:
+	\begin{align*}
+		\prod_{i \in I} X_i := \lr{x : I \to \bigcup_{i \in I} X_i \mid x_i := x(i) \in X_i \tn{ for all } i \in I}
+	\end{align*}
+\end{importantdefinition}
+Written more simply: Each element of $\prod_{i \in I} X_i$ is a function assigning to each $i \in I$ an element $x(i) \in X_i$, where we generally write the argument in the index ($x_i := x(i)$), to stay consistent with the established notation in the countable case. 
+\newpar
+This definition is simply a reinterpretation of the definition of finite cartesian products: It amounts to viewing, for example, the tuple $ T := (x,y,z)$ as a map:
+\begin{align*}
+	T : \lr{1,2,3} &\to \lr{x,y,z}
+\end{align*}
+such that $T(1) = x$, $T(2) = y$, and $T(3) = z$. 
+\begin{importantdefinition}{Projections}{}
+	Let $J \subset I$. Then we define the projection of $I$ to $J$ as the map
+	\begin{align*}
+		\pi_J := \pi_{J}^I : \prod_{i \in I} X_i &\to \prod_{j \in J} X_j\\
+		x &\mapsto \lr(x|_J : J \to \bigcup_{j \in J} X_j)
+	\end{align*}
+	which restricts the domain of a given element $x$ of the product to the subset $J$.
+\end{importantdefinition}
+In particular, if $J$ is a set consisting of a single element $j$, we have:
+\begin{align*}
+	\pi_j := \pi_{\lr{j}}^I : \prod_{i \in I} X_i &\to X_j\\
+	x &\mapsto x_j
+\end{align*}
 \section{Replacement}
 \section{Regularity and Well-Foundedness}
 \section{Choice}

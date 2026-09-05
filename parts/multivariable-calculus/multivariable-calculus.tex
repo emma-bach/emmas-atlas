@@ -195,7 +195,7 @@ The important takeaway here is that directional differentiability only guarantee
 \end{importanttheorem}
 \begin{proof}
 	\begin{enumerate}
-		\item[$\Rightarrow$:] We have $\Hom(\bR^n, \bR^m) \cong \bR^{mn}$. Therefore, the map $Jf : \bR^n \mapsto \bR^{mn}$ is continuous if and only if every component $(Jf)_i : \bR^n \mapsto \bR$ is continuous. By the definition of $Jf$, these are the partial derivatives.
+		\item[$\Rightarrow$:] We have $\Hom(\bR^n, \bR^m) \cong \bR^{mn}$. If the differential $Jf : \bR^n \mapsto \bR^{mn}$ exists, it is continuous if and only if every component $(Jf)_i : \bR^n \mapsto \bR$ is continuous. By the definition of $Jf$, these are the partial derivatives.
 		\item[$\Leftarrow$:]
 		Since every normed complex vector space is isomorphic to a normed real vector space, we can assume without loss of generality that $W$ is real. Since all norms are equivalent, and since a sequence in $W$ converges iff. all components converge, we can additionally assume that $W$ is one-dimensional, i.e. $W \cong \bR$.
 		\newpar
@@ -528,15 +528,84 @@ In short: if a continuously differentiable function has an invertible differenti
 \end{importanttheorem}
 In short: under mild assumptions, the level sets of a continuously differentiable function are graphs of continuously differentiable functions:
 \chapter{Multiple Integrals}
-\begin{theorem}
+\begin{lemma}
+	\label{th:parameterintegral}
 	Let $K \subseteq \bR^n$ be compact. Let $f : K \times [a,b] \to \bR$ be continuous. Then the function
 	\begin{align*}
 		x \mapsto \int_a^b f(x,t) ~dt
 	\end{align*}
-	is continuous.
-\end{theorem}
+	is uniformly continuous.
+\end{lemma}
 \begin{proof}
-	$K \times [a,b]$ is a finite product of compact sets, i.e. compact.
+	$K \times [a,b]$ is a finite product of compact sets, i.e. compact by Theorem \ref{th:metrictychonoff}. Thus, $f$ is uniformly continuous by Theorem \ref{th:compactuniformcontinuity}, which means that for every $\epsilon > 0$, there exists a $\delta > 0$ such that for any $x,y \in \bR, t \in \bR^n$
+	\begin{align*}
+		d((x,t), (y,t)) < \delta \implies d(f(x,t), f(y,t)) < \epsilon.
+	\end{align*}
+	This tells us that for any $x,y \in \bR$,
+	\begin{align*}
+		d(x,y) < \delta \implies &d((x,t), (y,t)) < \epsilon\\
+		\implies &\abs{f(x,t) - f(y,t)} = d(f(x,t), f(y,t)) < \epsilon\\
+		\implies &d\lr(\int_a^b f(x,t) ~dt, \int_a^b f(y,t) ~dt)\\
+		&= \abs{\int_a^b f(x,t) ~dt - \int_a^b f(y,t) ~dt}\\
+		&\leq \int_a^b \abs{f(x,t)  -  f(y,t)} ~dt\\
+		&\leq (b-a)\epsilon,
+	\end{align*}
+	since $\epsilon$ was arbitrary, our function is uniformly continuous as desired.
+\end{proof}
+\begin{definition}
+	Given a compact cuboid $Q = \prod_{i = 1}^n [a_i, b_i] \subseteq \bR^n$ and a continuous function $f : Q \to \bR$, we declare the \tib{integral of $f$ over $Q$} to be the nested integral
+	\begin{align*}
+		\int_Q f(x) ~d^nx := \int_{a_n}^{b_n} \hdots \int_{a_1}^{b_1} f(x_1, \hdots, x_n) dx_1 \hdots dx_n
+	\end{align*}
+\end{definition}
+By Lemma \ref{th:parameterintegral}, all involved functions are continuous, and thus their integrals are indeed well-defined. This definition will become a fully justified theorem once we begin our study of the Lebesgue integral later on.
+\begin{exercise}
+	Verify that linearity and monotonicity carry over from the single-variable case, i.e show that for any $f,g : Q \to \bR$ and $\lambda \in \bR$, we have:
+	\begin{enumerate}
+		\item $\int_Q f(x) + g(x) ~d^nx = \int_Q f(x) ~d^nx + \int_Q g(x) ~d^nx$
+		\item $\int_Q \lambda f(x) ~d^nx = \lambda \int_Q f(x) ~d^nx$
+		\item $f \leq g \implies \int_Q f(x) ~d^nx \leq \int_Q g(x) ~d^nx$
+		\item $\abs{\int_Q f(x) ~d^nx} \leq \int_Q \abs{f(x)} ~d^nx$
+	\end{enumerate}
+\end{exercise}
+\begin{definition}
+	We define
+	\begin{align*}
+		\vol~ Q = \int_Q 1 = \prod_{i = 1}^n \abs{b_i - a_i}
+	\end{align*}
+\end{definition}
+\begin{definition}
+	By partitioning the intervals $[a, b] \times [c, d] := Q \subseteq \bR^2$ into $r$ equidistant chunks with boundaries
+	\begin{align*}
+		a = a_{1} \leq a_{2} \leq \hdots \leq a_{r} = b\\
+		c = c_{1} \leq c_{2} \leq \hdots \leq c_{r} = d,
+	\end{align*}
+	we partition $Q$ into $r^2$ equally sized smaller rectangles
+	\begin{align*}
+		Q_{ij} := [a_i, c_{i+1}] \times [a_j, c_{j+1}]
+	\end{align*}
+	which must each have area $\vol~ Q /r^2$. We can thus define \tib{two-dimensional Riemann sums} analogously to how we did it in one dimension:
+	\begin{align*}
+		S_r^2(f) := \sum_{i = 0}^{r-1} \sum_{j = 0}^{r-1} f(a_i, c_j) \frac{\vol~ Q}{r^2}
+	\end{align*}
+\end{definition}
+\begin{importantlemma}{Multivariable Integration via Riemann Sums}{multiriemannsums}
+	Given a compact cuboid $Q \subseteq \bR^2$ and a continuous function $f : Q \to \bR$, we have
+	\begin{align*}
+		\int_Q f(x) ~d^2x = \lim_{r \to \infty} S_r^2(f)
+	\end{align*}
+\end{importantlemma}
+\begin{proof}
+	Applying the single-variable version of this theorem twice, we get:
+	\begin{align*}
+		\int_Q f(x) ~d^2x
+		&=
+		\int_c^d \int_a^b f(x_1, x_2) ~dx_1 ~dx_2\\
+		&=
+		\lim_{r \to \infty} S_r\lr(\int_a^b f(x_1, x_2) ~dx_1)\\
+		&=
+		\lim_{r \to \infty} S_r^2\lr(f(x_1, x_2))
+	\end{align*}
 \end{proof}
 \chapter{Curves}
 \chapter{Surfaces}
