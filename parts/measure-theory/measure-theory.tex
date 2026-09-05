@@ -9,9 +9,9 @@ The most basic goal of measure theory is to establish a generalized notion of a 
 \end{enumerate}
 We call a $\sigma$-additive function a \tit{measure} - we want to eventually find a meausure on $\bR^n$ that also fulfills the other properties, but we want measures to be far more generally applicable, and as such we want to be able to define measures much more general spaces that may not have a defined notion of an interval or an isometry.
 \newpar
-It will turn out that there exists exactly one function on $\bR^n$, called the \tit{Lebesque measure} $\lambda^n$, that fulfills these conditions for a very large family of sets - enough to include every "somewhat reasonable" subset of $\bR^n$. However, there are still counterexamples.
+It will turn out that there exists exactly one function on $\bR^n$, called the \tit{Lebesgue measure} $\lambda^n$, that fulfills these conditions for a very large family of sets - enough to include every "somewhat reasonable" subset of $\bR^n$. However, there are still counterexamples.
 \begin{proposition}
-	Every subset of $\bR^n$ being Lebesque-measurable is consistent with ZF (without the axiom of choice).
+	Every subset of $\bR^n$ being Lebesgue-measurable is consistent with ZF (without the axiom of choice).
 \end{proposition}
 \begin{theorem}
 	Assuming the axiom of choice, there exist subsets of $\bR^n$ that cannot be assigned a volume without arriving at a contradiction.
@@ -259,7 +259,7 @@ This means that a set semiring is a weakened form of a set ring where complement
 \newpar
 Sadly, unlike with rings of sets, there is absolutely no connection between set semirings and the algebraic notion of a semiring - a semiring of sets is exclusively a (semi)(ring of sets), and \tit{not} a (semiring)(of sets). This makes it tempting for me to use an alternative name which makes this distinction more clear, but since I haven't encountered any good alternative names anywhere else (and because I already know I will forget to stick with this convention moving forwards) I will stick with the less than perfect established name.
 \newpar
-Set semirings are of fundamental importance to measure theory because the set of cuboids in $\bR^n$ forms a set semiring, and we will end up defining our lebesque measure by approximating sets through coverings of the set with cuboids. Of course, we first have to establish a basic theory of set semirings and prove this claim.
+Set semirings are of fundamental importance to measure theory because the set of cuboids in $\bR^n$ forms a set semiring, and we will end up defining our Lebesgue measure by approximating sets through coverings of the set with cuboids. Of course, we first have to establish a basic theory of set semirings and prove this claim.
 \begin{theorem}
 	The set $\cI$ of real intervals forms a set semiring.
 \end{theorem}
@@ -769,17 +769,17 @@ Informally, sets with a lot of "holes" or with very messy, fractal-like boundari
 \end{theorem}
 \clearpage
 
-\subsection{Lebesque Measure}
-One can extend the Jordan measure to a significantly larger number of subsets of $\bR^n$ by simply allowing countable unions of cuboids (instead of finite unions of cuboids). The Lebesque measure is simply this generalization of the Jordan measure. Formally:
+\subsection{Lebesgue Measure}
+One can extend the Jordan measure to a significantly larger number of subsets of $\bR^n$ by simply allowing countable unions of cuboids (instead of finite unions of cuboids). The Lebesgue measure is simply this generalization of the Jordan measure. Formally:
 \begin{definition}
-	Let $E \subset \bR^n$. The \tbf{Lebesque outer measure} of $E$ is given by
+	Let $E \subset \bR^n$. The \tbf{Lebesgue outer measure} of $E$ is given by
 	\begin{align*}
 		\lambda^*(E) := \inf_{\substack{E \subset \bigcup_{i = 1}^\infty Q_n,\\ Q_n \in \cQ}} \lr{\sum_{n = 1}^\infty \vol^n{Q_n}},
 	\end{align*}
-	i.e. the Lebesque outer measure of $E$ is the greatest lower bound of the measures of all coverings of $E$ by cuboids.
+	i.e. the Lebesgue outer measure of $E$ is the greatest lower bound of the measures of all coverings of $E$ by cuboids.
 \end{definition}
 \begin{theorem}
-	We have $\lambda^0 = \card$ - the zero-dimensional lebesque measure is the counting measure.
+	We have $\lambda^0 = \card$ - the zero-dimensional Lebesgue measure is the counting measure.
 \end{theorem}
 \begin{proof}
 	$\bR^0$ is by definition cartesian product of $\bR$ with a set of cardinality $0$ i.e. the empty set, as its index set:
@@ -806,29 +806,29 @@ One can extend the Jordan measure to a significantly larger number of subsets of
 \begin{theorem}
 	Let $U \subset \bR^n$ be open. Then $U$ is a countable union of cuboids.
 \end{theorem}
-Therefore, we can define Lebesque measurability similarly to Jordan measurability - a set is Lebesque measurable if it is "almost" an open set.
+Therefore, we can define Lebesgue measurability similarly to Jordan measurability - a set is Lebesgue measurable if it is "almost" an open set.
 \begin{definition}
-	A set $E \subset \bR^n$ is \tbf{Lebesque measurable} if for every $\epsilon > 0$, there exists an open set $U \subset \bR^n$ such that $U \subset E$ and $\lambda^*(U \setminus E) \leq \epsilon$. If $E$ is Lebesque measurable, we refer to $\lambda(E) := \lambda^*(E)$ as the \tbf{Lebesque measure} of $E$. If the dimension $n$ should be emphasized, we sometimes write $\lambda(E)$ as $\lambda^n(E)$.
+	A set $E \subset \bR^n$ is \tbf{Lebesgue measurable} if for every $\epsilon > 0$, there exists an open set $U \subset \bR^n$ such that $U \subset E$ and $\lambda^*(U \setminus E) \leq \epsilon$. If $E$ is Lebesgue measurable, we refer to $\lambda(E) := \lambda^*(E)$ as the \tbf{Lebesgue measure} of $E$. If the dimension $n$ should be emphasized, we sometimes write $\lambda(E)$ as $\lambda^n(E)$.
 \end{definition}
 \begin{theorem}
-	The Lebesque measure fulfills:
+	The Lebesgue measure fulfills:
 	\begin{align*}
 		E \subset \bigcup_{i \in N} E_i \implies \lambda(E) \leq \sum_{i \in \bN} \lambda(E_i)
 	\end{align*}
 	This is a weakened form of $\sigma$-additivity, which is known as \tbf{$\sigma$}-subadditivity.
 \end{theorem}
 \begin{theorem}
-	The Lebesque measure defines a $\sigma$-additive function on the Lebesque measurable sets.
+	The Lebesgue measure defines a $\sigma$-additive function on the Lebesgue measurable sets.
 \end{theorem}
 \begin{theorem}
-	The collection of subsets of $\bR^n$ that are either Lebesque measurable or have a Lebesque-measurable complement form a Boolean algebra.
+	The collection of subsets of $\bR^n$ that are either Lebesgue measurable or have a Lebesgue-measurable complement form a Boolean algebra.
 \end{theorem}
 \begin{theorem}
-	There exist Lebesque measurable sets which are not Borel.
+	There exist Lebesgue measurable sets which are not Borel.
 \end{theorem}
 
 \clearpage
-You may have heard in linear algebra that the determinant of a matrix $S$ tells us how the matrix scales the volume of the unit cube. Since the Lebesque measure is defined using volumes of unit cubes, this intuition also holds for the image of any set $E$ under $S$:
+You may have heard in linear algebra that the determinant of a matrix $S$ tells us how the matrix scales the volume of the unit cube. Since the Lebesgue measure is defined using volumes of unit cubes, this intuition also holds for the image of any set $E$ under $S$:
 \begin{importanttheorem}{Linear Transformation Equation}{}
 	\label{thm:lineartransformationequation}
 	Let $S \in \bRnn$. Then for all $E \subset \bR^n$, we have:
@@ -980,7 +980,7 @@ This means we don't need to check the preimage of every single set in $\cB$ to s
 	Let $(X, \cA, \mu)$ be a \tbf{complete} measure space. Let $(f_k)_{k \in \bN}$ be a family of $\mu$-measurable functions. Then if $f_k$ converges pointwise to a function $f$ $\mu$-almost everywhere, $f$ is $\mu$-measurable.
 \end{importanttheorem}
 
-\chapter{Lebesque Integration}
+\chapter{Lebesgue Integration}
 \section{Step Functions}
 \begin{definition}
 	Let $(X, \cA)$ be a measurable space. Then we call a function $f : Y \to \bR$ a \tbf{step function} if it can be represented as a finite linear combination of indicator functions of sets in $\cA$, i.e there exist $\alpha_i \in \bR$ and $A_i \in \cA$ such that:
@@ -1047,14 +1047,14 @@ This means we don't need to check the preimage of every single set in $\cB$ to s
 
 The integral of an indicator function is already clear from our intuition: The points contained in the area under an indicator function $\boldone_A$ are exactly the cartesian product of $A$ with the interval $[0,1]$, forming a "rectangle with gaps" whose side lengths are $1$ and $\mu(A)$. Therefore the integral should be:
 \begin{definition}
-	\theoremname{Lebesque integral of an indicator function}
+	\theoremname{Lebesgue integral of an indicator function}
 	\begin{align*}
 		\int_X \boldone_A ~d\mu = \mu(A)
 	\end{align*}
 \end{definition}
 The definition for the integral of a step function should follow naturally - a step function is just a finite sum of scaled characteristic functions, therefore the integral of a step function is the sum of the scaled integrals of the step functions.
 \begin{definition}
-	\theoremname{Lebesque integral of a step function}
+	\theoremname{Lebesgue integral of a step function}
 	Let $D \subset X$, $A_i \subset X$ pairwise disjoint, and $\alpha_i \geq 0$. Then:
 	\begin{align*}
 		\int_D s ~d\mu 
@@ -1070,7 +1070,7 @@ The definition for the integral of a step function should follow naturally - a s
 	\theoremname{Monotonicity of the step function integral}
 \end{theorem}
 \clearpage
-\section{Defining the Lebesque Integral}
+\section{Defining the Lebesgue Integral}
 We can now use the step function integral to define the integral of more general functions:
 \begin{importanttheorem}{Approximation via step functions}{}
 	Let $(X, \cA)$ be a measurable space. Let $f : X \to \barR$ be a nonnegative $\cA$-measurable function. Then there exists a monotonically increasing sequence $s_n$ of nonnegative step functions whose pointwise limit is $f$.
@@ -1127,14 +1127,14 @@ We can now use the step function integral to define the integral of more general
 		\lim_{n \to \infty} f_n(x) \geq f(x)
 	\end{align*}
 \end{proof}
-\begin{importantdefinition}{Lebesque integral of a positive function}{}
+\begin{importantdefinition}{Lebesgue integral of a positive function}{}
 	Let $f : D \to [0,\infty]$ be $\cA$-measurable. Then:
 	\begin{align*}
 		\int_D f ~d\mu = \sup_{\substack{\tn{$s$ is a step function,}\\0 \leq s \leq f}}\lr{\int_D s ~d\mu}
 	\end{align*}
 \end{importantdefinition}
 \begin{definition}
-	\theoremname{Lebesque integral of an arbitrary measurable function}
+	\theoremname{Lebesgue integral of an arbitrary measurable function}
 	Let $f$ be $\cA$-mesurable and
 	\begin{align*}
 		f^+ = f \cdot \boldone_{f \geq 0}, \qquad
@@ -1175,7 +1175,7 @@ It is common to derive from this corollary a slight abuse of notation: Assume th
 	\end{align*}
 \end{proposition}
 \begin{importanttheorem}
-	{Monotonicity of the Lebesque integral}{}
+	{Monotonicity of the Lebesgue integral}{}
 	Let $\mu$ be an outer measure on $X$ such that $f,g : X \to \barR$ are $\mu$-measurable. Then if $f \leq g$ $\mu$-almost everywhere and $\int_X f ~d\mu > -\infty$, then the integral of $g$ exists and we have
 	\begin{align*}
 		\int_X f ~d\mu \leq \int_X g ~d\mu
@@ -1224,7 +1224,7 @@ It is common to derive from this corollary a slight abuse of notation: Assume th
 		= 	\sup_{n \in \bN} \int_X f_n ~d\mu
 	\end{align*}
 \end{importanttheorem}
-\begin{importanttheorem}{Linearity of the Lebesque integral}{}
+\begin{importanttheorem}{Linearity of the Lebesgue integral}{}
 	Let $\mu$ be a measure on $X$. Let $f,g : X \to \barR$ and $\alpha, \beta \in \bR$. Then we have:
 	\begin{align*}
 		\int_X (\alpha f + \beta g) ~d\mu = \alpha \int_X f ~d\mu + \beta \int_X g ~d\mu
@@ -1250,14 +1250,14 @@ It is common to derive from this corollary a slight abuse of notation: Assume th
 
 \clearpage
 
-\section{Comparing Riemann Integration and Lebesque Integration}
+\section{Comparing Riemann Integration and Lebesgue Integration}
 \begin{theorem}
-	The Dirichlet function $\boldone_\bQ$ is Lebesque integrable, but not Riemann integrable.
+	The Dirichlet function $\boldone_\bQ$ is Lebesgue integrable, but not Riemann integrable.
 \end{theorem}
 \begin{importanttheorem}{}{}
-	A Lebesque-integrable function is not necessarily "almost Riemann-integrable". More formally, there exists a function $f : \bR \to \bR$ with the following properties:
+	A Lebesgue-integrable function is not necessarily "almost Riemann-integrable". More formally, there exists a function $f : \bR \to \bR$ with the following properties:
 	\begin{enumerate}
-		\item $f$ is Lebesque-integrable.
+		\item $f$ is Lebesgue-integrable.
 		\item There exists no Riemann-integrable function $g$ such that $f = g$ almost everywhere.
 	\end{enumerate}
 \end{importanttheorem}
@@ -1290,7 +1290,7 @@ It is common to derive from this corollary a slight abuse of notation: Assume th
 		\liminf_{n \to \infty} \int_X f_n ~d\mu
 	\end{align*}
 \end{importanttheorem}
-\begin{importanttheorem}{Lebesque's Dominated Convergence Theorem}{}
+\begin{importanttheorem}{Lebesgue's Dominated Convergence Theorem}{}
 	Let $f$, $f_k$ be $\mu$-measurable functions such that $f_k \to f$ $\mu$-almost everywhere. Assume there exists a nonnegative Function $g \in \cL^1$ such that $\sup_k \abs{f_k} \leq g$ $\mu$-almost everywhere. Then we have $f \in \cL^1$ and
 	\begin{align*}
 		\int_X f ~d\mu = \lim_{k \to \infty} \int_X f_k ~d\mu
@@ -1333,7 +1333,7 @@ It is common to derive from this corollary a slight abuse of notation: Assume th
 		for all $y \in U$, $\mu$-almost all $x \in X$ and $i \in \lr{1,\hdots,n}$.
 	\end{enumerate}
 \end{importanttheorem}
-\begin{theorem}\theoremname{Absolute continuity of the Lebesque integral}
+\begin{theorem}\theoremname{Absolute continuity of the Lebesgue integral}
 	Let $f \in \cL^1(\mu)$. Let $\epsilon > 0$. Then there exists a $\delta > 0$ such that, for all $A \in \cA$:
 	\begin{align*}
 		\mu(A) < \delta \implies \int_A \abs{f} ~d\mu < \epsilon
@@ -1655,10 +1655,13 @@ In this case, $\theta$ is sometimes also called the \tbf{Radon-Nikodym derivativ
 	\end{enumerate}
 \end{theorem}
 \begin{proof}
-	(i) $\implies$ (ii) is our mini-Radon-Nikodym theorem. (ii) $\implies$ (iii) follows from absolute continuity of the Lebesque integral. (iii) $\implies$ (i) follows immediately from the definition of $\ll$.
+	(i) $\implies$ (ii) is our mini-Radon-Nikodym theorem. (ii) $\implies$ (iii) follows from absolute continuity of the Lebesgue integral. (iii) $\implies$ (i) follows immediately from the definition of $\ll$.
 \end{proof}
 \begin{importanttheorem}
-	{Radon-Nikodym}{} Let $\mu$, $\nu$ be $\sigma$-finite measures on $(X, \cA)$ such that $\nu \ll \mu$. Then there exists a density function $\theta \in L^1(\mu)$ such that $\nu = \mu_\theta$.
+	{Radon-Nikodym}{} Let $\mu$, $\nu$ be $\sigma$-finite measures on $(X, \cA)$ such that $\nu \ll \mu$. Then there exists a density function $\theta \in L^1(\mu)$ such that $\nu = \mu_\theta$, i.e.
+	\begin{align*}
+		\int_X f ~d\nu = \int_X f \cdot \theta ~d\mu
+	\end{align*}
 \end{importanttheorem}
 \begin{importantdefinition}{}{}
 	Let $\mu$ and $\nu$ be measures on $(X, \cA)$. Then we call $\mu$ and $\nu$ \tbf{singular with respect to each other}, which we denote $\mu \perp \nu$, if there exists a set $M \in \cA$ such that
@@ -1667,13 +1670,14 @@ In this case, $\theta$ is sometimes also called the \tbf{Radon-Nikodym derivativ
 	\end{align*}
 \end{importantdefinition}
 \begin{importanttheorem}
-	{Lebesque's decomposition theorem}{} Let $\mu$ and $\nu$ be measures on $(X, \cA)$, and let $\nu$ be $\sigma$-finite. Then there exists a unique decomposition $\nu = \nu_a + \nu_s$ such that $\nu_a \ll \mu$ and $\nu_a \perp \mu$.
+	{Lebesgue's decomposition theorem}{} Let $\mu$ and $\nu$ be measures on $(X, \cA)$, and let $\nu$ be $\sigma$-finite. Then there exists a unique decomposition $\nu = \nu_a + \nu_s$ such that $\nu_a \ll \mu$ and $\nu_a \perp \mu$.
 \end{importanttheorem}
 \chapter{Integration in $\bR^n$}
 \section{Products of Measure Spaces}
-In this section, we will be interested in finding a canonical $\sigma$-Algebra on cartesian products of measurable spaces. Category theory tells us the correct solution directly: The product $\sigma$-algebra of an indexed family of $\sigma$-algebras as the sigma algebra fulfilling the universal property of product objects. We are working in the category of measurable spaces, where morphisms are measurable functions.
+In this section, we will be interested in finding a canonical $\sigma$-Algebra on cartesian products of measurable spaces. Category theory tells us the correct solution directly: The product $\sigma$-algebra of an indexed family of $\sigma$-algebras should be the sigma algebra fulfilling the universal property of product objects.
 \newpar
-Therefore, our definition simply amounts to defining product sigma algebras as the $\sigma$-algebras induced by the projection functions, which in turn is the smallest $\sigma$-algebra such that all projections are measurable. 
+We are working in the category of measurable spaces, where morphisms are measurable functions.
+Therefore, our definition simply amounts to defining product sigma algebras as the $\sigma$-algebras induced by the projection functions, which is in turn the smallest $\sigma$-algebra such that all projections are measurable. 
 \begin{importantdefinition}{Product $\sigma$-Algebra}{}
 	Let $(X_i, \cA_i)_{i \in I}$ be a family of measurable spaces. Then the product $\sigma$-algebra on the cartestian product $\prod_{i \in I} X_i$ is the smallest $\sigma$-Algebra $\Tensor_{i \in I} \cA_i$ such that every projection $\pi_j$ is $\Tensor_{i \in I} \cA_i - \cA_j$-measurable.
 \end{importantdefinition}
@@ -2017,7 +2021,7 @@ In particular:
 	\item $\hdots$
 \end{enumerate}
 \begin{proof}
-	By Cavalieri's principle and the linear transformation formula for the Lebesque measure, we get:
+	By Cavalieri's principle and the linear transformation formula for the Lebesgue measure, we get:
 	\begin{align*}
 		\lambda^n(B^n_r(0))
 		&=
@@ -2217,7 +2221,7 @@ In particular:
 			(\max \abs{\phi'}) \cdot \abs{f} \in 
 			L^1(\bR^n)
 		\end{align*}
-		Thus, we can apply Lebesque's dominated convergence theorem to pull out the limits and connect the two equalities, giving us:
+		Thus, we can apply Lebesgue's dominated convergence theorem to pull out the limits and connect the two equalities, giving us:
 		\begin{align*}
 			\int_{\bR^n} \partial_j f(x) ~d\lambda^n(x)
 			&= \int_{\bR^n} \lim_{R \to \infty}\phi_R(x) \cdot \partial_j f(x) ~d\lambda^n(x)\\
