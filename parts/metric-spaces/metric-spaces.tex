@@ -328,19 +328,66 @@ Intuitively, the interior is the largest open subset of $A$, and the exterior is
 \clearpage
 
 \section{Connectedness}
+\begin{importantdefinition}{}{}
+	A metric space is called \tib{connected} if it can't be written as the disjoint union of two nonempty open subsets.
+\end{importantdefinition}
+\begin{exercise}
+	\begin{enumerate}
+		\item Show that $\bN$ is not connected.
+		\item Show that $\bQ$ is not connected.
+	\end{enumerate}	
+\end{exercise}
+\begin{exercise}
+	Show that a metric space $M$ is connected if and only if its only clopen subsets are $M$ and $\emptyset$.
+\end{exercise}
 
+\begin{importanttheorem}{Connected Subsets of $\bR$}{}
+	The connected subsets of $\bR$ are the intervals $I \subseteq \bR$.
+\end{importanttheorem}
+\begin{proof}
+	\begin{enumerate}
+		\item Let $I \subseteq \bR$ be an interval. Assume we have a decomposition $$I = I_1 \cup I_2$$ of $I$ into disjoint nonempty open subsets. Without loss of generality, assume that there exists $x_1 \in I_1$ and $x_2 \in I_2$ such that $x_1 < x_2$ (otherwise swap the two subsets).
+		Now, consider the set 
+		\begin{align*}
+			S = \lr{x \in I_1 \mid x \leq x_2}
+		\end{align*}
+		$S$ is nonempty, since $x_1 \in S$, and $S$ has $x_2$ as an upper bound. Now, let $s = \sup S$. We have $x_1 \leq s \leq x_2$, so $s \in I$. By Theorem \ref{th:boundedinfsup}, we have $s \in \ol S \subseteq \ol I_1$. 
+		\newpar
+		Since we have $I_1 = I \setminus I_2$, we know that $I_1$ is closed in $I$, giving us $s \in \ol I_1 = I_1$.
+		\newpar 
+		Since $I_1$ is by definition also open in $I$, and $s \leq x_2$ cannot be an upper bound of $I$, there exists $\epsilon \in \bR_{> 0}$ such that $s + \epsilon \in I_1$, which contradicts $s = \sup I_1$. Therefore, all intervals must be connected.
+		\item Let $C \subseteq \bR$ be connected. If $C$ is empty or only contains one point, it vacuously qualifies as an interval $(x,x)$ or $[x,x]$. Now, assume that $C$ contains at least two points, but isn't an interval. Then there exist $c_1 \neq c_2 \in C$ and $c \in [c_1, c_2]$ such that $c \notin C$. But then
+		\begin{align*}
+			C_1 &= (-\infty, c) \cap C\\
+			C_2 &= (c, \infty) \cap C
+		\end{align*}
+		is a decomposition of $C$ into disjoint nonempty open subsets.
+	\end{enumerate}
+\end{proof}
+\begin{importanttheorem}{}{}
+	Let $f : M \to N$ be a continuous map between metric spaces. Let $M$ be connected. Then $f(M)$ is connected.
+\end{importanttheorem}
+\begin{proof}
+	Assume $f(M)$ wasn't connected. Then we would have some decomposition $f(M) = U \cup V$ of $f(M)$ into disjoint open sets. Since $f$ is continuous, $f^{-1}(U)$ and $f^{-1}(V)$ are open. But then $M = f^{-1}(U) \cup f^{-1}(V)$ can't be connected.
+\end{proof}
+\begin{importantcorollary}{Intermediate Value Theorem}{}
+	Let $f : [a,b] \to \bR$ be a continuous map from a closed real interval into the real numbers. Let $y$ be some number between $f(a)$ and $f(b)$ $^1$. \marginnote{$^1$ i.e. $f(a) \leq y \leq f(b)$ or $f(b) \leq y \leq f(a)$} Then there exists $x \in [a,b]$ such that $f(x) = y$.
+\end{importantcorollary}
+\begin{proof}
+	Since $f$ is continuous, $f([a,b])$ is a connected subset of $\bR$, i.e. an interval. Since $f([a,b])$ contains $f(a)$ and $f(b)$, it must therefore also contain all numbers inbetween the two.
+\end{proof}
+\begin{importantcorollary}{Bolzano's Theorem}{}
+	If a continuous function $f : M \to \bR$ has a point $x \in M$ with $f(x) < 0$ and a point $y \in M$ with $f(y) > 0$, there exists a root $z \in M : f(z) = 0$ between $x$ and $y$.
+\end{importantcorollary}
+\begin{exercise}
+	\begin{enumerate}
+		\item Assuming that temperature varies continuously, show that there are always two points at a given latitude on earth at which the temperature is the same.
+		\item Assuming there are two points on earth that are a given distance apart from each other, are there always two points on earth that are that distance apart from each other and have the same temperature?
+	\end{enumerate}
+\end{exercise}
 \clearpage
 
-\section{Banach's Fixed Point Theorem}
-\chapter{Infinite Series}
-\section{Achilles and the Turtle}
-\section{Convergence Tests}
-\section{Euler's Number $e$}
-\section{The Exponential Function}
-\chapter{Euclidean Geometry}
-\section{The Complex Numbers $\bC$}
-\section{Circles, Angles and Trigonometry}
-\chapter{Function Spaces}
+\section{Function Spaces}
 Since we know that a sequence in a finite cartesian product converges if and only if all components converge, it seems natural to generalize this notion to arbitrary, potentially infinite cartesian products, i.e. arbitrary functions:
 \begin{importantdefinition}{Pointwise Convergence}{}
 	We say that a sequence of functions $f_n : M \to N$ converges \tib{pointwise} to a given function $f : M \to N$ if and only if all components $f_n(x)$ converge in the usual sense, i.e:
@@ -377,6 +424,33 @@ Note that is simply a direct generalization of the Chebyshev metric \ref{th:cheb
 	\end{align*}
 	we call this form of convergence of a sequence of functions \tib{uniform convergence}.
 \end{importanttheorem}
+\begin{importanttheorem}{Uniform Convergence of Continuous Functions}{}
+	Let $(f_n)_{n \in \bN}$ be a sequence of continuous functions $f_n : M \to N$ converging uniformly to a function $f : M \to N$. Then $f$ is continuous.
+\end{importanttheorem}
+\begin{proof}
+	Choose some $\epsilon \in \bR_{> 0}$. Since $(f_n)_{n \in \bN}$ converges to $f$ uniformly, there exists an $N \in \bN$ such that
+	\begin{align*}
+		\forall &x \in M :\\
+		&n \geq N \implies d(f(x), f_n(x)) < \epsilon/3
+	\end{align*}
+	Let $x_0 \in M$ be arbitrary.
+	Since $f_N$ is continuous, there exists a $\delta \in \bR_{> 0}$ such that
+	\begin{align*}
+		\forall &x \in M :\\
+		&d(x, x_0) < \delta \implies d(f_N(x), f_N(x_0)) < \epsilon/3
+	\end{align*}
+	Applying the triangle inequality twice gives
+	\begin{align*}
+		&d(f(x), f(x_0))\\ &\leq d(f(x), f_N(x)) + d(f_N(x), f_N(x_0)) + d(f_N(x_0), f(x_0))
+	\end{align*}
+	to which we can apply the first inequality, then the second, and then the first again, to get:
+	\begin{align*}
+		&d(f(x), f(x_0))\\
+		&\leq d(f(x), f_N(x)) + d(f_N(x), f_N(x_0)) + d(f_N(x_0), f(x_0))\\
+		&< \epsilon/3 + \epsilon/3 + \epsilon/3 = \epsilon
+	\end{align*}
+	for all $x \in M$ with $d(x, x_0) < \delta$.
+\end{proof}
 \begin{theorem}
 	Let $U \subseteq (X,d)$ be open and path-connected. Then there exists a piecewise linear path $\gamma_n : [0,1] \to U$ between any two $p,q \in U$.
 \end{theorem}
@@ -392,3 +466,14 @@ Note that is simply a direct generalization of the Chebyshev metric \ref{th:cheb
 		\item Therefore, uniform convergence guarantees there is an $n$ such that $d(\gamma_n([0,1]), \gamma([0,1])) < \epsilon$, which implies $\gamma_n([0,1]) \subseteq U$.
 	\end{enumerate}
 \end{proofsketch}
+\clearpage
+
+\section{Banach's Fixed Point Theorem}
+\chapter{Infinite Series}
+\section{Achilles and the Turtle}
+\section{Convergence Tests}
+\section{Euler's Number $e$}
+\section{The Exponential Function}
+\chapter{Euclidean Geometry}
+\section{The Complex Numbers $\bC$}
+\section{Circles, Angles and Trigonometry}
