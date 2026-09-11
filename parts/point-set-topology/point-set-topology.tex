@@ -476,9 +476,7 @@ The general proof once again requires some tricky algebraic topology, so we save
 	which is continuous. Therefore, $\sigma_N : \bS^n \setminus \lr{N} \cong H \cong \bR^n$ is indeed a homeomorphism, implying that every $\sigma_p$ is a homeomorphism.
 \end{proof}
 $\sigma_N$ and $\sigma_S$ (where $S = -N$ is the "south pole") give an alternate coordinate atlas on $\bS^n$, which is sometimes easier to work with than our original atlas given by square root functions.
-\begin{theorem}
-	The unit torus, given by the equations
-\end{theorem} 
+
 \chapter{Topologies on Algebraic Structures}
 
 \section{Topological Groups}
@@ -501,9 +499,22 @@ $\sigma_N$ and $\sigma_S$ (where $S = -N$ is the "south pole") give an alternate
 \begin{corollary}
 	If $H$ is closed in $G$ and $G$ is Hausdorff, then $G/H$ is Hausdorff. If $G/H$ is T1, then $H$ is closed.
 \end{corollary}
+
 \chapter{Connectedness}
+\begin{theorem}
+	Let $\lr{C_i}_{i \in I}$ be a collection of connected sets in a topological space $X$ such that no two of the $C_i$ are disjoint. Then $\bigcup_{i \in I} C_i$ is connected.
+\end{theorem}
+\begin{theorem}
+	Let $C$ be connected. Then every set $D$ with $C \subseteq D \subseteq \ol C$ is connected. In particular, $\ol C$ is connected.
+\end{theorem}
+\begin{proof}
+	Assume that $D$ isn't connected. Then we can write $D = U \cap V$, with $U$ and $V$ disjoint and open. Since $C \subseteq D$, we then have $C = U' \cap V'$ for $U' = U \cap C$ and $V' = V \cap C$. Both sets are open in $C$ by definition of the subspace topology, and since every neighbourhood of a point in $D \subseteq \ol C$ contains a point in $C$, neither of the two are empty. Therefore, $C$ cannot be connected.
+\end{proof}
+\begin{corollary}
+	Connected components of a topological space are closed.
+\end{corollary}
 \chapter{Compactness}
-The familiar notions of open converings and compactness generalize directly from metric spaces to topological spaces. The most major difference is that sequential compactness is generally weaker than "covering compactness", and has to be replaced with a notion of compactness based on ultrafilter convergence.
+The familiar notions of open covers and compactness generalize directly from metric spaces to topological spaces. The most major difference is that sequential compactness is generally weaker than "covering compactness", and has to be replaced with a notion of compactness based on ultrafilter convergence.
 \begin{definition}
 	Let $(X, \cO)$ be a topological space. Then we call a set $\cU \subseteq \cO$ of open subsets an \tib{open covering} of $X$ if every point of $X$ is contained in the union of all elements of $\cU$, i.e. if
 	\begin{align*}
@@ -681,12 +692,12 @@ This theorem generalizes the fact that a sequence in a metric product space conv
 		Since each $X_i$ is compact, each pushforward $(p_i)_*(\cU)$ converges to an $x_i \in X_i$. Thus, by theorem \ref{th:productfilterconvergence}, $\cU$ converges to $(x_i)_{i \in I}$ and $\prod_{i \in I} X_i$ is compact.
 	\end{enumerate}
 \end{proof}
-\chapter{Higher Separation Properties and Metrizability}
+\chapter{Higher Separation Properties}
 \section{Regular Spaces}
 \begin{importantdefinition}{Regular Space}{}
 	Let $(X, \cO)$ be a topological space. Then we call $(X,\cO)$ \tib{regular} if every point can be housed orf from any closed set not containing it:
 	\begin{align*}
-		\forall &X \setminus C \in \cO:&\\
+		\forall &(X \setminus C) \in \cO:&\\
 		\forall &x \notin C:\\
 		\exists &U_x \in \cU(x), U_C \in \cU(C):\\
 		&U_x \cap U_C = \emptyset
@@ -700,7 +711,7 @@ This theorem generalizes the fact that a sequence in a metric product space conv
 	Show that a topological space is regular Hausdorff (T3) if and only if it is regular and T1.
 \end{exercise}	
 \begin{importantdefinition}{Completely Regular Space}{}
-	Let $(X, \cO)$ be a topological space. Then we call $(X,\cO)$ \tib{completely regular} if every point can be separated from any closed set not containing it by a continuous function:
+	Let $(X, \cO)$ be a topological space. Then we call $(X,\cO)$ \tib{completely regular} if every point can be housed orf from any closed set not containing it by a continuous function:
 	\begin{align*}
 		\forall &(X \setminus C) \in \cO :\\ 
 		\forall &x \notin C :\\ 
@@ -708,7 +719,10 @@ This theorem generalizes the fact that a sequence in a metric product space conv
 		&f(x) = 1,\ f[A] \subseteq \lr{0}
 	\end{align*}
 	We call $(X, \cO)$ \tib{T3a}, \tib{T3$\frac{1}{2}$}, or \tib{completely regular Hausdorff}, if it is completely regular and Hausdorff.
-\end{importantdefinition}	
+\end{importantdefinition}
+\begin{exercise}
+	Show that every completely regular space is regular.
+\end{exercise}	
 \begin{exercise}
 	Find a space that is completely regular, but not T0.
 \end{exercise}
@@ -732,7 +746,7 @@ This theorem generalizes the fact that a sequence in a metric product space conv
 	\label{th:completelyregularbase}
 	Let $(X, \cO)$ be completely regular. Then the set
 	\begin{align*}
-		\lr{f^{-1}[U] \mid f \in C((X, \cO), \lr[0,1]_{\bR}), U \in \cO_\bR}
+		\lr{f^{-1}[U] \mid f \in C(X, \lr[0,1]), U \in \cO_\bR}
 	\end{align*}
 	is a basis of $X$.
 \end{theorem}
@@ -743,12 +757,12 @@ This theorem generalizes the fact that a sequence in a metric product space conv
 		Since $X$ is completely regular, there exists a continuous function $f$ separating $\lr{x}$ and $X \setminus U$. Then the basic set $f^{-1}[(0,1]]$ must be a subset of $U$, since every element outside of $U$ gets mapped to $0$. Thus, every open neighhourhood contains a basic neighbourhood.
 	\end{enumerate}	
 \end{proof}
-\begin{importanttheorem}{Completely regular cubes}{}
+\begin{theorem}
 	Every completely regular Hausdorff space $(X, \cO)$ can be embedded into the cube
 	\begin{align*}
 		\prod_{f \in C(X, [0,1])} [0,1]
 	\end{align*}
-\end{importanttheorem}
+\end{theorem}
 \begin{proof}
 	We choose the trivial embedding $\iota : x \mapsto (f(x))_{f \in C(X,[0,1])}$. 
 	\begin{enumerate}
@@ -771,7 +785,6 @@ This theorem generalizes the fact that a sequence in a metric product space conv
 \end{proof}
 
 \clearpage
-
 \section{Normal Spaces}
 \begin{importantdefinition}{Normal Space}{}
 	Let $(X, \cO)$ be a topological space. Then we call $(X,\cO)$ \tib{normal} if every pair of disjoint closed sets can be housed orf from each other by disjoint neighbourhoods:
@@ -786,16 +799,62 @@ This theorem generalizes the fact that a sequence in a metric product space conv
 \begin{exercise}
 	Find a topological space that is normal, but not T0.
 \end{exercise}
-\begin{importantlemma}{Urysohn's Lemma}{}
+\begin{importantlemma}{Urysohn's Lemma}{urysohnlemma}
 	A topological space is normal if and only if any two disjoint closed subsets can be separated by a continuous function.	
 \end{importantlemma}
 \begin{corollary}
-	Every normal Hausdorff space is regular Hausdorff.
+	Every normal Hausdorff space is completely regular Hausdorff.
 \end{corollary}
+\begin{theorem}
+	\label{th:secondcountableregular}
+	A second-countable regular topological space is normal.
+\end{theorem}
+\begin{proof}
+	Let $A,B$ be disjoint closed sets in a second-countable regular topological space $X$. Let $\lr{U_i}_{i \in I}$ be the collection of open sets such that $U \cap A \neq \emptyset$ and $\ol U \cap B = \emptyset$. Since $X$ is regular, this collection forms an open covering of $A$, and $X$ is second-countable, we can take a countable subcovering $\lr{U_n}_{n \in \bN}$. 
+	
+	Analogously, we can construct a countable open covering $\lr{V_n}_{n \in \bN}$ of $B$ fulfilling $\ol{V_n} \cap A = \emptyset$.
+	
+	Now, in order to make these two coverings disjoint from each other as well, we take
+	\begin{align*}
+		Y_n &:= U_n \cap \bigcap_{k = 1}^n X \setminus \ol V_k\\
+		Z_n &:= V_n \cap \bigcap_{k = 1}^n X \setminus \ol U_k
+	\end{align*}
+	By construction of our $U_n$ and $V_n$, our $Y_n$ form an open cover of $A$ and our $Z_n$ form an open cover of $B$. Furthermore, we have $Y_m \cap Z_n = \emptyset$ for all $m,n \in \bN$, since $m \geq n$ implies
+	\begin{align*}
+		Y_m \cap Z_n 
+		&\supseteq Y_m \cap V_n\\
+		&\supseteq Y_m \cap \ol V_n\\
+		&\supseteq U_m \cap (X \setminus \ol V_n) \cap \ol V_n\\
+		&= \emptyset,
+	\end{align*}
+	and $n \geq m$ implies the same, but with $Y,Z$ and $U,V$ swapped.
+	
+	Therefore, $\bigcup_{m \in \bN} Y_m$ and $\bigcup_{n \in \bN} Z_n$ are disjoint open sets containing $A$ and $B$, completing the proof that $X$ is normal.
+\end{proof}
 
 \clearpage
-
-\section{Urysohn's metrization theorem}
+\section{Urysohn's Metrization Theorem}
+\begin{importantcorollary}{Urysohn's Metrization Theorem}{}
+	Every second-countable completely regular space Hausdorff space $X$ can be embedded into the Hilbert Cube
+	\begin{align*}
+		\prod_{n \in \bN} [0,1]
+	\end{align*}
+\end{importantcorollary}
+\begin{proof}
+	Since $X$ is second-countable completely regular Hausdorff, $X$ is normal Hausdorff by Theorem \ref{th:secondcountableregular}. Now, we define a set
+	\begin{align*}
+		S = \lr{(U,V) \in \cB^2 \mid \ol U \subseteq V}.
+	\end{align*}
+	Urysohn's Lemma \ref{th:urysohnlemma} tells us that for each $s = (U,V) \in S$, there exists a continuous function $g_s : X \to [0,1]$ such that $g_s[\ol U] = 1$ and $g_s[X \setminus V] = 0$.
+	
+	This lets us find a canonical map $X \to \prod_{s \in S} [0,1]$:¸
+	\begin{align*}
+		g : 
+		X &\to \prod_{s \in S} [0,1]\\
+		x &\mapsto (s \mapsto g_s(x))
+	\end{align*}
+\end{proof}
+\clearpage
 
 \chapter{Lattice Theory}
 \section{Lattices}

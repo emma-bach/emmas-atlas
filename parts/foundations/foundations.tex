@@ -1,5 +1,5 @@
 \part{Foundations}
-
+\parttoc
 \chapter{An Introduction to Mathematical Reasoning}
 \chapter{Sets}
 
@@ -13,12 +13,23 @@ However, an approach where any collection of mathematical objects forms a set qu
 \end{quote}
 If $R$ doesn't contain itself, then by definition it must contain itself, but if it contains itself, then it cannot contain itself! If $R \in R$ is true, then it must be false! We arrive at a classic paradox. The conclusion, then, is that the set of all sets that don't contain themselves cannot exist - we cannot define sets to be any collection of things defined by any property, and must instead establish ground rules about which sets exist and exactly how we can use sets we already know to construct new ones.
 \newpar
-These ground rules are given in the form of \tib{axioms}, which are statements that mathematicians take for granted, which can then be used as a starting point to then derive "the rest of mathematics" from. The following chapters contain a brief and hopefully easily understandable introduction to the ZFC axiom system, which was developed in the early 20th century by Ernst Zermelo and Abraham Fraenkel and is now the most widely accepted axiomatization of mathematics.
+These ground rules are given in the form of \tib{axioms}, which are statements that mathematicians take for granted, which can then be used as a starting point to then derive "the rest of mathematics" from. The following chapters contain a brief and hopefully easily understandable introduction to the ZFC axiom system, which was developed in the early 20th century by Ernst Zermelo and Abraham Fraenkel and is now the most widely accepted axiomatization of mathematics. Informally stated, the ZFC axioms are:
+\begin{enumerate}
+	\item The empty set is a set, and the natural numbers are a set.
+	\item Sets are uniquely determined by their elements.
+	\item Any definable subset of a set is a set.
+	\item Given two sets, there exists a set whose elements are those two sets.
+	\item Given two sets, there exists a set containing the elements of both sets.
+	\item Given a set, there exists a set containing all subsets of that set as elements.
+	\item The image of a set under a definable function is a set.
+	\item There are no infinitely nested sets.
+	\item Given any set of nonempty sets, there exists a function mapping each sets to one of its elements.
+\end{enumerate}
 \section{Infinity: $\emptyset$ and $\bN$}
 \section{Extensionality}
-To say "$b$ is an element of $M$", or equivalently "$b$ contains $M$", we simply write:
+To say "$x$ is an element of $M$", or equivalently "$x$ contains $M$", we simply write:
 \begin{align*}
-	b \in M
+	x \in M
 \end{align*}
 One of the most basic axioms of set theory is the \tib{Axiom of Extensionality}, which states:
 \begin{axiom}{Axiom of Extensionality}{}
@@ -45,8 +56,7 @@ The subset relation is frequently written as $A \subset B$. However, other autho
 \newpar
 \section{Specification}
 \section{Pairing, Union, and Power Sets}
-\section{Relations}
-\section{Functions}
+\section{Relations and Functions}
 \section{Cartesian Products}
 \begin{importantdefinition}{General Products in Category Theory}{}
 	Let $C$ be a category. Let $X_1$ and $X_2$ be objects of $C$. Then the \tbf{product of $X_1$ and $X_2$} is an object $X_1 \times X_2$ equipped with two morphisms $\pi_1 : X \to X_1$, $\pi_2 : X \to X_2$ with the property that for every object $Y$ and every pair of morphisms $f_1 : Y \to X_1$, $f_2 : Y \to X_2$, there exists a unique morphism $f : Y \to X_1 \times X_2$ such that:

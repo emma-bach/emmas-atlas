@@ -1,4 +1,5 @@
 \part{Foundations of Analysis}
+\parttoc
 \chapter{The Real Numbers $\bR$}
 \section{Ordered Algebraic Structures}
 \section{Dedekind Cuts}
@@ -272,6 +273,7 @@ Intuitively, the interior is the largest open subset of $A$, and the exterior is
 
 \section{Compactness}
 \begin{exercise}
+	\label{th:subsetcompact}
 	Any closed subset of a compact set is compact.
 \end{exercise}
 \begin{exercise}
@@ -284,11 +286,18 @@ Intuitively, the interior is the largest open subset of $A$, and the exterior is
 	\end{enumerate}
 \end{importanttheorem}
 \begin{proof}
-	Let $K \subseteq M$ be compact. Since $M$ is a metric space, $K$ is closed. If we cover $K$ using open balls, that cover must have a finite subcover. Thus, $K$ must be contained in a finite union of open balls, which means $K$ must be bounded.
+	\begin{enumerate}
+		\item
+		\item Let $K \subseteq M$ be compact. Since $M$ is a metric space, $K$ is closed. If we cover $K$ using open balls, that cover must have a finite subcover. Thus, $K$ must be contained in a finite union of open balls, which means $K$ must be bounded.
+	\end{enumerate}
 \end{proof}
-\begin{importanttheorem}{}{}
+\begin{theorem}
+	\label{th:compactinterval}
+	Any closed interval $I = [a,b] \subset \bR$ is compact.
+\end{theorem}
+\begin{theorem}{}{}
 	Let $f : M \to N$ be a continuous function between metric spaces. Let $K \subseteq M$ be compact. Then $f(K)$ is compact.
-\end{importanttheorem}
+\end{theorem}
 \begin{proof}
 	Let $K \subseteq M$ be compact. Let $\cU$ be an open cover of $f(K)$. Since $f$ is continuous, $f^{-1}[\cU] := \lr{f^{-1}[U] \mid U \in \cU}$ is an open cover of $N$, which must have a finite subcover $\cV \subseteq f^{-1}[\cU]$. Since $f : K \to f(K)$ is surjective by definition, $f[\cV]$ must be a finite cover of $f(K)$.
 \end{proof}
@@ -308,13 +317,19 @@ Intuitively, the interior is the largest open subset of $A$, and the exterior is
 	Let $M_1, M_2$ be metric spaces. Let $K_1 \subseteq M_1, K_2 \subseteq M_2$ be compact. Then $K_1 \times K_2 \subseteq M_1 \times M_2$ is compact.
 \end{importanttheorem}
 \begin{proof}
-	Using whichever bijection $\bN^2 \cong \bN$ the reader prefers, we can unroll a sequence $s_n$ in $K_1 \times K_2$ into a sequence $x_n$ in $K_1$ and a sequence $y_n$ in $K_2$, such that the elements of $s_n$ are in one-to-one correspondence with pairs $(x_i, y_j)$ of elements of $x_n$ and $y_n$. Since $K_1$ and $K_2$ are compact, $x_n$ and $y_n$ have convergent subsequences. Using our bijection, these can be reassembled into a subsequence of $s_n$, and since both components of this subsequence converge, the subsequence itself converges. Thus, every sequence in $K_1 \times K_2$ has a convergent subsequence. Since sequential compactness and compactness are equivalent in metric spaces by Theorem \ref{th:metriccompact}, $K_1 \times K_2$ is compact.
+	Using whichever bijection $\bN^2 \cong \bN$ you prefer, we can unroll a sequence $s_n$ in $K_1 \times K_2$ into a sequence $x_n$ in $K_1$ and a sequence $y_n$ in $K_2$, such that the elements of $s_n$ are in one-to-one correspondence with pairs $(x_i, y_j)$ of elements of $x_n$ and $y_n$. Since $K_1$ and $K_2$ are compact, $x_n$ and $y_n$ have convergent subsequences. Using our bijection, these can be reassembled into a subsequence of $s_n$, and since both components of this subsequence converge, the subsequence itself converges. Thus, every sequence in $K_1 \times K_2$ has a convergent subsequence. Since sequential compactness and compactness are equivalent in metric spaces by Theorem \ref{th:metriccompact}, $K_1 \times K_2$ is compact.
 \end{proof}
-\begin{importanttheorem}{}{}
+\begin{importanttheorem}{Heine-Borel Theorem}{}
+	Every closed and bounded subset of $\bR^n$ is compact.
+\end{importanttheorem}
+\begin{proof}
+	A bounded set is a subset of a cube $C^n = \prod_{i = 1}^n [-r,r]$. Such a cube is a product of closed intervals, which are compact by Theorem \ref{th:compactinterval}. Every set that is closed and bounded is thus a closed subset of a compact set, making them compact by Exercise \ref{th:subsetcompact}.
+\end{proof}
+\begin{theorem}
 	\label{th:compactuniformcontinuity}
 	Let $M,N$ be metric spaces. Let $K \subseteq M$ be compact.
 	Then every continuous function $f : K \to N$ is uniformly continuous.
-\end{importanttheorem}
+\end{theorem}
 \begin{proof}
 	Assume that $f : K \to N$ isn't uniformly continuous. Then there exists an $\epsilon \in \bR_{> 0}$ such that for every $n \in \bN$, we can find points $x_n, y_n \in K$ such that $d(x_n, y_n) < 1/n$, but $d(f(x_n) - f(y_n)) \geq \epsilon$.
 	
@@ -340,10 +355,9 @@ Intuitively, the interior is the largest open subset of $A$, and the exterior is
 \begin{exercise}
 	Show that a metric space $M$ is connected if and only if its only clopen subsets are $M$ and $\emptyset$.
 \end{exercise}
-
-\begin{importanttheorem}{Connected Subsets of $\bR$}{}
+\begin{theorem}
 	The connected subsets of $\bR$ are the intervals $I \subseteq \bR$.
-\end{importanttheorem}
+\end{theorem}
 \begin{proof}
 	\begin{enumerate}
 		\item Let $I \subseteq \bR$ be an interval. Assume we have a decomposition $$I = I_1 \cup I_2$$ of $I$ into disjoint nonempty open subsets. Without loss of generality, assume that there exists $x_1 \in I_1$ and $x_2 \in I_2$ such that $x_1 < x_2$ (otherwise swap the two subsets).
@@ -364,9 +378,9 @@ Intuitively, the interior is the largest open subset of $A$, and the exterior is
 		is a decomposition of $C$ into disjoint nonempty open subsets.
 	\end{enumerate}
 \end{proof}
-\begin{importanttheorem}{}{}
+\begin{theorem}
 	Let $f : M \to N$ be a continuous map between metric spaces. Let $M$ be connected. Then $f(M)$ is connected.
-\end{importanttheorem}
+\end{theorem}
 \begin{proof}
 	Assume $f(M)$ wasn't connected. Then we would have some decomposition $f(M) = U \cup V$ of $f(M)$ into disjoint open sets. Since $f$ is continuous, $f^{-1}(U)$ and $f^{-1}(V)$ are open. But then $M = f^{-1}(U) \cup f^{-1}(V)$ can't be connected.
 \end{proof}
@@ -420,13 +434,14 @@ Note that is simply a direct generalization of the Chebyshev metric \ref{th:cheb
 		\exists & N \in \bN :\\
 		\forall & n \geq N:\\
 		\forall & x \in M:\\
-		&d(f_n(x) - f(x)) < \epsilon
+		&d(f_n(x) - f(x)) < \epsilon,
 	\end{align*}
-	we call this form of convergence of a sequence of functions \tib{uniform convergence}.
+	i.e. if the speed at which $f_n(x)$ converges to $f(x)$ doesn't depend on the specific $x$ we choose.
+	We call this form of convergence of a sequence of functions \tib{uniform convergence}.
 \end{importanttheorem}
-\begin{importanttheorem}{Uniform Convergence of Continuous Functions}{}
+\begin{theorem}
 	Let $(f_n)_{n \in \bN}$ be a sequence of continuous functions $f_n : M \to N$ converging uniformly to a function $f : M \to N$. Then $f$ is continuous.
-\end{importanttheorem}
+\end{theorem}
 \begin{proof}
 	Choose some $\epsilon \in \bR_{> 0}$. Since $(f_n)_{n \in \bN}$ converges to $f$ uniformly, there exists an $N \in \bN$ such that
 	\begin{align*}

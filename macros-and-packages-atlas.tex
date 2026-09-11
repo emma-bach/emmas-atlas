@@ -41,6 +41,7 @@
 % Table of Contents
 \usepackage[titles]{tocloft}
 \usepackage[titletoc]{appendix}
+\usepackage{titlesec}
 
 % Tikz and Graphics
 \usepackage{tikz}
@@ -106,6 +107,17 @@
 % Nicer Table of Contents
 \renewcommand\cftsecdotsep{\cftdot}
 \renewcommand\cftsubsecdotsep{\cftdot}
+
+\usepackage[tight]{minitoc}
+\usepackage{etoolbox}
+
+%
+\fancypagestyle{noheader}{
+	\fancyhead{}
+	\renewcommand{\headrulewidth}{0pt}
+}
+\pretocmd{\parttoc}{\begingroup\pagestyle{noheader}}{}{}
+\apptocmd{\parttoc}{\endgroup}{}{}
 
 %--- TEXT FORMATING ---
 
