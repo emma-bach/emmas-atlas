@@ -138,24 +138,24 @@ chapter]{axiom}{Axiom}{colback=white,
 \begin{document}
 	\include{title}
 	
-	\setcounter{tocdepth}{0}
+	\setcounter{tocdepth}{1}
 	\mtcsettitle{parttoc}{Contents}
 	\mtcsetfeature{parttoc}{open}{\vspace{-2.8cm}}
 	\mtcsetrules{*}{off}
 	
 	\doparttoc
-	{
+	{	
 		% Format parts like chapters and chapters like sections
-		\renewcommand{\cftpartfont}{\normalfont\large\bfseries}
-		\renewcommand{\cftpartpagefont}{\normalfont\large\bfseries}
-		\setlength{\cftbeforepartskip}{1.5em}
+		%\renewcommand{\cftpartfont}{\normalfont\large\bfseries}
+		%\renewcommand{\cftpartpagefont}{\normalfont\large\bfseries}
+		%\setlength{\cftbeforepartskip}{1.5em}
 		
-		\renewcommand{\cftchapfont}{\normalfont}
-		\renewcommand{\cftchappagefont}{\normalfont}
-		\renewcommand\cftchapdotsep{\cftdot}
+		%\renewcommand{\cftchapfont}{\normalfont}
+		%\renewcommand{\cftchappagefont}{\normalfont}
+		%\renewcommand\cftchapdotsep{\cftdot}
 		
-		\setlength{\cftbeforechapskip}{0pt}
-		\setlength{\cftchapindent}{2em}
+		\setlength{\cftbeforechapskip}{2pt}
+		%\setlength{\cftchapindent}{2em}
 
 		% Force empty header in multi page table of contents
 		\pagestyle{empty}
