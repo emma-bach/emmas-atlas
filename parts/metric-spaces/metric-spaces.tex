@@ -272,6 +272,12 @@ Intuitively, the interior is the largest open subset of $A$, and the exterior is
 \clearpage
 
 \section{Compactness}
+\begin{importantdefinition}{Compact Sets}{}
+	We call a subset $C \subseteq M$ of a metric space \tib{compact} if every open covering of $C$ has a finite subcovering.
+\end{importantdefinition}
+Intuitively, compact sets are sets which only contain a finite amount of topological information. This means that as soon as compact sets are involved, potentially complicated problems involving infinitely many objects can often be turned into simple proofs involving a much more manageable finite number of objects. Later in this chapter, we will prove that every closed, bounded subset of $\bR^n$ is compact.
+\newpar
+The notion of compactness is a key ingredient of many incredibly useful results in analysis and topology. For example, early on into this chapter, we will prove the Maximum-Minimum-Theorem, which states that every function from a compact set into the real numbers attains a maximum and a minimum. More advanced applications will keep showing up throughout the later parts of this book - for example, compact manifolds tend to be much more well-behaved than their non-compact cousins, leading to nice classification theorems for compact surfaces and compact Lie groups.
 \begin{exercise}
 	\label{th:subsetcompact}
 	Any closed subset of a compact set is compact.
@@ -280,16 +286,14 @@ Intuitively, the interior is the largest open subset of $A$, and the exterior is
 	A compact subset of a metric space is always closed.
 \end{exercise}
 \begin{importanttheorem}{Compactness in Metric Spaces}{metriccompact}
-	\begin{enumerate}
-		\item A subset of a metric space is compact if and only if it is sequentially compact.
-		\item A compact subset of a metric space is closed and bounded.
-	\end{enumerate}
+	A subset of a metric space is compact if and only if it is sequentially compact.
 \end{importanttheorem}
+\begin{theorem}
+	\label{th:compactclosedbounded}
+	A compact subset of a metric space is closed and bounded.
+\end{theorem}
 \begin{proof}
-	\begin{enumerate}
-		\item
-		\item Let $K \subseteq M$ be compact. Since $M$ is a metric space, $K$ is closed. If we cover $K$ using open balls, that cover must have a finite subcover. Thus, $K$ must be contained in a finite union of open balls, which means $K$ must be bounded.
-	\end{enumerate}
+	Let $K \subseteq M$ be compact. Since $M$ is a metric space, $K$ is closed. If we cover $K$ using open balls, that cover must have a finite subcover. Thus, $K$ must be contained in a finite union of open balls, which means $K$ must be bounded.
 \end{proof}
 \begin{theorem}
 	\label{th:compactinterval}
@@ -305,7 +309,7 @@ Intuitively, the interior is the largest open subset of $A$, and the exterior is
 	Let $f : K \to \bR$ be a function from a compact subset of a metric space into the real numbers. Then $f$ attains a maximum and a minimum.
 \end{importantcorollary}
 \begin{proof}
-	By the previous theorem, $f(K)$ is a compact subset of $\bR$, i.e. closed and bounded by Theorem \ref{th:metriccompact}. But then Theorem \ref{th:boundedinfsup} tells us that $\inf f(K)$ and $\sup f(K)$ are already contained in $\ol{f(K)} = f(K)$.
+	By the previous theorem, $f(K)$ is a compact subset of $\bR$, i.e. closed and bounded by Theorem \ref{th:compactclosedbounded}. But then Theorem \ref{th:boundedinfsup} tells us that $\inf f(K)$ and $\sup f(K)$ are already contained in $\ol{f(K)} = f(K)$.
 \end{proof}
 \begin{lemma}
 	Let $M,N$ be metric spaces. Let $K \subseteq M$ be compact. Let $f : K \to N$ be continuous. Then the preimage of any compact subset of $M$ is a compact subset of $K$.
@@ -323,7 +327,7 @@ Intuitively, the interior is the largest open subset of $A$, and the exterior is
 	Every closed and bounded subset of $\bR^n$ is compact.
 \end{importanttheorem}
 \begin{proof}
-	A bounded set is a subset of a cube $C^n = \prod_{i = 1}^n [-r,r]$. Such a cube is a product of closed intervals, which are compact by Theorem \ref{th:compactinterval}. Every set that is closed and bounded is thus a closed subset of a compact set, making them compact by Exercise \ref{th:subsetcompact}.
+	A bounded set is a subset of a cube $C^n = \prod_{i = 1}^n [-r,r]$. Such a cube is a product of closed intervals, which are compact by Tychonoff's Theorem \ref{th:compactinterval}. Every set that is closed and bounded is thus a closed subset of a compact set, making them compact by Exercise \ref{th:subsetcompact}.
 \end{proof}
 \begin{theorem}
 	\label{th:compactuniformcontinuity}
@@ -370,10 +374,7 @@ Intuitively, the interior is the largest open subset of $A$, and the exterior is
 	A metric space is called \tib{connected} if it can't be written as the disjoint union of two nonempty open subsets.
 \end{importantdefinition}
 \begin{exercise}
-	\begin{enumerate}
-		\item Show that $\bN$ is not connected.
-		\item Show that $\bQ$ is not connected.
-	\end{enumerate}	
+	Show that $\bN$ is not connected. Show that $\bQ$ is not connected.
 \end{exercise}
 \begin{exercise}
 	Show that a metric space $M$ is connected if and only if its only clopen subsets are $M$ and $\emptyset$.
