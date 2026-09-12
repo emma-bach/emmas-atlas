@@ -339,7 +339,30 @@ Intuitively, the interior is the largest open subset of $A$, and the exterior is
 	\end{align*}
 	contradicting the fact that we have $d(f(x_k) - f(y_k)) \geq \epsilon$ for all $k \in \bN$.
 \end{proof}
-
+\begin{lemma}
+	\tbf{(Lebesgue's Number Lemma:)} Let $X$ be a compact metric space. Let $\cU = \lr{U_i \mid i \in I}$ be an open covering of $X$. Then there exists a \tib{Lebesgue Number} $\delta \in \bR_{> 0}$ such that
+	\begin{align*}
+		\diam A < \delta \implies \exists i \in I : A \subseteq U_i
+	\end{align*}
+	for any subset $A \subseteq X$.
+\end{lemma}
+\begin{proof}
+	Since $\cU$ is an open covering, every $x \in X$ must have an $\epsilon(x) \in \bR_{> 0}$ such that $B_{2\eps(x)}(x) \subseteq U_i$. Since all of the smaller open balls $B_{\epsilon(x)}(x)$ must form a covering of $X$, and $X$ is compact, we can pick a finite subcovering
+	\begin{align*}
+		\cB := \lr{B_{\epsilon(x_k)}(x_k) \mid k \in [1..n]}.
+	\end{align*}
+	Since $\cB$ is an open covering, every $x \in X$ has an $x_k$ such that $x \in B_{\epsilon(x_k)}(x_k)$, i.e. $d(x, x_k) < \epsilon(x_k)$.
+	\newpar
+	Now, since $\cB$ is finite, there exists a minimum
+	\begin{align*}
+		\delta = \min\lr{\epsilon(x_k) \mid k \in [1..n]}.
+	\end{align*}
+	This means that, for any set $A \subseteq X$ with $\diam A < \delta$ and any $a_0 \in A$, we can pick the corresponding $x_k$, giving us
+	\begin{align*}
+		d(a,x_k) \leq \underbrace{d(a, a_0)}_{< \delta \leq \eps(x_k)} + \underbrace{d(a_0, x_k)}_{\leq \eps(x_k)} < 2\eps(x_k),
+	\end{align*}
+	i.e. $A \subseteq B_{2\eps(x_k)}(x_k) \subseteq U_i$.
+\end{proof}
 \clearpage
 
 \section{Connectedness}
