@@ -847,11 +847,28 @@ This theorem generalizes the fact that a sequence in a metric product space conv
 	\end{align*}
 	Urysohn's Lemma \ref{th:urysohnlemma} tells us that for each $s = (U,V) \in S$, there exists a continuous function $g_s : X \to [0,1]$ such that $g_s[\ol U] = 1$ and $g_s[X \setminus V] = 0$.
 	
-	This lets us find a canonical map $X \to \prod_{s \in S} [0,1]$:¸
+	This lets us find a canonical continuous map $X \to \prod_{s \in S} [0,1]$:¸
 	\begin{align*}
 		g : 
 		X &\to \prod_{s \in S} [0,1]\\
 		x &\mapsto (s \mapsto g_s(x))
+	\end{align*}
+	This map is injective, since for $x \neq y$, we can use complete regularity to find a pair $s = (U,V) \in S$ with $x \in U$ and $y \notin V$ such that $g_s(x) = 1$ and $g_s(y) \in g_s[X \setminus V] = 0$, i.e. $g(x) \neq g(y)$.
+	\newpar
+	It remains to be shown that $g$ is open. If $W$ is an open neighbourhood of $x \in X$, we want the set $g(W)$ to be open in $\prod_{s \in S} [0,1]$, which follows if we can find for each $g(y) \in g(W)$ a subbasis neighbourhood $\pi^{-1}(S)$ of the product topology such that 
+	\begin{align*}
+		g(y) \in g(X) \cap \pi^{-1}(S) \subseteq g(W)
+	\end{align*}
+	Now, as earlier, we find basic neighbourhoods $V \subseteq W \in \cB$ and $s = (U,V) \in S$ such that $g_s(x) \in g_s[\ol U] = 1$ and $g_s[X \setminus V] = 0$, i.e.
+	\begin{align*}
+		g_s(y) \neq 0 \implies y \in V,
+	\end{align*} 
+	i.e. $g_s^{-1}[(0,1]] \subseteq V$. Since we have $g_s = \pi_s \circ g$, we get $g_s^{-1} = g^{-1} \circ \pi_s^{-1}$. Fiddling around with images and preimages for a bit now gives us:
+	\begin{align*}
+		g_s^{-1}[(0,1]] \cap X &= g^{-1}(\pi_s^{-1}[(0,1]]) \cap X \subseteq V\\
+		&\implies g(g^{-1}(\pi_s^{-1}[(0,1]]) \cap X) \subseteq g[V]\\
+		&\stackrel{g~ \text{inj.}}{\implies} g(g^{-1}(\pi_s^{-1}[(0,1]])) \cap g[X] \subseteq g[V]\\
+		&\implies \pi_s^{-1}[(0,1]] \cap g[X] \subseteq g[V]\\
 	\end{align*}
 \end{proof}
 \clearpage
