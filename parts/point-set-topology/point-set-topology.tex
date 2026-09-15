@@ -150,7 +150,9 @@ It turns out that first countable spaces are exactly the spaces where sequences 
 \begin{theorem}
 	A metric space is second countable if and only if it is separable.
 \end{theorem}
-	
+\begin{exercise}
+	Let $H = \lr{(0,y) \mid y \in \bR_{\geq 0}} \subseteq \bR^2$ be the closed upper half plane. We define a topology $\cO$ on $H$ by taking as a basis the open subsets of $\bR^2$ that are contained in $H$ and intersect the boundary of $H$ in at most one point. Show that $(H, \cO)$ is separable, but not second countable.
+\end{exercise}
 \clearpage
 
 \chapter{New Spaces from Old}
@@ -619,7 +621,6 @@ The familiar notions of open covers and compactness generalize directly from met
 \begin{theorem}
 	In a second countable Hausdorff space, compactness, countable compactness and sequential compactness are all equivalent to each other.
 \end{theorem}
-
 \chapter{Filters}
 \section{Filter Convergence}
 It would be nice to find a generalization of sequence convergence to non-first-countable spaces that shares many of its useful properties.... It turns out that we can! The correct objects for the task are \tib{filters}.
@@ -710,6 +711,25 @@ This theorem generalizes the fact that a sequence in a metric product space conv
 \begin{exercise}
 	Show that a topological space is regular Hausdorff (T3) if and only if it is regular and T1.
 \end{exercise}	
+\begin{theorem}
+	\label{th:compacthausdorffregular}
+	Every compact Hausdorff space is regular.
+\end{theorem}
+\begin{proof}
+	Let $C \subseteq X$ be closed, and let $y \in X \setminus C$. Since $X$ is Hausdorff, there exist disjoint open neighbourhoods $U_x \ni x \in C$ and $V_x \ni y$ for each $x \in C$. Let $\cU := \lr{U_x \mid x \in C}$. Since $C$ is a closed subset of the compact space $X$, $C$ is also compact. Therefore, the open cover $\cU$ of $C$ has a finite subcover 
+	\begin{align*}
+		\cU' = \lr{U_{x_i} \mid i \in [1..n]}.
+	\end{align*} 
+	If we now set
+	\begin{align*}
+		\cV' = \lr{V_{x_i} \mid i \in [1..n]},
+	\end{align*}
+	we have our desired separation of $x$ and $C$ via
+	\begin{align*}
+		U = \bigcup \cU'\\
+		V = \bigcap \cV'.
+	\end{align*}
+\end{proof}
 \begin{importantdefinition}{Completely Regular Space}{}
 	Let $(X, \cO)$ be a topological space. Then we call $(X,\cO)$ \tib{completely regular} if every point can be housed orf from any closed set not containing it by a continuous function:
 	\begin{align*}
@@ -799,6 +819,9 @@ This theorem generalizes the fact that a sequence in a metric product space conv
 \begin{exercise}
 	Find a topological space that is normal, but not T0.
 \end{exercise}
+\begin{exercise}
+	Show that every compact Hausdorff space is normal. (Hint: Our proof of Theorem \ref{th:compacthausdorffregular} (every compact Hausdorff space is regular) gets us most of the way there and only needs a small alteration.)
+\end{exercise}
 \begin{importantlemma}{Urysohn's Lemma}{urysohnlemma}
 	A topological space is normal if and only if any two disjoint closed subsets can be separated by a continuous function.	
 \end{importantlemma}
@@ -871,7 +894,139 @@ This theorem generalizes the fact that a sequence in a metric product space conv
 		&\implies \pi_s^{-1}[(0,1]] \cap g[X] \subseteq g[V]\\
 	\end{align*}
 \end{proof}
+\section{Paracompactness}
+\begin{definition}
+	Let $\cU$ and $\cV$ be coverings of a topological space $X$. We call $\cU$ a \tib{refinement} of $\cV$ if each element of $\cU$ is a subset of some element of $\cV$.
+\end{definition}
+\begin{definition}
+	Let $\cU$ be a collection of subsets of a topological space $X$. We call $\cU$ \tib{locally finite} if each point $x \in X$ has a neighbourhood $N$ which only intersects a finite number of elements of $\cU$.
+\end{definition}
+\begin{theorem}
+	\label{th:locallyfiniteclosure}
+	Let $\cU = \lr{U_i \mid i \in I}$ be a locally finite collection of subsets of a topological space $X$. Then
+	\begin{align*}
+		\ol{\bigcup_{i \in I} U_i} = \bigcup_{i \in I} \ol U_i
+	\end{align*}
+\end{theorem}
+\begin{proof}
+	\begin{enumerate}
+		\item[$\supseteq$:] Follows trivially, since
+		\begin{align*}
+			&\forall i \in I : \bigcup_{i \in I} U_i \supseteq U_i\\
+			\implies &\forall i \in I : \ol{\bigcup_{i \in I} U_i} \supseteq \ol U_i\\
+			\implies &\ol{\bigcup_{i \in I} U_i} \supseteq \bigcup_{i \in I} \ol U_i
+		\end{align*}
+		\item[$\subseteq$:] It suffices to show that $\bigcup_{i \in I} \ol U_i$ is closed: $\bigcup_{i \in I} \ol U_i$ trivially contains $\bigcup_{i \in I} U_i$, which means that $\ol{\bigcup_{i \in I} U_i}$ is contained in the closure of $\bigcup_{i \in I} \ol U_i$.
+		\newpar
+		Thus, we pick $x \notin \bigcup_{i \in I} \ol U_i$. Local finiteness tells us that there is a neighbourhood $N \ni x$ which intersects only finitely many $U_i$, which we denote $U_{i_1}, \hdots, U_{i_n}$. This lets us construct an open neighbourhood
+		\begin{align*}
+			N' = N \setminus \bigcup_{k = 1}^n \ol U_{i_k},
+		\end{align*}
+		which still contains $x$ but doesn't intersect any $U_i$. Since $N'$ is open, it also doesn't intersect any $\ol U_i$ (otherwise there would have to be a point $y \in N'$ which doesn't have a anyneighbourhood in $N'$).
+	\end{enumerate}
+\end{proof}
+\noindent
+This equality doesn't hold for arbitrary collections, since an infinite union of closed sets may not be closed - consider for example $I = \bN$ and $$U_i := [1/n, 1 - 1/n].$$
+\begin{importantdefinition}{Paracompact Spaces}{df:paracompact}
+	We call a topological space $X$ \tib{paracompact} if every open covering of $X$ has a locally finite open refinement.
+\end{importantdefinition}
+\begin{exercise}
+	Every closed subset of a paracompact space is paracompact.
+\end{exercise}
+\begin{theorem}
+	Every paracompact Hausdorff space is regular.
+\end{theorem}
+\begin{proof}
+	We start by constructing disjoint neighbourhoods $U_x \ni x \in C$, $V_x \ni y \in X \setminus C$ as we did in the compact case \ref{th:compacthausdorffregular}. Then $\cU = \lr{U_x \mid x \in C}$ is an open covering of $C$. Let $\cU' = \lr{U_i \mid i \in I}$ be an open locally finite refinement, and let $U' = \bigcup_{i \in I} U_i$. 
+	\newpar
+	Since $\cU'$ is locally finite, we have
+	\begin{align*}
+		\ol{U'} = \bigcup_{i \in I} \ol U_i
+	\end{align*}
+	by Theorem \ref{th:locallyfiniteclosure}. 
+	\newpar
+	Since $y$ isn't contained in any $U_x$, and $y \in V_x$, which is an open subset disjoint from $U_x$, $y$ isn't contained in any $\ol U_x$, and therefore can't be contained in any $\ol U_i \subseteq \ol U_x$ and especially not in their union $\bigcup_{i \in I} \ol U_i = \ol{U'}$. 
+	\newpar
+	Thus, $U' \supseteq C$ and $X \setminus \ol{U'} \ni y$ are disjoint open sets containing $C$ and $y$ respectively.
+\end{proof}
+\begin{corollary}
+	Every paracompact Hausdorff space is normal.
+\end{corollary}
+\begin{proof}
+	Let $C_1, C_2 \subseteq x$ be disjoint closed sets.
+	Since every paracompact Hausdorff space is regular, we can apply the same construction as in the regular case, but set $x \in C_1$ and have each $V_x$ be a neighbourhood of the entirety of $C_2$.
+\end{proof}
+\begin{proposition}
+	Every metric space is paracompact.
+\end{proposition}
+\begin{proofsketch}
+	The proof makes use of some set-theoretic trickery involving ordinals and the well-ordering theorem. If you're interested, a short version is given by Mary Ellen Rudin in \hyperlink{https://www.ams.org/journals/proc/1969-020-02/S0002-9939-1969-0236876-3/S0002-9939-1969-0236876-3.pdf}{\tit{A new proof that metric spaces are paracompact}, AMS (1968)}
+\end{proofsketch}
 \clearpage
+\chapter{Smooth Manifolds}
+\begin{importantdefinition}{Smooth Manifolds, Classical Definition}{}
+	An \tib{$n$-dimensional smooth manifold} is a second-countable Hausdorff space $M$ together with a collection of maps called "charts" such that:
+	\begin{enumerate}
+		\item Each chart is a homeomorphism $\Phi : U \to U' \subseteq \bR^n$, where $U$ is open in $M$ and $U'$ is open in $\bR^n$.
+		\item Each point $x \in M$ is in the domain of some chart,
+		\item Given charts $\Phi : U \to U'$ and $\Psi : V \to V'$, the coordinate change function $\Phi\Psi^{-1} : \Psi(U \cap V) \to \Phi(U \cap V)$ is smooth (i.e. infinitely continuously differentiable)
+		\item The collection of charts is maximal, i.e. if a map fulfills conditions (1) and doesn't violate condition (3) when taken together with preexisting charts, then that new map is a chart.
+	\end{enumerate}
+	We call our any collection of charts satisfying conditions $1,2$ and $3$ an \tib{atlas} of $M$.
+\end{importantdefinition}
+Note that this definition directly generalizes topological manifolds, but with additional smoothness demands on our charts. Since most manifolds can't be equipped with the structure of a vector space, differentiability isn't well-defined for our charts $\Phi : U \to U \subseteq \bR^n$, so instead we move that demand to the coordinate change functions $\Phi\Psi^{-1}$, which are functions mapping $\bR^n$ into itself.
+\newpar
+We also want to construct a second, slightly more abstract definition of a smooth manifold, based on the notion of \tib{functional structures}.
+\begin{importantdefinition}{}{}
+	Let $(X, \cO)$ be a topological space. A \tib{fuctional structure} on $X$ is a function $F_X$ defined on the collection $\cO$ of open sets in $X$, such that:
+	\begin{enumerate}
+		\item $F_X(U)$ is a subalgebra of the algebra of continuous real-valued functions on $U$$^1$\marginnote{$^1$Recall \ref{th:realfunctionalgebra}.},
+		\item $F_X(U)$ contains all constant functions,
+		\item If $V \subseteq U$ and $f \in F_X(U)$, then $f|_V \in F_X(V)$, and
+		\item If $\cU = \bigcup_{i \in I} U_i$ and $f|_{U_i} \in F_x(U_i)$ for all $i$, then $f \in F_X(U)$.
+	\end{enumerate}
+	The pair $(X, F)$ is called a \tib{functionally structured space}.
+\end{importantdefinition}
+\noindent
+In particular, we care about the following functional structures on $X = \bR^n$:
+\begin{enumerate}
+	\item $F_X(U) = C(U, \bR)$,
+	\item $F_X(U) = C^k(U, \bR)$,
+	\item $F_X(U) = C^\infty(U, \bR)$,
+	\item $F_X(U) = A(U, \bR)$ ($=$ the set of analytic functions $U \to \bR$).
+\end{enumerate}
+\begin{exercise}
+	If $(X, F_X)$ is a functionally structured space, we can turn $(U, F_U)$ into a functionally structured space by setting $F_U(V) = F_X(V)$ for all subsets $V \subseteq U$.
+\end{exercise}
+\begin{importantdefinition}{}{}
+	A \tib{morphism of functionally structured spaces}
+	\begin{align*}
+		(X, F_X) \to (Y, F_Y)
+	\end{align*}
+	is a map $\Phi : X \to Y$ such that precomposition pulls back elements of $F_Y(U)$ to elements of $F_X(\Phi^{-1}(U))$:
+	\begin{align*}
+		f \in F_Y(U) \implies f \circ \Phi \in F_X(\Phi^{-1}(U))
+	\end{align*}
+	An isomorphism, as always, is a morphism whose inverse exists and is a morphism.
+\end{importantdefinition}
+\begin{importantdefinition}{Smooth Manifolds, functional definition}{smoothmanifoldfunctional}
+	An $n$-dimensional differentiable manifold is a second countable \ul{functionally structured} Hausdorff space $(M, F)$ which is locally isomorphic to $(\bR^n, C^\infty)$, i.e. each point in $M$ has a neighborhood $U$ such that $(U, F_U) \cong (V, C^\infty_V)$.
+\end{importantdefinition}
+\pagebreak
+\begin{theorem}
+	Our two definitions of smooth manifolds are equivalent.
+\end{theorem}
+\begin{proof}
+	\begin{enumerate}
+		\item[$\Rightarrow:$]
+		\item[$\Leftarrow:$] Let $(M, F)$ be a smooth manifold in the sense of definition \ref{df:smoothmanifoldfunctional}. We take our charts $\Phi : U \to V$ to be isomorphisms $(U, F_U) \cong (V, C_V^\infty)$. 
+		\newpar
+		It remains to be shown that the coordinate change function $\theta := \Phi\Psi^{-1}$ of any pair of charts is $C^\infty$, and that our atlas is maximal.
+		Since $\theta$ is a morphism, $f \circ \theta$ is $C^\infty$ for any $f \in C^\infty$. Therefore, $\pi_i \circ \theta$ is $C^\infty$ for all $i \in [1..n]$, so $\theta$ is also $C^\infty$. 
+		\newpar
+		At the same time, if $\Phi$ and $\Psi$ are homeomorphisms and $\theta$ is $C^\infty$, then $\theta$ is clearly an isomorphism, since $\theta \in C^\infty$ implies $f \circ \theta \in C^\infty$ for all $f \in C^\infty$ and $\theta^{-1} \in C^\infty$ exists and fulfills the same conditions. Therefore, our atlas is maximal.
+	\end{enumerate}
+\end{proof}
 
 \chapter{Lattice Theory}
 \section{Lattices}

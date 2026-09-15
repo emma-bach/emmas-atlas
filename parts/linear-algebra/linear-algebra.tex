@@ -577,7 +577,7 @@ Intuitively, a vector space is any algebraic structure $V$ equipped with a field
 		\item scalar multiplication is a homomorphism from $\bF$ into the endomorphism ring of $(V,+)$.
 	\end{enumerate}
 \end{importantdefinition}
-Spelling everything out, the condition that $(V,+)$ is a commutative group tells us that:
+The condition that $(V,+)$ is a commutative group should be simple to understand by now - it tells us that:
 \begin{enumerate}
 	\item Vector addition is associative:
 	\begin{align*}
@@ -598,20 +598,26 @@ Spelling everything out, the condition that $(V,+)$ is a commutative group tells
 	\end{align*} 
 	As usual, we write $v - w := v + (-w)$ as an abbreviation.
 \end{enumerate}
-The second condition might seem a bit more obtuse - however, all it tells us is that $.$ assigns to each scalar $\lambda \in \bF$ an endomorphism of $V$, such that $1_\bF.$ is the identity map $\id_\bF$. Putting everything together, we get the following demands for scalar addition:
+The second condition might seem a bit more obtuse - however, all it tells us is that $.$ assigns to each scalar $\lambda \in \bF$ an endomorphism $\lambda. : V \to V$, such that:
 \begin{enumerate}
-	\item Scalar multiplication by any scalar respects vector addition, i.e. the operations distribute:
+	\item Each multiplication operation is an endomorphism, i.e. scalar multiplication distributes over vector addition:
 	\begin{align*}
 		\forall &\lambda \in \bF:\\
 		\forall &v,w \in V:\\
 		&\lambda.(v+w) = \lambda.v + \lambda.w
 	\end{align*}
+	\item The map assigning operators to scalars is a homomorphism, i.e. scalar multiplication also distributes over scalar addition:
+	\begin{align*}
+		\forall &\lambda, \mu \in \bF:\\
+		\forall &v \in V:\\
+		&(\lambda + \mu).v = \lambda.v + \mu.v
+	\end{align*}
+	\item Scalar multiplication by the field identity $1_\bF$ leaves vectors unchanged:
+	\begin{align*}
+		\forall &v \in V:\\
+		&1_\bF.v = v
+	\end{align*}
 \end{enumerate}
-\section{Subspaces and Quotient Spaces}
-\section{Bases and Dimension}
-\section{Matrices}
-\section{Systems of Linear Equations}
-\section{The Method of Least Squares}
 \chapter{Affine Spaces}
 Affine spaces are structures similar to vector spaces, but where the notions of "points" and "directions" are separate.
 \begin{importantdefinition}{Affine Space}{}
@@ -741,10 +747,6 @@ thus, an affine map between vector spaces is simply a linear map composed with a
 \begin{exercise}
 	An injective map between real affine spaces of dimension $\geq 2$ is affine if and only if it maps lines to lines.
 \end{exercise}
-\chapter{Determinants}
-\section{Defining Volume}
-\section{Determinants of Endomorphisms}
-\section{Orientation}
 \chapter{Eigenvectors and Eigenvalues}
 \begin{importantdefinition}{Eigenvalues and Eigenvectors}{}
 	Let $k$ be a field, $F : V \to V$ an Endomorphism, and $\lambda \in k$. Then the \tib{$\lambda$-eigenspace} of $F$ is the set
@@ -812,7 +814,7 @@ One important application is that finding eigenvectors lets us diagonalize endom
 \begin{importanttheorem}{Characterstic Polynomial}{}
 	Let $V$ be a finite-dimensional vector space over a field $\Bbbk$. Let $F : V \to V$ be an endomorphism. Then $\lambda \in \Bbbk$ is an eigenvalue of $F$ if and only if
 	\begin{align*}
-		\chi_F(\lambda) = \det(\lambda \cdot \id_V - F) = 0_\Bbbk
+		\chi_F(\lambda) = \det(\lambda.\id_V - F) = 0_\Bbbk
 	\end{align*}
 	We call $\chi_F$ the \tib{characteristic polynomial of $F$}.
 \end{importanttheorem}
@@ -828,9 +830,19 @@ One important application is that finding eigenvectors lets us diagonalize endom
 	Show that the constant term of a characteristic polynomial $\chi_F(\lambda)$ is given by $(-1)^n \cdot (\det F)$.
 \end{exercise}
 (...)
-\section{Algebras and the Cayley-Hamilton Theorem}
-\begin{importanttheorem}{Evaluation map}{}
-	Let $R$ be a commutative unital ring, and let $A$ be a commutative unital algebra over $R$. Then, for every $a \in A$, there exists a unique algebra homomorphism $\ev_a : R[X] \to A$ such that:
+\section{Algebras, Cayley-Hamilton and Frobenius}
+\begin{importantdefinition}{Algebra over a Ring}{}
+	An \tib{algebra over a commutative ring $R$} is an $R$-module $A$ equipped with a bilinear multiplication operation $\cdot : A \times A \to A$. We call $A$ commutative, associative or unital if the multiplication operator $\cdot$ is commutative, associative, or has an identity element.
+\end{importantdefinition}
+\begin{exercise}
+	\label{th:realfunctionalgebra}
+	\begin{enumerate}
+		\item Show that every commutative unital ring trivially forms an algebra over itself.
+		\item Show that the set $C(M, \bR)$ of continuous functions from a metric space $M$ into $\bR$ forms a commutative associative unital algebra under pointwise addition and multiplication, with the constant function $\boldone_\bR$ as the identity of multiplication.
+	\end{enumerate}
+\end{exercise}
+\begin{importanttheorem}{Polynomial Evaluation Map}{}
+	Let $R$ be a commutative ring, and let $A$ be a commutative unital algebra over $R$. Then, for every $a \in A$, there exists a unique algebra homomorphism $\ev_a : R[X] \to A$ such that:
 	\begin{enumerate}
 		\item $\ev_a(r) = 1_A . r$ for all constant polynomials $r \in R[X]$,
 		\item $\ev_A(X) = X$.
@@ -842,7 +854,7 @@ Informally, this means that we can take elements of an algebra $A$ over $R$ and 
 	Let $R$ be a commutative unital ring. Let $A \in R^{n \times n}$. Then $\chi_A(A) = 0$.
 \end{importanttheorem}
 \section{Minimal Polynomials}
-\begin{importanttheorem}{Minimal polynomial}
+\begin{importanttheorem}{Minimal polynomial}{}
 	Let $F$ be an endomorphism of a vector space $V$ over a field $\Bbbk$. Then there exists a unique polynomial $\mu_F \in \Bbbk[X]$ such that:
 	\begin{enumerate}
 		\item $\mu_F$ is either normalized or equal to $0_{\Bbbk[X]}$
