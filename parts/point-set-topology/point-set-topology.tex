@@ -730,6 +730,10 @@ This theorem generalizes the fact that a sequence in a metric product space conv
 		V = \bigcap \cV'.
 	\end{align*}
 \end{proof}
+\begin{theorem}
+	\label{th:regularclosedneighbourhoods}
+	A Hausdorff space is regular if and only if the closed neighbourhoods of any point form a neighbourhood basis of that point.
+\end{theorem}
 \begin{importantdefinition}{Completely Regular Space}{}
 	Let $(X, \cO)$ be a topological space. Then we call $(X,\cO)$ \tib{completely regular} if every point can be housed orf from any closed set not containing it by a continuous function:
 	\begin{align*}
@@ -820,6 +824,7 @@ This theorem generalizes the fact that a sequence in a metric product space conv
 	Find a topological space that is normal, but not T0.
 \end{exercise}
 \begin{exercise}
+	\label{th:compacthausdorffnormal}
 	Show that every compact Hausdorff space is normal. (Hint: Our proof of Theorem \ref{th:compacthausdorffregular} (every compact Hausdorff space is regular) gets us most of the way there and only needs a small alteration.)
 \end{exercise}
 \begin{importantlemma}{Urysohn's Lemma}{urysohnlemma}
@@ -857,8 +862,8 @@ This theorem generalizes the fact that a sequence in a metric product space conv
 
 \clearpage
 \section{Urysohn's Metrization Theorem}
-\begin{importantcorollary}{Urysohn's Metrization Theorem}{}
-	Every second-countable completely regular space Hausdorff space $X$ can be embedded into the Hilbert Cube
+\begin{importantcorollary}{Urysohn's Metrization Theorem}{urysohnmetrization}
+	Every second-countable completely regular Hausdorff space $X$ can be embedded into the Hilbert Cube
 	\begin{align*}
 		\prod_{n \in \bN} [0,1]
 	\end{align*}
@@ -891,9 +896,41 @@ This theorem generalizes the fact that a sequence in a metric product space conv
 		g_s^{-1}[(0,1]] \cap X &= g^{-1}(\pi_s^{-1}[(0,1]]) \cap X \subseteq V\\
 		&\implies g(g^{-1}(\pi_s^{-1}[(0,1]]) \cap X) \subseteq g[V]\\
 		&\stackrel{g~ \text{inj.}}{\implies} g(g^{-1}(\pi_s^{-1}[(0,1]])) \cap g[X] \subseteq g[V]\\
-		&\implies \pi_s^{-1}[(0,1]] \cap g[X] \subseteq g[V]\\
+		&\implies \pi_s^{-1}[(0,1]] \cap g[X] \subseteq g[V]
 	\end{align*}
 \end{proof}
+
+\clearpage
+
+\section{Local Compactness and Compactification}
+\begin{importantdefinition}{}{}
+	We call a topological space \tib{locally compact} if every point has a compact neighbourhood.
+\end{importantdefinition}
+\begin{theorem}
+	Let $X$ be a locally compact Hausdorff space. Then:
+	\begin{enumerate}
+		\item $X$ is completely regular.
+		\item Every neighbourhood of $x \in X$ contains a compact neighbourhood of $x$.
+	\end{enumerate} 
+\end{theorem}
+\begin{proof}
+	Let $C$ be a compact neighbourhood of $x$. Let $U$ be an arbitrary neighbourhood of $x$. Let $V \subseteq C \cap U$ be open with $x \in V$. Then $\ol V \subseteq C$ is a compact Hausdorff space, and thus normal by Exercise \ref{th:compacthausdorffnormal} and completely regular by Urysohn's Lemma \ref{th:urysohnlemma}. Since every point has a completely regular neighbourhood, $X$ is completely regular.
+	\newpar
+	Since $V \subseteq \ol V$ is also completely regular, the closed neighbourhoods of any point $x \in V$ form a neighbourhood basis by Theorem \ref{th:regularclosedneighbourhoods}. 
+	\newpar
+	Thus, there exists a neighbourhood $N \subseteq V$ of $x \in C$ which is closed in $\ol V$, and thus closed in $X$. Since $N \subseteq C$ is closed and $C$ is compact, $N$ is also compact. Since $N$ is a neighbourhood of $x$ in $\ol V$ and $N \subseteq V$,< $N$ is also a neighbourhood of $x$ in the open set $V$, and thus in all of $X$.
+\end{proof}
+\begin{importanttheorem}{One-Point Compactification}{onepointcompactification}
+	Let $(X, \cO)$ be a locally compact Hausdorff space. Let $X^+ = X \cup \lr{\infty}$ be the set consisting of $X$ and an additional "point at infinity" not originally contained in $X$. 
+	\newpar
+	Define the collection of open sets in $X^+$ to be
+	\begin{align*}
+		\cO^+ := \cO \cup \lr{X^+ \setminus C \mid C \subseteq X \text{ compact}},
+	\end{align*}
+	i.e. the original open sets in $X$ plus the complements of compact sets in $X$ with the additional point $\infty$ added. Then $(X^+, \cO^+)$ is a compact Hausdorff space called the \tib{one point compactification} of $X$. Furthermore, $\cO^+$ is the only topology making the set $X^+$ a compact Hausdorff space with $X$ as a subspace.
+\end{importanttheorem}
+\clearpage
+
 \section{Paracompactness}
 \begin{definition}
 	Let $\cU$ and $\cV$ be coverings of a topological space $X$. We call $\cU$ a \tib{refinement} of $\cV$ if each element of $\cU$ is a subset of some element of $\cV$.
@@ -949,22 +986,80 @@ This equality doesn't hold for arbitrary collections, since an infinite union of
 	\newpar
 	Thus, $U' \supseteq C$ and $X \setminus \ol{U'} \ni y$ are disjoint open sets containing $C$ and $y$ respectively.
 \end{proof}
-\begin{corollary}
+\begin{corollary}\label{th:paracompacthausdorffnormal}
 	Every paracompact Hausdorff space is normal.
 \end{corollary}
 \begin{proof}
 	Let $C_1, C_2 \subseteq x$ be disjoint closed sets.
 	Since every paracompact Hausdorff space is regular, we can apply the same construction as in the regular case, but set $x \in C_1$ and have each $V_x$ be a neighbourhood of the entirety of $C_2$.
 \end{proof}
+Thus, every second countable paracompact space is metrizable by Urysohn's Lemma \ref{th:urysohnlemma}.
 \begin{proposition}
 	Every metric space is paracompact.
 \end{proposition}
 \begin{proofsketch}
 	The proof makes use of some set-theoretic trickery involving ordinals and the well-ordering theorem. If you're interested, a short version is given by Mary Ellen Rudin in \hyperlink{https://www.ams.org/journals/proc/1969-020-02/S0002-9939-1969-0236876-3/S0002-9939-1969-0236876-3.pdf}{\tit{A new proof that metric spaces are paracompact}, AMS (1968)}
 \end{proofsketch}
+\begin{importantdefinition}{}{}
+	Let $f : X \to \bR$ be a continuous map from a topological space into the real numbers. Then the \tib{support of $f$} is the smallest closed set on which $f(x) \neq 0$:
+	\begin{align*}
+		\supp f = \ol{\lr{x \in X \mid f(x) \neq 0}}
+	\end{align*}
+\end{importantdefinition}
+\begin{definition}
+	Let $\cU = \lr{U_i \mid i \in I}$ be an open covering of the space $X$. Then a \tib{partition of unity} subordinate to this covering is a collection of maps
+	\begin{align*}
+		\lr{f_j : X \to [0,1] \mid j \in J}
+	\end{align*}
+	such that:
+	\begin{enumerate}
+		\item There exists a locally finite open refinement $\lr{V_j \mid j \in J}$ of $\cU$ such that
+		\begin{align*}
+			\forall j \in J : \supp f_j \subseteq V_j
+		\end{align*}
+		\item The functions "partition unity" in the sense that they add up to the constant function $\boldone_X$:
+		\begin{align*}
+			\forall x \in X : \sum_{j \in J} f_j(x) = 1
+		\end{align*}
+	\end{enumerate}
+\end{definition} 
+\begin{theorem}
+	Let $X$ be a paracompact topological space. Let $\cU$ be an open covering of $X$. Then there exists a partition of unity subordinate to $\cU$.
+\end{theorem}
+\begin{corollary}
+	Let $X$ be paracompact. Let $\lr{U_i \mid i \in I}$ be a locally finite open covering of $X$. Then there exists an open covering $\lr{V_i \mid i \in I}$ such that for each $i \in I$, we have $\ol V_i \subseteq U_i.$
+\end{corollary}
+\begin{definition}
+	We call a topological space \tib{$\sigma$-compact} if it is the union of countably many compact subspaces.
+\end{definition}
+\begin{theorem}{\label{th:sigmapara}}
+	A locally compact Hausdorff space is paracompact if and only if it is the disjoint union of open $\sigma$-compact subsets.
+\end{theorem}
+\begin{theorem}
+	Let $X$ be a locally compact second countable Hausdorff space. Then $X$ is $\sigma$-compact and paracompact.
+\end{theorem}
+In particular, $X$ is a second countable completely regular Hausdorff space by Corollary \ref{th:paracompacthausdorffnormal}, and thus metrizable by Urysohn's metrization theorem \ref{th:urysohnmetrization}.
+\begin{proof}
+	Let $X$ be a locally compact second countable Hausdorff space.
+	Let $\cB$ be a countable basis of $X$. Let $C \subseteq X$ be compact. By local compactness, every point $x \in C$ has a compact neighbourhood $N$. Since $N$ is a neighbourhood, there exists a basis element $U_x \in \cB$ such that $x \in U_x \subseteq N$. Since $U_x \subseteq N$, each closure $\ol U_x$ is compact, so the closures of these basis elements give a countable covering of $X$ by compact sets, i.e. $X$ is $\sigma$-compact. By Theorem \ref{th:sigmapara}, $X$ is also paracompact.
+\end{proof}
+\begin{theorem}
+	If $X$ is a locally compact second countable Hausdorff space, then its one-point compactification $X^+$ is metrizable.
+\end{theorem}
+\begin{proof}
+	Continuing the construction from the previous proof, we can cover $C$ by the our basis elements $U_x$ and pick a finite subcover $\lr{U_{x_k} \mid k \in [1..n]}$.
+	\newpar
+	Then $\bigcup_{k = 1}^n \ol{U_{x_k}}$ is a finite union of compact sets, i.e. compact, so the set 
+	\begin{align*}
+		V_C = X^+ \setminus \bigcup_{k = 1}^n \ol{U_{x_k}}
+	\end{align*} 
+	is an open neighbourhood of $\infty$ contained in an arbitrary neighbourhood of the form $X^+ \setminus C$. 
+	\newpar
+	Each set $V_C$ is uniquely defined by a finite subset of the countable set $\cB$, so there are only countably many $V_C$. Thus, $\cB \cup \lr{V_C \mid C \text{ compact}}$ is a countable basis of $X^+$. Furthermore, $X^+$ is a compact Hausdorff space by construction, and thus completely regular. Metrizability follows, as usual, from Urysohn's metrization theorem \ref{th:urysohnmetrization}.
+\end{proof}
 \clearpage
 \chapter{Smooth Manifolds}
-\begin{importantdefinition}{Smooth Manifolds, Classical Definition}{}
+\begin{importantdefinition}{Smooth Manifolds via Charts}{smoothmanifoldcharts}
 	An \tib{$n$-dimensional smooth manifold} is a second-countable Hausdorff space $M$ together with a collection of maps called "charts" such that:
 	\begin{enumerate}
 		\item Each chart is a homeomorphism $\Phi : U \to U' \subseteq \bR^n$, where $U$ is open in $M$ and $U'$ is open in $\bR^n$.
@@ -990,10 +1085,10 @@ We also want to construct a second, slightly more abstract definition of a smoot
 \noindent
 In particular, we care about the following functional structures on $X = \bR^n$:
 \begin{enumerate}
-	\item $F_X(U) = C(U, \bR)$,
-	\item $F_X(U) = C^k(U, \bR)$,
-	\item $F_X(U) = C^\infty(U, \bR)$,
-	\item $F_X(U) = A(U, \bR)$ ($=$ the set of analytic functions $U \to \bR$).
+	\item $F_X(U) = C(U, \bR^n)$,
+	\item $F_X(U) = C^k(U, \bR^n)$,
+	\item $F_X(U) = C^\infty(U, \bR^n)$,
+	\item $F_X(U) = A(U, \bR^n)$ ($=$ the set of analytic functions $U \to \bR^n$).
 \end{enumerate}
 \begin{exercise}
 	If $(X, F_X)$ is a functionally structured space, we can turn $(U, F_U)$ into a functionally structured space by setting $F_U(V) = F_X(V)$ for all subsets $V \subseteq U$.
@@ -1009,7 +1104,7 @@ In particular, we care about the following functional structures on $X = \bR^n$:
 	\end{align*}
 	An isomorphism, as always, is a morphism whose inverse exists and is a morphism.
 \end{importantdefinition}
-\begin{importantdefinition}{Smooth Manifolds, functional definition}{smoothmanifoldfunctional}
+\begin{importantdefinition}{Smooth Manifolds via Functional Structure}{smoothmanifoldfunctional}
 	An $n$-dimensional differentiable manifold is a second countable \ul{functionally structured} Hausdorff space $(M, F)$ which is locally isomorphic to $(\bR^n, C^\infty)$, i.e. each point in $M$ has a neighborhood $U$ such that $(U, F_U) \cong (V, C^\infty_V)$.
 \end{importantdefinition}
 \pagebreak
@@ -1018,8 +1113,12 @@ In particular, we care about the following functional structures on $X = \bR^n$:
 \end{theorem}
 \begin{proof}
 	\begin{enumerate}
-		\item[$\Rightarrow:$]
-		\item[$\Leftarrow:$] Let $(M, F)$ be a smooth manifold in the sense of definition \ref{df:smoothmanifoldfunctional}. We take our charts $\Phi : U \to V$ to be isomorphisms $(U, F_U) \cong (V, C_V^\infty)$. 
+		\item[$\Rightarrow:$] Let $M$ be a smooth manifold in the sense of Definition \ref{df:smoothmanifoldcharts}. We need to define the sets $F(U)$ for all open sets $U$. Let $U$ be the domain of a chart $\Phi : U \to U' \subseteq \bR^n$. Then we can set
+		\begin{align*}
+			F(U) = \lr{f \circ \Phi \mid f \in C^\infty(U', \bR^n)}
+		\end{align*}
+		Then $F$ inherits the properties defining a functional structure from $C^\infty(U', \bR^n)$, and $\Phi$ is an isomorphism between $F$ and $C^\infty$ by definition of $F$.
+		\item[$\Leftarrow:$] Let $(M, F)$ be a smooth manifold in the sense of Definition \ref{df:smoothmanifoldfunctional}. We take our charts $\Phi : U \to V$ to be isomorphisms $(U, F_U) \cong (V, C_V^\infty)$. 
 		\newpar
 		It remains to be shown that the coordinate change function $\theta := \Phi\Psi^{-1}$ of any pair of charts is $C^\infty$, and that our atlas is maximal.
 		Since $\theta$ is a morphism, $f \circ \theta$ is $C^\infty$ for any $f \in C^\infty$. Therefore, $\pi_i \circ \theta$ is $C^\infty$ for all $i \in [1..n]$, so $\theta$ is also $C^\infty$. 
@@ -1027,7 +1126,70 @@ In particular, we care about the following functional structures on $X = \bR^n$:
 		At the same time, if $\Phi$ and $\Psi$ are homeomorphisms and $\theta$ is $C^\infty$, then $\theta$ is clearly an isomorphism, since $\theta \in C^\infty$ implies $f \circ \theta \in C^\infty$ for all $f \in C^\infty$ and $\theta^{-1} \in C^\infty$ exists and fulfills the same conditions. Therefore, our atlas is maximal.
 	\end{enumerate}
 \end{proof}
-
+\begin{proposition}
+	These two constructions are inverse to each other.
+\end{proposition}
+From now on, we will implicitly assume that every functional structure induced by a chart structure and every chart structure induced by a functional structure is created via this construction, where charts correspond to local isomorphisms of the functional structures.
+\newpar
+This lets us generalize smoothness from vector spaces to manifolds:
+\begin{importantdefinition}{}{}
+	A map between manifolds is called \tib{smooth} or \tib{$C^\infty$} if it is a morphism between their respective functional structures
+\end{importantdefinition}
+\begin{importanttheorem}{}{}
+	A map $f : M \to N$ between two smooth manifolds is smooth in the sense of being a morphism between functional structures if and only if, for any charts $\Phi : U \to U' \subseteq \bR^m$ on $M$ and $\Psi : V \to V' \subseteq \bR^n$ on $N$, the function $\Psi \circ f \circ \Phi^{-1}$ is smooth.
+\end{importanttheorem}
+\begin{proof}
+	\begin{enumerate}
+		\item[$\Rightarrow$:] Let $f : (M, F_M) \to (N, F_N)$ be a morphism. Then we have:
+		\begin{align*}
+			\Psi \in C^\infty(V, V') 
+			&\implies \Psi \circ f \in F_M(f^{-1}(V))\\
+			&\implies \Psi \circ f \circ \Phi^{-1} \in C^\infty(\Phi(f^{-1}(V)), \bR^n)
+		\end{align*}
+		\item[$\Leftarrow$:] Let $\Psi \circ f \circ \Phi^{-1} \in C^\infty(U', V')$. In order for this function to be defined, we need 
+		\begin{align*}
+			f(\Phi^{-1}(U')) = f(U) \subseteq V = \Psi^{-1}(V')
+		\end{align*}
+		Since the restriction of a chart is itself a valid chart, $\phi := \Phi|_{f^{-1}(V)}$ is a chart $f^{-1}(V) \to \phi(f^{-1}(V))$, and thus an isomorphism.
+		Thus, we have
+		\begin{align*}
+			& \Psi \in C^\infty(V, V')\\
+			\implies &\Psi \circ f \circ \phi^{-1} \in C^\infty(\phi(f^{-1}(V)), V')\\ 
+			\implies &\Psi \circ f = \Psi \circ f \circ \phi^{-1} \circ \phi \in F_M(\phi^{-1}(\phi(f^{-1}(V)))) = F_M(f^{-1}(V)),
+		\end{align*}
+		so $f$ is a morphism.
+	\end{enumerate}
+\end{proof}
+Another concept that manifolds inherit from vector spaces is orientation:
+\begin{importantdefinition}{}{}
+	Let $M$ be an $n$-manifold. Then an atlas $A$ which is maximal with regards to the property that, for any pair of charts $\Phi, \Psi$ in the atlas, the Jacobian of the coordinate change function $\Phi\Psi^{-1}$ has positive determinant at all points in its domain, is called an \tib{orientation} of $M$. An $n$-manifold having such an atlas is called \tib{orientable}.
+\end{importantdefinition}
+\begin{theorem}
+	Every orientable manifold has at least two orientations.
+\end{theorem}
+\begin{proofsketch}
+	Given an orientation of $M$, we can pick one coordinate of each chart and reverse the sign, leading to a new orientation.
+\end{proofsketch}
+\begin{theorem}
+	Every connected manifold has at most two orientations.
+\end{theorem}
+\begin{proof}
+	Since charts are bijective, their Jacobians never have determinant zero.
+	\newpar
+	Now, $\cA$ and $\cB$ be two orientations. Define a map
+	$s(p) : M \to \lr{1,-1}$ by setting $s(p) = 1$ if all coordinate change functions $\Phi\Psi^{-1}$ involving one chart from each orientation have positive determinant (in which case all of them have positive determinant, since $\Phi\psi^{-1} = \Phi\Psi^{-1}\Psi\psi^{-1}$), and $s(p) = -1$ otherwise. Since Jacobian determinants vary continuously, $s(p)$ is locally constant. Since $M$ is connected, $s(p)$ must be constant, leaving two options:
+	\begin{enumerate}
+		\item If $s(p) = 1$, then $\cA$ and $\cB$ are compatible, and must thus already contain each others charts, since orientations are maximal.
+		\item If $s(p) = -1$, let $\cC$ be another orientation for which the analogously defined function $s_C$ comparing $\cC$ to $\cA$ is negative. Then, given charts $\Phi_A, \Phi_B, \Phi_C$ from each orientation whose domains match, we get
+		\begin{align*}
+			\Phi_B \Phi_C^{-1} = (\Phi_B \Phi_A^{-1}) \circ (\Phi_A \Phi_C^{-1})
+		\end{align*}
+		since the Jacobians of $(\Phi_B \Phi_A^{-1})$ and $(\Phi_A \Phi_C^{-1})$ have negative signs, the Jacobian of their composition must have positive sign, so $\cB$ and $\cC$ must be compatible, and thus identical.
+	\end{enumerate}
+\end{proof}
+\begin{definition}
+	As with topological manifolds, smooth manifolds with boundary are defined by taking smooth manifolds and replacing the domain of our charts with the upper half-space $\bH^n := \lr{x \in \bR^n \mid x_n \geq 0}$.
+\end{definition}
 \chapter{Lattice Theory}
 \section{Lattices}
 \begin{definition}
