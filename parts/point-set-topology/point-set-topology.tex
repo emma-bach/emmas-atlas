@@ -1,7 +1,7 @@
-\part{Point-Set Topology}
+\part{Point-Set Topology!}
 \chapter{Topological Spaces}
 \section{Topologies}
-
+\label{sec:topologies}
 \begin{importantdefinition}{Accumulation points and isolated points}{}
 	Let $X$ be a topological space. Let $A \subseteq X$. Then we call $x \in X$ an \tib{accumulation point} of $A$ if every neighbourhood of $x$ contains a point in $A$ \tib{other than $x$ itself}. 
 	
@@ -1053,143 +1053,11 @@ In particular, $X$ is a second countable completely regular Hausdorff space by C
 	\begin{align*}
 		V_C = X^+ \setminus \bigcup_{k = 1}^n \ol{U_{x_k}}
 	\end{align*} 
-	is an open neighbourhood of $\infty$ contained in an arbitrary neighbourhood of the form $X^+ \setminus C$. 
+	is an open neighbourhood of $\infty$ contained in an arbitrary neighbourhood of the form $X^+ \setminus C$.
 	\newpar
 	Each set $V_C$ is uniquely defined by a finite subset of the countable set $\cB$, so there are only countably many $V_C$. Thus, $\cB \cup \lr{V_C \mid C \text{ compact}}$ is a countable basis of $X^+$. Furthermore, $X^+$ is a compact Hausdorff space by construction, and thus completely regular. Metrizability follows, as usual, from Urysohn's metrization theorem \ref{th:urysohnmetrization}.
 \end{proof}
 \clearpage
-\chapter{Smooth Manifolds}
-\begin{importantdefinition}{Smooth Manifolds via Charts}{smoothmanifoldcharts}
-	An \tib{$n$-dimensional smooth manifold} is a second-countable Hausdorff space $M$ together with a collection of maps called "charts" such that:
-	\begin{enumerate}
-		\item Each chart is a homeomorphism $\Phi : U \to U' \subseteq \bR^n$, where $U$ is open in $M$ and $U'$ is open in $\bR^n$.
-		\item Each point $x \in M$ is in the domain of some chart,
-		\item Given charts $\Phi : U \to U'$ and $\Psi : V \to V'$, the coordinate change function $\Phi\Psi^{-1} : \Psi(U \cap V) \to \Phi(U \cap V)$ is smooth (i.e. infinitely continuously differentiable)
-		\item The collection of charts is maximal, i.e. if a map fulfills conditions (1) and doesn't violate condition (3) when taken together with preexisting charts, then that new map is a chart.
-	\end{enumerate}
-	We call our any collection of charts satisfying conditions $1,2$ and $3$ an \tib{atlas} of $M$.
-\end{importantdefinition}
-Note that this definition directly generalizes topological manifolds, but with additional smoothness demands on our charts. Since most manifolds can't be equipped with the structure of a vector space, differentiability isn't well-defined for our charts $\Phi : U \to U \subseteq \bR^n$, so instead we move that demand to the coordinate change functions $\Phi\Psi^{-1}$, which are functions mapping $\bR^n$ into itself.
-\newpar
-We also want to construct a second, slightly more abstract definition of a smooth manifold, based on the notion of \tib{functional structures}.
-\begin{importantdefinition}{}{}
-	Let $(X, \cO)$ be a topological space. A \tib{fuctional structure} on $X$ is a function $F_X$ defined on the collection $\cO$ of open sets in $X$, such that:
-	\begin{enumerate}
-		\item $F_X(U)$ is a subalgebra of the algebra of continuous real-valued functions on $U$$^1$\marginnote{$^1$Recall \ref{th:realfunctionalgebra}.},
-		\item $F_X(U)$ contains all constant functions,
-		\item If $V \subseteq U$ and $f \in F_X(U)$, then $f|_V \in F_X(V)$, and
-		\item If $\cU = \bigcup_{i \in I} U_i$ and $f|_{U_i} \in F_x(U_i)$ for all $i$, then $f \in F_X(U)$.
-	\end{enumerate}
-	The pair $(X, F)$ is called a \tib{functionally structured space}.
-\end{importantdefinition}
-\noindent
-In particular, we care about the following functional structures on $X = \bR^n$:
-\begin{enumerate}
-	\item $F_X(U) = C(U, \bR^n)$,
-	\item $F_X(U) = C^k(U, \bR^n)$,
-	\item $F_X(U) = C^\infty(U, \bR^n)$,
-	\item $F_X(U) = A(U, \bR^n)$ ($=$ the set of analytic functions $U \to \bR^n$).
-\end{enumerate}
-\begin{exercise}
-	If $(X, F_X)$ is a functionally structured space, we can turn $(U, F_U)$ into a functionally structured space by setting $F_U(V) = F_X(V)$ for all subsets $V \subseteq U$.
-\end{exercise}
-\begin{importantdefinition}{}{}
-	A \tib{morphism of functionally structured spaces}
-	\begin{align*}
-		(X, F_X) \to (Y, F_Y)
-	\end{align*}
-	is a map $\Phi : X \to Y$ such that precomposition pulls back elements of $F_Y(U)$ to elements of $F_X(\Phi^{-1}(U))$:
-	\begin{align*}
-		f \in F_Y(U) \implies f \circ \Phi \in F_X(\Phi^{-1}(U))
-	\end{align*}
-	An isomorphism, as always, is a morphism whose inverse exists and is a morphism.
-\end{importantdefinition}
-\begin{importantdefinition}{Smooth Manifolds via Functional Structure}{smoothmanifoldfunctional}
-	An $n$-dimensional differentiable manifold is a second countable \ul{functionally structured} Hausdorff space $(M, F)$ which is locally isomorphic to $(\bR^n, C^\infty)$, i.e. each point in $M$ has a neighborhood $U$ such that $(U, F_U) \cong (V, C^\infty_V)$.
-\end{importantdefinition}
-\pagebreak
-\begin{theorem}
-	Our two definitions of smooth manifolds are equivalent.
-\end{theorem}
-\begin{proof}
-	\begin{enumerate}
-		\item[$\Rightarrow:$] Let $M$ be a smooth manifold in the sense of Definition \ref{df:smoothmanifoldcharts}. We need to define the sets $F(U)$ for all open sets $U$. Let $U$ be the domain of a chart $\Phi : U \to U' \subseteq \bR^n$. Then we can set
-		\begin{align*}
-			F(U) = \lr{f \circ \Phi \mid f \in C^\infty(U', \bR^n)}
-		\end{align*}
-		Then $F$ inherits the properties defining a functional structure from $C^\infty(U', \bR^n)$, and $\Phi$ is an isomorphism between $F$ and $C^\infty$ by definition of $F$.
-		\item[$\Leftarrow:$] Let $(M, F)$ be a smooth manifold in the sense of Definition \ref{df:smoothmanifoldfunctional}. We take our charts $\Phi : U \to V$ to be isomorphisms $(U, F_U) \cong (V, C_V^\infty)$. 
-		\newpar
-		It remains to be shown that the coordinate change function $\theta := \Phi\Psi^{-1}$ of any pair of charts is $C^\infty$, and that our atlas is maximal.
-		Since $\theta$ is a morphism, $f \circ \theta$ is $C^\infty$ for any $f \in C^\infty$. Therefore, $\pi_i \circ \theta$ is $C^\infty$ for all $i \in [1..n]$, so $\theta$ is also $C^\infty$. 
-		\newpar
-		At the same time, if $\Phi$ and $\Psi$ are homeomorphisms and $\theta$ is $C^\infty$, then $\theta$ is clearly an isomorphism, since $\theta \in C^\infty$ implies $f \circ \theta \in C^\infty$ for all $f \in C^\infty$ and $\theta^{-1} \in C^\infty$ exists and fulfills the same conditions. Therefore, our atlas is maximal.
-	\end{enumerate}
-\end{proof}
-\begin{proposition}
-	These two constructions are inverse to each other.
-\end{proposition}
-From now on, we will implicitly assume that every functional structure induced by a chart structure and every chart structure induced by a functional structure is created via this construction, where charts correspond to local isomorphisms of the functional structures.
-\newpar
-This lets us generalize smoothness from vector spaces to manifolds:
-\begin{importantdefinition}{}{}
-	A map between manifolds is called \tib{smooth} or \tib{$C^\infty$} if it is a morphism between their respective functional structures
-\end{importantdefinition}
-\begin{importanttheorem}{}{}
-	A map $f : M \to N$ between two smooth manifolds is smooth in the sense of being a morphism between functional structures if and only if, for any charts $\Phi : U \to U' \subseteq \bR^m$ on $M$ and $\Psi : V \to V' \subseteq \bR^n$ on $N$, the function $\Psi \circ f \circ \Phi^{-1}$ is smooth.
-\end{importanttheorem}
-\begin{proof}
-	\begin{enumerate}
-		\item[$\Rightarrow$:] Let $f : (M, F_M) \to (N, F_N)$ be a morphism. Then we have:
-		\begin{align*}
-			\Psi \in C^\infty(V, V') 
-			&\implies \Psi \circ f \in F_M(f^{-1}(V))\\
-			&\implies \Psi \circ f \circ \Phi^{-1} \in C^\infty(\Phi(f^{-1}(V)), \bR^n)
-		\end{align*}
-		\item[$\Leftarrow$:] Let $\Psi \circ f \circ \Phi^{-1} \in C^\infty(U', V')$. In order for this function to be defined, we need 
-		\begin{align*}
-			f(\Phi^{-1}(U')) = f(U) \subseteq V = \Psi^{-1}(V')
-		\end{align*}
-		Since the restriction of a chart is itself a valid chart, $\phi := \Phi|_{f^{-1}(V)}$ is a chart $f^{-1}(V) \to \phi(f^{-1}(V))$, and thus an isomorphism.
-		Thus, we have
-		\begin{align*}
-			& \Psi \in C^\infty(V, V')\\
-			\implies &\Psi \circ f \circ \phi^{-1} \in C^\infty(\phi(f^{-1}(V)), V')\\ 
-			\implies &\Psi \circ f = \Psi \circ f \circ \phi^{-1} \circ \phi \in F_M(\phi^{-1}(\phi(f^{-1}(V)))) = F_M(f^{-1}(V)),
-		\end{align*}
-		so $f$ is a morphism.
-	\end{enumerate}
-\end{proof}
-Another concept that manifolds inherit from vector spaces is orientation:
-\begin{importantdefinition}{}{}
-	Let $M$ be an $n$-manifold. Then an atlas $A$ which is maximal with regards to the property that, for any pair of charts $\Phi, \Psi$ in the atlas, the Jacobian of the coordinate change function $\Phi\Psi^{-1}$ has positive determinant at all points in its domain, is called an \tib{orientation} of $M$. An $n$-manifold having such an atlas is called \tib{orientable}.
-\end{importantdefinition}
-\begin{theorem}
-	Every orientable manifold has at least two orientations.
-\end{theorem}
-\begin{proofsketch}
-	Given an orientation of $M$, we can pick one coordinate of each chart and reverse the sign, leading to a new orientation.
-\end{proofsketch}
-\begin{theorem}
-	Every connected manifold has at most two orientations.
-\end{theorem}
-\begin{proof}
-	Since charts are bijective, their Jacobians never have determinant zero.
-	\newpar
-	Now, $\cA$ and $\cB$ be two orientations. Define a map
-	$s(p) : M \to \lr{1,-1}$ by setting $s(p) = 1$ if all coordinate change functions $\Phi\Psi^{-1}$ involving one chart from each orientation have positive determinant (in which case all of them have positive determinant, since $\Phi\psi^{-1} = \Phi\Psi^{-1}\Psi\psi^{-1}$), and $s(p) = -1$ otherwise. Since Jacobian determinants vary continuously, $s(p)$ is locally constant. Since $M$ is connected, $s(p)$ must be constant, leaving two options:
-	\begin{enumerate}
-		\item If $s(p) = 1$, then $\cA$ and $\cB$ are compatible, and must thus already contain each others charts, since orientations are maximal.
-		\item If $s(p) = -1$, let $\cC$ be another orientation for which the analogously defined function $s_C$ comparing $\cC$ to $\cA$ is negative. Then, given charts $\Phi_A, \Phi_B, \Phi_C$ from each orientation whose domains match, we get
-		\begin{align*}
-			\Phi_B \Phi_C^{-1} = (\Phi_B \Phi_A^{-1}) \circ (\Phi_A \Phi_C^{-1})
-		\end{align*}
-		since the Jacobians of $(\Phi_B \Phi_A^{-1})$ and $(\Phi_A \Phi_C^{-1})$ have negative signs, the Jacobian of their composition must have positive sign, so $\cB$ and $\cC$ must be compatible, and thus identical.
-	\end{enumerate}
-\end{proof}
-\begin{definition}
-	As with topological manifolds, smooth manifolds with boundary are defined by taking smooth manifolds and replacing the domain of our charts with the upper half-space $\bH^n := \lr{x \in \bR^n \mid x_n \geq 0}$.
-\end{definition}
 \chapter{Lattice Theory}
 \section{Lattices}
 \begin{definition}

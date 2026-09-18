@@ -829,16 +829,16 @@ One important application is that finding eigenvectors lets us diagonalize endom
 \begin{exercise}
 	Show that the constant term of a characteristic polynomial $\chi_F(\lambda)$ is given by $(-1)^n \cdot (\det F)$.
 \end{exercise}
-(...)
 \section{Algebras, Cayley-Hamilton and Frobenius}
 \begin{importantdefinition}{Algebra over a Ring}{}
 	An \tib{algebra over a commutative ring $R$} is an $R$-module $A$ equipped with a bilinear multiplication operation $\cdot : A \times A \to A$. We call $A$ commutative, associative or unital if the multiplication operator $\cdot$ is commutative, associative, or has an identity element.
 \end{importantdefinition}
 \begin{exercise}
-	\label{th:realfunctionalgebra}
+	\phantom{}
+	\label{ex:realfunctionalgebra}
 	\begin{enumerate}
-		\item Show that every commutative unital ring trivially forms an algebra over itself.
-		\item Show that the set $C(M, \bR)$ of continuous functions from a metric space $M$ into $\bR$ forms a commutative associative unital algebra under pointwise addition and multiplication, with the constant function $\boldone_\bR$ as the identity of multiplication.
+		\item Show that every commutative ring trivially forms an algebra over itself.
+		\item Show that the set $C(M, \bR)$ of continuous functions $M \to \bR$, where $M$ is a metric space, forms a commutative associative unital algebra under pointwise addition and multiplication.
 	\end{enumerate}
 \end{exercise}
 \begin{importanttheorem}{Polynomial Evaluation Map}{}
@@ -958,8 +958,7 @@ Let $V$ be a vector space over a field $\Bbbk$ and $F : V \to V$ be an Endomorph
 \end{align*}
 \end{importantcorollary}
 \section{The Jordan Normal Form}
-\begin{importantcorollary}{Generalized Eigenspace Decomposition}{res:geneigenspace}
-	\label{res:geneigenspace}
+\begin{importantcorollary}{Generalized Eigenspace Decomposition}{geneigenspace}
 	Let $V$ be a vector space over a field $\Bbbk$ and $F : V \to V$ be an Endomorphism. Assume that its minimal polynomial $\mu_F$ splits into linear factors over $\Bbbk$, i.e. $$\mu_F(x) = \prod_{i = 1}^k(x - \lambda_i)^{n_i}$$ with $\lambda_i \in \Bbbk$. Then we have
 	\begin{align*}
 		V = \bigoplus_{i = 1}^k \ker((F - \lambda_i \id_V)^{n_i})
@@ -1031,7 +1030,7 @@ We now want to make use of this to construct a Jordan basis $B$ of a nilpotent E
 	Let $F : V \to V$ be a matrix whose characteristic polynomial has $n = \dim(V)$ roots. Then there exists a basis $B$ of $V$ such that $_BF_B$ is a block diagonal matrix consisting of Jordan blocks.
 \end{corollary}
 \begin{proof}
-	Generalized Eigenspace decomposition \ref{res:geneigenspace} shows us that $V$ is the direct sum of the generalized Eigenspaces of $F$.
+	Generalized Eigenspace decomposition \ref{th:geneigenspace} shows us that $V$ is the direct sum of the generalized Eigenspaces of $F$.
 	We know by exercise \ref{res:hauptrauminvariant} that the generalized Eigenspaces of $F$ are $F$-invariant. Therefore, exercise \ref{res:matrixdirectsum} tells us that if we find a basis $B_i$ for each generalized Eigenspace $H(F, \lambda_i)$ such that $F|_{H(F, \lambda_i)}$ is represented by a matrix $J_i$ in Jordan normal form, and we combine our bases into a basis $B = \bigcup_{i = 1}^n B_i$ of $V$ as a whole, then the matrix representation of $F$ in basis $B$ will be a block diagonal matrix consisting of these $J_i$, and thus $F$ will also be in Jordan normal form.
 	\newpar
 	Now, let $F_i$ be the restriction of $(F - \lambda_i \id_V)$ to $H(F, \lambda_i)$.
