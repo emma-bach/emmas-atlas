@@ -1,7 +1,6 @@
-\part{Point-Set Topology!}
+\part{Point-Set Topology}
 \chapter{Topological Spaces}
 \section{Topologies}
-\label{sec:topologies}
 \begin{importantdefinition}{Accumulation points and isolated points}{}
 	Let $X$ be a topological space. Let $A \subseteq X$. Then we call $x \in X$ an \tib{accumulation point} of $A$ if every neighbourhood of $x$ contains a point in $A$ \tib{other than $x$ itself}. 
 	
@@ -99,63 +98,6 @@
 
 \clearpage
 
-\section{Bases and Countability}
-\begin{importantdefinition}{}{}
-	We call a topological space \tib{first countable} if it has a countable neighbourhood basis around every point $x$, i.e. a set of neigbourhoods $B_i$ of $x$ such that every neighbourhood of $x$ contains some $B_i$.
-\end{importantdefinition}
-\begin{exercise}
-	Every metric space is first countable.
-\end{exercise}
-It turns out that first countable spaces are exactly the spaces where sequences are sufficient to maintain our intuitions about how sequence convergence interacts with topological properties:
-\begin{importanttheorem}{Detecting openness and closedness using sequences}{}
-	Let $X$ be first countable. Let $A \subseteq X$. Let $x \in X$. Then:
-	\begin{enumerate}
-		\item $x \in \intr A$ if and only if every sequence in $X$ converging to $x$ is eventually in $A$.
-		\item $x \in \ol A$ if and only if there exists a sequence in $A$ converging to $x$.
-	\end{enumerate}
-\end{importanttheorem}
-\begin{proof}
-	Copy the proof of the metric case, replacing open balls with our countable neighbourhood basis.
-\end{proof}
-\begin{corollary}
-	Let $X$ be first countable. Let $A \subseteq X$. Let $x \in X$. Then:
-	\begin{enumerate}
-		\item $A$ is closed in $X$ if and only if it contains every limit of every convergent sequence of points in $A$.
-		\item $A$ is open in $X$ if and only if every sequence in $X$ converging to a point of $A$ is eventually in $A$.
-	\end{enumerate}
-\end{corollary}
-\begin{importantdefinition}{}{}
-	We call a topological space \tib{separable} if it contains a countable dense subset.
-\end{importantdefinition}
-\begin{exercise}
-	\phantom{}
-	\begin{enumerate}
-		\item Every countable space is separable.
-		\item $\bR^n$ is separable for every $n \in \bN$.
-	\end{enumerate}
-\end{exercise}
-\begin{importantdefinition}{}{}
-	We call a topological space \tib{second countable} if it has a countable basis.
-\end{importantdefinition}
-\begin{exercise}
-	$\bR^n$ is second countable for every $n \in \bN$.
-\end{exercise}
-\begin{exercise}
-	Let $X$ be second countable. Then:
-	\begin{enumerate}
-		\item $X$ is first countable.
-		\item $X$ is separable.
-	\end{enumerate}
-\end{exercise}
-\begin{theorem}
-	A metric space is second countable if and only if it is separable.
-\end{theorem}
-\begin{exercise}
-	Let $H = \lr{(0,y) \mid y \in \bR_{\geq 0}} \subseteq \bR^2$ be the closed upper half plane. We define a topology $\cO$ on $H$ by taking as a basis the open subsets of $\bR^2$ that are contained in $H$ and intersect the boundary of $H$ in at most one point. Show that $(H, \cO)$ is separable, but not second countable.
-\end{exercise}
-\clearpage
-
-\chapter{New Spaces from Old}
 \section{The Subspace Topology}
 \begin{importanttheorem}{}{}
 	Let $(X, \cO)$ be a topological space, and let $S \subseteq X$ be any subset. Then the collection
@@ -220,20 +162,11 @@ If $U \subseteq S \subseteq X$, the notations $\ol U$, $\intr U$, and $\extr U$ 
 	Let $X$ be a topological space. Let $R \subseteq S \subseteq X$. Then the subspace topologies of $R$ in $S$ and $X$ agree.
 \end{exercise}
 \begin{exercise}
-	Let $(X, \cO)$ be a topological space. Let $S \subseteq X$. Then if $\cB$ is a basis of $\cO$, the collection
-	\begin{align*}
-		\cB_S = \lr{B \cap S \mid B \in \cB}
-	\end{align*}
-	is a basis of the subspace topology $\cO_S$.
-\end{exercise}
-\begin{exercise}
-	\phantom{}´
+	\phantom{}
 	\begin{enumerate}
 		\item Every subspace of a T0 space is T0.
 		\item Every subspace of a T1 space if T1.
 		\item Every subspace of a Hausdorff space is Hausdorff.
-		\item Every subspace of a first countable space is first countable.
-		\item Every subspace of a second countable space is second countable.
 	\end{enumerate}
 \end{exercise}
 \begin{importantdefinition}{}{}
@@ -275,7 +208,182 @@ If $U \subseteq S \subseteq X$, the notations $\ol U$, $\intr U$, and $\extr U$ 
 
 \clearpage
 
-\section{Product Spaces}
+\section{Bases and Countability}
+\begin{exercise}
+	Let $(X, \cO)$ be a topological space. Let $S \subseteq X$. Then if $\cB$ is a basis of $\cO$, the collection
+	\begin{align*}
+		\cB_S = \lr{B \cap S \mid B \in \cB}
+	\end{align*}
+	is a basis of the subspace topology $\cO_S$.
+\end{exercise}
+\begin{importantdefinition}{}{}
+	We call a topological space \tib{first countable} if it has a countable neighbourhood basis around every point $x$, i.e. a set of neigbourhoods $B_i$ of $x$ such that every neighbourhood of $x$ contains some $B_i$.
+\end{importantdefinition}
+\begin{exercise}
+	Every metric space is first countable.
+\end{exercise}
+It turns out that first countable spaces are exactly the spaces where sequences are sufficient to maintain our intuitions about how sequence convergence interacts with topological properties:
+\begin{importanttheorem}{Detecting openness and closedness using sequences}{}
+	Let $X$ be first countable. Let $A \subseteq X$. Let $x \in X$. Then:
+	\begin{enumerate}
+		\item $x \in \intr A$ if and only if every sequence in $X$ converging to $x$ is eventually in $A$.
+		\item $x \in \ol A$ if and only if there exists a sequence in $A$ converging to $x$.
+	\end{enumerate}
+\end{importanttheorem}
+\begin{proof}
+	Copy the proof of the metric case, replacing open balls with our countable neighbourhood basis.
+\end{proof}
+\begin{corollary}
+	Let $X$ be first countable. Let $A \subseteq X$. Let $x \in X$. Then:
+	\begin{enumerate}
+		\item $A$ is closed in $X$ if and only if it contains every limit of every convergent sequence of points in $A$.
+		\item $A$ is open in $X$ if and only if every sequence in $X$ converging to a point of $A$ is eventually in $A$.
+	\end{enumerate}
+\end{corollary}
+\begin{importantdefinition}{}{}
+	We call a topological space \tib{separable} if it contains a countable dense subset.
+\end{importantdefinition}
+\begin{exercise}
+	\phantom{}
+	\begin{enumerate}
+		\item Every countable space is separable.
+		\item $\bR^n$ is separable for every $n \in \bN$.
+	\end{enumerate}
+\end{exercise}
+\begin{importantdefinition}{}{}
+	We call a topological space \tib{second countable} if it has a countable basis.
+\end{importantdefinition}
+\begin{exercise}
+	$\bR^n$ is second countable for every $n \in \bN$.
+\end{exercise}
+\begin{exercise}
+	Let $X$ be second countable. Then:
+	\begin{enumerate}
+		\item $X$ is first countable.
+		\item $X$ is separable.
+	\end{enumerate}
+\end{exercise}
+\begin{theorem}
+	A metric space is second countable if and only if it is separable.
+\end{theorem}
+\begin{exercise}
+	Let $H = \lr{(0,y) \mid y \in \bR_{\geq 0}} \subseteq \bR^2$ be the closed upper half plane. We define a topology $\cO$ on $H$ by taking as a basis the open subsets of $\bR^2$ that are contained in $H$ and intersect the boundary of $H$ in at most one point. Show that $(H, \cO)$ is separable, but not second countable.
+\end{exercise}
+\clearpage
+
+\chapter{Compactness}
+
+The familiar notions of open covers and compactness generalize directly from metric spaces to topological spaces. The most major difference is that sequential compactness is generally weaker than "covering compactness", and has to be replaced with a notion of compactness based on ultrafilter convergence.
+\begin{definition}
+	Let $(X, \cO)$ be a topological space. Then we call a set $\cU \subseteq \cO$ of open subsets an \tib{open covering} of $X$ if every point of $X$ is contained in the union of all elements of $\cU$, i.e. if
+	\begin{align*}
+		\bigcup_{U_i \in \cU} U_i = X
+	\end{align*}
+\end{definition}
+\begin{importantdefinition}{Compactness}{}
+	Let $(X, \cO)$ be a topological space. Then we call $(X, \cO)$ \tib{compact} if every open covering of $X$ contains a finite open covering as a subset. We call a subset $K \subseteq X$ compact if it is compact as a topological space equipped with the subspace topology.
+\end{importantdefinition}
+\begin{exercise}
+	Every closed subset of a compact space is compact.
+\end{exercise}
+\begin{exercise}
+	Let $(X, \cO)$ be compact and $f : X \to Y$ be continuous. Then $f[X]$ is compact.
+\end{exercise}
+\begin{exercise}
+	Let $(X, \cO)$ be a nonempty topological space. Then the following are equivalent:
+	\begin{enumerate}
+		\item $(X,\cO)$ is compact, i.e. every open covering has a finite subcovering.
+		\item Every set $\cA$ of closed sets whose intersection is the empty set has a finite subset whose intersection is the empty set.
+		\item If $\cA$ is a set of closed sets such that the intersection over any finite subset of $\cA$ is non-empty, the intersection of $\cA$ is non-empty.
+		\item Every filter on $(X, \cO)$ has a limit point.
+		\item Every ultrafilter on $(X, \cO)$ is convergent.
+	\end{enumerate}
+\end{exercise}
+\begin{theorem}\tib{(Alexander Subbase Theorem)}
+	Let $(X, \cO)$ be a topological space. Let $\cS$ be a subbasis. Then $X$ is compact if every open covering of $X$ by sets of $\cS$ has a finite subcovering.
+\end{theorem}
+\begin{proof}
+	Assume that $X$ is not compact. Then there exists a non-convergent ultrafilter $\cF$, i.e. we have
+	\begin{align*}
+		\forall &x \in X :\\ 
+		\exists &U_x \in \cU(x) :\\
+		&(X \setminus U_x) \in \cF
+	\end{align*}
+	By definition of subbases, every $U_x \in \cU(x)$ contains an open subset $O_x$ of the form
+	\begin{align*}
+		O_x = \bigcap_{k = 0}^n S_{k,x}
+	\end{align*}
+	for some $S_{k,x} \in \cS$ and $n \in \bN$.
+	We therefore have
+	\begin{align*}
+		X \setminus U_x
+		&\subseteq 
+		X \setminus O_x\\
+		&=
+		X \setminus \bigcap_{k = 0}^n S_{k,x}
+	\end{align*}
+	which implies $X \setminus \bigcap_{k = 0}^n S_{k,x} \in \cF$ by the filter axioms. Since the intersection of this set with $\bigcap_{k = 0}^n S_{k,x} \in \cF$ is empty, and filters are closed under finite intersection, $\cF$ cannot contain every $S_{k,x}$. Therefore, since $\cF$ is an ultrafilter, it must contain at least one set $X \setminus S_{k,x}$ for every $x$. We will refer to these $S_{k,x}$ with $X \setminus S_{k,x} \in X$ as $S_x$. 
+	\newpar
+	Since every $S_x$ is an open neighborhood of $x$, and thus contains $x$, the set of all $S_x$ is an open convering of $X$. By compactness, there must be a finite subcovering 
+	\begin{align*}
+		\bigcup_{x \in X'} S_x = X.
+	\end{align*} 
+	Now, since $\cF$ contains every $X \setminus S_x$, it also contains
+	\begin{align*}
+		\bigcap_{x \in X'} (X \setminus S_x) = X \setminus \bigcup_{x \in X'} S_x = X \setminus X = \emptyset.
+	\end{align*}
+	which contradicts $\cF$ being a filter.
+\end{proof}
+\begin{lemma}
+	Let $(X, \cO)$ be a Hausdorff space. Let $K \subseteq X$ be compact. Then $K$ can be separated from any point $x \in X \setminus K$ by open neighborhoods, i.e:
+	\begin{align*}
+		\forall &x \in X:\\
+		\exists &U_x \in \cU(x), U_K \in \cU(K):\\
+		&U_x \cap U_K = \emptyset
+	\end{align*}
+\end{lemma}
+\begin{exercise}
+	Let $(X, \cO)$ be compact and Hausdorff. Let $A,B \subseteq X$ be closed. Then $A$ and $B$ can be separated from each other by disjoint open neigborhoods.
+\end{exercise}
+\begin{exercise}
+	Every compact subset of a Hausdorff space is closed.
+\end{exercise}
+\begin{exercise}
+	Every continuous function from a compact space into a Hausdorff space is closed.
+\end{exercise}
+\begin{exercise}
+	Every continuous injective function from a compact space into a Hausdorff space is an embedding.
+\end{exercise}
+\begin{definition}
+	We call a topological space $X$ \tib{Lindelöf} if every open cover of $X$ has a countable subcover.
+\end{definition}
+\begin{theorem}
+	Every second-countable space is Lindelöf.
+\end{theorem}
+\begin{definition}
+	We call a topological space $X$ \tib{countably compact} if every countable open cover of $X$ has a finite subcover.
+\end{definition}
+\begin{exercise}
+	A countably compact space is compact if and only if it is Lindelöf.
+\end{exercise}
+\begin{theorem}
+	A metric space is Lindelöf if and only if it is second countable.
+\end{theorem}
+\begin{theorem}
+	Every sequentially compact space is countably compact.
+\end{theorem}
+\begin{theorem}
+	A first-countable space is countably compact if and only if it is sequentially compact.
+\end{theorem}
+\begin{theorem}
+	In a second countable Hausdorff space, compactness, countable compactness and sequential compactness are all equivalent to each other.
+\end{theorem}
+
+\clearpage
+
+\chapter{New Spaces from Old}
+
+\section{Initial Topologies and Product Spaces}
 \begin{lemma}
 	Let $(X, \cO)$ be a topological space. Then $(X, \cO)$ is Hausdorff if and only if the diagonal
 	\begin{align*}
@@ -295,16 +403,149 @@ If $U \subseteq S \subseteq X$, the notations $\ol U$, $\intr U$, and $\extr U$ 
 
 \clearpage
 
-\section{Disjoint Union Spaces}
+\section{Final Topologies and Quotient Spaces}
+\begin{importantdefinition}{Final Topologies}{}
+	Let $X$ be a topological space. Let $Y$ be any set. Let $\cF = \lr{f_i : X \to Y \mid i \in I}$ be a collection of functions. Then the \tib{final topology on $Y$ with respect to $\cF$} is the finest topology such that all functions are continuous, i.e. $U \subseteq Y$ is open in $Y$ if and only if $f_i^{-1}[U]$ is open in $X$ for all $i \in I$.
+	\newpar
+	A final topology with respect to a single surjective function $f : X \to Y$ is known as a \tib{quotient topology}, and a space $Y$ equipped with a quotient topology is known as a \tib{quotient space}.
+\end{importantdefinition}
+The name "quotient space" comes from the fact that if $f : X \to Y$ is surjective, then each $y \in Y$ can be viewed as an equivalence class $y = \lr{x \in X \mid f(x) = y}$ of the equivalence relation $x_1 \sim x_2 \leftrightarrow f(x_1) = f(x_2)$, i.e. every surjective functions $f : X \to Y$ can be viewed as the projection function of some equivalence relation. Vice versa, every projection function is surjective by definition.
+\begin{definition}
+	A continuous surjection $f : X \to Y$ between topological spaces is called a \tib{quotient map} or an \tib{identification map} if the topology on $Y$ corresponds to the quotient topology induced by $f$.
+\end{definition}
+\begin{theorem}
+	A surjection $f : X \to Y$ is a quotient map if and only if for all functions $g : Y \to Z$, continuity of $g \circ f : X \to Z$ implies continuity of $g$ and vice versa.
+\end{theorem}
+\begin{proof}
+	\begin{enumerate}
+		\item[$\Rightarrow:$] Let $f : X \to Y$ be a quotient map. Then $f$ is continuous by definition. Thus, if $g$ is also continuous, then the composition $g \circ f$ must also be continuous.
 
-\clearpage
-
-\section{Quotient Spaces}
-
+		Vice versa, let $g \circ f$ be continuous. Then, starting with an open set $W \subseteq Z$, $f^{-1}[g^{-1}[W]] = (g \circ f)^{-1}$ is open in $Y$, since $g \circ f$ is continuous. Since $f$ is a quotient map, a set $f^{-1}[U]$ is open in $Y$ if and only if $U$ is open in $X$, so $f^{-1}[g^{-1}[W]]$ can only be open in $Y$ if $g^{-1}[W]$ was already open in $Y$. Thus, $g$ is continuous.
+		\[\begin{tikzcd}
+			{f^{-1}[g^{-1}[W]] \subseteq X} && {g^{-1}[W] \subseteq Y} && W \subseteq Z
+			\arrow["f", from=1-1, to=1-3]
+			\arrow["{(g \circ f)^{-1}}", bend left=20, from=1-5, to=1-1]
+		\end{tikzcd}\]
+		\item[$\Leftarrow:$] Let $(Y, \cO_Y)$ be the topological space $Y$ equipped with whatever topology it comes packed with. 
+		
+		First of all, note that $f : X \to (Y, \cO_Y)$ must be continuous, since we can simply take $g = 1_Y : (Y, \cO_Y) \to (Y, \cO_Y)$, so that continuity of $1_Y$ implies continuity of $f = 1_Y \circ f$.
+		
+		Now, let $(Y, \cO_f)$ be the topological space we get by equipping the set $Y$ with the quotient topology induced by $f$. 
+		
+		Let $g = 1_Y : (Y, \cO_Y) \to (Y, \cO_f)$ be the identity function between our two different realizations of $Y$ as a topological space. Then the composition $g \circ f : X \to (Y, \cO_f)$ is just $f : X \to (Y, \cO_f)$, which is continuous by definition, since $\cO_f$ is the quotient topology induced by $f$. Thus, $g$ must also be continuous.
+		
+		Finally, the function $g^{-1}$ is continuous, since $g^{-1} \circ f$ is just $f : X \to (Y, \cO_Y)$. Therefore, $g : (Y, \cO_Y) \cong (Y, \cO_f)$ is a homeomorphism, i.e. $\cO_Y$ already carries the quotient topology induced by $f$, i.e. $f$ is a quotient map.
+	\end{enumerate}
+\end{proof}
+\begin{importantdefinition}{Collapsing a Subspace}{}
+	Let $X$ be a topological space. Let $A \subseteq X$. Then $X/A$ denotes the quotient space obtained by "collapsing $A$ into a single point", i.e. by the equivalence relation whose equivalence classes are $A$ and all of the points $\lr{x} \in X \setminus A$.
+\end{importantdefinition}
+\begin{theorem}
+	Let $X$ be regular. Let $A \subseteq X$ be closed. Then $X \setminus A$ is Hausdorff.
+\end{theorem}
+\begin{theorem}
+	Let $X$ be normal. Let $A \subseteq X$ be closed. Then $X \setminus A$ is normal.
+\end{theorem}
+\begin{theorem}
+	The result of taking the mantle $S^n \times [0,1]$ of an $n+1$-dimensional cylinder and collapsing its bottom is homeomorphic to an $n+1$-dimensional closed ball:
+	\begin{align*}
+		S^n \times [0,1] / S^n \times \lr{0} \cong \ol {B^{n+1}}
+	\end{align*}
+\end{theorem}
+\begin{proof}
+	Take the continuous function
+	\begin{align*}
+		f : S^n \times [0,1] &\to \ol{B^{n+1}}\\
+		(x,t) &\mapsto tx
+	\end{align*}
+	We have $f(S^n \times \lr{0}) = 0$. Therefore, we can factor our map through our equivalence relation to get a well-defined bijection
+	\begin{align*}
+		\ol f : S^n \times [0,1] / S^n \times \lr{0} &\to \ol{B^{n+1}}\\
+		[x,t] &\mapsto tx.
+	\end{align*}
+	We have $\ol f = f \circ q$, so $\ol f$ is a composition of continuous functions, i.e. continuous.
+	Furthermore, $\ol{B^{n+1}}$ is a subspace of $\bR^{n+1}$, i.e. Hausdorff, and $S^n \times [0,1]$ is a product of compact sets, i.e. compact. Thus, $\ol f$ is a continuous bijection from a compact space into a Hausdorff space, i.e. a Homeomorphism.
+\end{proof}
+\begin{theorem}
+	Taking a closed $n$-dimensional ball $\ol{B^n}$ and collapsing its boundary gives an $n$-sphere:
+	\begin{align*}
+		\ol{B^n} / S^{n-1} \cong S^n
+	\end{align*}
+\end{theorem}
+\begin{importantdefinition}{Saturated Sets}{}
+	Let $q : X \to Y$ be a map between topological spaces. Then we call a subset $U \subseteq X$ \tib{saturated with respect to $q$} if
+	\begin{align*}
+		\exists V \subseteq Y : U = q^{-1}(V).
+	\end{align*}
+	By extension, given an equivalence relation $\sim$ on $X$, we call a subset $U \subseteq X$ \tib{saturated with respect to $\sim$} if it is saturated with respect to the induced quotient map, i.e. if
+	\begin{align*}
+		U = \bigcup_{u \in U} [u]_\sim.
+	\end{align*}
+	We call the set $\bigcup_{u \in U} [u]_\sim$ the \tib{saturation of $U$}.
+\end{importantdefinition}
+\begin{theorem}
+	A continuous surjection $q : X \to Y$ is a quotient map if and only if it takes saturated open subsets to open subsets or saturated closed subsets to closed subsets.
+\end{theorem}
+\begin{proof}
+	\begin{enumerate}
+		\item Assume that $q : X \to Y$ is a quotient map, i.e. $V \subseteq Y$ is open if and only if $q^{-1} \subseteq X$ is open.
+		\newpar
+		Then if $U \subseteq X$ is saturated, we get $q^{-1}(q(U)) = U$. This immediately tells us that images of saturated open sets are open. If $C \subseteq X$ is closed and saturated, then its complement must be open and saturated, so surjectivity gives us
+		\begin{align*}
+			q^{-1}(Y \setminus q(C)) 
+			&= q^{-1}(q(X) \setminus q(C))
+			\\
+			&= q^{-1}(q(X \setminus C))
+			\\
+			&= X \setminus C,
+		\end{align*}
+		i.e. $Y \setminus q(C)$ is open, i.e. $q(C)$ is closed.
+		\item 
+	\end{enumerate}
+\end{proof}
+\begin{theorem}
+	Let $q : X \to Y$ be a quotient map. Let $U \subseteq X$ be saturated and open or closed. Then $q|_U : U \to q(U)$ is a quotient map.
+\end{theorem}
+\begin{proof}
+	content...
+\end{proof}
 \clearpage
 
 \section{Adjunction Spaces}
 
+\begin{importantdefinition}{Attaching Spaces along a Subset}{}
+	Let $X$ and $Y$ be topological spaces, let $A \subseteq X$ be closed, and $f : A \to Y$ be continuous. Then we denote by
+	\begin{align*}
+		Y \cup_f X = (X \amalg Y) / \sim
+	\end{align*}
+	the quotient of the disjoint union $X \amalg Y$ by the equivalence relation generated by $a \sim f(a)$ for all $a \in A$. Such a quotient space is called an \tib{adjunction space}, and is said to be formed by \tib{attaching $Y$ to $X$ along the attaching map $f$}.
+\end{importantdefinition}
+Note that this equivalence relation identifies each point $y \in Y$ with the entire preimage $f^{-1}(y) \subseteq A$. If $A = \emptyset$, then our relation is empty and we get $Y \cup_f X = X \amalg Y$. If $Y = \lr{y}$ only contains a single point, we get $Y \cup_f X = X/A$.
+\begin{theorem}
+	Let $Y \cup_f X$ be an adjunction space. Let
+	\begin{align*}
+		q : X \amalg Y \to X \cup_f Y
+	\end{align*}
+	be the associate quotient map. Then:
+	\begin{enumerate}
+		\item $q|_Y : Y \to Y \cup_f X$ is an embedding onto a closed subspace,
+		\item $q|_\lr{X \setminus A} : X \setminus A \to Y \cup_f X$ is an embedding onto an open subspace,
+		\item $Y \cup_f X = q(Y) \amalg q(X \setminus A)$.
+	\end{enumerate}
+\end{theorem}
+\begin{proof}
+	\begin{enumerate}
+		\item Let $B \subseteq Y$ be closed. To show that $q(B) \subseteq Y \cup_f X$ is closed, we need to show that $q^{-1}(q(B))$ is closed in $X \amalg Y$, i.e. that $q^{-1}(q(B)) \cap X$ is closed in $X$ and $q^{-1}(q(B)) \cap Y$ is closed in $Y$.
+		
+		Since no two distinct elements of $Y$ can be related to each other, we get $q(B) = B$, and since every element of $Y$ is identified with itself and with its preimages, we get $q^{-1}(q(B)) = B \cup f^{-1}(B)$. Intersecting with $X$ and $Y$ gives
+		\begin{align*}
+			q^{-1}(q(B)) \cap Y &= B\\
+			q^{-1}(q(B)) \cap X &= f^{-1}(B).
+		\end{align*}
+		The former is closed by definition. It follows that $f^{-1}(B)$ is closed in $A$, and since $A$ is closed in $X$ so is $f^{-1}(B)$. $q|_Y$ is clearly injective, since no points in $Y$ are identified with each other. Thus, $q|_Y$ is a continuous closed injection, and thus an embedding. Note that $q|_Y$ being closed implies that $q(Y)$ is closed.
+		\item 
+	\end{enumerate}
+\end{proof}
 \chapter{Topological Manifolds}
 \begin{importantdefinition}{}{}
 	We call a topological space $X$ \tib{locally Euclidean of dimension $n$} if every point $x \in X$ has a neighbourhood that is homeomorphic to an open subset of $\bR^n$.
@@ -515,112 +756,6 @@ $\sigma_N$ and $\sigma_S$ (where $S = -N$ is the "south pole") give an alternate
 \begin{corollary}
 	Connected components of a topological space are closed.
 \end{corollary}
-\chapter{Compactness}
-The familiar notions of open covers and compactness generalize directly from metric spaces to topological spaces. The most major difference is that sequential compactness is generally weaker than "covering compactness", and has to be replaced with a notion of compactness based on ultrafilter convergence.
-\begin{definition}
-	Let $(X, \cO)$ be a topological space. Then we call a set $\cU \subseteq \cO$ of open subsets an \tib{open covering} of $X$ if every point of $X$ is contained in the union of all elements of $\cU$, i.e. if
-	\begin{align*}
-		\bigcup_{U_i \in \cU} U_i = X
-	\end{align*}
-\end{definition}
-\begin{importantdefinition}{Compactness}{}
-	Let $(X, \cO)$ be a topological space. Then we call $(X, \cO)$ \tib{compact} if every open covering of $X$ contains a finite open covering as a subset. We call a subset $K \subseteq X$ compact if it is compact as a topological space equipped with the subspace topology.
-\end{importantdefinition}
-\begin{exercise}
-	Every closed subset of a compact space is compact.
-\end{exercise}
-\begin{exercise}
-	Let $(X, \cO)$ be compact and $f : X \to Y$ be continuous. Then $f[X]$ is compact.
-\end{exercise}
-\begin{exercise}
-	Let $(X, \cO)$ be a nonempty topological space. Then the following are equivalent:
-	\begin{enumerate}
-		\item $(X,\cO)$ is compact, i.e. every open covering has a finite subcovering.
-		\item Every set $\cA$ of closed sets whose intersection is the empty set has a finite subset whose intersection is the empty set.
-		\item If $\cA$ is a set of closed sets such that the intersection over any finite subset of $\cA$ is non-empty, the intersection of $\cA$ is non-empty.
-		\item Every filter on $(X, \cO)$ has a limit point.
-		\item Every ultrafilter on $(X, \cO)$ is convergent.
-	\end{enumerate}
-\end{exercise}
-\begin{theorem}\tib{(Alexander Subbase Theorem)}
-	Let $(X, \cO)$ be a topological space. Let $\cS$ be a subbasis. Then $X$ is compact if every open covering of $X$ by sets of $\cS$ has a finite subcovering.
-\end{theorem}
-\begin{proof}
-	Assume that $X$ is not compact. Then there exists a non-convergent ultrafilter $\cF$, i.e. we have
-	\begin{align*}
-		\forall &x \in X :\\ 
-		\exists &U_x \in \cU(x) :\\
-		&(X \setminus U_x) \in \cF
-	\end{align*}
-	By definition of subbases, every $U_x \in \cU(x)$ contains an open subset $O_x$ of the form
-	\begin{align*}
-		O_x = \bigcap_{k = 0}^n S_{k,x}
-	\end{align*}
-	for some $S_{k,x} \in \cS$ and $n \in \bN$.
-	We therefore have
-	\begin{align*}
-		X \setminus U_x
-		&\subseteq 
-		X \setminus O_x\\
-		&=
-		X \setminus \bigcap_{k = 0}^n S_{k,x}
-	\end{align*}
-	which implies $X \setminus \bigcap_{k = 0}^n S_{k,x} \in \cF$ by the filter axioms. Since the intersection of this set with $\bigcap_{k = 0}^n S_{k,x} \in \cF$ is empty, and filters are closed under finite intersection, $\cF$ cannot contain every $S_{k,x}$. Therefore, since $\cF$ is an ultrafilter, it must contain at least one set $X \setminus S_{k,x}$ for every $x$. We will refer to these $S_{k,x}$ with $X \setminus S_{k,x} \in X$ as $S_x$. 
-	\newpar
-	Since every $S_x$ is an open neighborhood of $x$, and thus contains $x$, the set of all $S_x$ is an open convering of $X$. By compactness, there must be a finite subcovering 
-	\begin{align*}
-		\bigcup_{x \in X'} S_x = X.
-	\end{align*} 
-	Now, since $\cF$ contains every $X \setminus S_x$, it also contains
-	\begin{align*}
-		\bigcap_{x \in X'} (X \setminus S_x) = X \setminus \bigcup_{x \in X'} S_x = X \setminus X = \emptyset.
-	\end{align*}
-	which contradicts $\cF$ being a filter.
-\end{proof}
-\begin{lemma}
-	Let $(X, \cO)$ be a Hausdorff space. Let $K \subseteq X$ be compact. Then $K$ can be separated from any point $x \in X \setminus K$ by open neighborhoods, i.e:
-	\begin{align*}
-		\forall &x \in X:\\
-		\exists &U_x \in \cU(x), U_K \in \cU(K):\\
-		&U_x \cap U_K = \emptyset
-	\end{align*}
-\end{lemma}
-\begin{exercise}
-	Let $(X, \cO)$ be compact and Hausdorff. Let $A,B \subseteq X$ be closed. Then $A$ and $B$ can be separated from each other by disjoint open neigborhoods.
-\end{exercise}
-\begin{exercise}
-	Every compact subset of a Hausdorff space is closed.
-\end{exercise}
-\begin{exercise}
-	Every continuous function from a compact space into a Hausdorff space is closed.
-\end{exercise}
-\begin{exercise}
-	Every continuous injective function from a compact space into a Hausdorff space is an embedding.
-\end{exercise}
-\begin{definition}
-	We call a topological space $X$ \tib{Lindelöf} if every open cover of $X$ has a countable subcover.
-\end{definition}
-\begin{theorem}
-	Every second-countable space is Lindelöf.
-\end{theorem}
-\begin{definition}
-	We call a topological space $X$ \tib{countably compact} if every countable open cover of $X$ has a finite subcover.
-\end{definition}
-\begin{exercise}
-	A countably compact space is compact if and only if it is Lindelöf.
-\end{exercise}
-\begin{theorem}
-	A metric space is Lindelöf if and only if it is second countable.
-\end{theorem}
-\begin{theorem}
-	Every sequentially compact space is countably compact.
-\end{theorem}
-\begin{theorem}
-	A first-countable space is countably compact if and only if it is sequentially compact.
-\end{theorem}
-\begin{theorem}
-	In a second countable Hausdorff space, compactness, countable compactness and sequential compactness are all equivalent to each other.
-\end{theorem}
 \chapter{Filters}
 \section{Filter Convergence}
 It would be nice to find a generalization of sequence convergence to non-first-countable spaces that shares many of its useful properties.... It turns out that we can! The correct objects for the task are \tib{filters}.
