@@ -407,34 +407,35 @@ The familiar notions of open covers and compactness generalize directly from met
 \begin{importantdefinition}{Final Topologies}{}
 	Let $X$ be a topological space. Let $Y$ be any set. Let $\cF = \lr{f_i : X \to Y \mid i \in I}$ be a collection of functions. Then the \tib{final topology on $Y$ with respect to $\cF$} is the finest topology such that all functions are continuous, i.e. $U \subseteq Y$ is open in $Y$ if and only if $f_i^{-1}[U]$ is open in $X$ for all $i \in I$.
 	\newpar
-	A final topology with respect to a single surjective function $f : X \to Y$ is known as a \tib{quotient topology}, and a space $Y$ equipped with a quotient topology is known as a \tib{quotient space}.
+	A final topology with respect to a single surjective function $q : X \to Y$ is known as a \tib{quotient topology}, and a space $Y$ equipped with a quotient topology is known as a \tib{quotient space}.
 \end{importantdefinition}
-The name "quotient space" comes from the fact that if $f : X \to Y$ is surjective, then each $y \in Y$ can be viewed as an equivalence class $y = \lr{x \in X \mid f(x) = y}$ of the equivalence relation $x_1 \sim x_2 \leftrightarrow f(x_1) = f(x_2)$, i.e. every surjective functions $f : X \to Y$ can be viewed as the projection function of some equivalence relation. Vice versa, every projection function is surjective by definition.
+The name "quotient space" comes from the fact that if $q : X \to Y$ is surjective, then each $y \in Y$ can be viewed as an equivalence class $y = \lr{x \in X \mid q(x) = y}$ of the equivalence relation $x_1 \sim x_2 \leftrightarrow q(x_1) = q(x_2)$, i.e. every surjective functions $q : X \to Y$ can be viewed as the projection function of some equivalence relation. Vice versa, every projection function is surjective by definition.
 \begin{definition}
-	A continuous surjection $f : X \to Y$ between topological spaces is called a \tib{quotient map} or an \tib{identification map} if the topology on $Y$ corresponds to the quotient topology induced by $f$.
+	A continuous surjection $q : X \to Y$ between topological spaces is called a \tib{quotient map} or an \tib{identification map} if the topology on $Y$ corresponds to the quotient topology induced by $q$.
 \end{definition}
+Note that this means that we need that $V$ is open in $Y$ if and only if $q^{-1}(V)$ is open in $X$. We already get one direction for free - since $q$ is continuous, $V$ being open in $Y$ implies that $q^{-1}(V)$ is open in $X$. Therefore, a continuous surjection is a quotient map if and only if openness of $q^{-1}(V)$ implies openness of $V$.
 \begin{theorem}
-	A surjection $f : X \to Y$ is a quotient map if and only if for all functions $g : Y \to Z$, continuity of $g \circ f : X \to Z$ implies continuity of $g$ and vice versa.
+	A surjection $q : X \to Y$ is a quotient map if and only if for all functions $f : Y \to Z$, continuity of $f \circ q : X \to Z$ implies continuity of $g$ and vice versa.
 \end{theorem}
 \begin{proof}
 	\begin{enumerate}
-		\item[$\Rightarrow:$] Let $f : X \to Y$ be a quotient map. Then $f$ is continuous by definition. Thus, if $g$ is also continuous, then the composition $g \circ f$ must also be continuous.
+		\item[$\Rightarrow:$] Let $q : X \to Y$ be a quotient map. Then $q$ is continuous by definition. Thus, if $f$ is also continuous, then the composition $f \circ q$ must also be continuous.
 
-		Vice versa, let $g \circ f$ be continuous. Then, starting with an open set $W \subseteq Z$, $f^{-1}[g^{-1}[W]] = (g \circ f)^{-1}$ is open in $Y$, since $g \circ f$ is continuous. Since $f$ is a quotient map, a set $f^{-1}[U]$ is open in $Y$ if and only if $U$ is open in $X$, so $f^{-1}[g^{-1}[W]]$ can only be open in $Y$ if $g^{-1}[W]$ was already open in $Y$. Thus, $g$ is continuous.
+		Vice versa, let $f \circ q$ be continuous. Then, starting with an open set $W \subseteq Z$, $q^{-1}[f^{-1}[W]] = (f \circ q)^{-1}$ is open in $Y$, since $f \circ q$ is continuous. Since $q$ is a quotient map, a set $q^{-1}[U]$ is open in $Y$ if and only if $U$ is open in $X$, so $q^{-1}[f^{-1}[W]]$ can only be open in $Y$ if $f^{-1}[W]$ was already open in $Y$. Thus, $f$ is continuous.
 		\[\begin{tikzcd}
-			{f^{-1}[g^{-1}[W]] \subseteq X} && {g^{-1}[W] \subseteq Y} && W \subseteq Z
-			\arrow["f", from=1-1, to=1-3]
-			\arrow["{(g \circ f)^{-1}}", bend left=20, from=1-5, to=1-1]
+			{q^{-1}[f^{-1}[W]] \subseteq X} && {f^{-1}[W] \subseteq Y} && W \subseteq Z
+			\arrow["q", from=1-1, to=1-3]
+			\arrow["{(f \circ q)^{-1}}", bend left=20, from=1-5, to=1-1]
 		\end{tikzcd}\]
 		\item[$\Leftarrow:$] Let $(Y, \cO_Y)$ be the topological space $Y$ equipped with whatever topology it comes packed with. 
 		
-		First of all, note that $f : X \to (Y, \cO_Y)$ must be continuous, since we can simply take $g = 1_Y : (Y, \cO_Y) \to (Y, \cO_Y)$, so that continuity of $1_Y$ implies continuity of $f = 1_Y \circ f$.
+		First of all, note that $q : X \to (Y, \cO_Y)$ must be continuous, since we can simply take $f = 1_Y : (Y, \cO_Y) \to (Y, \cO_Y)$, so that continuity of $1_Y$ implies continuity of $q = 1_Y \circ q$.
 		
-		Now, let $(Y, \cO_f)$ be the topological space we get by equipping the set $Y$ with the quotient topology induced by $f$. 
+		Now, let $(Y, \cO_q)$ be the topological space we get by equipping the set $Y$ with the quotient topology induced by $q$. 
 		
-		Let $g = 1_Y : (Y, \cO_Y) \to (Y, \cO_f)$ be the identity function between our two different realizations of $Y$ as a topological space. Then the composition $g \circ f : X \to (Y, \cO_f)$ is just $f : X \to (Y, \cO_f)$, which is continuous by definition, since $\cO_f$ is the quotient topology induced by $f$. Thus, $g$ must also be continuous.
+		Let $f = 1_Y : (Y, \cO_Y) \to (Y, \cO_q)$ be the identity function between our two different realizations of $Y$ as a topological space. Then the composition $f \circ q : X \to (Y, \cO_q)$ is just $q : X \to (Y, \cO_q)$, which is continuous by definition, since $\cO_q$ is the quotient topology induced by $q$. Thus, $f$ must also be continuous.
 		
-		Finally, the function $g^{-1}$ is continuous, since $g^{-1} \circ f$ is just $f : X \to (Y, \cO_Y)$. Therefore, $g : (Y, \cO_Y) \cong (Y, \cO_f)$ is a homeomorphism, i.e. $\cO_Y$ already carries the quotient topology induced by $f$, i.e. $f$ is a quotient map.
+		Finally, the function $f^{-1}$ is continuous, since $f^{-1} \circ q$ is just $q : X \to (Y, \cO_Y)$. Therefore, $f : (Y, \cO_Y) \cong (Y, \cO_q)$ is a homeomorphism, i.e. $\cO_Y$ already carries the quotient topology induced by $q$, i.e. $q$ is a quotient map.
 	\end{enumerate}
 \end{proof}
 \begin{importantdefinition}{Collapsing a Subspace}{}
@@ -479,7 +480,7 @@ The name "quotient space" comes from the fact that if $f : X \to Y$ is surjectiv
 	\end{align*}
 	By extension, given an equivalence relation $\sim$ on $X$, we call a subset $U \subseteq X$ \tib{saturated with respect to $\sim$} if it is saturated with respect to the induced quotient map, i.e. if
 	\begin{align*}
-		U = \bigcup_{u \in U} [u]_\sim.
+		U = q^{-1}(V) = \bigcup_{u \in U} [u]_\sim.
 	\end{align*}
 	We call the set $\bigcup_{u \in U} [u]_\sim$ the \tib{saturation of $U$}.
 \end{importantdefinition}
@@ -488,7 +489,7 @@ The name "quotient space" comes from the fact that if $f : X \to Y$ is surjectiv
 \end{theorem}
 \begin{proof}
 	\begin{enumerate}
-		\item Assume that $q : X \to Y$ is a quotient map, i.e. $V \subseteq Y$ is open if and only if $q^{-1} \subseteq X$ is open.
+		\item Assume that $q : X \to Y$ is a quotient map, i.e. $V \subseteq Y$ is open if and only if $q^{-1}(V) \subseteq X$ is open.
 		\newpar
 		Then if $U \subseteq X$ is saturated, we get $q^{-1}(q(U)) = U$. This immediately tells us that images of saturated open sets are open. If $C \subseteq X$ is closed and saturated, then its complement must be open and saturated, so surjectivity gives us
 		\begin{align*}
@@ -500,14 +501,26 @@ The name "quotient space" comes from the fact that if $f : X \to Y$ is surjectiv
 			&= X \setminus C,
 		\end{align*}
 		i.e. $Y \setminus q(C)$ is open, i.e. $q(C)$ is closed.
-		\item 
+		\item We have just shown that a continuous surjection taking saturated open sets to open sets also takes saturated closed sets to closed sets. Therefore, assume without loss of generality that $q$ is a continuous surjection taking saturated open sets to open sets.
+		
+		If $V \subseteq Y$ is open, continuity tells us directly that $q^{-1}(V) \subseteq X$ is open. On the other hand, given an arbitrary subset $V \subseteq Y$, $q^{-1}(V)$ is saturated by definition, so if it is additionally open, then $q(q^{-1}(V))$ must be open as well. Since $q$ is surjective, we have $q(q^{-1}(V)) = V$, so $V$ is open.
 	\end{enumerate}
 \end{proof}
 \begin{theorem}
-	Let $q : X \to Y$ be a quotient map. Let $U \subseteq X$ be saturated and open or closed. Then $q|_U : U \to q(U)$ is a quotient map.
+	\label{th:saturatedrestriction}
+	Let $q : X \to Y$ be a quotient map. Let $U \subseteq X$ be saturated with respect to $q$ and open or closed. Then $q|_U : U \to q(U)$ is a quotient map.
 \end{theorem}
 \begin{proof}
-	content...
+	Since $U$ is saturated and open, we can write $U = q^{-1}(V)$ for some open subset $V \subseteq Y$.
+	The problem then becomes showing that $$p := q|_{q^{-1}(V)} : q^{-1}(V) \to V$$ is a quotient map, i.e. that $p$ takes saturated open sets to open sets. 
+	
+	Thus, let $$p^{-1}(W) = q^{-1}(W) \cap q^{-1}(V) \subseteq q^{-1}(V)$$ be an arbitrary open subset of $q^{-1}(V)$ that's saturated with respect to $p$. Since preimages play nicely with intersection, we have
+	\begin{align*}
+		p^{-1}(W) = q^{-1}(W) \cap q^{-1}(V) = q^{-1}(V \cap W),
+	\end{align*} 
+	so $p^{-1}(W)$ is also saturated with respect to $q$.
+	
+	Since $q^{-1}(V)$ is open in $X$, its open subsets are open in $X$ as well, including $q^{-1}(W \cap V)$. Since $q$ is a quotient map, this implies that $W \cap V$ is open in $Y$, and since $q^{-1}(W \cap V) \subseteq q^{-1}(V)$, we get $W \cap V \subseteq V$, so $W \cap V$ is open in $V$ as well.
 \end{proof}
 \clearpage
 
@@ -529,7 +542,7 @@ Note that this equivalence relation identifies each point $y \in Y$ with the ent
 	be the associate quotient map. Then:
 	\begin{enumerate}
 		\item $q|_Y : Y \to Y \cup_f X$ is an embedding onto a closed subspace,
-		\item $q|_\lr{X \setminus A} : X \setminus A \to Y \cup_f X$ is an embedding onto an open subspace,
+		\item $q|_{X \setminus A} : X \setminus A \to Y \cup_f X$ is an embedding onto an open subspace,
 		\item $Y \cup_f X = q(Y) \amalg q(X \setminus A)$.
 	\end{enumerate}
 \end{theorem}
@@ -543,7 +556,7 @@ Note that this equivalence relation identifies each point $y \in Y$ with the ent
 			q^{-1}(q(B)) \cap X &= f^{-1}(B).
 		\end{align*}
 		The former is closed by definition. It follows that $f^{-1}(B)$ is closed in $A$, and since $A$ is closed in $X$ so is $f^{-1}(B)$. $q|_Y$ is clearly injective, since no points in $Y$ are identified with each other. Thus, $q|_Y$ is a continuous closed injection, and thus an embedding. Note that $q|_Y$ being closed implies that $q(Y)$ is closed.
-		\item 
+		\item Every element of $X \setminus A$ is exclusively related to itself, so $X \setminus A$ is saturated. Therefore, $q|_{X \setminus A}$ is a quotient map onto its image by Theorem \ref{th:saturatedrestriction}. Since every equivalence class contains only one element, this map is additionally injective, and since $q^{-1}(q(x)) = x$ for all $x \in X \setminus A$, this map is clopen, and thus an embedding.
 	\end{enumerate}
 \end{proof}
 \chapter{Topological Manifolds}
