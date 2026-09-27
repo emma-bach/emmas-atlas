@@ -1,0 +1,153 @@
+\part{A First Taste of Category Theory}
+\chapter{Induced Structure}
+\section{Limits and Colimits}
+\iffalse
+\begin{definition}
+	Let $F : \cS \to C$ be a faithful functor. Let $X \in C$. Then an \tib{$F$-structure on $X$} is the equivalence class of pairs $(S,\phi)$, where $S \in \cS$ an object, $\phi : F(S) \iso X$ is an isomorphism, and two pairs $(S, \phi)$ and $(T, \psi)$ are equivalent if there exists an isomorphism $i : S \iso T$ such that $\phi = \psi \circ F(i)$.
+\end{definition}
+\begin{example}
+	Let $\cU$ be a set of sets. Then for every set $X \in \cU$, there exists a bijection between operations on $X$ making $X$ a group and the set of $F$-structures, where $F : \tn{Grp}\cU \to \Ens\cU$ is the forgetful functor taking groups whose underlying sets lie in $\cU$ to their underlying sets.
+\end{example}
+\begin{proof}
+	By definition, sets $X \in \cU$ are objects $X \in \Ens\cU$. Thus, a pair $(S, \phi)$ consists of a group $S$ and a bijection $\phi : S \to X$ between $X$ and the groups underlying set $S$. Two such pairs are equivalent if there exists a group isomorphism $i : S \iso T$ such that $\phi = \psi \circ F(i)$. 
+	
+	Since such an isomorphism exists for every $F$-structure, every $F$-structure is an equivalence class of isomorphic groups. 
+	
+	Vice versa, given a group isomorphism $I : S \iso T$ and bijections $\phi : S \iso X$ and $\psi : T \iso X$, $F(I)$ is a bijection $S \to T$
+\end{proof}
+\fi
+\iffalse
+\begin{theorem}
+	Let $X$ be an object in a category $\cC$.
+	Then we can define a preorder on the set of monomorphisms into $X$ by setting
+	\begin{align*}
+		u : S \inj X \leq v : T \inj X \Leftrightarrow \exists \Phi : S \inj T : u = v \circ \Phi,
+	\end{align*}
+	i.e. $u \leq v$ iff. $u$ factors through $v$.
+\end{theorem}
+\begin{exercise}
+	Show that if $\Phi$ exists, it is a uniquely determined monomorphism.
+\end{exercise}
+\begin{theorem}
+	By extension, we can define an equivalence relation on the set of monomorphisms into $X$ by setting
+	\begin{align*}
+		u \sim v \Leftrightarrow (u \leq v) \wedge (v \leq u)
+	\end{align*}
+\end{theorem}
+\begin{exercise}
+	If $u \sim v$, we have $u = v \circ \Phi$ and $v = u \circ \Phi^{-1}$.
+\end{exercise}
+\begin{definition}
+	Let $X$ be an object in a category $\cC$. Then an object $Y$ in $\cC$ equipped with a monomorphism $i : Y \to X$ is called a \tib{subobject} of $X$ if the following diagram commutes:	
+\end{definition}
+\fi
+\begin{importantdefinition}{Cones}{}
+	Given some commutative diagram $D$ in a category $\cC$:
+	\[\begin{tikzcd}
+		X && Y
+		\arrow["f", from=1-1, to=1-3]
+	\end{tikzcd}\]
+	A \tib{cone over $D$} consists of an additional object $c$, alongside a family of morphisms $\Phi$ from $c$ into every object in the diagram, such that the new diagram commutes:
+	\[\begin{tikzcd}
+		& c & \\
+		\\
+		X && Y
+		\arrow["{\Phi_X}", from=1-2, to=3-1]
+		\arrow["{\Phi_Y}"', from=1-2, to=3-3]
+		\arrow["f", from=3-1, to=3-3]
+	\end{tikzcd}\]
+	A \tib{cone under $D$} is similarly defined, but with morphisms going into $c$:
+	\[\begin{tikzcd}
+		X && Y \\
+		\\
+		& C
+		\arrow["f", from=1-1, to=1-3]
+		\arrow["{\Phi_X}"', from=1-1, to=3-2]
+		\arrow["{\Phi_Y}", from=1-3, to=3-2]
+	\end{tikzcd}\]
+\end{importantdefinition}
+\begin{importantdefinition}{Limits and Colimits}{}
+	A \tib{limit of a commutative diagram $D$} is a \tib{universal cone over $D$}, i.e. a cone $(\lim D, \Phi)$ such that for every other cone $(c, \Psi$, there exists a unique morphism $u : c \to \lim F$ such that $\Phi_X \circ u = \Psi_x$ for all objects $X$ in the diagram:
+	\[\begin{tikzcd}
+		&& c && \\
+		\\
+		&& {\lim D} \\
+		\\
+		X &&&& Y
+		\arrow["\exists!u", dotted, from=1-3, to=3-3]
+		\arrow["{\Psi_X}"', from=1-3, to=5-1]
+		\arrow["{\Psi_Y}", from=1-3, to=5-5]
+		\arrow["{\Phi_X}", from=3-3, to=5-1]
+		\arrow["{\Phi_Y}"', from=3-3, to=5-5]
+		\arrow["f", from=5-1, to=5-5]
+	\end{tikzcd}\]
+	A \tib{colimit of $D$} is the equivalent construction using a cone under $D$:
+	% https://q.uiver.app/#q=WzAsNCxbMCwwLCJYIl0sWzQsMCwiWSJdLFsyLDIsIlxcbGltIEQiXSxbMiw0LCJjIl0sWzAsMSwiZiJdLFswLDIsIlxcUGhpX1giXSxbMSwyLCJcXFBoaV9ZIiwyXSxbMiwzLCJ1IiwyLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZG90dGVkIn19fV0sWzEsMywiXFxQc2lfWSJdLFswLDMsIlxcUHNpX1giLDJdXQ==
+	\[\begin{tikzcd}
+		X &&&& Y \\
+		\\
+		&& {\lim D} \\
+		\\
+		&& c
+		\arrow["f", from=1-1, to=1-5]
+		\arrow["{\Phi_X}", from=1-1, to=3-3]
+		\arrow["{\Psi_X}"', from=1-1, to=5-3]
+		\arrow["{\Phi_Y}"', from=1-5, to=3-3]
+		\arrow["{\Psi_Y}", from=1-5, to=5-3]
+		\arrow["\exists!u"', dotted, from=3-3, to=5-3]
+	\end{tikzcd}\]
+\end{importantdefinition}
+\begin{exercise}
+	Show that limits and colimits of a given diagram are unique up to a unique isomorphism.
+\end{exercise}
+\begin{definition}
+	The limit of a discrete diagram consisting of objects without any morphisms between them is called the \tib{product object} of the involved objects, and the given morphisms generalize projections from a cartesian product into its component sets:
+	% https://q.uiver.app/#q=WzAsNCxbMCwzLCJYXzEiXSxbMywwLCJZIl0sWzMsMywiWF8xIFxcdGltZXMgWF8yIl0sWzYsMywiWF8yIl0sWzIsMCwiXFxwaV8xIiwyXSxbMiwzLCJcXHBpXzIiXSxbMSwyLCJcXGV4aXN0cyEoZixnKSIsMCx7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRvdHRlZCJ9fX1dLFsxLDAsImYiLDFdLFsxLDMsImciLDFdXQ==
+	\[\begin{tikzcd}
+		&&& Y &&& \\
+		\\
+		\\
+		{X_1} &&& {X_1 \times X_2} &&& {X_2}
+		\arrow["f"{description}, from=1-4, to=4-1]
+		\arrow["{\exists!(f,g)}", dotted, from=1-4, to=4-4]
+		\arrow["g"{description}, from=1-4, to=4-7]
+		\arrow["{\pi_1}"', from=4-4, to=4-1]
+		\arrow["{\pi_2}", from=4-4, to=4-7]
+	\end{tikzcd}\]
+\end{definition}
+\begin{definition}
+	Take a commutative diagram consisting of two objects with two morphisms from one into the other:
+	% https://q.uiver.app/#q=WzAsMixbMCwwLCJYIl0sWzIsMCwiWSJdLFswLDEsImYiLDJdLFswLDEsImciLDAseyJvZmZzZXQiOi0zfV1d
+	\[\begin{tikzcd}
+		X && Y
+		\arrow["f"', from=1-1, to=1-3]
+		\arrow["g", shift left=3, from=1-1, to=1-3]
+	\end{tikzcd}\]
+	The limit of this diagram is called its \tib{equalizer} $E$. Since cones have to commute, it suffices to specify only the morphism $i : E \to X$.
+	% https://q.uiver.app/#q=WzAsNCxbMiwyLCJYIl0sWzQsMiwiWSJdLFswLDIsIkUiXSxbMCwwLCJGIl0sWzAsMSwiZiIsMl0sWzAsMSwiZyIsMCx7Im9mZnNldCI6LTN9XSxbMiwwLCJpIiwwLHsic3R5bGUiOnsidGFpbCI6eyJuYW1lIjoiaG9vayIsInNpZGUiOiJ0b3AifX19XSxbMywyLCJcXGV4aXN0cyF1IiwwLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZG90dGVkIn19fV0sWzMsMCwiaCJdXQ==
+	\[\begin{tikzcd}
+		F &&&& \\
+		\\
+		E && X && Y
+		\arrow["{\exists! u}", dotted, from=1-1, to=3-1]
+		\arrow["h", from=1-1, to=3-3]
+		\arrow["i", hook, from=3-1, to=3-3]
+		\arrow["f"', from=3-3, to=3-5]
+		\arrow["g", shift left=3, from=3-3, to=3-5]
+	\end{tikzcd}\]
+	The universality of limits now tells us that any morphism $h : F \to X$ such that $f \circ h = g \circ h$ has a unique factorization $u$ through $i$. Note that $i$ has to be a monomorphism, since, given two morphisms $f_1, f_2 : F \to E$, uniqueness of $u$ implies $i \circ f_1 = i \circ f_2 \implies u_1 = u_2 = f_1 = f_2$.
+\end{definition}
+\begin{example}
+	We want to find the equalizer of a group homomorphism $\Phi : G \to H$ and the trivial homomorphism $\epsilon : G \to H$. This means we need
+	\begin{align*}
+		e_H = \epsilon(i(x)) = \Phi(i(x))
+	\end{align*}
+	for any $x \in E$. This already tells us that we need $i(E) \subseteq \ker \Phi \subseteq X$. $i : E \to X$ is an injective group homomorphism, and since we can take $F = \ker \Phi$ and $h : \ker \Phi \inj X$ the trivial embedding, $h$ can only factor through $i$ if $i(E) = \ker \Phi$. Thus, $i : E \to \ker \Phi$ is an isomorphism and our equalizer is given by $\ker \Phi$.
+\end{example}
+\section{Quotient Objects}
+\begin{definition}
+	Kernel Pairs
+\end{definition}
+\begin{importantdefinition}{Quotient Object}{}
+	The \tib{quotient object} induced by a morphism $f : X \to Y$ is the coequalizer of the kernel pair of $f$.
+\end{importantdefinition}
