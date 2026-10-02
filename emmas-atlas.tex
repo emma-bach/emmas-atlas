@@ -31,7 +31,7 @@
 	center
 }
 
-\newtcbtheorem[use counter = lemma, number within = chapter]{importanttheorem}{Theorem}{colback=white,
+\newtcbtheorem[use counter* = lemma]{importanttheorem}{Theorem}{colback=white,
 	colframe=black,
 	sharp corners,
 	enhanced,
@@ -49,8 +49,7 @@
 	boxrule=1.5pt
 }{th}
 
-\newtcbtheorem[use counter = lemma, number within = 
-chapter]{axiom}{Axiom}{colback=white,
+\newtcbtheorem[use counter* = lemma]{axiom}{Axiom}{colback=white,
 	colframe=black,
 	sharp corners,
 	enhanced,
@@ -68,7 +67,7 @@ chapter]{axiom}{Axiom}{colback=white,
 	fonttitle=\bfseries,
 	boxrule=1.5pt}{th}
 
-\newtcbtheorem[use counter = lemma, number within = chapter]{importantdefinition}{Definition}{colback=white,
+\newtcbtheorem[use counter* = lemma]{importantdefinition}{Definition}{colback=white,
 	colframe=black,
 	sharp corners,
 	enhanced,
@@ -86,7 +85,7 @@ chapter]{axiom}{Axiom}{colback=white,
 	fonttitle=\bfseries,
 	boxrule=1.5pt}{df}
 
-\newtcbtheorem[use counter = lemma, number within = chapter]{importantcorollary}{Corollary}{colback=white,
+\newtcbtheorem[use counter* = lemma]{importantcorollary}{Corollary}{colback=white,
 	colframe=black,
 	sharp corners,
 	enhanced,
@@ -105,7 +104,7 @@ chapter]{axiom}{Axiom}{colback=white,
 	boxrule=1.5pt
 }{th}
 
-\newtcbtheorem[use counter = lemma, number within = chapter]{importantlemma}{Lemma}{colback=white,
+\newtcbtheorem[use counter* = lemma]{importantlemma}{Lemma}{colback=white,
 	colframe=black,
 	sharp corners,
 	enhanced,
@@ -163,19 +162,19 @@ chapter]{axiom}{Axiom}{colback=white,
 	
 	{
 		\pagestyle{fancy} %allows headers
-		%\include{./parts/foundations/foundations.tex}
-		%\include{./parts/algebraic-structures/algebraic-structures.tex}
-		%\include{./parts/metric-spaces/metric-spaces.tex}
-		%\include{./parts/calculus-in-one-variable/calculus-in-one-variable.tex}
-		%\include{./parts/linear-algebra/linear-algebra.tex}
+		\include{./parts/foundations/foundations.tex}
+		\include{./parts/algebraic-structures/algebraic-structures.tex}
+		\include{./parts/metric-spaces/metric-spaces.tex}
+		\include{./parts/calculus-in-one-variable/calculus-in-one-variable.tex}
+		\include{./parts/linear-algebra/linear-algebra.tex}
 		\include{./parts/category-basics/category-basics.tex}
-		%\include{./parts/group-theory/group-theory.tex}
-		%\include{./parts/multivariable-calculus/multivariable-calculus.tex}
+		\include{./parts/group-theory/group-theory.tex}
+		\include{./parts/multivariable-calculus/multivariable-calculus.tex}
 		\include{./parts/point-set-topology/point-set-topology.tex}
 		\include{./parts/manifolds/manifolds.tex}
 		\include{./parts/algebraic-topology/algebraic-topology.tex}
-		%\include{./parts/numerical-linear-algebra/numerical-linear-algebra.tex}
-		%\include{./parts/numerical-analysis/numerical-analysis.tex}
-		%\include{./parts/measure-theory/measure-theory.tex}
+		\include{./parts/numerical-linear-algebra/numerical-linear-algebra.tex}
+		\include{./parts/numerical-analysis/numerical-analysis.tex}
+		\include{./parts/measure-theory/measure-theory.tex}
 	}
 \end{document}

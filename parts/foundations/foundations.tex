@@ -56,7 +56,57 @@ The subset relation is frequently written as $A \subset B$. However, other autho
 \newpar
 \section{Specification}
 \section{Pairing, Union, and Power Sets}
-\section{Relations and Functions}
+\section{Relations}
+\section{Functions}
+\subsection{Injections, Surjections and Bijections}
+[TODO: Injectiveness and surjectiveness provide the prerequisites for inverting functions]
+\begin{importantdefinition}{}{injection}
+	A function $f : X \to Y$ is called \tib{injective} if it maps different elements of $X$ to different elements of $Y$:
+	\begin{align*}
+		\forall x_1, x_2 \in X:&\\
+		&x_1 \neq x_2 \implies f(x_1) \neq f(x_2)
+	\end{align*}
+	Injective functions are also known as \tib{injections}. Some texts also refer to injections as \tib{one-to-one functions}. For clarity, injective functions are often written using a hooked arrow:
+	\begin{align*}
+		f : X \inj Y
+	\end{align*}
+\end{importantdefinition}
+Note that we can equivalently define injectivity via the contrapositive of our condition:
+\begin{align*}
+	\forall x_1, x_2 \in X:&\\
+	&f(x_1) = f(x_2) \implies x_1 = x_2
+\end{align*}
+This version tends to be nicer for proving that a given function is injective, but I find that it isn't quite as intuitive.
+\newpar
+Intuitively, an injection $f : X \inj Y$ is a way of taking the entirety of $X$ and placing it "into" $Y$, without having to "squeeze" $X$ into a smaller size in any way. Later on, when we formally define "sizes of sets", also known as \tib{cardinalities}, we will formalize the idea that an injection $f : X \inj Y$ can only exist if the set $X$ is "smaller" than the set $Y$.
+\begin{definition}
+	The \tib{canonical embedding of a set $X$ into a superset $Y$}
+	is the identity function of $X$ with its domain reinterpreted to be $Y$:
+	\begin{align*}
+		\iota_X : 
+		X &\inj Y\\
+		x &\mapsto x
+	\end{align*}
+	The canonical embedding is generally written using the greek lower case iota $\iota$, often with a subscript denoting the set we want to embed.
+\end{definition}
+\begin{theorem}
+	\label{th:embeddingpreimage}
+	Given a subset $V \subseteq Y$, we have
+	\begin{align*}
+		\iota_X^{-1}[V] = X \cap V
+	\end{align*}
+\end{theorem}
+\begin{proof}
+	By the definition of preimages of sets, we have
+	\begin{align*}
+		\iota_X^{-1}[V] = \lr{x \in X \mid \iota_X(x) \in V}
+	\end{align*}
+	Since $\iota_X(x) = x$, this condition simplifies to
+	\begin{align*}
+		\iota_X^{-1}[V] = \lr{x \in X \mid x \in V}
+	\end{align*}
+	Thus, our preimage is the set of $X$ also contained in $V$, which is exactly the definition of $X \cap V$.	
+\end{proof}
 \section{Cartesian Products}
 We can generalize the cartesian product to infinite products as follows:
 \begin{importantdefinition}{Cartesian Product of sets}{}

@@ -12,23 +12,12 @@
 \begin{exercise}
 	Show that the property of being homotopic is an equivalence relation.
 \end{exercise}
-\begin{definition}
-	We say that $f$ and $g$ are \tib{homotopic relative to a subset $A \subseteq X$} and write $f \sim_{\rel A}$ or $f \sim_{h, \rel A}$ iff:
-	\begin{enumerate}
-		\item $f \sim_h g$,
-		\item For all $t \in [0,1]$, we have $h(t, \cdot)|_A = f|_A = g|_A$
-	\end{enumerate}
-\end{definition}
-I personally find the designation "homotopic relative to $A$" quite unintuitive, given that the property of being homotopic relative to a given subset is stronger than the property of being homotopic.
 \begin{exercise}
-	Show that $f \sim_h g$ is equivalent to $f \sim_{h, \rel \emptyset} g$.
-\end{exercise}
-\begin{exercise}
-	Let $f_0, f_1 : X \to Y$ and $g_0, g_1 : Y \to Z$ be continuous. Let $h_0$ be a homotopy between $f_0$ and $f_1$ and let $h_1$ be a homotopy between $f_1$ and $g_1$. Then $H : (x,t) \mapsto h_1(h_0(x,t),t)$ is a homotopy between $g_0 \circ f_0$ and $g_1 \circ f_1$.
+	Let $f_0, f_1 : X \to Y$ and $g_0, g_1 : Y \to Z$ be continuous. Let $h_0$ be a homotopy between $f_0$ and $f_1$ and let $h_1$ be a homotopy between $f_1$ and $g_1$. Then $$H : (x,t) \mapsto h_1(h_0(x,t),t)$$ is a homotopy between $g_0 \circ f_0$ and $g_1 \circ f_1$.
 \end{exercise}
 
 \begin{importantdefinition}{}{}
-	Let $f : X \to Y$ be continuous. Then $f$ is called a \tib{homotopy equivalence} between $X$ and $Y$ iff. there exists a map $g : Y \to X$ such that $g \circ f$ is homotopic to $\id_X$ and $f \circ g$ is homotopic to $\id_Y$. We write $X \simeq_{f,g} Y$, $X \simeq_f Y$, or simply $X \simeq Y$.
+	Let $f : X \to Y$ be continuous. Then $f$ is called a \tib{homotopy equivalence} between $X$ and $Y$ iff. there exists a map $g : Y \to X$ such that $g \circ f$ is homotopic to $\id_X$ and $f \circ g$ is homotopic to $\id_Y$. We write $X \simeq_{f,g} Y$, $X \simeq_f Y$, or simply $X \simeq Y$. If $X$ and $Y$ are homotopy equivalent, we sometimes say that they have \tib{the same homotopy type.}
 \end{importantdefinition}
 \begin{exercise}
 	Show that the property of being homotopy equivalent is an equivalence relation.
@@ -72,7 +61,85 @@ I personally find the designation "homotopic relative to $A$" quite unintuitive,
 		\item $x \in A \implies h(x,1) = x$
 	\end{enumerate}
 \end{lemma}
+\begin{definition}
+	Let $A \subseteq X$ be topological spaces. Then $A$ is called a \tib{deformation retract of $X$} if there is a homotopy $h : X \times [0,1] \to X$ such that
+	\begin{enumerate}
+		\item $h(\cdot, 0) = \id_X$:
+		\begin{align*}
+			\forall x \in X: h(x,0) &= x
+		\end{align*}
+		\item $h(\cdot, 1) : X \to A:$
+		\begin{align*}
+			\forall x \in X: h(x,1) &\in A\\
+		\end{align*}
+		\item $h(\cdot, 1)|_A = \id_A$:
+		\begin{align*}
+			\forall a \in A : h(a,1) = a
+		\end{align*}
+	\end{enumerate}
+	If the last equation can be strengthened to 
+	\begin{align*}
+		\forall a \in A, t \in [0,1] : h(a,t) &= a, 
+	\end{align*}
+	we call $A$ a \tib{strong deformation retract of $X$}.
+\end{definition}
+\begin{exercise}
+	Any deformation retract $A$ of a topological space $X$ is homotopy equivalent to $X$.
+\end{exercise}
+\begin{exercise}
+	If $f : X \to Y$ is a continuous function, then the canonical map $r : M_f \to Y$ is a strong deformation retraction.
+\end{exercise}
+\clearpage
 
+\section{Relative Homotopy}
+\begin{definition}
+	We say that $f$ and $g$ are \tib{homotopic relative to a subset $A \subseteq X$} and write $f \sim_{\rel A} g$, $f \sim_{h, \rel A} g$ or $f \sim g \rel A$ iff:
+	\begin{enumerate}
+		\item $f \sim_h g$,
+		\item For all $t \in [0,1]$, we have $h(t, \cdot)|_A = f|_A = g|_A$
+	\end{enumerate}
+\end{definition}
+I personally find the designation "homotopic relative to $A$" quite unintuitive, given that the property of being homotopic relative to a given subset is stronger than the property of being homotopic.
+\begin{exercise}
+	Show that $f \sim_h g$ is equivalent to $f \sim_{h, \rel \emptyset} g$.
+\end{exercise}
+\begin{theorem}
+	Let $\Phi_1, \Phi_2 : [0,1] \to [0,1]$ be homotopies such that $\Phi_1(0) = \Phi_2(0) \in \lr{0,1}$ and $\Phi_1(1) = \Phi_2(1) \in \lr{0,1}$. Let $F : X \times [0,1] \to Y$ be a homotopy. Let $G_1(x,t) = F(x, \Phi_1(t))$ and $G_2(x,t) = F(x, \Phi_2(t))$. Then we have
+	\begin{align*}
+		G_1 \sim_{\rel X \times \lr{0,1}} G_2
+	\end{align*}
+\end{theorem}
+\begin{definition}
+	We denote by $C$ a constant homotopy that makes sense in the given context.
+\end{definition}
+\begin{proposition}
+Given two homotopies $F,G : X \times [0,1] \to Y$ with $F(\cdot,1) = G(\cdot,0)$, their \tib{concatenation}
+\begin{align*}
+	(F * G)(x,t) =
+	\begin{cases}
+		F(x,2t) & 0 \leq t \leq 1/2,\\
+		G(x,2t - 1) & 1/2 \leq t \leq 1.
+	\end{cases}
+\end{align*}
+is again a homotopy $F * G : X \times [0,1] \to Y$.
+\end{proposition}
+Note that the order here doesn't match the order in function composition - we go through $F$ first, then through $G$.
+\begin{theorem}
+	We have $C * F \sim F * C \sim F \rel X \times \lr{0,1}$
+\end{theorem}
+\begin{definition}
+	Let $h : X \times [0,1 \to Y]$ be a homotopy. We define the \tib{inverse of $h$} to be the homotopy that "moves through $h$ backwards", i.e.
+	\begin{align*}
+		h^{-1}(x,t) = \ol h(x,t) := h(x,1-t)
+	\end{align*}
+\end{definition} 
+\begin{theorem}
+	Given a homotopy $h$, we have
+	\begin{align*}
+		h * h^{-1} \sim C \rel X \times \lr{0,1},
+	\end{align*}
+	where $C$ is the constant homotopy $C(x,t) = h(x,0)$
+\end{theorem}
 \clearpage
 
 \section{The Fundamental Group}
