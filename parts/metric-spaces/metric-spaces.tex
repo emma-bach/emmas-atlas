@@ -2,9 +2,11 @@
 \parttoc
 \chapter{The Real Numbers $\bR$}
 \section{Ordered Algebraic Structures}
+\section{Rational Sequences}
 \section{Dedekind Cuts}
 \section{Uniqueness of $\bR$}
 \section{Cardinality of $\bR$}
+
 \chapter{The Concept of Distance}
 \section{Metric Spaces}
 A metric space is a set, alongside with a \tib{distance function}, more commonly known as a \tib{metric}, $d$ which takes two points and outputs a distance between the points. Naturally, we want this "distance" to actually give us some usable structure on the set.
@@ -427,8 +429,7 @@ The notion of compactness is a key ingredient of many incredibly useful results 
 		\item Assuming there are two points on earth that are a given distance apart from each other, are there always two points on earth that are that distance apart from each other and have the same temperature?
 	\end{enumerate}
 \end{exercise}
-\clearpage
-
+\section{Completeness}
 \section{Function Spaces}
 Since we know that a sequence in a finite cartesian product converges if and only if all components converge, it seems natural to generalize this notion to arbitrary, potentially infinite cartesian products, i.e. arbitrary functions:
 \begin{importantdefinition}{Pointwise Convergence}{}
@@ -467,9 +468,9 @@ Note that is simply a direct generalization of the Chebyshev metric \ref{th:cheb
 	i.e. if the speed at which $f_n(x)$ converges to $f(x)$ doesn't depend on the specific $x$ we choose.
 	We call this form of convergence of a sequence of functions \tib{uniform convergence}.
 \end{importanttheorem}
-\begin{theorem}
+\begin{importanttheorem}{Uniform Limit Theorem}{th:uniformlimit}
 	Let $(f_n)_{n \in \bN}$ be a sequence of continuous functions $f_n : M \to N$ converging uniformly to a function $f : M \to N$. Then $f$ is continuous.
-\end{theorem}
+\end{importanttheorem}
 \begin{proof}
 	Choose some $\epsilon \in \bR_{> 0}$. Since $(f_n)_{n \in \bN}$ converges to $f$ uniformly, there exists an $N \in \bN$ such that
 	\begin{align*}
@@ -489,8 +490,10 @@ Note that is simply a direct generalization of the Chebyshev metric \ref{th:cheb
 	to which we can apply the first inequality, then the second, and then the first again, to get:
 	\begin{align*}
 		&d(f(x), f(x_0))\\
-		&\leq d(f(x), f_N(x)) + d(f_N(x), f_N(x_0)) + d(f_N(x_0), f(x_0))\\
-		&< \epsilon/3 + \epsilon/3 + \epsilon/3 = \epsilon
+		&\leq \underbrace{d(f(x), f_N(x))}_{< \eps}  \\
+		&+ \underbrace{d(f_N(x), f_N(x_0))}_{< \eps}\\
+		&+ \underbrace{d(f_N(x_0), f(x_0))}_{< \eps}\\
+		&< \epsilon
 	\end{align*}
 	for all $x \in M$ with $d(x, x_0) < \delta$.
 \end{proof}
@@ -510,8 +513,6 @@ Note that is simply a direct generalization of the Chebyshev metric \ref{th:cheb
 	\end{enumerate}
 \end{proofsketch}
 \clearpage
-
-\section{Banach's Fixed Point Theorem}
 \chapter{Infinite Series}
 \section{Achilles and the Turtle}
 \section{Convergence Tests}

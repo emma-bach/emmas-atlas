@@ -1,5 +1,6 @@
 \part{Differential Geometry}
 \chapter{Smooth Manifolds}
+\section{Abstract Smooth Manifolds}
 \begin{importantdefinition}{Smooth Manifolds via Charts}{smoothmanifoldcharts}
 	An \tib{$n$-dimensional smooth manifold} is a second-countable Hausdorff space $M$ together with a collection of maps called "charts" such that:
 	\begin{enumerate}
@@ -39,7 +40,7 @@ In particular, we care about the following functional structures on $X = \bR^n$:
 	\begin{align*}
 		(X, F_X) \to (Y, F_Y)
 	\end{align*}
-	is a map $\Phi : X \to Y$ such that precomposition pulls back elements of $F_Y(U)$ to elements of $F_X(\Phi^{-1}(U))$:
+	is a continuous function $\Phi : X \to Y$ such that precomposition pulls back elements of $F_Y(U)$ to elements of $F_X(\Phi^{-1}(U))$:
 	\begin{align*}
 		f \in F_Y(U) \implies f \circ \Phi \in F_X(\Phi^{-1}(U))
 	\end{align*}
@@ -137,3 +138,50 @@ Another concept that manifolds inherit from vector spaces is orientation:
 \begin{definition}
 	As with topological manifolds, smooth manifolds with boundary are defined by taking smooth manifolds and replacing the domain of our charts with the upper half-space $\bH^n := \lr{x \in \bR^n \mid x_n \geq 0}$.
 \end{definition}
+\section{Induced Functional Structures}
+\begin{example}
+	Consider the torus $T^2$ defined as the quotient space of $\bR^2$ under the equivalence relation identifying points whose coordinates differ by integer amounts (this is fundamentally the same definition as taking the unit square $[0,1]^2$ with opposite sides identified). Let $q : \bR^2 \to T^2$ be the corresponding quotient map.
+	\newpar
+	Finding an atlas on $T^2$ isnt too complicated: For any open set $U \subseteq \bR^2$ with diameter at most one, $q : U \subseteq \bR^2 \to q(U) \subseteq T^2$ is a homeomorphism whose inverse we can take as a chart. Since these small diameter sets $U$ still collectively cover $\bR^2$, our charts domains $q(U)$ cover $T^2$. 
+	\newpar
+	If $\Phi = (q|_U)^{-1} : q(U) \to U \subseteq \bR^n$ and $\Psi = (q|_V)^{-1} : q(V) \to V \subseteq \bR^n$ are two charts defined in this way, then we have
+	\begin{align*}
+		\Phi\Psi^{-1} : \Psi(q(U) \cap q(V)) \to \Phi(q(U) \cap q(V))
+	\end{align*}
+	Since charts are injective, they respect intersection, giving us
+	\begin{align*}
+		\Phi(q(U) \cap q(V)) &= \Phi(q(U)) \cap \Phi(q(V)) = U \cap \Phi(q(V))\\
+		\Psi(q(U) \cap q(V)) &= \Psi(q(U)) \cap \Psi(q(V)) = \Psi(q(U)) \cap V
+	\end{align*}
+	Thus, $\Phi^{-1}$ takes the set $U \cap \Phi(q(V)) \subseteq U \subseteq \bR^2$ to its quotient $q(U) \cap q(V)$ in $T^2$ and then $\Psi$ takes that quotient to the set $\Psi(q(U)) \cap V$. By construction, out original set and our image set must be equivalent, and must thus be translated copies of each other. This tells us that our coordinate change function $\Phi\Psi^{-1}$ are simply translations, and thus smooth.
+	\newpar
+	TODO: Sketch
+\end{example}
+To find a sensible functional structure on $T^2$, we can take the following natural definition:
+\begin{definition}
+	Let $F_X$ be a functional structure on a topological space $X$. Let $\Phi : X \to Y$ be continuous. Then the \tib{induced functional structure} on $Y$ is given by the finest functional structure such that $\Phi$ is a morphism:
+	\begin{align*}
+		F_Y(V) = \lr{f \in C^0(V, \bR) \mid f \circ \Phi \in F_X(\Phi^{-1}[V])}
+	\end{align*}
+\end{definition}
+Note that this is fundamentally the same idea as the definition of the final topology induced by a continuous function $\Phi$. 
+\newpar
+We cannot expect this definition to always give a smooth structure on $Y$ - for example, if $Y$ isnt even a *topological* manifold, then any such attempt will obviously fail immediately. For now, we won't concern ourselves with attempts to show when exactly this does end up working out, and instead prove it separately in each application.
+\newpar
+In our current example, we want to take the structure induced by $q$ and show that $q|_U : U \subseteq \bR^2 \to q[U] \subseteq T^2$ is an isomorphism of functionally structured spaces for sufficiently small open $U$.
+\newpar
+Each $q|_U$ is already a morphism by definition of the induced functional structure, so all we need is a local inverse of $q|_U$.
+\newpar
+It suffices to simply take the actual inverse $q|_U^{-1}$, since
+\begin{align*}
+	\tau : q^{-1}[q[U]] &\to U\\
+	x &\mapsto q|_U^{-1}(q(x))
+\end{align*}
+corresponds to the map collapsing the set $q^{-1}[q[U]]$ of translated copies of $U$ back to the set $U$ itself. Since this map acts as a translation, and thus smoothly, on every connected component of $q^{-1}[q[U]]$, we have $\tau \in C^\infty(q^{-1}[q[U]], U)$. 
+\newpar
+Thus, for every $f \in C^\infty(U, \bR)$, we have
+\begin{align*}
+	(f \circ q|_U^{-1}) \circ q = f \circ \tau \in C^\infty(q^{-1}[q[U]], \bR),
+\end{align*}
+confirming that $f \circ q|_U^{-1} \in F_{T^2}(q[U])$$^*$\marginnote{$^*$Note that $q[U] = (q|_U^{-1})^{-1}[U]$}, and thus that $q|_U^{-1}$ is a morphism.
+\section{Tangent Spaces}
