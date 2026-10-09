@@ -1,46 +1,83 @@
 \part{A First Taste of Category Theory}
-\chapter{Induced Structure}
-\section{Limits and Colimits}
-\iffalse
-\begin{definition}
-	Let $F : \cS \to C$ be a faithful functor. Let $X \in C$. Then an \tib{$F$-structure on $X$} is the equivalence class of pairs $(S,\phi)$, where $S \in \cS$ an object, $\phi : F(S) \iso X$ is an isomorphism, and two pairs $(S, \phi)$ and $(T, \psi)$ are equivalent if there exists an isomorphism $i : S \iso T$ such that $\phi = \psi \circ F(i)$.
-\end{definition}
+\parttoc
+\chapter{Categories, Functors and Natural Transformations}
+\section{The Language of Categories}
+\begin{importantdefinition}{Categories}{}
+	A category $\cC$ consists of:
+	\begin{enumerate}
+		\item A class $\ob \cC$ of \tib{objects},
+		\item and a class $\mor \cC$ of \tib{morphisms}, generally consisting of structure-preserving maps between objects,
+	\end{enumerate}
+	such that:
+	\begin{enumerate}
+		\item Each morphism $f \in \mor \cC$ has specified objects as its \tib{domain} and \tib{codomain}, with the notation $f : X \to Y$ denoting a morphism with $X$ as its domain and $Y$ as its codomain. The collection of all morphisms $X \to Y$ is called the \tib{hom-set from $X$ to $Y$} (often regardless of whether it ends up being an actual set or a proper class), and is ´generally denoted $\Hom(X,Y)$.
+		\item Each object $X \in \ob \cC$ has a designated \tib{identity morphism} $\id_X : X \to X$.
+		\item For any pair of morphisms $f,g \in \mor \cC$ such that $\cod f = \dom g$, there exists a \tib{composite morphism} $g \circ f : \dom f \to \cod g$:
+		\begin{align*}
+			&\forall f : X \to Y, g : Y \to Z :\\ &\exists g \circ f : X \to Z
+		\end{align*}
+		\item Composition with identity morphisms leaves a morphism unchanged:
+		\begin{align*}
+			&\forall f : X \to Y:\\ 
+			&\id_Y \circ f = f \circ \id_X = f
+		\end{align*}
+		\item Composition is associative:
+		\begin{align*}
+			&\forall f : X \to Y, g : Y \to Z, h : Z \to W\\ 
+			&(h \circ g) \circ f = h \circ (g \circ f) =: h \circ g \circ f
+		\end{align*}
+	\end{enumerate}
+\end{importantdefinition}
+By taking objects as vertices and morphisms as edges, each category can be turned into a graph. This graph is directed, may contain parallel edges, and contains at least one loop at each vertex (given by the identity morphism). We call such a graph a \tib{reflexive quiver}.
 \begin{example}
-	Let $\cU$ be a set of sets. Then for every set $X \in \cU$, there exists a bijection between operations on $X$ making $X$ a group and the set of $F$-structures, where $F : \tn{Grp}\cU \to \Ens\cU$ is the forgetful functor taking groups whose underlying sets lie in $\cU$ to their underlying sets.
+	Many familiar notions of objects equipped with structure-preserving maps define categories:
+	\begin{enumerate}
+		\item The category $\Set$ has sets as its objects and functions as its morphisms.
+		\item The category $\Poset$ as partially ordered sets as its objects and order-preserving functions as morphisms.
+		\item The category $\Top$ has topological spaces as its objects and continuous functions as its morphisms.
+		\item The categories $\Set_*$ and $\Top_*$ have sets or topological spaces with a designated \tib{base point} as objects and basepoint-preserving (continuous) functions as their morphisms.
+		\item The category $\Group$ has groups as its objects and group homomorphisms as its morphisms. Analogously, the categories $\Ring$ and $\Field$ have their respective homomorphism as their morphisms.
+		\item For a fixed field $\bk$, $\Vec_\bk$ denotes the category of $\bk$-vector spaces, with linear maps as their morphisms.
+		\item For a fixed ring $R$, $_R \Mod$ and $\Mod_R$ denote the categories of left $R$-modules and right $R$-modules, both equipped with $R$-module homomorphisms as their morphisms.
+	\end{enumerate}
 \end{example}
-\begin{proof}
-	By definition, sets $X \in \cU$ are objects $X \in \Ens\cU$. Thus, a pair $(S, \phi)$ consists of a group $S$ and a bijection $\phi : S \to X$ between $X$ and the groups underlying set $S$. Two such pairs are equivalent if there exists a group isomorphism $i : S \iso T$ such that $\phi = \psi \circ F(i)$. 
-	
-	Since such an isomorphism exists for every $F$-structure, every $F$-structure is an equivalence class of isomorphic groups. 
-	
-	Vice versa, given a group isomorphism $I : S \iso T$ and bijections $\phi : S \iso X$ and $\psi : T \iso X$, $F(I)$ is a bijection $S \to T$
-\end{proof}
-\fi
-\iffalse
-\begin{theorem}
-	Let $X$ be an object in a category $\cC$.
-	Then we can define a preorder on the set of monomorphisms into $X$ by setting
-	\begin{align*}
-		u : S \inj X \leq v : T \inj X \Leftrightarrow \exists \Phi : S \inj T : u = v \circ \Phi,
-	\end{align*}
-	i.e. $u \leq v$ iff. $u$ factors through $v$.
-\end{theorem}
+These sorts of categories, where objects have underlying sets and whose morphism are functions between those sets, are known as \tib{concrete categories} - a precise definition of this concept will follow later. However, non-concrete categories are also prevalent:
+\begin{example}
+	\begin{enumerate}
+		\item For a ring $R$, $\Mat_R$ is the category whose objects are positive integers and where a morphism from $n$ to $m$ is an $m \times n$-matrix with values in $R$.
+		\item Any monoid $M$ defines a category $\ttt{B}M$ with a single object, with monoid elements as morphisms and the monoid operation as composition. Vice versa, applying this contruction in reverse allows us to view any single-object category as a monoid.
+		\item Any preorder $(P, \leq)$ can be viewed as a category, with elements of $P$ as objects and a unique morphism $x \to y$ if and only if $x \leq y$. In this case, transitivity implies that composite morphisms exist and reflexivity implies that identity morphisms exist.
+	\end{enumerate}
+\end{example}
+\begin{definition}
+	We call a category \tib{small} if its class of morphisms forms a set, and \tib{locally small} if the class of morphisms between any pair of objects forms a set.
+\end{definition}
+\begin{importantdefinition}{}{}
+	\begin{enumerate}
+		\item An \tib{isomorphism} in a category is a morphism $f : X \to Y$ which has an inverse, i.e. there exists a morphism $g : Y \to X$ such that $g \circ f = \id_X$ and $f \circ g = \id_Y$.
+		\item An \tib{endomorphism} in a category is a morphism whose domain equals its codomain.
+		\item An endomorphism that is also an isomorphism is called an \tib{automorphism}.
+	\end{enumerate}
+\end{importantdefinition}
+\begin{proposition}
+	\phantom{}
+	\begin{enumerate}
+		\item The Isomorphisms in $\Set$ are precisely the bijections.
+		\item The Isomorphisms in $\Group$, $\Ring$, $\Field$ and $_R \Mod$ are the respective algebraic isomorphisms, which end up being exactly the bijective homomorphisms.
+		\item The Isomorphisms in $\Top$ are the homeomorphisms - in this case, not all bijective morphisms (i.e. continuous bijections) are isomorphisms.
+	\end{enumerate}
+\end{proposition}
 \begin{exercise}
-	Show that if $\Phi$ exists, it is a uniquely determined monomorphism.
-\end{exercise}
-\begin{theorem}
-	By extension, we can define an equivalence relation on the set of monomorphisms into $X$ by setting
-	\begin{align*}
-		u \sim v \Leftrightarrow (u \leq v) \wedge (v \leq u)
-	\end{align*}
-\end{theorem}
-\begin{exercise}
-	If $u \sim v$, we have $u = v \circ \Phi$ and $v = u \circ \Phi^{-1}$.
+	In a partial order category $(P, \leq)$, the only isomorphisms are the identity morphisms.
 \end{exercise}
 \begin{definition}
-	Let $X$ be an object in a category $\cC$. Then an object $Y$ in $\cC$ equipped with a monomorphism $i : Y \to X$ is called a \tib{subobject} of $X$ if the following diagram commutes:	
+	A category in which every morphism is an isomorphism is known as a \tib{groupoid}.
 \end{definition}
-\fi
+We saw earlier that monoids correspond to single-object categories. If we turn a group into a single-object category using the same construction, we find that the existence of group inverses guarantees that every morphism in this category is an isomorphism. Thus, a groupoid is the multi-object equivalent of a group. Category theorists with a sufficient amount of whimsy in their hearts may argue that categories are similarly multi-object monoids, and could thus be referred to as \tib{monoidoids}.
+\begin{proposition}
+	Taking a category $\cC$ and ignoring all morphisms that aren't isomorphisms defines a new category, called the \tib{maximal subgroupoid} or \tib{core groupoid} of $\cC$.
+\end{proposition}
+\chapter{Limits and Colimits}
 \begin{importantdefinition}{Cones}{}
 	Given some commutative diagram $D$ in a category $\cC$:
 	\[\begin{tikzcd}
