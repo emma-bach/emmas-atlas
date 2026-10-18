@@ -1182,7 +1182,7 @@ One important property of scalar products is that they induce norms. Notice that
 		\item Show that for each $v \in V$, $p(v)$ is the unique point in $U$ for which $\norm{v - p(v)}_s$ is minimal.
 	\end{enumerate}
 \end{exercise}
-\begin{theorem}
+\begin{importanttheorem}{Gram-Schmidt Orthonormalization}{}
 	Let $(V,s)$ be a vector space with scalar product over a field $\Bbbk = \bR$ or $\bC$. Let $(v_1, \hdots, v_n)$ be a basis of $V$. Then there are unique vectors $(b_1, \hdots, b_n) \subset V$ such that for all $p \in (1, \hdots, n)$, we have:
 	\begin{enumerate}
 		\item $(b_1, \hdots, b_p)$ is an $s$-orthonormal Basis of $\angles{v_1, \hdots, v_p} \subseteq V$
@@ -1190,13 +1190,67 @@ One important property of scalar products is that they induce norms. Notice that
 	\end{enumerate}
 	These vectors $b_p$ can be constructed inductively via $b_1 = \frac{v_1}{\norm{v_1}}$ followed by projection onto the already constructed basis vectors, i.e.
 	\begin{align*}
-		w_p &= v_p - \sum_{q = 1}^{p-1} g(b_q,v_p).b_q\\´
+		w_p &= v_p - \sum_{q = 1}^{p-1} g(b_q,v_p).b_q\\
 		b_p &= \frac{w_p}{\norm{w_p}}
 	\end{align*}
-\end{theorem}
+\end{importanttheorem}
 \begin{corollary}
 	Every vector space with scalar product has an orthonormal basis.
 \end{corollary}
+
+\clearpage
+\section{Topology of Normed Vector Spaces}
+\begin{theorem}
+	Every norm $\norm{\cdot}_V$ on a finite-dimensional vector space $V$ is Lipschitz-continuous in its own induced topology.
+\end{theorem}
+\begin{proof}
+	The inverse triangle equality \ref{th:reversetriangleinequality} tells us
+	\begin{align*}
+		\abs{\norm{x_n} - \norm{x}} = \abs{\norm{x_n - 0} - \norm{x - 0}} \leq \norm{x_n - x},
+	\end{align*}
+	which tells us that $\norm{\cdot}$ is Lipschitz-continuous with Lipschitz constant $1$.
+\end{proof}
+\begin{importanttheorem}{}{}
+	Every norm on a finite-dimensional vector space induces the same topology.
+\end{importanttheorem}
+\begin{definition}
+	We call a linear map between normed vector spaces \tib{bounded} if it takes bounded sets to bounded sets.
+\end{definition}
+\begin{theorem}
+	A linear map $F : V \to W$ between normed vector spaces is bounded if and only if
+	\begin{align*}
+		\exists &c \in \bR :\\
+		\forall &v \in V :\\
+		&\norm{F(v)}_W \leq c \cdot \norm{v}_V
+	\end{align*}
+\end{theorem}
+\begin{theorem}
+	A linear map $F : V \to W$ between normed vector spaces is continuous if and only if it is bounded.
+\end{theorem}
+\begin{corollary}
+	If $V$ and $W$ are normed vector spaces and $V$ is finite-dimensional, every linear map $F : V \to W$ is continuous.
+\end{corollary}
+\begin{proof}
+	Let $e_1, \hdots, e_n$ be a basis of $V$. Let $v = \sum_{i = 1}^n v_i.e_i \in V$. Then we have:
+	\begin{align*}
+		\norm{F(v)}_W &= \norm{F\lr(\sum_{i = 1}^n v_i.e_i)}_W\\
+		&= \norm{\sum_{i = 1}^n v_i.F\lr(e_i)}_W\\
+		&\leq \sum_{i = 1}^n  \abs{v_i}.\norm{F\lr(e_i)}_W \in \bR
+	\end{align*}	
+	Now, let $c_1 = \max_{i \in [1..n]} \norm{F\lr(e_i)}_W$. Then we get:
+	\begin{align*}
+		\norm{F(v)}_W 
+		&\leq c_1 \sum_{i = 1}^n \abs{v_i}\\
+		&= c_1 \norm{v}_1
+	\end{align*}
+	Since norms on finite-dimensional vector spaces are equivalent, we can find a second constant $c_2$ bounding the $1$-norm by our $V$-norm, giving us
+	\begin{align*}
+		\norm{F(v)}_W 
+		&\leq c_1 \norm{v}_1\\
+		&\leq c_1c_2 \norm{v}_V
+	\end{align*}
+	Thus, if $V$ is finite-dimensional, $F$ is bounded, and therefore continuous.
+\end{proof}
 \section{Matrix Representations of Inner Products}
 \begin{definition}
 	Let $s$ be a sesquilinear form on a finite dimensional vector space $V$over a field $\Bbbk = \bR$ or $\bC$. Let $B = (b_1, \hdots, b_n)$ be a basis of $V$. Then the \tib{Gram matrix of $B$ by $g$} is defined as the matrix with entries

@@ -35,7 +35,7 @@ This leaves $\bR_{\geq 0}$ as the obvious candidate for the domain of our distan
 	\label{th:euclideanmetric}
 	Let $M^n := \prod_{i = 1}^n M$ be a finite cartesian product of metric spaces. Then the \tib{Euclidean distance function}
 	\begin{align*}
-		d_\infty(x,y) := \sqrt{\sum_{i = 1}^n (x_i - y_i)^2}
+		d_2(x,y) := \sqrt{\sum_{i = 1}^n (x_i - y_i)^2}
 	\end{align*}
 	gives a metric on $M^n$.
 \end{theorem}
@@ -47,6 +47,32 @@ This leaves $\bR_{\geq 0}$ as the obvious candidate for the domain of our distan
 	\end{align*}
 	gives a metric on $M^n$.
 \end{theorem}
+\begin{theorem}
+	\label{th:reversetriangleinequality}
+	Every metric space $(M,d)$ fulfills the inverse triangle inequality
+	\begin{align*}
+		d(x,z) \geq \abs{d(x,y) - d(y,z)}
+	\end{align*}
+\end{theorem}
+\begin{proof}
+	\begin{enumerate}
+		\item If $d(x,y) - d(y,z) \geq 0$, we have 
+		\begin{align*}
+			\abs{d(x,y) - d(y,z)} = d(x,y) - d(y,z)
+		\end{align*}
+		We can now simply subtract one term out of the normal triangle inequality to get:
+		\begin{align*}
+			d(x,y) &\leq d(x,z) + d(y,z)\\
+			\implies d(x,y) - d(y,z) &\leq d(x,z)\\
+			\implies \abs{d(x,y) - d(y,z)} &\leq d(x,z)\\
+		\end{align*}
+		\item If $d(x,y) - d(y,z) \leq 0$, then
+		\begin{align*}
+			d(y,z) - d(x,y) = -(d(x,y) - d(y,z) \geq 0,
+		\end{align*} 
+		and we can repeat our previous argument with the order of our terms swapped.
+	\end{enumerate}
+\end{proof}
 \begin{importantdefinition}{Balls}{}
 	Let $(M,d)$ be a metric space. Then the \tib{open ball of radius $r$ around a point $x$} is the set
 	\begin{align*}
@@ -175,6 +201,9 @@ Most of the topological spaces we care about in practice are already metric spac
 	We say that a metric $d$ on a space $M$ \tib{generates} a given topology $\cO$ on $M$ if they give the same open sets, i.e. the open sets in $\cO$ are exactly the open sets in $(M,d)$.
 \end{definition}
 \begin{exercise}
+	Show that two metrics generalize the same topology iff. each open ball in one metric contains an open ball from the other metric.
+\end{exercise}
+\begin{exercise}
 	\begin{enumerate}
 		\item Show that the discrete metric generates the discrete topology.
 		\item Show that there is no metric generating the indiscrete topology.
@@ -195,7 +224,29 @@ Most of the topological spaces we care about in practice are already metric spac
 		\item Show that $d$ and $d_c$ generate the same topologies on $M$.
 	\end{enumerate}
 \end{exercise}
-This fact can be seen as a formalization of the intuition that changing the specific unit we choose to measure space with doesn't change its underlying structure.
+This fact can be seen as a formalization of the intuition that changing the length of the unit we choose to measure space with doesn't change its underlying structure.
+\newpar
+In general, I'd argue that there two "canonical" metrics on $\bR^n$, those being:
+\begin{itemize}
+	\item The Euclidean metric $d_2$, which matches the notion of distance we use in everyday life,
+	\item and the Chebyshev metric $d_\infty$, which has the nice property that open "balls" in $(\bR^n, d_\infty)$ are products of open intervals in $\bR$, which makes calculation easier and which also more closely follows general constructions of metrics on products of metric spaces, and even more generally constructions of canonical topologies on cartesian products of topological spaces.
+\end{itemize}
+ Thankfully, when proving general theorems on the topology of $\bR^n$, we can freely choose either metric:
+\begin{importanttheorem}{}{standardRnmetrics}
+	$d_2$ and $d_\infty$ induce the same topology on $\bR^n$.
+\end{importanttheorem}
+\begin{proof}
+	Intuitively, this is just the statement that every cube can fit a sphere around it and every sphere can fit a cube around it, which should be clear. 
+	\newpar
+	More formally, if we have an open cube with side length $2r$ centered on a point $p$, then the boundary of our cube is given by those points $q$ for which $|q_i - p_i| = r$ for at least one coordinate $i \in [1..n]$. 
+	\newpar
+	This means that the points closest to the center are the centers of the faces, which only differ from the center in one coordinate, and therefore fulfill $d_2(q,p) = r$, and the points furthest from the center are the corners, which differ from the center by $r$ in every coordinate, and therefore fulfill $d_2(q,p) = \sqrt{n}r$. Putting everything together, we get
+	\begin{align*}
+		B_r(p, d_2) \subseteq B_r(p, d_\infty) \subseteq B_{\sqrt{n}r}(p, d_2),
+	\end{align*}
+	i.e. every $d_2$-ball contains a $d_\infty$-ball and vice versa, i.e. our metrics are equivalent.
+\end{proof}
+Later on, when we start exploring linear algebra, we will show that any two metrics on $\bR^n$ induce the same topology as long as they "arise from a vector norm" - intuitively, this is the case if our metric is compatible with vector addition and vector scaling.
 \begin{importantdefinition}{Interior, Exterior and Boundary}{}
 	Let $X$ be a topological space. Let $A \subseteq X$. Then:
 	\begin{enumerate}
@@ -274,6 +325,21 @@ Intuitively, the interior is the largest open subset of $A$, and the exterior is
 		&d(x,y) < \delta \implies d(f(x), f(y)) < \epsilon
 	\end{align*}
 \end{definition}
+\begin{definition}
+	Let $f : M \to N$ be a function between metric spaces. Then we call $f$ \tib{Lipschitz continuous} if there exists a constant $L \in \bR$ such that
+	\begin{align*}
+		d(f(x), f(y)) \leq L \cdot d(x,y)
+	\end{align*}
+\end{definition}
+\begin{theorem}
+	Every Lipschitz continuous function is uniformly continuous.
+\end{theorem}
+\begin{proof}
+	Picking $\delta = \frac{\epsilon}{L}$ gives
+	\begin{align*}
+		d(f(x), f(y)) < L \cdot d(x,y) < L \cdot \frac{\epsilon}{L} = \epsilon
+	\end{align*}
+\end{proof}
 
 \clearpage
 
@@ -333,8 +399,11 @@ The notion of compactness is a key ingredient of many incredibly useful results 
 	Every closed and bounded subset of $\bR^n$ is compact.
 \end{importanttheorem}
 \begin{proof}
-	A bounded set is a subset of a cube $C^n = \prod_{i = 1}^n [-r,r]$. Such a cube is a product of closed intervals, which are compact by Tychonoff's Theorem \ref{th:compactinterval}. Every set that is closed and bounded is thus a closed subset of a compact set, making them compact by Exercise \ref{th:subsetcompact}.
+	A bounded subset of $\bR^n$ is a subset of a cube $C^n = \prod_{i = 1}^n [-r,r]$. Such a cube is a product of closed intervals, which are compact by Tychonoff's Theorem \ref{th:compactinterval}. Every set that is closed and bounded is thus a closed subset of a compact set, making them compact by Exercise \ref{th:subsetcompact}.
 \end{proof}
+\begin{exercise}
+	Find a metric space $M$ and a closed and bounded set $B \subseteq M$ such that $B$ isn't compact.
+\end{exercise}
 \begin{theorem}
 	\label{th:compactuniformcontinuity}
 	Let $M,N$ be metric spaces. Let $K \subseteq M$ be compact.

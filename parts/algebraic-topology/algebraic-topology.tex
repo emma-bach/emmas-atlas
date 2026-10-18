@@ -7,24 +7,48 @@
 		\item For all $x \in X$, we have $h(x,0) = f(x)$,
 		\item For all $x \in X$, we have $h(x,1) = g(x)$.
 	\end{enumerate}
-	We call $h$ a \tib{free homotopy}, or simply a \tib{homotopy}, between $f$ and $g$. We write $f \sim_h g$ if $f$ is a homotopy between $f$ and $g$. We write $f \sim g$ if there exists a homotopy between $f$ and $g$.
+	We call $h$ a \tib{free homotopy}, or simply a \tib{homotopy}, between $f$ and $g$. We write $f \simeq_h g$ if $f$ is a homotopy between $f$ and $g$. We write $f \simeq g$ if there exists a homotopy between $f$ and $g$.
 \end{importantdefinition}
+\begin{definition}
+	If a function is homotopic to a constant function, we call that function \tib{null-homotopic.}
+\end{definition}
+\begin{proposition}
+	Given two homotopies $h_1: f \simeq g$ and $h_2 : g \simeq h$, their \tib{concatenation}
+	\begin{align*}
+		(h_1 * h_2)(x,t) =
+		\begin{cases}
+			h_1(x,2t) & 0 \leq t \leq 1/2,\\
+			h_2(x,2t - 1) & 1/2 \leq t \leq 1.
+		\end{cases}
+	\end{align*}
+	is a homotopy $h_1 * h_2 : f \simeq h$.
+\end{proposition}
+Note that the order here doesn't match the order in function composition - we go through $h_1$ first, then through $h_2$.
+\begin{proposition}
+	Let $h : f \simeq g$. Then the \tib{inverse homotopy of $h$}, given by the function
+	\begin{align*}
+		h^{-1}(x,t) = \ol h(x,t) := h(x,1-t)
+	\end{align*}
+	which "moves through $h$ backwards", is a homotopy $h : g \simeq f$.
+\end{proposition} 
+\begin{corollary}
+	The property of being homotopic is an equivalence relation.
+\end{corollary}
 \begin{exercise}
-	Show that the property of being homotopic is an equivalence relation.
+	Homotopy is preserved by composition:
+	If $$f_0, f_1 : X \to Y \text{  and  } g_0, g_1 : Y \to Z$$ are continuous maps and $h_0 : f_0 \simeq f_1$ and $h_1 : f_1 \simeq g_1$ are homotopies, then 
+	\begin{align*}
+		h : (x,t) \mapsto h_1(h_0(x,t),t)
+	\end{align*}
+	is a homotopy between $g_0 \circ f_0$ and $g_1 \circ f_1$.
 \end{exercise}
-\begin{exercise}
-	Let $f_0, f_1 : X \to Y$ and $g_0, g_1 : Y \to Z$ be continuous. Let $h_0$ be a homotopy between $f_0$ and $f_1$ and let $h_1$ be a homotopy between $f_1$ and $g_1$. Then $$H : (x,t) \mapsto h_1(h_0(x,t),t)$$ is a homotopy between $g_0 \circ f_0$ and $g_1 \circ f_1$.
-\end{exercise}
-
 \begin{importantdefinition}{}{}
 	Let $f : X \to Y$ be continuous. Then $f$ is called a \tib{homotopy equivalence} between $X$ and $Y$ iff. there exists a map $g : Y \to X$ such that $g \circ f$ is homotopic to $\id_X$ and $f \circ g$ is homotopic to $\id_Y$. We write $X \simeq_{f,g} Y$, $X \simeq_f Y$, or simply $X \simeq Y$. If $X$ and $Y$ are homotopy equivalent, we sometimes say that they have \tib{the same homotopy type.}
 \end{importantdefinition}
-\begin{exercise}
-	Show that the property of being homotopy equivalent is an equivalence relation.
-\end{exercise}
-\begin{exercise}
-	Show that homeomorphism implies homotopy equivalence.
-\end{exercise}
+A continuous function is a homotopy equivalence if it has a continuous inverse up to homotopy. In particular, every homeomorphism is a homotopy equivalence.
+\begin{corollary}
+	The property of being homotopy equivalent is an equivalence relation.
+\end{corollary}
 \begin{definition}
 	A topological space $X$ is called \tib{contractible} iff. $X$ is homotopy equivalent to a one-point space.
 \end{definition}
@@ -54,91 +78,68 @@
 	Show that any star-shaped set is contractible. Conclude that any convex set is contractible.
 \end{exercise}
 \begin{lemma}
-	Let $X$ be a topological space. Let $A \subseteq X$. Then $A$ and $X$ are homotopy equivalent if there exists a homotopy between $\id_X$ and $\id_X|_A$, i.e. a continuous map $h : X \times [0,1] \to X$ such that for all $x \in X$:
+	Let $X$ be a topological space. Let $A \subseteq X$. Then $A$ and $X$ are homotopy equivalent if there exists a continuous map $h : X \times [0,1] \to X$ such that for all $x \in X$:
 	\begin{enumerate}
 		\item $h(x,0) = x$,
 		\item $h(x,1) \in A$,
 		\item $x \in A \implies h(x,1) = x$
 	\end{enumerate}
 \end{lemma}
-\begin{definition}
-	Let $A \subseteq X$ be topological spaces. Then $A$ is called a \tib{deformation retract of $X$} if there is a homotopy $h : X \times [0,1] \to X$ such that
-	\begin{enumerate}
-		\item $h(\cdot, 0) = \id_X$:
-		\begin{align*}
-			\forall x \in X: h(x,0) &= x
-		\end{align*}
-		\item $h(\cdot, 1) : X \to A:$
-		\begin{align*}
-			\forall x \in X: h(x,1) &\in A\\
-		\end{align*}
-		\item $h(\cdot, 1)|_A = \id_A$:
-		\begin{align*}
-			\forall a \in A : h(a,1) = a
-		\end{align*}
-	\end{enumerate}
-	If the last equation can be strengthened to 
-	\begin{align*}
-		\forall a \in A, t \in [0,1] : h(a,t) &= a, 
-	\end{align*}
-	we call $A$ a \tib{strong deformation retract of $X$}.
-\end{definition}
-\begin{exercise}
-	Any deformation retract $A$ of a topological space $X$ is homotopy equivalent to $X$.
-\end{exercise}
-\begin{exercise}
-	If $f : X \to Y$ is a continuous function, then the canonical map $r : M_f \to Y$ is a strong deformation retraction.
-\end{exercise}
+
 \clearpage
 
 \section{Relative Homotopy}
+
+Asking whether all loops in a space are homotopic to constant loops is clearly not sufficient to detect holes in a space, since we can just "avoid" the hole by "tearing" the loop at its base/end point and then shrinking it to that point. Therefore, we need a stricter type of homotopy, which requires loops to stay closed.
 \begin{definition}
-	We say that $f$ and $g$ are \tib{homotopic relative to a subset $A \subseteq X$} and write $f \sim_{\rel A} g$, $f \sim_{h, \rel A} g$ or $f \sim g \rel A$ iff:
+	We say that $f$ and $g$ are \tib{homotopic relative to a subset $A \subseteq X$} and write $f \simeq g \rel A$ iff:
 	\begin{enumerate}
-		\item $f \sim_h g$,
+		\item $f \simeq_h g$,
 		\item For all $t \in [0,1]$, we have $h(t, \cdot)|_A = f|_A = g|_A$
 	\end{enumerate}
 \end{definition}
+Notably, $f \simeq_h g$ is equivalent to $f \simeq_h g \rel \emptyset$.
+\newpar
 I personally find the designation "homotopic relative to $A$" quite unintuitive, given that the property of being homotopic relative to a given subset is stronger than the property of being homotopic.
-\begin{exercise}
-	Show that $f \sim_h g$ is equivalent to $f \sim_{h, \rel \emptyset} g$.
-\end{exercise}
 \begin{theorem}
 	Let $\Phi_1, \Phi_2 : [0,1] \to [0,1]$ be homotopies such that $\Phi_1(0) = \Phi_2(0) \in \lr{0,1}$ and $\Phi_1(1) = \Phi_2(1) \in \lr{0,1}$. Let $F : X \times [0,1] \to Y$ be a homotopy. Let $G_1(x,t) = F(x, \Phi_1(t))$ and $G_2(x,t) = F(x, \Phi_2(t))$. Then we have
 	\begin{align*}
-		G_1 \sim_{\rel X \times \lr{0,1}} G_2
+		G_1 \simeq G_2 \rel X \times \lr{0,1}
 	\end{align*}
 \end{theorem}
 \begin{definition}
-	We denote by $C$ a constant homotopy that makes sense in the given context.
+	We denote by $C_x$ the constant homotopy at $x$. If I'm feeling lazy, I'll just write $C$ and assume the basepoint is clear from context.
 \end{definition}
-\begin{proposition}
-Given two homotopies $F,G : X \times [0,1] \to Y$ with $F(\cdot,1) = G(\cdot,0)$, their \tib{concatenation}
-\begin{align*}
-	(F * G)(x,t) =
-	\begin{cases}
-		F(x,2t) & 0 \leq t \leq 1/2,\\
-		G(x,2t - 1) & 1/2 \leq t \leq 1.
-	\end{cases}
-\end{align*}
-is again a homotopy $F * G : X \times [0,1] \to Y$.
-\end{proposition}
-Note that the order here doesn't match the order in function composition - we go through $F$ first, then through $G$.
-\begin{theorem}
-	We have $C * F \sim F * C \sim F \rel X \times \lr{0,1}$
-\end{theorem}
-\begin{definition}
-	Let $h : X \times [0,1 \to Y]$ be a homotopy. We define the \tib{inverse of $h$} to be the homotopy that "moves through $h$ backwards", i.e.
-	\begin{align*}
-		h^{-1}(x,t) = \ol h(x,t) := h(x,1-t)
-	\end{align*}
-\end{definition} 
-\begin{theorem}
+\begin{exercise}
+	We have $C_{F(x,1)} * F \sim F * C_{F(x,0)} \sim F \rel X \times \lr{0,1}$
+\end{exercise}
+\begin{exercise}
 	Given a homotopy $h$, we have
 	\begin{align*}
-		h * h^{-1} \sim C \rel X \times \lr{0,1},
+		h * h^{-1} \sim C_{h(x,0)} \rel X \times \lr{0,1},
 	\end{align*}
-	where $C$ is the constant homotopy $C(x,t) = h(x,0)$
+\end{exercise}
+\begin{exercise}
+	For any homotopies $F, G$ and $H$ for which $F * G$ and $G * H$ are defined, we have
+	\begin{align*}
+		(F * G) * H \sim F * (G * H) \rel X \times \lr{0,1}
+	\end{align*}
+\end{exercise}
+\begin{exercise}
+	For homotopies $F_1, F_2, G_1$ and $G_2$, if $F_1 \sim F_2 \rel X \times \lr{0,1}$ and $G_1 \sim G_2 \rel X \times \lr{0,1}$, then 
+	\begin{align*}
+		F_1 * G_1 \sim F_2 * G_2 \rel X \times \lr{0,1}
+	\end{align*}
+\end{exercise}
+\begin{theorem}
+	The homotopy type of a mapping cylinder or cone depends only on the homotopy class of the map - if $f \sim g : X \to Y$, then 
+	\begin{align*}
+		M_f \sim M_g \rel X + Y
+	\end{align*} 
+	and 
+	\begin{align*}
+		C_f \sim C_g \rel Y + (x,1)
+	\end{align*}
 \end{theorem}
 \clearpage
 

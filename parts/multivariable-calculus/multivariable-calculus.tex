@@ -4,11 +4,20 @@
 \begin{importantdefinition}{Fréchet Derivative}{}
 	Let $V,W$ be normed vector spaces. Let $U$ be an open subset of $V$. Then $f : U \to W$ is called \tib{ Fréchet differentiable} or just \tib{differentiable} at $p \in U$ if there exists a continuous linear map $Df(p) : V \to W$ such that
 	\begin{align*}
-		\lim_{h \to 0} \frac{\norm{f(p+h) - f(p) - Df(p)(h)}_W}{\norm{h}_V} = 0.
+		\lim_{h \to 0_V} \frac{\norm{f(p+h) - f(p) - Df(p)(h)}_W}{\norm{h}_V} = 0,
 	\end{align*}
-	We call $Df(p)$ the \tib{differential of $f$ at $p$}. We call $f$ \tib{differentiable} if it is differentiable at every point $p \in U$. We call $f$ \tib{continuously differentiable} if the map $Df : p \mapsto Df(p)$ is continuous.
+	or, equivalently,
+	\begin{align*}
+		\lim_{h \to 0_V} \frac{f(p+h) - f(p) - Df(p)(h)}{\norm{h}_V} = 0_W.
+	\end{align*}
+	We call $Df(p)$ the \tib{differential of $f$ at $p$}. We call $f$ \tib{differentiable} if it is differentiable at every point $p \in U$. We call $f$ \tib{continuously differentiable} if the map
+	\begin{align*}
+		Df : U &\to \Hom(V,W)\\
+		p &\mapsto Df(p)
+	\end{align*} 
+	assigning to each point the differential at that point is continuous. 
 \end{importantdefinition}
-Recall that linear maps are continuous if and only if they are bounded, which is always the case if $V$ is finite-dimensional.
+The requirement that $Df(p)$ is continuous is only relevant if $V$ is infinite-dimensional - if $V$ is finite dimensional, every linear map $V \to W$ is continuous anyways.
 \begin{exercise}
 	Verify that if we identify scalars $c \in \bR$ with linear maps $x \mapsto c \cdot x$, this definition agrees with the usual definition for $f : \bR \to \bR$.
 \end{exercise}
@@ -18,19 +27,19 @@ Recall that linear maps are continuous if and only if they are bounded, which is
 \begin{proof}
 	If $f$ is differentiable, we have
 	\begin{align*}
-		\lim_{\norm{h}_V \to 0} \frac{\norm{f(p+h) - f(p) - Df(p)(h)}_W}{\norm{h}_V} = 0.
+		\lim_{h \to 0_V} \frac{f(p+h) - f(p) - Df(p)(h)}{\norm{h}_V} = 0_W.
 	\end{align*}
 	This can only be the case if
 	\begin{align*}
-		\lim_{\norm{h}_V \to 0} \norm{f(p+h) - f(p) - Df(p)(h)}_W = 0,
+		\lim_{h \to 0_V} f(p+h) - f(p) - Df(p)(h) = 0_W,
 	\end{align*}
 	i.e. if
 	\begin{align*}
-		\lim_{\norm{h}_V \to 0} f(p+h) = \lim_{\norm{h}_V \to 0} f(p) + Df(p)(h).
+		\lim_{h \to 0_V} f(p+h) = \lim_{\norm{h}_V \to 0} f(p) + Df(p)(h).
 	\end{align*}
 	Since $Df(p)$ is continous with $Df(0) = 0$, this simplifies to
 	\begin{align*}
-		\lim_{\norm{h}_V \to 0} f(p+h) = f(p),
+		\lim_{h \to 0_V} f(p+h) = f(p),
 	\end{align*}
 	which is the definition of sequential continuity.
 \end{proof}
@@ -50,7 +59,7 @@ Partial derivatives aren't actually any more complicated than standard one-dimen
 	f : \bR^3 &\to \bR\\
 		(x,y,z) &\mapsto f(x,y,z),
 \end{align*}
-we can define a function $f|_1 : \bR \to \bR$ by restriction to the first coordinate:
+we can define a function $f_1 : \bR \to \bR$ by restriction to the first coordinate:
 \begin{align*}
 	f|_1(x) := f(x,y,z).
 \end{align*}
@@ -59,7 +68,7 @@ Using this function, we can simplify the partial derivative:
 	\partial_1 f(x,y,z) 
 	&= \lim_{h \to 0} \frac{f((x,y,z) + he_1) - f(x,y,z)}{h}\\
 	&= \lim_{h \to 0} \frac{f(x+h,y,z) - f(x,y,z)}{h}\\
-	&= \lim_{h \to 0} \frac{f|_1(x+h) - f(x)}{h}\\
+	&= \lim_{h \to 0} \frac{f|_1(x+h) - f|_1(x)}{h}\\
 	&= \frac{d}{dx} f|_1(x)
 \end{align*}
 This tells us that, for example, the function $f(x,y,z) = x \cdot y \cdot z$ has partial derivatives
@@ -68,6 +77,18 @@ This tells us that, for example, the function $f(x,y,z) = x \cdot y \cdot z$ has
 	\partial_2 f(x,y,z) = \frac{d}{dy} xyz = xz\\
 	\partial_3 f(x,y,z) = \frac{d}{dz} xyz = xy.\\
 \end{align*}
+\begin{importanttheorem}{}{}
+	If $f : U \to W$ is differentiable, then the directional derivative in a given direction is simply the image of that direction under the differential:
+	\begin{align*}
+		\pderivative{v} f(p) = Df(p)(v)
+	\end{align*}
+\end{importanttheorem}
+\begin{proof}
+	In the definition of the differential, we can use the sequence $h \cdot v \to 0$ with $h \in \bR$ to get:
+	\begin{align*}
+		\lim_{h \to 0} \frac{f(p + hv) - f(p) - Df(p)(hv)}{\norm{hv}_V}
+	\end{align*}
+\end{proof}
 \begin{exercise}
 	\begin{enumerate}
 		\item Show that if $f$ is differentiable, then all directional derivatives exist and fulfill $\pderivative{v} f(p) = Df(p)(v)$.
@@ -86,7 +107,7 @@ This tells us that, for example, the function $f(x,y,z) = x \cdot y \cdot z$ has
 	
 	\end{enumerate}
 \end{exercise}
-If the image of $f$ is one-dimensional, the Jacobian matrix is simply a row vector. We call the transpose of this vector the \tib{gradient of $f$ at $p$} and denote it
+If we have $f : \bR^n \to \bR$, i.e. the image of $f$ is one-dimensional, the Jacobian matrix is simply a row vector. We call the transpose of this vector the \tib{gradient of $f$ at $p$} and denote it
 \begin{align*}
 	\nabla f(p)
 	:=
@@ -94,7 +115,7 @@ If the image of $f$ is one-dimensional, the Jacobian matrix is simply a row vect
 	=
 	\begin{pmatrix}
 		\pderivative{x_1} f(p)\\
-		\vdots
+		\vdots\\
 		\pderivative{x_n} f(p)
 	\end{pmatrix}
 \end{align*}
@@ -106,6 +127,11 @@ The transposition comes from the fact that we would like to be able to get the d
 	&= Df(p)(v)\\
 	&= \pderivative{v} f(p)
 \end{align*}
+Similarly, if we have $f : \bR \to \bR^n$, the Jacobian matrix is simply a column vector, and we get:
+\begin{align*}
+	Df(t) = \trinom{\ddt f_1(t)}{\ddt f_2(t)}{\ddt f_3(t)} =: \ddt f(t)
+\end{align*}
+\newpar
 There is one very important pitfall to watch out for when it comes to differentiability: We have just shown that if $f$ is differentiable, we can get the differential by construction the Jacobian matrix from the partial derivatives. This makes it look like every partially differentiable function is differentiable, which turns out to not be true in general. 
 \newpar
 For example, there exist functions which are partially differentiable, but not continuous - we showed earlier that all differentiable functions are continuous, so these functions are quick counterexamples.

@@ -185,3 +185,32 @@ Thus, for every $f \in C^\infty(U, \bR)$, we have
 \end{align*}
 confirming that $f \circ q|_U^{-1} \in F_{T^2}(q[U])$$^*$\marginnote{$^*$Note that $q[U] = (q|_U^{-1})^{-1}[U]$}, and thus that $q|_U^{-1}$ is a morphism.
 \section{Tangent Spaces}
+\begin{importantdefinition}{Tangent Vectors}{}
+	Let $M$ be a smooth manifold. Let $\gamma : (-\eps, \eps) \to M$ be smooth with $\gamma(0) = p$. Then the directional derivative operator $D_\gamma$ assigning to each chart $\kappa : U \to \bR^n$ on an open neighbourhood $U$ of $p$ its directional derivative
+	\begin{align*}
+		D_\gamma(\kappa) = \ddt|_{t = 0} \kappa \circ \gamma
+	\end{align*}
+	along $\gamma$ at $p$ is also known as the \tib{tangent vector to $\gamma$ at $p$}. The set of all tangent vectors to $M$ at a point $p$ is denoted $T_pM$.
+\end{importantdefinition}
+\begin{theorem}
+	Let $M$ be a smooth $n$-manifold, let $p \in U \in \cO(M)$, and let $\kappa : U \to V \subseteq \bR^n$ be a chart. Then the evaluation function
+	\begin{align*}
+		D_p \kappa : T_pM &\to \bR^n\\
+		D_\gamma &\mapsto D_\gamma(\kappa) = \ddtz (\kappa(\gamma(t)))
+	\end{align*}
+	is bijective.
+\end{theorem}
+\begin{proof}
+	\begin{enumerate}
+		\item Injectivity follows from the chain rule - if two tangent vectors agree on one chart, they must agree on every chart:
+		\begin{align*}
+			D_{\gamma_1}(\kappa_1) &= D_{\gamma_2}(\kappa_1)\\
+			\implies \ddtz \kappa_1 \circ \gamma_1 &= \ddtz \kappa_1 \circ \gamma_2\\
+			\implies \ddtz \kappa_2 \circ \gamma_1 
+			&=  D_{\kappa_1(p)}(\kappa_2 \circ \kappa_1^{-1}) \circ \ddtz \kappa_1 \circ \gamma_1\\
+			&=  D_{\kappa_1(p)}(\kappa_2 \circ \kappa_1^{-1}) \circ \ddtz \kappa_1 \circ \gamma_2\\
+			&=  \ddtz \kappa_2 \circ \gamma_2
+		\end{align*}
+		\item Surjectivity follow
+	\end{enumerate}
+\end{proof}
