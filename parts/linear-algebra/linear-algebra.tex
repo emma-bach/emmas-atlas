@@ -568,6 +568,19 @@ This representation turns out to be a lot more computationally efficient than ot
 \newpar
 This makes quaternions surprisingly practical in many applied contexts, including game development and animation\footnote{For an introduction to quaternions in game development, I highly recommend \href{https://www.youtube.com/watch?v=PMvIWws8WEo}{this excellent talk by Freya Holmer.}}, robotics, and three-dimensional image processing.
 \chapter{Linear Maps}
+\section{Systems of Linear Equations}
+The study of linear algebra begins in earnest with investigation of \tib{linear equations}, i.e. equations where \tib{variables} $x_1, \hdots, x_m$ can be multiplied by constant \tib{coefficients} $a_{ij}$ and added to each other, but can't be multiplied by each other. Such a system ends up looking like:
+\begin{align*}
+	a_{11} x_1 &+ a_{12}x_2 &+ \hdots &+ a_{1m}x_m &= b_1\\
+	a_{21} x_1 &+ a_{22}x_2 &+ \hdots &+ a_{2m}x_m &= b_2\\
+	& \vdots & & \vdots & \vdots\\
+	a_{n1} x_1 &+ a_{n2}x_2 &+ \hdots &+ a_{nm}x_m &= b_n´\\
+\end{align*}
+more compactly and formally, we are looking for the \tib{solution set}
+\begin{align*}
+	S = \lr{(x_j)_{j \in [1..m]} \mid \forall i \in [1..n] : \sum_{j = 1}^m a_{ij} x_j = b_i}
+\end{align*}
+Since we need multiplication and addition, equations like these only make sense if we have $a_{ij}, x_j, b_i \in R$ for some ring $R$. In linear algebra, we will make our life easier by further by assuming we also have division, i.e. $a_{ij}, x_j, b_i \in \Bbbk$ for some field $\Bbbk$, usually the real numbers $\bR$ or the complex numbers $\bC$.
 \section{Vector Spaces}
 Intuitively, a vector space is any algebraic structure $V$ equipped with a field $\bF$, such that elements of $V$ can be added to elements of $V$ or multiplied by elements of $\bF$, and these operations behave how vector addition and scalar addition behave in $\bR^n$. More precisely:
 \begin{importantdefinition}{Vector Spaces}{}

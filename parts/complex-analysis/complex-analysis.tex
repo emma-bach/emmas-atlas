@@ -1,0 +1,16 @@
+\part{Complex Analysis}
+\section{Complex Power Series}
+Since $\bC \cong \bR^2$, we know already that a series (or, more generally, a sequence) converges if and only if all components converge and is Cauchy if and only if all components are Cauchy. Additionally, our earlier proofs of absolute convergence of power series on their radius of convergence (\ref{th:realconvergenceradius}) and of the Cauchy-Hadamard formula (\ref{th:realcauchyhadamard})work identically for complex numbers.
+\begin{corollary}
+	Let $p(z) = \sum_{n = 0}^\infty a_n (z - z_0)^n$ be a real power series. Then there exists a \tib{radius of convergence}
+	\begin{align*}
+		\rho := \sup\lr{\abs{z - z_0} \mid p(z) \tn{ converges}} \in \bar \bR
+	\end{align*}
+	$p(z)$ converges absolutely for all $z \in \bC$ with $\abs{z - z_0} < \rho$ and diverges for all $\abs{z - z_0} > \rho$.
+\end{corollary}
+\begin{corollary}
+	The radius of convergence of a complex power series is given by
+	\begin{align*}
+		\rho = \frac{1}{\displaystyle \limsup_{n \to \infty} \abs{a_n}^\frac{1}{n}}
+	\end{align*}
+\end{corollary}

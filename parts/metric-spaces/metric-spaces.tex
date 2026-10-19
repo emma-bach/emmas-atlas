@@ -6,7 +6,6 @@
 \section{Dedekind Cuts}
 \section{Uniqueness of $\bR$}
 \section{Cardinality of $\bR$}
-
 \chapter{The Concept of Distance}
 \section{Metric Spaces}
 A metric space is a set, alongside with a \tib{distance function}, more commonly known as a \tib{metric}, $d$ which takes two points and outputs a distance between the points. Naturally, we want this "distance" to actually give us some usable structure on the set.
@@ -585,6 +584,70 @@ Note that is simply a direct generalization of the Chebyshev metric \ref{th:cheb
 \chapter{Infinite Series}
 \section{Achilles and the Turtle}
 \section{Convergence Tests}
+\section{Real Power Series}
+\begin{definition}
+	A \tib{power series} is a series of the form
+	\begin{align*}
+		p(x) = \sum_{n = 0}^n a_n (x - x_0)^n
+	\end{align*}
+	with coefficients $a_n \in \bR$ and a center $c \in \bR$.
+\end{definition}
+\begin{theorem}
+	\label{th:realconvergenceradius}
+	Let $p(x) = \sum_{n = 0}^\infty a_n (x - x_0)^n$ be a real power series. Then there exists a \tib{radius of convergence}
+	\begin{align*}
+		\rho := \sup\lr{\abs{x - x_0} \mid p(x) \tn{ converges}} \in \bar \bR
+	\end{align*}
+	$p(x)$ converges absolutely for all $x \in \bR$ with $\abs{x - x_0} < \rho$ and diverges for all $\abs{x - x_0} > \rho$.
+\end{theorem}
+\begin{proof}
+	\begin{enumerate}
+		\item Since every subset of the extended real number line has a supremum, $\rho$ exists.
+		\item Assume that $p(x_1)$ converges. Then we need
+		\begin{align*}
+			\lim_{n \to \infty} a_n (x_1-x_0)^n \to 0.
+		\end{align*}
+		Since convergent sequences are bounded, there exists a $c \in \bR$ with $\abs{a_n (x_1 - x_0)^n} < c$ for all $n \in \bN$. If we now have an $x \in \bR$ with $\abs{x - x_0} < \abs{x_1 - x_0}$, we get:
+		\begin{align*}
+			\sum_{n = 0}^\infty \abs{a_n (x - x_0)^n} 
+			&= \sum_{n = 0}^\infty \abs{a_n (x_1 - x_0)^n} \abs{\frac{(x - x_0)}{(x_1 - x_0)}}^n\\
+			&\leq \sum_{n = 0}^\infty c \abs{\frac{(x - x_0)}{(x_1 - x_0)}}^n\\
+			&= c \sum_{n = 0}^\infty \abs{\frac{(x - x_0)}{(x_1 - x_0)}}^n\\
+			&:= c \sum_{n = 0}^\infty \abs{q}^n
+		\end{align*}
+		Since $\abs{x - x_0} < \abs{x_1 - x_0}$, we have $q < 1$, so our sequence is bounded above by a convergent geometric series, and thus $p$ is absolutely convergent.
+		\item $p$ must diverge for all $\abs{x - x_0} > \rho$ by definition, since otherwise $\rho$ wouldn't be an upper bound.
+	\end{enumerate}
+\end{proof}
+\begin{theorem}[\tbf{Cauchy-Hadamard formula}]
+	\label{th:realcauchyhadamard}
+	The radius of convergence of a real power series is given by
+	\begin{align*}
+		\rho = \frac{1}{\displaystyle \limsup_{n \to \infty} \abs{a_n}^\frac{1}{n}}
+	\end{align*}
+\end{theorem}
+\begin{proof}
+	\begin{enumerate}
+		\item Let
+		$L^{-1} = \limsup_{n \to \infty} \abs{a_n}^\frac{1}{n}.$
+		Let $x_1 \in [0,L)$. Then we have
+		$x_1^{-1} > \limsup_{n \to \infty} \abs{a_n}^\frac{1}{n}.$
+		By definition of the limit superior, this gives us
+		\begin{align*}
+			x_1^{-1} > \inf_{N \in \bN} \sup_{n > N} \abs{a_n}^\frac{1}{n},
+		\end{align*}
+		i.e. there exists an $N \in \bN$ such that $x_1^{-1} > \abs{a_n}^\frac{1}{n}$. Taking the absolute value, multiplying by $x$, and taking the $n$th power gives
+		\begin{align*}
+			1 > \abs{a_n x_1^n}
+		\end{align*}
+		At this point, we get convergence for all $0 \leq \abs{x - x_0} \leq x_1$ the same way we did in the previous proof, giving us $L \leq \rho$.
+		\item If we have $r \geq L$, we have
+		\begin{align*}
+			r^{-1} < \inf_{N \in \bN} \sup_{n > N} \abs{a_n}^\frac{1}{n},
+		\end{align*}
+		which means that for every $N \in \bN$, there exists $k > N$ with $r < \abs{a_k}^\frac{1}{k}$. But then $\abs{a_k}^\frac{1}{k}$ can't converge to $0$, so our series must diverge, giving us $r > \rho$, and thus $L \geq \rho$.
+	\end{enumerate}
+\end{proof}
 \section{Euler's Number $e$}
 \section{The Exponential Function}
 \chapter{Euclidean Geometry}
